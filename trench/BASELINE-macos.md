@@ -54,3 +54,9 @@ Windows baseline: pass 1/12 (8.3%) @ t15, mean diff 65.5% (~34.5% parity) vs pin
 1. **Grid `1fr` auto-minimum (rustkit-layout grid.rs):** track sizing must respect grid items' min-content contribution (`minmax(auto, 1fr)`). Chrome sizes sticky-scroll's `main` to 1295.9px (nowrap row overflows the container, per spec); RustKit gives 600px. Drives sticky-scroll (49.7%, worst case) AND card-grid (37.2%, #2). Minimal repro → fix → shared-crate review branch.
 2. Check noon CI results (runs on 3bea8a1/6edda65/df4a334): with the instrumentation fix, CI's settings score is now attributable (error string in artifact). If CI still disagrees with local on real renders, root-cause the capture environment next.
 3. Night-1/2 numbers were measured with un-merged PR #3 in-tree (pass count unaffected; avg diff −0.5pp). Once the merge queue clears, metric basis = committed code only.
+
+## Night-3 scope (for the 01:07 run, 2026-07-08)
+0. Port/merge any overnight Athena wins; if she approved PR #3 and/or PR #4 → merge (auto-merge policy).
+1. Check the df4a334 CI run artifacts: is CI's settings a capture error (string now visible in metrics artifact) or a real render delta? Record the answer.
+2. **Main target: grid `1fr` ignores the item's min-content floor** (Chrome sizes the track to min-content 1295.9px, RustKit gives naive 600px). Same family as card-grid (37.2%) — a fix likely moves sticky-scroll AND card-grid. Minimal repro first, shared-crate fix to a review branch + open PR (gh is now permitted).
+3. Housekeeping: local atlas/trench carries b87ab7a (belongs to the review branch) — reset trench to origin before working, do not push that ref.
