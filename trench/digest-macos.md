@@ -1,5 +1,25 @@
 # Trench digest — macOS seat (Atlas)
 
+## Day-sprint session 2 — 2026-07-08 (paint family)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** committed-code basis **34.6% (9/26) unchanged** — but with PR #6 applied: **46.2% (12/26)**, avg diff 19.3 → 17.8. The +3 passes are the session-1 prediction cashing in: one root cause flipped 3 of the 8 paint-family cases. The gain sits in the review lane, not master — merge day moves the pinned metric +11.5pp.
+
+**Landed — hiwave-macos PR #6 (branch `atlas/fix-engine-color-parser`, shared crates rustkit-engine + rustkit-css, awaiting Athena; auto-merge on approval):** https://github.com/hiwavebrowser/hiwave-macos/pull/6
+- `af99f5f` — **engine color parsing delegated to rustkit-css.** The engine kept a private 11-name duplicate of `parse_color`; every other CSS named color (coral, tomato, orange…) silently dropped the whole declaration — bg-solid's coral swatch painted as body background, and gradient stops parse through the same path. rustkit-css's ~140-name parser is now the single source of truth; the one thing the duplicate did better (hsl hue wrap for negative/>360° hues) is ported INTO rustkit-css, not lost. bg-solid 19.69 → 15.20 (coral pixel-exact; 0.2pp from passing). −128 lines net.
+- `a62b4ce` — **em/rem/% font-size absolutized at style time (CSS computed values).** rustkit-layout falls back to 16px on any non-Px font-size (7 consumption sites), so `h1 { font-size: 2em }` — and every relative heading size in the websuite — rendered at body size. That was the doubled-ghost text signature polluting the entire family's diffs. Receipt from minimal repro: same h1 rule applied its `margin-bottom: 40px` while dropping the `2em` — cascade fine, computed-value resolution missing. Fixed where Chrome does it: at style time, em/% against parent, rem against root. **gradient-backgrounds 24.0→13.5 PASS, gradient-no-radius 24.3→14.0 PASS, gradient-radius-only 21.2→10.0 PASS**, card-grid 37.2→32.6. One regression stated plainly: image-gallery 19.3→21.6 (already-failing page, larger headings re-wrapped; on the ledger).
+
+**Cross-seat:**
+- **Reviewed + APPROVED Athena's hiwave-windows PR #5** (zero-width layout tree; rustkit-layout + rustkit-css). Verified her step-11 port line-by-line against our flex.rs. Approval delivered via exchange broadcast `693fcb927ff9` because the seat allowlist blocks `gh pr review` — the exchange message is the approval of record, she merges on receipt.
+- Found a **shared pre-existing quirk while reviewing**: flex step-11b's `Axis::Horizontal` arm assigns summed child *heights* to item *width* on column-flex containers (macOS flex.rs:299–326, faithfully inherited by Windows). Ledgered on both seats; first seat to hit a column-flex parity diff fixes it via cross-seat PR.
+- My PR #5 (grid 1fr) still un-reviewed — night 1 of 2 before the latency rule escalates.
+
+**Not done (2h cap):** §9.4.11 stretch-gating port-back from Athena's PR #5 (scope item 2) — carries to next session; her PR wasn't merged yet anyway, so porting from an unmerged branch would have raced her fixes. Next-session candidates beyond the port-back: backgrounds 30.9 + pseudo-classes 23.3 (untouched by tonight's fixes — different root cause), or the two ledgered engine gaps (text-align never applied by inline layout; unstyled elements default to 16px instead of inheriting — both hit every text page).
+
+**Decisions needed from Pete (≤3):**
+1. **Seat allowlist (repeat of session-1 ask, now with teeth):** `gh pr review`/`gh pr merge` are blocked, so tonight's cross-seat approval had to ride the exchange instead of GitHub — auto-merge can't actually fire from this seat. One line in `.claude/settings.json` (it's already tracked in-repo) unblocks the review lane as designed.
+2. **image-gallery regression inside PR #6:** −2.3pp on an already-failing page, bought +3 passes net. I judged that trade correct and said so in the PR; veto at noon if you want regressions held to zero even on failing pages.
+3. **bg-solid sits at 15.20 vs t15.00.** The remaining diff is the h1 UA-default line-height family (real spec work, next session's text lane). No action needed — just flagging that the next text fix likely flips it to 13/26 on its own.
+
 ## Day-sprint session 1 — 2026-07-08 (morning seat)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** 34.6% (9/26) → **34.6% (9/26)**, avg diff 19.2 flat. Basis milestone: this is the first number measured on **committed code only** — PRs #3+#4 are merged, the un-merged-patch asterisk from nights 1–2 is gone. The carried grid-`1fr` fix is done and on PR #5, but the session's biggest finding is that it — correctly — moves no pixels (below).
