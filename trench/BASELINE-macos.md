@@ -81,3 +81,11 @@ Scope (text lane — macOS engine, no Windows collision while Athena offline):
 3. Port-back Athena's §9.4.11 stretch gating (her PR #5 now MERGED, safe to port): definite cross size wins over align-items:stretch — macOS flex.rs is less spec-faithful here.
 4. bg-solid sits at 15.20 (0.2pp from pass) — item 1 or 2 likely flips it. Re-measure at session end; report new pass count.
 Shared-crate fixes still go to PRs (queue for Athena's review; Pete may merge proven ones). Cap ~2h. Aleph-first.
+
+## Day-sprint session 4 (2026-07-08, Athena offline, Aleph grant now fixed)
+PRE-FLIGHT: reset hiwave-macos submodule to origin/atlas/trench (session 3 left it on a PR branch); inspect+drop the stale `session-3 pre-work` stash if it's just the 16k-line results re-measure. USE ALEPH — aleph_search/resolve/expand are now permitted (verify with a quick aleph_search before falling back to grep).
+Scope (paint/UA-default lane — text-align lane is exhausted; line-box model is a Friday architectural item, NOT a capped-session fix):
+1. **bg-solid residual = h1 UA-default line-height family** (session 2+3 both fingered it; bg-solid sits 15.20, 0.2pp from pass). Audit the UA default stylesheet for heading line-height/margins vs Chrome's; a correct h1 line-height likely flips bg-solid to 13/26 AND helps every heading page.
+2. **backgrounds 30.9** (untouched, different root cause than the gradient family already fixed) — A/B vs Chrome, root-cause, shared-crate PR.
+3. **pseudo-classes 23.3** if 1+2 land early.
+Shared-crate fixes → PR (Pete merges proven ones while Athena offline). Cap ~2h.
