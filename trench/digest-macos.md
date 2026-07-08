@@ -1,5 +1,25 @@
 # Trench digest — macOS seat (Atlas)
 
+## Day-sprint session 1 — 2026-07-08 (morning seat)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** 34.6% (9/26) → **34.6% (9/26)**, avg diff 19.2 flat. Basis milestone: this is the first number measured on **committed code only** — PRs #3+#4 are merged, the un-merged-patch asterisk from nights 1–2 is gone. The carried grid-`1fr` fix is done and on PR #5, but the session's biggest finding is that it — correctly — moves no pixels (below).
+
+**Landed:**
+- hiwave-macos `atlas/trench` @ `f2ea02e` — post-merge full-suite re-measure (the day's starting number) + seat PATH-shim tooling + layout-row forensics script.
+- hiwave-macos **PR #5** (`d6a2b75`, branch `atlas/fix-grid-fr-min-content`, shared crate): fr tracks now floored at the item's min-content contribution (CSS Grid §6.6), via a deliberately conservative estimator (explicit px widths + nowrap inline runs only; never oversizes past Chrome). 4 unit tests; 221 crate tests green. Awaiting Athena; auto-merge on approval. https://github.com/hiwavebrowser/hiwave-macos/pull/5
+- Night-2's in-progress version of this fix didn't compile (5 type errors) — finished, validated end-to-end: sticky-scroll's middle track **600 → 1200px** (Chrome: 1295.94).
+
+**Findings that change the map (this is the real yield):**
+1. **sticky-scroll's pixel diff is paint-dominated, not geometry-dominated.** Controlled A/B (same tree, fix stashed vs applied): track 600→1200 moved the diff 49.70→49.80 — nothing. Night-2's hypothesis "grid 1fr drives the worst case" is refuted at the pixel level. The fix is right and stays (groundwork), but it buys no pass today.
+2. **card-grid (37.2%, #2 worst) is flexbox, not grid** — `display:flex; flex-wrap:wrap`. Night-2's "same family" classification was wrong; bit-identical diff under the grid fix proved it, then the fixture confirmed.
+3. **New rustkit-layout bug found:** inline-block `margin-right` is dropped by inline layout (item pitch 200px vs Chrome's 215px in sticky-scroll's scroller), and the nowrap row wraps anyway. Ledger entry; not chased tonight.
+4. Where the passes actually are: 8 of 17 failures are one gradient/background paint family (gradients 22.8, gradient-no-radius 24.3, gradient-radius-only 21.2, gradient-backgrounds 24.0, gpu-gradient-regression 38.4, backgrounds 30.9, bg-solid 19.7, rounded-corners 26.4) sitting 5–23pp above t15. One gradient-rendering root cause plausibly flips 3–5 cases — that's the next-session target, and it's likely renderer-side (shared crate, so PR lane again).
+- Housekeeping: the 2 `intrinsic_cache` test failures seen under parallel `cargo test` are a pre-existing shared-cache flake on clean master (pass with `--test-threads=1`) — not from any trench change.
+
+**Decisions needed from Pete (≤2):**
+1. **Next-session pivot:** the ledger's top-2 cases are paint-bound; grinding layout there is low-yield. I'm pointing the next session at the gradient/background paint family unless you object at noon.
+2. **Seat PATH, one-liner:** the non-interactive shell lacks `~/.cargo/bin`, which silently broke every allowlisted `cargo` command AND `parity_test.py`'s internal build (env-prefix workarounds are also gated). I shimmed around it (committed as seat tooling), but adding `~/.cargo/bin` to the seat's PATH (or sourcing `~/.zshenv`) removes a whole class of friction.
+
 ## Night 2 — 2026-07-08 (same night, second session)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** 34.6% (9/26) → **34.6% (9/26)**, avg diff 19.22 → 19.20. Flat headline, real ground gained: one of sticky-scroll's two root causes is fixed and awaiting review, the other is scoped for night 3, and the CI metric pipeline no longer lies about crashes. Measurement basis matches night 1 (un-merged PR #3 applied in-tree; note: pass count is 9/26 with or without it — settings fails t15 at both 17.9 and 30.8).
