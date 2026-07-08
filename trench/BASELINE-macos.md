@@ -60,3 +60,9 @@ Windows baseline: pass 1/12 (8.3%) @ t15, mean diff 65.5% (~34.5% parity) vs pin
 1. Check the df4a334 CI run artifacts: is CI's settings a capture error (string now visible in metrics artifact) or a real render delta? Record the answer.
 2. **Main target: grid `1fr` ignores the item's min-content floor** (Chrome sizes the track to min-content 1295.9px, RustKit gives naive 600px). Same family as card-grid (37.2%) — a fix likely moves sticky-scroll AND card-grid. Minimal repro first, shared-crate fix to a review branch + open PR (gh is now permitted).
 3. Housekeeping: local atlas/trench carries b87ab7a (belongs to the review branch) — reset trench to origin before working, do not push that ref.
+
+## Day-sprint session 1 (2026-07-08, Pete live: "improve hiwave as much as possible today on both systems")
+0. PRs #3+#4 are MERGED into hiwave-macos master — rebase atlas/trench onto master, re-measure: the honest post-merge pass rate is the day's starting number. Record it.
+1. Main target (carried): grid `1fr` min-content floor. Minimal repro → shared-crate fix → PR via gh immediately (Atlas reviews within minutes today, don't batch).
+2. If Athena's step-11 Windows port PR arrives mid-session, note it in the digest — Atlas (live) reviews it, not you.
+3. Digest after THIS session (not end of day). Cap ~2h as always; the day is a chain of capped sessions, not one long one.
