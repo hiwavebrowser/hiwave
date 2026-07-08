@@ -41,3 +41,10 @@ Windows baseline: pass 1/12 (8.3%) @ t15, mean diff 65.5% (~34.5% parity) vs pin
 
 ## Metric pinned for Phase 2
 **Unified pass rate** (threshold 15%, pinned-Chrome 148) — currently **46.2%**. Chosen over "visual parity %" because pass-rate moves page-by-page (feelable motion, one page = one win) while average parity can be gamed by polishing already-passing pages.
+
+## Night-2 scope (2026-07-08, Pete-authorized same evening: "the night is young")
+0. Port Athena's `.alephignore` vendor-mask approach (hiwave-windows@b692647 — her deps/ 7.9GB evaded the default mask; check macOS equivalents), then rebuild the hiwave-macos Aleph index. Carried from night 1.
+1. If Athena has approved PR hiwave-macos#3 → merge it (auto-merge on cross-seat approval is now policy). If she reports it moves her builtins, note the delta in the digest.
+2. Trigger a CI run on `atlas/trench` (gh workflow run / push-triggered) — audit the settings 100%-vs-30.8% CI/local discrepancy. If CI's capture path records crashes as 100s, root-cause it in writing (instrumentation debt is metric debt).
+3. Next ledger target: `sticky-scroll` (50.4%) — root cause position:sticky. Same discipline as settings: minimal repro vs Chrome, shared-crate changes go to PR (auto-merge on Athena's approval).
+4. Digest as always. Cap ~2h.

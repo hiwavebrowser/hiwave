@@ -7,6 +7,8 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 ## Metrics
 - **Campaign metric (per seat, pinned in BASELINE-<os>.md):** pixel-parity vs **Chrome 148.0.7778.216 (pinned, frozen for the campaign)**. Re-pin only at campaign boundaries, deliberately, both seats in lockstep.
 - **North star (Friday trendline):** WPT (Web Platform Tests) pass-rate — absolute conformance, not defined in terms of Chrome. Stand up in Phase 0.5.
+- **Thresholds (Pete-locked 2026-07-08): t15 stays.** No re-tiering after the re-pin — pass means pass, grind the rest.
+- **CI audits:** seats may trigger CI runs as needed (Pete, 2026-07-08) — first audit: settings 100%-vs-30.8% CI/local discrepancy.
 - **Quirks ledger (`trench/QUIRKS.md`):** diffs traced to Chrome deviating from spec get recorded and dropped, not chased. Match the spec, not the bug.
 
 ## Phases
@@ -21,7 +23,7 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 
 ## Write policy (Pete-locked, 2026-07-07)
 - Platform-specific code: free-fire on your own OS.
-- Shared crates (fastrender core, rustkit-*): PR + **other-seat review** before merge. Atlas reviews Athena's, Athena reviews Atlas's.
+- Shared crates (fastrender core, rustkit-*): PR + **other-seat review**, and on approval the reviewing seat **auto-merges** (Pete, 2026-07-08: "go ahead and auto-merge shared-crate fixes"). Atlas reviews Athena's, Athena reviews Atlas's.
 - Every digest flags portable fixes. Each night begins by porting the other seat's proven wins before hunting new bugs. The same glyph bug is never solved twice.
 
 ## Effort + tooling rules
