@@ -23,6 +23,7 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 - Platform-specific code: free-fire on your own OS.
 - Shared crates (fastrender core, rustkit-*): PR + **other-seat review** before merge. Atlas reviews Athena's, Athena reviews Atlas's.
 - Every digest flags portable fixes. Each night begins by porting the other seat's proven wins before hunting new bugs. The same glyph bug is never solved twice.
+- **Review latency rule (adopted 2026-07-08):** a cross-seat PR un-reviewed after 2 nights gets escalated in the noon digest to Pete; after 3 nights Pete may merge it himself or waive review for that PR. Review is a lane, not a parking lot.
 
 ## Effort + tooling rules
 - Nightly cap: one ~2h agent session per seat. Sustainable beats heroic; this is the trench.
