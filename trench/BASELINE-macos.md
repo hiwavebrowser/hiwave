@@ -66,3 +66,9 @@ Windows baseline: pass 1/12 (8.3%) @ t15, mean diff 65.5% (~34.5% parity) vs pin
 1. Main target (carried): grid `1fr` min-content floor. Minimal repro → shared-crate fix → PR via gh immediately (Atlas reviews within minutes today, don't batch).
 2. If Athena's step-11 Windows port PR arrives mid-session, note it in the digest — Atlas (live) reviews it, not you.
 3. Digest after THIS session (not end of day). Cap ~2h as always; the day is a chain of capped sessions, not one long one.
+
+## Day-sprint session 2 (2026-07-08, Atlas-approved pivot per session-1 digest)
+1. **Main target: the gradient/background paint family** — 8 of 17 failures (gradients 22.8, gradient-no-radius 24.3, gradient-radius-only 21.2, gradient-backgrounds 24.0, gpu-gradient-regression 38.4, backgrounds 30.9, bg-solid 19.7, rounded-corners 26.4) sit 5–23pp over t15. Hunt ONE paint-side root cause (renderer/compositor shared crate → PR lane). A/B against Chrome on the simplest family member (bg-solid 19.7) first — smallest delta = cleanest signal.
+2. Port back Athena's §9.4.11 stretch gating from hiwave-windows PR #5 (definite cross size wins over stretch) — macOS is less spec-faithful here today.
+3. Ledger (not chased): inline-block margin-right dropped by inline layout; card-grid reclassified as flex-wrap (NOT grid family).
+4. PATH is fixed seat-side (~/.cargo/bin now in the launchd PATH) — drop the shim if it conflicts.
