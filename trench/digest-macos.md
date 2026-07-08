@@ -1,5 +1,29 @@
 # Trench digest — macOS seat (Atlas)
 
+## Day-sprint session 4 — 2026-07-08 (paint/UA-default lane → line-height inheritance)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** **46.2% (12/26) → 46.2% (12/26)**, avg diff **17.85 → 17.72**. Measured as a *controlled A/B on committed master* (stash fix → rebuild master → run → restore → rebuild → run, identical CfT-148 baselines). Note: the committed `parity_test_results.json` was a stale-basis artifact (showed phantom ±12–16pp gradient swings on my first naive diff); ignore it as a "before". Clean master is 12/26 @ 17.85 avg.
+
+**Landed — hiwave-macos PR #8 (branch `atlas/fix-line-height-inheritance`, shared crate rustkit-engine, awaiting Athena; auto-merge on approval):** https://github.com/hiwavebrowser/hiwave-macos/pull/8
+- `170b16e` — **line-height now inherits element→element and from `<html>`.** Two real bugs: (1) rustkit inherited `line-height` only into *text nodes* from their immediate parent, never element→element; (2) `build_layout_from_document` started layout at `<body>` with `parent_style = None`, dropping everything inherited that was set on `<html>`. Fix threads html's computed style into body + inherits the parent element's `line-height` when unset (Number as factor, Px as length, per §10.8). 1 new test; full rustkit-engine suite green. Controlled A/B: **sticky-scroll 49.80→46.88** (the #1 worst case), article-typography 11.27→10.94, **zero regressions**.
+
+**Two falsifications that redraw the lane (this is the real yield):**
+1. **The scope premise was wrong again.** Session 2+3 fingered bg-solid's residual as "h1 UA-default line-height (paint)". It is not paint. Chrome computes h1 line-height = 48 = 32×1.5 because `parity-reset.css` sets `html{line-height:1.5}` (unitless → inherits as a factor); rustkit gave 38.4 = 32×1.2 because it never inherited it. Fixed. But bg-solid **did not move** — see #2.
+2. **parity-capture never loads external stylesheets.** The micro-suite's `line-height:1.5` (and font-family, color) live in the *external* `parity-reset.css` (`<link>`), which the headless capture path does not fetch (no base-URL/`<link>` resolution; `load_html`+`render_view` only). So **rustkit renders the entire micro-suite WITHOUT the reset Chrome applies.** This is the real micro-suite blocker and reframes the paint/text grind: many "diffs" are reset-absent, not engine bugs. My inheritance fix is the *prerequisite* that makes the reset's value actually propagate once external loading lands.
+
+**TWO ENGINES on macOS (important, cost me ~40min):** the parity metric is rendered by **rustkit-* crates** (parity-capture → rustkit-engine/rustkit-layout). The repo *also* contains `hiwave-macos/fastrender/` — a much larger, far more sophisticated engine (real snapped font-metric line-heights, full cascade w/ style-sharing) — which **Aleph indexes and `aleph_search` points you to**. I diagnosed the whole bug in fastrender's cascade first before discovering parity uses rustkit. Aleph is pointed at the wrong engine for this seat's work. (Aleph grant IS fixed — search/resolve/expand all worked this session.)
+
+**Housekeeping:**
+- Dropped the stale `session-3 pre-work` stash (confirmed: just the 16k-line results re-measure + .mcp.json drift).
+- Submodule left on `atlas/fix-line-height-inheritance`; superrepo `atlas/trench` shows `M hiwave-macos` — digest commit does NOT bump the gitlink (fix is unmerged, on PR #8).
+- **Superrepo branches diverged:** `origin/master` carries session-2/3/4 *scope* commits; `origin/atlas/trench` carries the *digests*. They are not ancestors of each other. `git merge` is permission-gated on this seat so I could not reconcile them — flagging for Pete.
+- Repro scripts (lh_inherit/lh_direct/lh_nested/compare_results) committed to the submodule work-branch under `parity-tests/repro/`.
+
+**Decisions needed from Pete (≤3):**
+1. **Next target = external stylesheet loading in parity-capture.** This is the highest-leverage item on the board: the whole micro-suite is being scored against Chrome-with-reset while rustkit renders reset-less. Approve making the headless capture resolve+load `<link>` sheets (needs base-URL from the HTML path)? It likely moves many cases at once (and my inheritance fix is already in place to carry the reset's values). Risk: also applies system-ui font-family, which may expose font mismatches — measure, don't assume.
+2. **Point Aleph at the parity engine.** The index/semantic-search surfaces `fastrender/`, but the campaign metric is `rustkit-*`. Re-scope the macOS Aleph index to `crates/rustkit-*` (or confirm fastrender is the intended future engine and the metric should migrate). Right now the mandated toolchain sends every session to the wrong engine.
+3. **Superrepo branch divergence** (master=scope, atlas/trench=digests, diverged): want me granted `git merge`/`rebase` to reconcile, or will you unify them? Left untouched this session.
+
 ## Day-sprint session 3 — 2026-07-08 (text lane)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** committed basis **46.2% (12/26) unchanged** → **46.2% expected after merge.** The session's fix is real and correct but — by the same discipline as session 1's grid finding — moves ~0 pixels on the pass ledger, because the thing it fixes (inline *box* alignment) isn't what the failing text pages exercise. The yield this session is a **falsification** that redraws the text lane, not a pass. Basis measured on committed code (PRs #3–#6 merged); my fix is on PR #7, unmerged.
