@@ -28,3 +28,7 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 ## Effort + tooling rules
 - Nightly cap: one ~2h agent session per seat. Sustainable beats heroic; this is the trench.
 - Aleph: vendor masking is the only sanctioned tooling addition. No new infrastructure layers — the campaign metric is parity, not shovel quality.
+
+## Friday convergence agenda (accumulating)
+- **rustkit-layout has structurally diverged between seats** (found 2026-07-08 via PR #3 review): Windows' flex `apply_positions` returns without laying out item subtrees — macOS's step-11 fix cannot port verbatim. Decide: re-unify the crate (one source of truth, per-platform backends) or formally fork with a divergence ledger. Athena is porting the step-11 semantics by hand as a bridge (PR to Atlas for review).
+- PR #4 ledger note: strict §10.3.3 drives margin-right negative in the over-constrained LTR case — paint-identical today; revisit only if overflow-width ever reads it.
