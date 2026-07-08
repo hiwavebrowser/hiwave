@@ -1,5 +1,33 @@
 # Trench digest — macOS seat (Atlas)
 
+## Day-sprint session 3 — 2026-07-08 (text lane)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** committed basis **46.2% (12/26) unchanged** → **46.2% expected after merge.** The session's fix is real and correct but — by the same discipline as session 1's grid finding — moves ~0 pixels on the pass ledger, because the thing it fixes (inline *box* alignment) isn't what the failing text pages exercise. The yield this session is a **falsification** that redraws the text lane, not a pass. Basis measured on committed code (PRs #3–#6 merged); my fix is on PR #7, unmerged.
+
+**Landed — hiwave-macos PR #7 (branch `atlas/fix-inline-text-align`, shared crate rustkit-layout, awaiting Athena; auto-merge on approval):** https://github.com/hiwavebrowser/hiwave-macos/pull/7
+- `bc967f3` — **text-align now applies to inline boxes, not just inline-block.** `apply_text_align_offset` shifted only `is_inline_block()` items; a styled inline box (a `<span>`/`<a>` with background/border/padding) was laid out as a regular block and left at the line origin, so its decoration never followed `text-align: center|right`. Fix records an inline child as its own single-item line in both block-children paths and shifts its origin. 2 regression tests; **223/223 crate tests green.**
+
+**The falsification (this is the real yield):**
+- Session-2 ledgered two text-lane items as "both hit every text page": *text-align never applied by inline layout* and *unstyled elements default to 16px instead of inheriting*. **The first is refuted by data.** rustkit-layout probe, 200px centered block:
+  - plain text child → `x=92.4` (correctly centered; `layout_text` self-aligns the leaf against the block width).
+  - `<span>` wrapping text → span box `x=0` **but inner text `x=92.4`** — the rendered text is *already centered*; only the empty span box sat at the origin.
+- So **plain text and text-inside-inline already center** post the earlier PRs. "Hits every text page" is false — the visible text on those pages is already aligned. The only real gap was the inline *box origin* (matters for span/link backgrounds, borders, padding), now fixed in PR #7.
+- **The genuinely open, higher-value gap is architectural:** there is no line-box model, so *multiple* inline fragments on one line (`Some <b>bold</b> text`) each self-center against the block width independently and overlap, instead of the line centering as a unit. That's a real rewrite (fragment grouping + line-level alignment), not a capped-session fix — flagging for the Friday agenda.
+- Corollary: session-2's prediction that "the next text fix flips bg-solid to 13/26" is **unlikely from this fix** — bg-solid's residual is the h1 UA line-height family (paint), not inline-box alignment.
+
+**Seat toolchain gap (new, blocks the campaign's own tooling):**
+- The `USE ALEPH BEFORE GREP` mandate is **not executable on this seat**: `aleph_map` is permitted but `aleph_search`, `aleph_resolve`, `aleph_expand` are all permission-**denied** (non-interactive → auto-deny), and `aleph_map`'s `path_prefix` drill returns empty for `hiwave-macos/crates/*`. I fell back to targeted single-crate grep + Read (legitimate: aleph unavailable, not avoided), but the semantic-nav layer the campaign is built around is dark for this seat. This is the third seat-permission gap after `gh pr review`/`gh pr merge` and `/tmp`.
+
+**Housekeeping (read before next session):**
+- Submodule `hiwave-macos` has a **stash** (`session-3 pre-work`) holding a stale 16k-line `parity_test_results.json` re-measure + a small `.mcp.json` drift, left by a prior session. I did NOT restore or commit it — inspect and drop if stale.
+- Submodule left checked out on `atlas/fix-inline-text-align` (the PR branch), not `atlas/trench`. Superrepo `atlas/trench` shows `M hiwave-macos` for that reason; the digest commit deliberately does NOT bump the submodule gitlink.
+- Untracked `parity-tests/repro/pr-body-text-align.md` is just the PR body; harmless.
+
+**Decisions needed from Pete (≤3):**
+1. **Grant the seat the `aleph_*` MCP tools** (search/resolve/expand) the same way you granted `gh pr create`. Right now the mandated toolchain can't run here and every session silently degrades to grep.
+2. **Text lane — stop or escalate?** The "easy" text-align win is spent (already worked). The remaining text yield is the line-box rewrite (big) or the font-size-*inheritance* item (unverified this session). Recommend: **pivot the next nightly back to the paint/background family** (still the densest cluster of near-misses) and take the line-box model to Friday convergence as a scoped design item, not a nightly grind.
+3. **PR #7 review** joins #5 (grid 1fr, now 2 nights old) and #6 (paint) in Athena's queue — three shared-crate PRs pending. The 2-night latency rule is about to fire on #5.
+
 ## Day-sprint session 2 — 2026-07-08 (paint family)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** committed-code basis **34.6% (9/26) unchanged** — but with PR #6 applied: **46.2% (12/26)**, avg diff 19.3 → 17.8. The +3 passes are the session-1 prediction cashing in: one root cause flipped 3 of the 8 paint-family cases. The gain sits in the review lane, not master — merge day moves the pinned metric +11.5pp.
