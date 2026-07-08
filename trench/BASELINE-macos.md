@@ -72,3 +72,12 @@ Windows baseline: pass 1/12 (8.3%) @ t15, mean diff 65.5% (~34.5% parity) vs pin
 2. Port back Athena's §9.4.11 stretch gating from hiwave-windows PR #5 (definite cross size wins over stretch) — macOS is less spec-faithful here today.
 3. Ledger (not chased): inline-block margin-right dropped by inline layout; card-grid reclassified as flex-wrap (NOT grid family).
 4. PATH is fixed seat-side (~/.cargo/bin now in the launchd PATH) — drop the shim if it conflicts.
+
+## Day-sprint session 3 (2026-07-08, Pete "continue, Athena offline")
+BASIS UPDATE: PRs #5+#6 merged to master under Pete's continue-directive — **committed pinned metric is now 46.2% (12/26)**, up from morning's 34.6%. Both flagged for Athena's post-hoc review on return.
+Scope (text lane — macOS engine, no Windows collision while Athena offline):
+1. **text-align never applied by inline layout** (ledgered session 2) — hits every text page. Root cause in rustkit-layout inline path, minimal repro vs Chrome, fix. Highest remaining leverage: touches the whole websuite.
+2. **unstyled elements default to 16px instead of inheriting font-size** (ledgered) — same breadth. Fix at style/cascade time.
+3. Port-back Athena's §9.4.11 stretch gating (her PR #5 now MERGED, safe to port): definite cross size wins over align-items:stretch — macOS flex.rs is less spec-faithful here.
+4. bg-solid sits at 15.20 (0.2pp from pass) — item 1 or 2 likely flips it. Re-measure at session end; report new pass count.
+Shared-crate fixes still go to PRs (queue for Athena's review; Pete may merge proven ones). Cap ~2h. Aleph-first.
