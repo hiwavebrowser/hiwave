@@ -1,6 +1,12 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## RE-PINNED 2026-07-08 (night 1, Phase 0 exit)
+- **Unified pass rate vs pinned Chrome for Testing 148.0.7778.216: 9/26 (34.6%)**, avg diff 19.3% — this replaces the 46.2% chrome-120 number below as the campaign metric. The 120-era baselines were flattering (rounded-corners 9.5→26.4, gradients 9.6→22.8 under Chrome 148's own rendering changes); Athena saw the same drop shape on Windows.
+- Baseline tree: `hiwave-macos:baselines/chrome-148/` (26 cases, exact binary in metadata.json), captured with ANGLE swiftshader + PARITY_CHROME_PATH pin. Instrument commits: hiwave-macos@5d14baf, @fc7531d on `atlas/trench`.
+- Instrumentation debt PAID: gpu-gradient-regression baseline captured (was missing entirely from chrome-120 — its three 100%-diff entries were fake). It now measures a real 32.8% diff.
+- `settings` 100%-in-CI mystery resolved: locally it's a 30.8% diff (flat-background frame), root-caused to a rustkit-layout flex bug — all block children of a flex item stack at the item's bottom edge, pushing content below the viewport. Fix on PR hiwavebrowser/hiwave-macos#3 (shared crate, awaiting Athena's review): settings 30.8→17.9. Athena's width=0.0 lead does NOT reproduce on macOS (layout exports 272/272 sized boxes) — her symptom is a different exporter view, possibly same family.
+
 ## Headline numbers (CI truth, not January folklore)
 - **Visual parity: 80.2%** (builtins 87.45%, websuite 78.47%)
 - **Pass rate: 46.2%** (12/26 unified; 36/72 in the 3-viewport detailed run)
