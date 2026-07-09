@@ -21,3 +21,12 @@ builtins-diffs
 baselines
 goldens
 websuite
+
+# Session-7/8 (Atlas, 2026-07-09): the HUB index walks into submodules and the
+# submodule .alephignore is NOT honored at hub level. Mask the wrong-engine and
+# sibling-platform trees so hub aleph_search resolves to the metric engine
+# (hiwave-macos/crates/rustkit-*) instead of returning fastrender + linux +
+# windows copies of every symbol (session-7 ledger item d).
+fastrender
+hiwave-linux
+hiwave-windows
