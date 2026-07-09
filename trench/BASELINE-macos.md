@@ -95,3 +95,11 @@ PRE-FLIGHT: add `fastrender/` to hiwave-macos `.alephignore` + rebuild index —
 1. **Main target: external stylesheet loading in parity-capture** (approved decision 1) — resolve `<link rel=stylesheet>` against the HTML file's base URL in the headless path (load_html+render_view). This unblocks the entire micro-suite: rustkit currently renders reset-less vs Chrome-with-reset. PR #8 (line-height inheritance, MERGED) is the prerequisite already in place. Measure honestly: the reset also brings font-family — expect some cases to move backward as font mismatches surface; report both directions.
 2. Full-suite re-measure after; report new pass count vs the 12/26 basis.
 3. parity-capture is seat-local tooling (not shared crate) — commit direct to atlas/trench; any rustkit-* spillover goes to PR.
+
+## Day-sprint session 6 (2026-07-08 late, decisions 2+3 approved as recommended)
+Trendline rule: annotate everything before session 5 as "pre-determinism" — the campaign metric only moves forward; no historical re-measures.
+BASIS: 57.7% (15/26), deterministic (two runs identical). PRs #5-#9 + capture-CSS all on hiwave-macos master; hub pin current. Session-5 scope is DONE — do not redo external stylesheets.
+1. Cheap flips first: combinators 16.3 (needs 1.3pp), images-intrinsic 12.2 vs t10 (needs 2.2pp) — small, real gaps; a pass is a pass.
+2. Then the real dig: gpu-gradient-regression 38.6 — worst non-paint-known case; A/B vs Chrome, root-cause, PR lane for shared crates.
+3. If time remains: css-selectors 29.8 (keeps the selector/cascade lane hot).
+Cap ~2h. Aleph-first (index excludes fastrender). Digest as always.
