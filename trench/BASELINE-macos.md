@@ -103,3 +103,10 @@ BASIS: 57.7% (15/26), deterministic (two runs identical). PRs #5-#9 + capture-CS
 2. Then the real dig: gpu-gradient-regression 38.6 — worst non-paint-known case; A/B vs Chrome, root-cause, PR lane for shared crates.
 3. If time remains: css-selectors 29.8 (keeps the selector/cascade lane hot).
 Cap ~2h. Aleph-first (index excludes fastrender). Digest as always.
+
+## Session 9 scope (2026-07-09, first run at the new 3h cap)
+BASIS: 69.2% (18/26) — PRs #12 (inline-flex atomic) + #13 (flex-item intrinsic width) MERGED to master. Aleph-first is enforced now; hiwave-web added to hub .alephignore (ledger d).
+Ledger, worst-first (all real renders): sticky-scroll 48.2 (grid 1fr min-content, known), card-grid 32.6 (flex-wrap, DIFFERENT root cause — untouched by intrinsic-width), css-selectors ~27.6, shelf ~25.6, backgrounds ~25.5, gpu-gradient-regression 18.2 (now bounded — real gradient render + heading text), image-gallery 21.6 (network-image loading, seat-tooling).
+1. **card-grid 32.6 (flex-wrap)** — #2 worst, its own root cause, twice-noted as unmoved. A/B vs Chrome, shared-crate fix → PR.
+2. **gpu-gradient-regression 18.2** — now that flex-width is fixed, the residual is finally real gradient parity; dig into the actual gradient renderer.
+3. Cap ~3h now — you have room for one real dig plus a second target. Aleph-first (aleph_search/resolve, not grep).

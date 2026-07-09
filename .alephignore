@@ -30,3 +30,6 @@ websuite
 fastrender
 hiwave-linux
 hiwave-windows
+
+# Session-8 ledger d: hub search surfaced hiwave-web JSX despite sibling mask
+hiwave-web
