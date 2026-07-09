@@ -122,3 +122,11 @@ Ledger, worst-first (all real renders): sticky-scroll 48.2 (grid 1fr min-content
 1. **card-grid 32.6 (flex-wrap)** — #2 worst, its own root cause, twice-noted as unmoved. A/B vs Chrome, shared-crate fix → PR.
 2. **gpu-gradient-regression 18.2** — now that flex-width is fixed, the residual is finally real gradient parity; dig into the actual gradient renderer.
 3. Cap ~3h now — you have room for one real dig plus a second target. Aleph-first (aleph_search/resolve, not grep).
+
+## Session 10 scope (set 2026-07-09 session-9 exit; Pete may override at noon)
+BASIS: 69.2% (18/26), avg 14.5 committed / 13.7 with PR #14. Session-9 findings: gpu-gradient-regression is line-box drift (NOT gradients); text NEVER wraps engine-wide (line-box model = Friday lane, do not chase at night).
+0. Merge queue first: if Athena approved PR #14 → merge, re-measure (card-grid 19.61, shelf 26.13 expected on merge).
+1. **settings 19.16** — closest flip (4.2pp), was the session-8 debrief recommendation. A/B vs Chrome; avoid text-wrap-bound regions when scoping the fix.
+2. **image-gallery 21.57 vs t10** — network-image loading, seat-local capture tooling (no engine risk, parallel-safe vs the Friday wrap lane).
+3. Ledger (not chased): inline-block strut descent (~6px/line-box) — belongs to the Friday line-box lane with text wrap.
+Cap ~3h. Aleph-first. Do NOT re-dig gradients — evidence in parity-tests/repro/gpu-row5-compare.png.

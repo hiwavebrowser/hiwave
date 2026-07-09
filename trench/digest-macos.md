@@ -1,5 +1,25 @@
 # Trench digest — macOS seat (Atlas)
 
+## Session 9 — 2026-07-09 night (card-grid flex-wrap + the gradient dig, first 3h-cap session)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** **69.2% (18/26) → 69.2% (18/26)**, avg diff 14.5 flat on committed code. Pending PR #14 takes avg to **13.7** and card-grid 32.56→19.61 — no flip yet, because the residual on nearly every remaining failure turns out to be one engine-wide gap (finding 2).
+
+**Landed:**
+- **hiwave-macos PR #14** (`dc7e0cb`, branch `atlas/fix-flex-box-model`, shared crate rustkit-layout, awaiting Athena; auto-merge on approval): flex math treated all item sizes as content-box (a border-box 300px card with 24px padding painted 348px wide on a 300px pitch — 48px overlap per card, both axes), AND wrapped flex lines stacked at line-height-estimate heights because nothing re-positioned rows after step-11 child layout revealed true sizes. New step 11c re-distributes lines and translates each item's laid-out subtree by the cross delta. Controlled A/B: **card-grid 32.56→19.61, shelf 27.28→26.13, other 24 cases bit-identical**; 230/230 crate tests (2 new). https://github.com/hiwavebrowser/hiwave-macos/pull/14
+- Continuity note: session 8 ran past its digest and left this work uncommitted + one test failing on the branch. Tonight: validated it, root-caused the failing test (it exposed the row-stacking bug), finished, shipped. No work lost.
+- hiwave-macos `atlas/trench` @ `08a5928` — committed-basis full-suite measure + evidence images + the flexwrap-cards repro (pushed).
+
+**Findings that change the map:**
+1. **gpu-gradient-regression (18.2) is NOT a gradient bug — scope item 2 falsified in ~40 min.** Aligned per-image, RustKit's gradient scanlines match Chrome within ~6/255 per channel (the 5-stop 135deg peak lands on the same pixel). The diff is geometry: inline-block line boxes omit the baseline strut descent (Chrome's 100px test-box makes a 106px line; ours is exactly 100), headings drift, and by row 5 the page sits ~30px high — whole gradient boxes then score "100% element diff" at Chrome's rects. The attribution taxonomy said `gradient_interpolation`; that label has now misled two sessions running.
+2. **RustKit never wraps text. Anywhere.** `layout_text` measures each text node as ONE run at one line-height; `TextShaper::wrap_text` exists with zero production callers. card-grid's cards are 44px short (Chrome wraps descriptions to 3 lines), article-typography's lede runs off-page, and every failing page with a paragraph pays this tax (card-grid 19.6, settings 19.2, shelf 26.1, backgrounds 27.7, css-selectors 30.4, gpu-gradient 18.2). Evidence committed: `parity-tests/repro/card-grid-compare.png`, `article-compare2.png`. The fix = Text boxes producing multiple line boxes + display-list/renderer painting per-line — cross-crate, exactly the "line-box model" Friday architectural item sessions 3/4 predicted. Correctly NOT chased under the cap.
+
+**Decisions needed from Pete (≤3):**
+1. **Make text wrapping the Friday headline.** It's now the single dominant term across ≥6 of the 8 remaining failures; nightly grinding around it is hitting diminishing returns. Proposal: dedicate Friday (or a multi-session lane) to the line-box model — wrap + inline-block strut descent together, same subsystem.
+2. **PR #14** awaits Athena per auto-merge policy — nothing needed from you unless the 2-night review-latency rule trips.
+3. **Attribution taxonomy:** `likely_cause` has misdirected two sessions (both times toward "gradient"). OK to treat it as noise going forward, or want a seat-tooling session to fix the classifier?
+
+**Suggested session-10 scope (if Friday takes the wrap lane):** settings 19.16 (closest flip, already the session-8 debrief recommendation) + image-gallery 21.6 vs t10 (network-image loading, seat-local tooling — no engine risk).
+
 ## Nightly session 8 — 2026-07-09 morning (border-paint family → two flex-classification bugs)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** **65.4% (17/26) → 69.2% (18/26)**, avg diff **15.9 → 14.5**. Basis: PR #11 merged (thanks for banking it) — session ran on trench = master + tonight's two fixes in-tree, PRs pending. Under cap (~1h50, 09:51–11:40 ET).
