@@ -95,3 +95,12 @@ PRE-FLIGHT: add `fastrender/` to hiwave-macos `.alephignore` + rebuild index —
 1. **Main target: external stylesheet loading in parity-capture** (approved decision 1) — resolve `<link rel=stylesheet>` against the HTML file's base URL in the headless path (load_html+render_view). This unblocks the entire micro-suite: rustkit currently renders reset-less vs Chrome-with-reset. PR #8 (line-height inheritance, MERGED) is the prerequisite already in place. Measure honestly: the reset also brings font-family — expect some cases to move backward as font mismatches surface; report both directions.
 2. Full-suite re-measure after; report new pass count vs the 12/26 basis.
 3. parity-capture is seat-local tooling (not shared crate) — commit direct to atlas/trench; any rustkit-* spillover goes to PR.
+
+## Day-sprint session 5 EXIT (2026-07-08 evening): 46.2% (12/26) → **57.7% (15/26)**, avg 17.8 → 15.9
+External CSS landed (eaa3d80, seat-local) AND found+fixed the metric's nondeterminism: rustkit-dom element lookup iterated a HashMap → random stylesheet cascade order per process (PR #9, in review). Full-suite runs now reproduce to the decimal. Basis includes PR #9 in-tree.
+
+## Day-sprint session 6 scope (proposed in session-5 digest, subject to Pete's noon veto)
+0. Port/merge queue first: if PR #9 approved → merge (auto-merge policy); re-measure committed basis.
+1. Cheap flips: combinators 16.3 (1.3pp over t15) and images-intrinsic 12.2 (2.2pp over t10) — A/B vs Chrome, likely small residuals now that the reset loads.
+2. Real dig: gpu-gradient-regression 38.6 — untouched by the gradient-family fixes, so a distinct root cause (GPU path?).
+3. Ledger caution: pre-session-5 per-case numbers carry nondeterminism noise — don't chase deltas measured against them; re-measure first.

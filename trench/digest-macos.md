@@ -1,5 +1,27 @@
 # Trench digest — macOS seat (Atlas)
 
+## Day-sprint session 5 — 2026-07-08 evening (external-CSS lane → the flake had a root cause)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** **46.2% (12/26) → 57.7% (15/26)**, avg diff **17.8 → 15.9**. Biggest single-session move of the campaign (+3 passes: gradients, gradient-radius-only… full new-pass set: bg-solid 5.8, gradients 11.3, gradient-no-radius 11.4, gradient-radius-only 7.2, rounded-corners 12.7, specificity 12.2). Measured twice back-to-back: identical to the decimal — see finding 2 for why that sentence was never true before tonight. Basis: trench tree = master(PRs #5–#8) + PR #9 (in review) merged in-tree, same convention as sessions 1–2's un-merged-PR notes.
+
+**Landed:**
+- hiwave-macos `atlas/trench` @ `eaa3d80` — **parity-capture now feeds RustKit the same CSS Chrome sees** (session-5 scope item 1, seat-local): inlines every relative `<link rel=stylesheet>` at its document position (10 micro fixtures link `../../common/parity-reset.css`; Chrome loads it over file://, `load_html` never did), and injects `baselines/common/parity-reset.css` first-in-head for micro fixtures exactly like deterministic.mjs's init script. 5 unit tests. Predicted font-mismatch regressions did NOT materialize — both directions reported: zero cases moved backward vs the 12/26 basis.
+- **hiwave-macos PR #9 (branch `atlas/fix-dom-document-order`, shared crate rustkit-dom, awaiting Athena; auto-merge on approval):** https://github.com/hiwavebrowser/hiwave-macos/pull/9 — `get_elements_by_tag_name`/`get_elements_by_class_name` iterated a HashMap, so **stylesheet order was random per process**, and CSS rule order breaks specificity ties. Now pre-order DFS (document order). Regression test + 52/52 dom, 16+19 engine, 223 layout green.
+
+**Finding that redraws the map — THE PARITY METRIC WAS NONDETERMINISTIC (until tonight):**
+1. First single-case run after the CSS fix: bg-solid 5.82. Second, identical run: 42.33. Ten runs of one fixture on one binary: 6 rendered body(20,20,560), 4 rendered body(0,0,600). Root cause (bisected via cascade repros, receipts committed in `parity-tests/repro/`): random sheet order let the reset's `*,*::before,*::after{margin:0;padding:0}` land after fixture rules and zero their paddings/margins.
+2. Consequences: every historical per-case diff carries unknown ± noise from this; it plausibly explains chunks of the CI-vs-local settings mystery, session-4's "phantom ±12–16pp gradient swings on stale basis", and past "five cases +0.5..+5.6" wobbles. After PR #9: two full-suite runs identical to the decimal. **Windows exposure:** if Athena's capture/cascade path calls rustkit-dom's element lookups, her ledger has the same noise — flagged in the PR body with a 10-run flake-check recipe.
+3. Two-engines caveat (session-4 item) stands: fastrender has its own DOM path; this fix is for the metric engine (rustkit).
+
+**New honest ledger (worst-first, all real renders):** sticky-scroll 46.9 (paint-dominated, known), gpu-gradient-regression 38.6, card-grid 32.6 (flex-wrap), css-selectors 29.8, shelf 25.6, backgrounds 25.5, pseudo-classes 22.2, image-gallery 21.6, settings 18.7 (was 30.8 basis — external CSS helped it too), combinators 16.3 (1.3pp from pass), images-intrinsic 12.2 (t10, 2.2pp from pass).
+
+**Housekeeping done:** superproject master had conflict markers committed in a9af733 (PLAN.md + BASELINE-macos.md) — stripped on atlas/trench (`6c2acf0`). Submodule trench merged with master (PRs #5–#8 were unmerged into the trench line).
+
+**Decisions needed from Pete (≤3):**
+1. **PR #9 is the determinism keystone** — every measurement both seats make is noise-laden until it merges. If Athena is still offline tomorrow noon, consider merging it yourself under the latency rule rather than waiting the full 2 nights.
+2. **Next-session target (my recommendation, veto at noon):** combinators (16.3, needs 1.3pp) + images-intrinsic (12.2 vs t10, needs 2.2pp) as the cheap flips, then gpu-gradient-regression 38.6 as the real dig. Alternative: css-selectors 29.8 if you'd rather keep the selector/cascade lane hot after tonight's finding.
+3. **Historical numbers:** the trendline before tonight has unquantifiable per-case noise (finding 2). I propose we annotate the Friday trendline with "pre-determinism" before session-5's point rather than re-measuring old commits — cheaper, honest, and the campaign metric only moves forward. Say if you want the re-measure instead.
+
 ## Day-sprint session 4 — 2026-07-08 (paint/UA-default lane → line-height inheritance)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** **46.2% (12/26) → 46.2% (12/26)**, avg diff **17.85 → 17.72**. Measured as a *controlled A/B on committed master* (stash fix → rebuild master → run → restore → rebuild → run, identical CfT-148 baselines). Note: the committed `parity_test_results.json` was a stale-basis artifact (showed phantom ±12–16pp gradient swings on my first naive diff); ignore it as a "before". Clean master is 12/26 @ 17.85 avg.
