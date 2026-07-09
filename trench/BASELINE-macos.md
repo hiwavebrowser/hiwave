@@ -66,7 +66,6 @@ Windows baseline: pass 1/12 (8.3%) @ t15, mean diff 65.5% (~34.5% parity) vs pin
 1. Main target (carried): grid `1fr` min-content floor. Minimal repro → shared-crate fix → PR via gh immediately (Atlas reviews within minutes today, don't batch).
 2. If Athena's step-11 Windows port PR arrives mid-session, note it in the digest — Atlas (live) reviews it, not you.
 3. Digest after THIS session (not end of day). Cap ~2h as always; the day is a chain of capped sessions, not one long one.
-<<<<<<< HEAD
 
 ## Day-sprint session 2 (2026-07-08, Atlas-approved pivot per session-1 digest)
 1. **Main target: the gradient/background paint family** — 8 of 17 failures (gradients 22.8, gradient-no-radius 24.3, gradient-radius-only 21.2, gradient-backgrounds 24.0, gpu-gradient-regression 38.4, backgrounds 30.9, bg-solid 19.7, rounded-corners 26.4) sit 5–23pp over t15. Hunt ONE paint-side root cause (renderer/compositor shared crate → PR lane). A/B against Chrome on the simplest family member (bg-solid 19.7) first — smallest delta = cleanest signal.
@@ -90,8 +89,6 @@ Scope (paint/UA-default lane — text-align lane is exhausted; line-box model is
 2. **backgrounds 30.9** (untouched, different root cause than the gradient family already fixed) — A/B vs Chrome, root-cause, shared-crate PR.
 3. **pseudo-classes 23.3** if 1+2 land early.
 Shared-crate fixes → PR (Pete merges proven ones while Athena offline). Cap ~2h.
-=======
->>>>>>> origin/atlas/trench
 
 ## Day-sprint session 5 (2026-07-08 evening, Atlas-approved per digest decisions)
 PRE-FLIGHT: add `fastrender/` to hiwave-macos `.alephignore` + rebuild index — Aleph must steer to rustkit-* (the metric engine), not fastrender. Cost session 4 ~40min.
