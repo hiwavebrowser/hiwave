@@ -106,3 +106,12 @@ BASIS: 57.7% (15/26), deterministic (two runs identical). PRs #5-#9 + capture-CS
 2. Then the real dig: gpu-gradient-regression 38.6 — worst non-paint-known case; A/B vs Chrome, root-cause, PR lane for shared crates.
 3. If time remains: css-selectors 29.8 (keeps the selector/cascade lane hot).
 Cap ~2h. Aleph-first (index excludes fastrender). Digest as always.
+
+## Day-sprint session 7 (scoped 2026-07-08 23:58; runs now or at the 01:07 nightly)
+BASIS: 61.5% (16/26) deterministic; PRs #5-#10 all on hiwave-macos master; hub pin current.
+PRE-FLIGHT: the HUB .aleph does not honor the submodule .alephignore and steers to fastrender (bit session 4 AND 6). Fix: add fastrender/ + vendor to the HUB-level .alephignore at ~/Repos/hiwave/.alephignore, then aleph_rebuild the hub index. Verify with one aleph_search that results resolve to crates/rustkit-*.
+1. **Heading UA line-height first** (managerial synthesis of digest decision 3): Chrome's UA 'normal' ≈ 1.14-1.2, rustkit uses a larger factor (h1 48 vs Chrome ~38). Breadth fix — narrows every heading page (combinators residual, bg-solid family). Measure suite-wide both directions.
+2. **images-intrinsic 12.43 vs t10** — carried cheap flip, still closest.
+3. **gpu-gradient-regression 36.41 root-cause** — the dig, if time remains.
+Ledger note: container border 2px missing from layout AND paint (combinators residual #2) — chase only if it falls out of item 1's A/B.
+Cap ~2h. Shared crates → PR lane (gh pr edit/comment now permitted, submodule seat included).
