@@ -196,3 +196,25 @@ correctly share a line sit flush (buttons jammed, byline separators tight).
 Ledger unchanged: intrinsic_cache flake (do not chase); shelf needs
 text-overflow:ellipsis; sticky-scroll is grid-min-content + scroll-pinning.
 Shared-crate PRs; cap ~3h.
+
+## Session 10 scope — FINAL v2 (2026-07-09 late evening; phases 1-4 ALL merged: PRs #15-#18)
+Committed basis: **19/26 (73.1%), avg diff 13.5 — campaign-best average.**
+CI NOTE: master's metrics-history collector had failed on EVERY master push of
+the campaign (dirty-tree checkout cascade) — fixed (ca5c807) and verified green;
+the trendline branch finally collects. Treat pre-tonight trendline as absent.
+Tonight, closest flips first (the lane's architecture work is banked; tonight is
+harvest):
+1. **gpu-gradient-regression 18.2 (3.2pp from t15)** — ledgered as line-box/
+   strut family, NOT gradients (pixel A/B receipt committed: gpu-row5-compare
+   .png). Phases 1-4 may have moved the substrate under it; re-A/B FIRST, then
+   fix the residual (likely heading strut/half-leading).
+2. **settings 19.2 (4.2pp)** — A/B the heatmap before digging; form-control
+   metrics or heading line-height are the standing suspects.
+3. Stretch: **line-box phase 5 — IFC text splitting**: a text run that does NOT
+   fit the remaining line space currently drops to its own block row; Chrome
+   fills the remainder then wraps. Needs first-line-width support in wrap_text
+   (wrap against remaining width for line 1, full width after). article-
+   typography and css-selectors both gain.
+Ledger: shelf=text-overflow:ellipsis; sticky-scroll=grid-min-content+scroll
+pinning; image-gallery=network image tooling (t10). intrinsic_cache flake: NOT
+tonight. Shared-crate PRs; cap ~3h.
