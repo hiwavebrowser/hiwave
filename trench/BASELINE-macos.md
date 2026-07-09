@@ -115,3 +115,10 @@ PRE-FLIGHT: the HUB .aleph does not honor the submodule .alephignore and steers 
 3. **gpu-gradient-regression 36.41 root-cause** — the dig, if time remains.
 Ledger note: container border 2px missing from layout AND paint (combinators residual #2) — chase only if it falls out of item 1's A/B.
 Cap ~2h. Shared crates → PR lane (gh pr edit/comment now permitted, submodule seat included).
+
+## Session 9 scope (2026-07-09, first run at the new 3h cap)
+BASIS: 69.2% (18/26) — PRs #12 (inline-flex atomic) + #13 (flex-item intrinsic width) MERGED to master. Aleph-first is enforced now; hiwave-web added to hub .alephignore (ledger d).
+Ledger, worst-first (all real renders): sticky-scroll 48.2 (grid 1fr min-content, known), card-grid 32.6 (flex-wrap, DIFFERENT root cause — untouched by intrinsic-width), css-selectors ~27.6, shelf ~25.6, backgrounds ~25.5, gpu-gradient-regression 18.2 (now bounded — real gradient render + heading text), image-gallery 21.6 (network-image loading, seat-tooling).
+1. **card-grid 32.6 (flex-wrap)** — #2 worst, its own root cause, twice-noted as unmoved. A/B vs Chrome, shared-crate fix → PR.
+2. **gpu-gradient-regression 18.2** — now that flex-width is fixed, the residual is finally real gradient parity; dig into the actual gradient renderer.
+3. Cap ~3h now — you have room for one real dig plus a second target. Aleph-first (aleph_search/resolve, not grep).
