@@ -110,3 +110,27 @@ Ledger, worst-first (all real renders): sticky-scroll 48.2 (grid 1fr min-content
 1. **card-grid 32.6 (flex-wrap)** — #2 worst, its own root cause, twice-noted as unmoved. A/B vs Chrome, shared-crate fix → PR.
 2. **gpu-gradient-regression 18.2** — now that flex-width is fixed, the residual is finally real gradient parity; dig into the actual gradient renderer.
 3. Cap ~3h now — you have room for one real dig plus a second target. Aleph-first (aleph_search/resolve, not grep).
+
+## Session 10 scope (2026-07-09, Pete-directed: LINE-BOX LANE opens)
+Pete (2026-07-09): the goal is real websites rendering chrome-like — that names text
+wrapping (session 9's engine-wide gap: `layout_text` measures each text node as ONE
+run; `TextShaper::wrap_text` has zero callers) as the campaign's main lane. This is
+session 1 of a multi-session lane; do NOT try to finish it in one cap.
+0. Merge queue first, as always (any approved cross-seat PRs; Athena is deprioritized
+   per Pete — Windows ports wait, discoveries still go to the exchange).
+1. **Line-box phase 1 — wrap plain block text.** Wire `TextShaper::wrap_text` into the
+   inline path of rustkit-layout `layout_text` for the simplest case: a block
+   container whose inline content is a single text run. Available width = containing
+   block content width. Each returned line = one line box advancing by line-height.
+   Spec anchors: CSS2 §9.4.2 (inline formatting), css-text-3 §5 (line breaking).
+   Minimal repro FIRST (one <p> with long text, A/B vs Chrome), then the wiring,
+   behind rustkit-layout unit tests. Do not touch inline-block/mixed-inline yet —
+   that is phase 2+.
+2. Re-measure the full suite after. EXPECT NON-MONOTONIC MOVEMENT: pages that
+   accidentally benefited from nowrap layout may regress while text pages jump.
+   Report both directions honestly; the lane is judged over its whole arc, not night 1.
+3. Instrument note: `visual_test_runner.sh` now pixel-diffs vs chrome-148 with
+   parity thresholds (honest 7/13, was fake "13/13") — `--no-window` for headless.
+   parity_test.py remains the campaign metric; the runner must agree with it.
+Shared-crate (rustkit-layout/text) changes → PR lane; Pete may merge proven ones
+while Athena is deprioritized (flag for her post-hoc review). Cap ~3h.
