@@ -218,3 +218,24 @@ harvest):
 Ledger: shelf=text-overflow:ellipsis; sticky-scroll=grid-min-content+scroll
 pinning; image-gallery=network image tooling (t10). intrinsic_cache flake: NOT
 tonight. Shared-crate PRs; cap ~3h.
+
+## Session 10 scope — FINAL v3 (2026-07-09 night; basis 20/26 = 76.9%, avg 13.4, ALL instruments clean)
+Evening block 2 landed: PR #18 (whitespace collapsing), PR #19 (radial corner-
+ellipse spec radii — gpu-gradient-regression 14.59 PASS; NOTE: taxonomy AND the
+session-9 strut reclassification were both wrong, pixel-ramp arithmetic settled
+it), CI metrics-history fixed (failed every master push all campaign — lie #7),
+and a baseline-dimension audit (lie #8): settings/bg-solid/pseudo-classes were
+captured at wrong viewports; regenerated; generate_baselines.py now follows
+PARITY_BASELINE_SET. Settings' HONEST gap is 20.12 (5.1pp), not 19.2.
+Remaining ledger (6 fails): sticky-scroll 48.1, backgrounds 27.3, css-selectors
+26.7, shelf 25.9, image-gallery 21.6 (t10), settings 20.1.
+Tonight:
+1. **settings 20.1** — with the honest baseline, re-read the heatmap first
+   (old read is void). Suspects: per-row vertical drift (cumulative), form
+   control metrics.
+2. **Line-box phase 5 — IFC text splitting** (css-selectors + article-typo
+   both gain): text runs that don't fit remaining space should fill it then
+   wrap; needs first-line-width support in wrap_text.
+3. backgrounds 27.3 — never dug this campaign; A/B one background family
+   member first.
+Cap ~3h. Shared-crate PRs. Do NOT re-measure historical numbers.
