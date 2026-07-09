@@ -1,5 +1,23 @@
 # Trench digest — macOS seat (Atlas)
 
+## Day-sprint session 6 — 2026-07-08 late (cheap flips → the collapse machinery was never plugged in)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** **57.7% (15/26) → 61.5% (16/26)**, avg diff **15.9 → 15.4**. Deterministic: two full-suite runs identical to the decimal. Basis convention as session 5: trench tree = master + PR #10 (in review) merged in-tree.
+
+**Landed — hiwave-macos PR #10 (branch `atlas/fix-sibling-selector-context`, shared crates rustkit-engine + rustkit-layout, awaiting Athena; auto-merge on approval):** https://github.com/hiwavebrowser/hiwave-macos/pull/10 — two commits, one review:
+- `6495b68` — **`+`/`~` combinators never matched anything; `:first-child`/`:last-child` matched *everything*.** `compute_style_for_element` hardcoded empty sibling context (an explicit TODO). Now threads real preceding-sibling/index/count from the layout walk. Regression test; 20/20 engine tests.
+- `3484d7b` — **rustkit-layout has carried a complete margin-collapse implementation with ZERO external callers** (same disease as Athena's "documented cascade was never implemented": infrastructure built, never wired). Engine now enters via `layout_with_collapse`, plus two line-box fixes the dormant path needed (pending margins were dropped before inline-level children; inline-blocks leaked margins across line boxes) and one semantics fix (children start a fresh context — the through-collapse passthrough double-applied margins, +25pp on rounded-corners in testing). 223/223 layout tests.
+- Uncollapsed margins were +150px of combinators' +216px vertical drift (decomposed exactly against Chrome's layout rects; heading line-height +58, missing container borders −32).
+
+**Case moves (session basis → exit):** combinators 16.33→**12.62 PASS** (scope flip #1 ✓), specificity 12.15→5.79, css-selectors 29.83→27.59 (best ever; sibling/positional colors now render exactly as Chrome), gpu-gradient-regression 38.56→36.41 (incidental, not root-caused), pseudo-classes 22.23→22.00. sticky-scroll 46.88→48.17 (failing either way; root cause remains grid-`1fr` min-content, ledgered). images-intrinsic 12.43 vs t10 — scope flip #2 NOT attempted (margin-collapse dig consumed the time; honest miss).
+
+**Ledgered, not chased:** (a) parent/first-child edge collapse (§8.3.1 through-collapse) intentionally not implemented — sibling collapse only; (b) combinators residual = heading line-height (h1 48px vs Chrome ~38 — UA `normal` factor too big) + container `border: 2px solid` missing from layout AND paint (parse or apply bug, unexamined); (c) `intrinsic_cache::test_block_cache_separate_from_inline` is flaky under parallel cargo test (global epoch state) — fails ~1/3 of full-suite runs on any tree; session-5's lesson (rerun before theorizing) caught it in minutes; (d) settings 18.69 and shelf 25.64 did not move — their failures are not margin-family.
+
+**Decisions needed from Pete (≤3):**
+1. **PR #10's title only names the sibling-context fix; the margin-collapse commit rode the same branch** (one Athena review for two entangled shared-crate changes — they were measured together). Seat cannot retitle: `gh pr edit`/`gh pr comment` are allowlist-blocked (same gap as review/merge, flagged session 2). Fine as-is, or add `gh pr edit` to the allowlist?
+2. **The hub-level Aleph index does NOT honor `hiwave-macos/.alephignore`** — tonight it steered to fastrender again (session-4 déjà vu; caught by checking file paths on every resolve). Session-5's fix only rebuilt the *submodule* index. Rebuild the hub `.aleph` with the vendor+fastrender mask, or drop the hub index and point seats at per-repo indexes?
+3. **Session-7 scope (my recommendation, veto at noon):** images-intrinsic 12.43 vs t10 (carried flip, still closest), then gpu-gradient-regression 36.41 root-cause (the dig). Alternative if you want visible pass-count motion: heading line-height `normal` ≈ 1.14–1.2 (Chrome UA) — likely worth 2–4pp on every heading page and possibly re-flips nothing but narrows everything.
+
 ## Day-sprint session 5 — 2026-07-08 evening (external-CSS lane → the flake had a root cause)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** **46.2% (12/26) → 57.7% (15/26)**, avg diff **17.8 → 15.9**. Biggest single-session move of the campaign (+3 passes: gradients, gradient-radius-only… full new-pass set: bg-solid 5.8, gradients 11.3, gradient-no-radius 11.4, gradient-radius-only 7.2, rounded-corners 12.7, specificity 12.2). Measured twice back-to-back: identical to the decimal — see finding 2 for why that sentence was never true before tonight. Basis: trench tree = master(PRs #5–#8) + PR #9 (in review) merged in-tree, same convention as sessions 1–2's un-merged-PR notes.
