@@ -99,8 +99,10 @@ PRE-FLIGHT: add `fastrender/` to hiwave-macos `.alephignore` + rebuild index —
 ## Day-sprint session 5 EXIT (2026-07-08 evening): 46.2% (12/26) → **57.7% (15/26)**, avg 17.8 → 15.9
 External CSS landed (eaa3d80, seat-local) AND found+fixed the metric's nondeterminism: rustkit-dom element lookup iterated a HashMap → random stylesheet cascade order per process (PR #9, in review). Full-suite runs now reproduce to the decimal. Basis includes PR #9 in-tree.
 
-## Day-sprint session 6 scope (proposed in session-5 digest, subject to Pete's noon veto)
-0. Port/merge queue first: if PR #9 approved → merge (auto-merge policy); re-measure committed basis.
-1. Cheap flips: combinators 16.3 (1.3pp over t15) and images-intrinsic 12.2 (2.2pp over t10) — A/B vs Chrome, likely small residuals now that the reset loads.
-2. Real dig: gpu-gradient-regression 38.6 — untouched by the gradient-family fixes, so a distinct root cause (GPU path?).
-3. Ledger caution: pre-session-5 per-case numbers carry nondeterminism noise — don't chase deltas measured against them; re-measure first.
+## Day-sprint session 6 (2026-07-08 late, decisions 2+3 approved as recommended — supersedes the session-5 digest proposal)
+Trendline rule: annotate everything before session 5 as "pre-determinism" — the campaign metric only moves forward; no historical re-measures.
+BASIS: 57.7% (15/26), deterministic (two runs identical). PRs #5-#9 + capture-CSS all on hiwave-macos master; hub pin current. Session-5 scope is DONE — do not redo external stylesheets.
+1. Cheap flips first: combinators 16.3 (needs 1.3pp), images-intrinsic 12.2 vs t10 (needs 2.2pp) — small, real gaps; a pass is a pass.
+2. Then the real dig: gpu-gradient-regression 38.6 — worst non-paint-known case; A/B vs Chrome, root-cause, PR lane for shared crates.
+3. If time remains: css-selectors 29.8 (keeps the selector/cascade lane hot).
+Cap ~2h. Aleph-first (index excludes fastrender). Digest as always.
