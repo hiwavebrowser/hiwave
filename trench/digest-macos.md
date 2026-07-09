@@ -1,5 +1,30 @@
 # Trench digest — macOS seat (Atlas)
 
+## Nightly session 8 — 2026-07-09 morning (border-paint family → two flex-classification bugs)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** **65.4% (17/26) → 69.2% (18/26)**, avg diff **15.9 → 14.5**. Basis: PR #11 merged (thanks for banking it) — session ran on trench = master + tonight's two fixes in-tree, PRs pending. Under cap (~1h50, 09:51–11:40 ET).
+
+**The scope premise dissolved in the first 20 minutes (falsification #4 of the campaign):** the "border-paint accuracy family" does not exist. Edge-strip sampling (new `parity-tests/repro/border_strips.py`) showed borders are **pixel-exact** on top/left/right (0.00 mean delta); only bottom edges diffed — because containers render ~2x too tall and the bottom border lands 85px below Chrome's. The 8-page "+0.8..+2.8 border regression" was misplaced geometry, not paint. Both root causes were flex *classification* bugs:
+
+**Landed — hiwave-macos PR #12 (branch `atlas/fix-inline-flex-atomic`, shared crates rustkit-layout + rustkit-css, awaiting Athena; auto-merge on approval):** https://github.com/hiwavebrowser/hiwave-macos/pull/12
+- `2bb5c26` — **`display: inline-flex`/`inline-grid` children laid out as blocks, one per line.** Both block-children paths gate inline flow on `is_inline_block()`; InlineFlex parses fine, its interior flex layout works (`is_flex()` covers it) — the box just never joined the line. New `Display::is_atomic_inline()` gates all three flow-classification sites. Campaign pattern instance #7: capability wired end-to-end, one classification site never routes to it.
+- **pseudo-classes 22.89 → 5.26 PASS** (its five test rows are inline-flex boxes). Only other mover: about +0.05 (noise). Suite 17/26 → 18/26.
+
+**Landed — hiwave-macos PR #13 (branch `atlas/fix-flex-item-intrinsic-width`, shared crate rustkit-layout, awaiting Athena; auto-merge on approval):** https://github.com/hiwavebrowser/hiwave-macos/pull/13
+- `7a29870` — **row-flex items with auto width/basis sized to their `line-height` (24px)** — `get_intrinsic_main_size` returns line-height for Block boxes on BOTH axes; meaningless as a width. gpu-gradient-regression's seven 150px gradient boxes collapsed to 24px pitch and painted as one overlapping 354px pile: the twice-carried "gradient dig" was mostly never about gradients. Fix reuses PR #5's conservative `estimate_min_content_width` (now pub(crate)) on the horizontal axis, line-height fallback retained.
+- **gpu-gradient-regression 36.41 → 18.20** (residual is real gradient rendering + heading text, finally measurable). gradient-backgrounds/radius-only −0.08/−0.06. **One honest regression: flex-positioning 13.58 → 14.17 (+0.59, still PASS)** — correctly-sized wrappers exposed a small alignment gap; ledgered, same trade shape as #6/#11.
+
+**Tests:** rustkit-layout 228/228 green serially (parallel `intrinsic_cache` epoch flake pre-existing, ledgered). Two regression tests added (one per PR), each covering both block-children layout paths where relevant.
+
+**Ledgered, not chased:** (a) gpu-gradient residual 18.20 vs t15 — first *bounded* look at actual gradient parity on this page; (b) flex-positioning +0.59 alignment gap; (c) card-grid 32.55 did NOT move under the intrinsic-width fix — its flex-wrap failure is a different root cause; (d) hub Aleph still surfaces website JSX (hiwave-web?) in searches despite the sibling-submodule mask — mild noise, not a blocker tonight.
+
+**Cross-seat:** Athena's seat quiet overnight; her hiwave-windows PRs #3/#4 remain open (I approved both over the exchange 01:15 ET — hers to merge on return). Both tonight's bugs likely live in her fork's shared lineage; PR bodies carry the Windows exposure notes.
+
+**Decisions needed from Pete (≤3):**
+1. **PRs #12 + #13 join the review queue** while Athena is dark. Both are small, tested, and measured; #12 alone is a +1 pass. If she's not back by tomorrow noon, latency rule says consider merging yourself (same call you made on #11).
+2. **Next-session scope (my recommendation, veto at noon):** settings 19.15 (closest flip, needs −4.2pp) + backgrounds 27.74 (untouched paint case), with css-selectors 30.37 as the stretch. Alternative: the now-bounded gpu-gradient residual (18.20, needs −3.2pp) if you want the gradient lane closed out.
+3. **sticky-scroll (47.9 vs t25) is the last structural case** — paint-dominated per session 1, grid-1fr groundwork already merged. It needs a scoped dig (likely position:sticky paint + the nowrap scroller), not nightly nibbles. Friday agenda item or a dedicated session?
+
 ## Nightly session 7 — 2026-07-09 (two sittings: reset-truth first, then images paint for the first time)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** **61.5% (16/26) → 65.4% (17/26)**, avg diff 15.8 → 15.9. Mid-session the metric's *foundation* was replaced: all chrome-148 baselines were recaptured with the parity reset actually applied (below), and 16/26 @ 15.8 re-confirmed on honest baselines before any engine work. Basis convention as sessions 5/6: trench tree = master + PR #11 (in review) merged in-tree. Ran as two sittings (00:25–01:50 died mid-task; resumed 03:15–04:20) — each under cap, combined ~2h35 of work; flagging rather than hiding it.
