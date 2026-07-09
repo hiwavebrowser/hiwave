@@ -176,3 +176,23 @@ session 1 of a multi-session lane; do NOT try to finish it in one cap.
    parity_test.py remains the campaign metric; the runner must agree with it.
 Shared-crate (rustkit-layout/text) changes → PR lane; Pete may merge proven ones
 while Athena is deprioritized (flag for her post-hoc review). Cap ~3h.
+
+## Session 10 scope — FINAL (2026-07-09 ~18:00, phases 1-3 all done live; PRs #15/#16/#17 merged)
+Committed basis: **19/26 (73.1%), avg 13.8.** css-selectors moved for the first
+time all campaign (30.4 → 26.7 — inline-level boxes now share line boxes).
+Tonight's single target: **LINE-BOX PHASE 4 — css-text §4 whitespace processing.**
+Root cause located and documented: rustkit-engine lib.rs ~1434 drops
+whitespace-only text nodes entirely and trim()s kept text, so runs that now
+correctly share a line sit flush (buttons jammed, byline separators tight).
+1. At box build: between two INLINE-LEVEL kept siblings, materialize a
+   collapsed single-space Text(" ") node; never between block-level siblings
+   (that would add phantom rows — the reason the old code dropped them).
+2. Keep one leading/trailing collapsed space on kept text nodes whose raw text
+   had edge whitespace AND whose neighbor is inline-level (\"By <span>\" case);
+   line-start spaces should not paint (strip at line assembly, not box build).
+3. Re-measure. EXPECTED RECOVERIES: article-typography 15.6→~13, form-controls
+   10.2→~9, images-intrinsic 8.9→~6, css-selectors pushes below 25.
+4. If time remains: settings 19.2 flip (4.2pp) — A/B the heatmap first.
+Ledger unchanged: intrinsic_cache flake (do not chase); shelf needs
+text-overflow:ellipsis; sticky-scroll is grid-min-content + scroll-pinning.
+Shared-crate PRs; cap ~3h.
