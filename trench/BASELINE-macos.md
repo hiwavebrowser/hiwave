@@ -111,6 +111,26 @@ Ledger, worst-first (all real renders): sticky-scroll 48.2 (grid 1fr min-content
 2. **gpu-gradient-regression 18.2** — now that flex-width is fixed, the residual is finally real gradient parity; dig into the actual gradient renderer.
 3. Cap ~3h now — you have room for one real dig plus a second target. Aleph-first (aleph_search/resolve, not grep).
 
+## Session 10 scope — REVISED AGAIN 2026-07-09 evening (phases 1 AND 2 done live)
+Live session with Pete completed BOTH phases; PRs #15 + #16 MERGED to master.
+**Committed basis: 19/26 (73.1%), avg diff 13.6 — campaign high.** Phase 2 root
+cause: estimate_min_content_width had no Text arm (text contributed 0px to every
+intrinsic width in the engine); fixed + flex-basis:auto now max-content per spec.
+Remaining ledger, worst-first: sticky-scroll 48.1 (t25), css-selectors 30.4 (t15,
+UNMOVED all campaign), backgrounds 27.7, shelf 26.0 (needs text-overflow:
+ellipsis + overflow clip), image-gallery 21.6 (t10, network-image tooling),
+settings 19.2 (closest flip, 4.2pp), gpu-gradient-regression 18.2.
+Tonight (pick in order, cap ~3h):
+1. **Line-box phase 3: mixed-inline content** — multiple inline children
+   (text + <code>/<b>/<span>) currently wrap per-NODE, each starting a new
+   vertical stack, not per shared line box. css-selectors (30.4, never moved)
+   is full of exactly this; article-typography benefits too. Design note in
+   PLAN: build line boxes at the block level across inline children, reusing
+   phase-1's TextLine fragments per child.
+2. If phase 3 stalls early: settings 19.2 flip (4.2pp) — likely form-control
+   or heading metrics, A/B the diff heatmap first.
+3. Ledger, do not chase: intrinsic_cache test flake (parallelism, pre-exists).
+
 ## Session 10 scope — REVISED 2026-07-09 evening (phase 1 DONE live with Pete)
 Atlas completed line-box phase 1 in the live session: **PR #15** (wrap block text
 into line boxes + css-text-3 §5.2 overflow of unbreakable words). Measured
