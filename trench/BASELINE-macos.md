@@ -111,6 +111,28 @@ Ledger, worst-first (all real renders): sticky-scroll 48.2 (grid 1fr min-content
 2. **gpu-gradient-regression 18.2** — now that flex-width is fixed, the residual is finally real gradient parity; dig into the actual gradient renderer.
 3. Cap ~3h now — you have room for one real dig plus a second target. Aleph-first (aleph_search/resolve, not grep).
 
+## Session 10 scope — REVISED 2026-07-09 evening (phase 1 DONE live with Pete)
+Atlas completed line-box phase 1 in the live session: **PR #15** (wrap block text
+into line boxes + css-text-3 §5.2 overflow of unbreakable words). Measured
+honestly: 18/26 → 17/26 BUT avg diff 14.5 → 13.9; card-grid 32.6 → 10.2 (PASS),
+bg-solid 6.7, combinators 6.0; gradient-backgrounds/gradient-no-radius lost
+their passes by 0.3/1.1pp because wrapping exposes under-computed shrink-to-fit
+widths (pill labels, shelf header) that no-wrap used to hide. Tonight:
+0. Merge queue: if PR #15 is merged by session start, rebase and re-measure —
+   the committed basis is whatever master says, no pre-merge numbers.
+1. **Phase 2 target: inline-block / shrink-to-fit width under-measurement.**
+   Chrome fits "135deg Purple" (gradient-backgrounds pills) and "Command
+   Palette" (shelf header) on one line; RustKit sizes those containers
+   narrower than their text, so wrapped text breaks where Chrome doesn't.
+   Minimal repro: one inline-block span with padding + short text, A/B width
+   vs Chrome layout-rects. Fix likely recovers BOTH gradient passes (they sit
+   0.3pp / 1.1pp over) and moves shelf.
+2. If time remains: shelf needs `text-overflow: ellipsis` + overflow clipping
+   to pass — scope it (implement only if small).
+3. Ledger: intrinsic_cache tests are parallelism-flaky on clean master —
+   seat-tooling item, do not chase mid-session.
+Shared-crate PRs as usual. Cap ~3h.
+
 ## Session 10 scope (2026-07-09, Pete-directed: LINE-BOX LANE opens)
 Pete (2026-07-09): the goal is real websites rendering chrome-like — that names text
 wrapping (session 9's engine-wide gap: `layout_text` measures each text node as ONE
