@@ -166,3 +166,11 @@
 - Instrument note: layout.json `text` box y for flex-item text still reports pre-flex y in some dumps — pair by geometry (known).
 
 Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 instrument PR queued behind tonight's block.
+
+## 2026-07-10 — evening block 3: R0 instruments (PR #28)
+- **VIEWPORT_RESOLUTION_PLAN Phase R0 SHIPPED**: comparePixels hard-fails dimension mismatch (score 100, taxonomy `instrument/dimension_mismatch`, RK_ALLOW_CROP=1 debug-only); `cases/registry.json` is the single case-size source of truth; `scripts/audit_baselines.py` + Baseline Audit CI (green on first runs, ~12s) assert every baseline PNG == registry size × dpr and metadata == pin.
+- Registry cutover proved P1.2 live: the five case-table copies had ALREADY diverged (parity_test had 26 cases, parity_lib/generators 24). All scripts now import from the registry.
+- Purged dead chrome-120 tree (6.3MB lie-#8 residue) + stale top-level metadata.json (chrome-120/dpi lies) → pointer file.
+- Hard-fail verified live: deliberate 640×480 capture vs 800×600 baseline → 100/instrument, not a plausible cropped diff.
+- Suite re-verified post-cutover: identical 22/26, avg 9.3.
+- Athena unblocked: registry format defined; her port = hard-fail in her compare + read cases/registry.json.
