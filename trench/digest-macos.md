@@ -174,3 +174,8 @@ Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 inst
 - Hard-fail verified live: deliberate 640×480 capture vs 800×600 baseline → 100/instrument, not a plausible cropped diff.
 - Suite re-verified post-cutover: identical 22/26, avg 9.3.
 - Athena unblocked: registry format defined; her port = hard-fail in her compare + read cases/registry.json.
+
+## 2026-07-10 — evening block 4: Windows #12 review + R1 fixed-viewport (PR #29)
+- **Athena's hiwave-windows PR #12 reviewed post-hoc** (Prometheus design-approved, she merged): descendant matcher greedy-nearest-first is optimal (not an approximation); two-pass stretch matches macOS #26's definite-cross lesson. ⚠ Flagged follow-up: her whitespace-only-text skip is GLOBAL at box build — spec-valid only inside flex containers; will surface as joined-words when her IFC lands mixed inlines. Tracked behind her max-content flex-basis recovery PR.
+- **R1 empirically triaged — two of three claims were stale**: vh/vw resolve correctly at any size (probe verified 1:1 tracking); renderer syncs viewport from view size on both render paths. The live bug: **Fixed elements anchored to the flow block, not the viewport** (bottom:0 footer painted at y=280 in a 600px viewport). Fixed via viewport CB per CSS2 §10.1 + regression test (PR #29 merged). 237/237; suite steady 22/26 avg 9.3.
+- Method note now 3-for-3 today: every written claim about engine state (autopsy stub, layout-viewport-(0,0), renderer-default) was stale on contact with an instrument. Probes before patches.
