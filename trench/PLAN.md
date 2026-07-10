@@ -26,6 +26,12 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 - **Goal restated:** make RustKit's rendering of REAL websites converge on Chrome's. That names the line-box/text-wrap gap (session 9: `TextShaper::wrap_text` has zero callers; text never wraps) as the campaign's main lane — real pages are text-dominated, so nothing else moves the needle like wrapping. Line-box lane is greenlit as multi-session work.
 - **Smoke runner is honest now** (hiwave-macos `6460a42`): `visual_test_runner.sh` pixel-diffs every case against the pinned Chrome baselines with the same sensor + thresholds as parity_test.py. It was liveness-only ("13/13" while pages rendered wrong) — measurement lie #6, found by Pete's eyes. Honest baseline: **7/13**.
 
+## Path forward (ADOPTED 2026-07-10 — Prometheus's PATH_FORWARD.md, Atlas-reviewed, Pete-directed)
+- **Atlas epic: scroll/sticky/overflow** (3-5 days, milestones nightly; overflow/clip FIRST since parity baselines are unscrolled first frames, sticky math second). Parser-SSO chore PRs interleaved (one delete per two feature PRs). Then IFC quality.
+- **Athena epic: paint stack** (images → backgrounds/gradients) after W1 honest re-measure + W2 positioned-semantics port + W3 CI PRs. 
+- One multi-day epic per seat at a time; merge trains on Windows; portable notes on every epic PR; same metric formula both seats.
+- Full doc: trench/PATH_FORWARD.md. Decision board 1/2/4: YES per Pete via Atlas review; item 3 (shared IFC quality) queued for Friday.
+
 ## Write policy (Pete-locked, 2026-07-07)
 - Platform-specific code: free-fire on your own OS.
 - Shared crates (fastrender core, rustkit-*): PR + **other-seat review**, and on approval the reviewing seat **auto-merges** (Pete, 2026-07-08: "go ahead and auto-merge shared-crate fixes"). Atlas reviews Athena's, Athena reviews Atlas's.
