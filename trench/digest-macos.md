@@ -152,3 +152,17 @@
 - Direction (Pete): macOS leads, Windows deferred; goal = real websites chrome-like.
 - Decisions needed from Pete: none — session 10 re-scoped to line-box phase 3
   (mixed-inline line boxes; css-selectors 30.4 has not moved all campaign).
+
+## 2026-07-10 — evening block 2 (limits-reset day, session 2): style truth
+**Committed: 22/26 (84.6%), avg 10.3 → 9.3. PRs #26, #27 merged.**
+
+- **PR #26 (flex rows):** sticky-scroll header scatter = four coupled flex bugs, one repro. (1) `estimate_max_content_width` ignored flex gaps → nav basis 120px narrow → re-layout flex-shrink smashed every link to ~2px; (2) whitespace-only text runs became flex items against css-flexbox-1 §4 (4 phantom gap slots); (3) step 11b summed a nested ROW's children heights (nav = 9 line-heights tall); (4) line cross size ignored §9.4.8 rule 1 + stale pre-pass height (60px header centered items against 64) → logo at y=96. Header now Chrome-exact: logo (60,10.8), nav y=17.2. sticky-scroll 18.93→18.74→(post-#27) 18.27; settings 20.14→19.76.
+- **PR #27 (style truth):** Prometheus's css-selectors autopsy verdict FALSIFIED by oracle repro (`parity-tests/repro/selector-oracle.html`: 20/20 selector families match, incl. negative controls; sibling wiring landed 6495b68 on 07-08 — his tree was stale). The real residual, found by following his fixture pointer:
+  1. **Element inheritance didn't exist** — only text nodes inherited. `body{font-size:14px}` never reached descendants (all unruled text ran 16px → +29px section drift). Engine now seeds inherited props from parent computed style.
+  2. **text-align was parsed and IGNORED** — zero TextAlign assignments in the whole engine. Every centered headline on every fixture has painted left-aligned since day one. Now applied; gradient h1 lands at Chrome's exact x.
+  3. **Bold system font never existed at paint** — ".AppleSystemUIFont-Bold" isn't a name; bold shaped+rasterized REGULAR (~6% narrow). Also the renderer passed raw CSS family LISTS to new_from_name — failed always → **everything painted Helvetica**. Both text stacks now use the UI-font API (emphasized ≥600) and split family lists.
+- Movement: css-selectors 26.67→18.94, backgrounds 12.98→3.39, gradients 3.58→1.06, rounded-corners 5.72→3.33, gpu-gradient 8.26→5.24.
+- Ledgered: underline paints ~4px high (probe: `underline-probe.html`); list bullets missing in css-selectors li context; renderer-vs-layout advance delta (two text stacks, unify later); remaining css-selectors 18.94 = drift residual + controls.
+- Instrument note: layout.json `text` box y for flex-item text still reports pre-flex y in some dumps — pair by geometry (known).
+
+Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 instrument PR queued behind tonight's block.
