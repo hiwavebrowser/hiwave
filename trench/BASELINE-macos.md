@@ -239,3 +239,26 @@ Tonight:
 3. backgrounds 27.3 — never dug this campaign; A/B one background family
    member first.
 Cap ~3h. Shared-crate PRs. Do NOT re-measure historical numbers.
+
+## Session 10 addendum (2026-07-10 ~00:30 ET, live pre-work by Atlas — READ BEFORE DIGGING)
+backgrounds (27.31) partially dug live; VERIFIED facts to build on, do not re-derive:
+- STRIPES EXONERATED: repeating-linear-gradient 45deg renders with correct
+  direction AND correct 28px period on the page itself (measured pixel
+  transitions, both engines identical). Earlier "mirrored/denser stripes"
+  reads were crop artifacts. Do NOT dig the gradient renderer for this case.
+- Minimal repros confirmed clean: plain 45deg two-stop (corners verified
+  red/blue), repeating with unpositioned first stop (28px period exact).
+  Repro files in the session scratchpad if needed.
+- REAL driver: VERTICAL DRIFT (~15-20px by section 2) — the checker band is
+  striped, so any y-offset makes its whole area diff; drift multiplies into
+  ~27%. UA h1 (bold/32px/21.44 margins) and p (16/16) defaults verified
+  correct — the term is elsewhere: suspect margin-collapse vs Chrome,
+  body/section defaults, or heading line-box height. METHOD: per-element
+  y-table — RustKit layout.json vs Chrome layout-rects.json top-to-bottom,
+  find the FIRST element whose y diverges, fix that term, iterate.
+- Also on this page: layered backgrounds test (two comma-stacked
+  linear-gradients on one element) — check whether background_layers renders
+  ALL layers or only the legacy single gradient; if single, that's a paint
+  gap on the lower sections.
+- settings (20.24) remains the other scoped target; same y-table method
+  applies (its rows are uniform-63.2px in Chrome, non-uniform in RustKit).
