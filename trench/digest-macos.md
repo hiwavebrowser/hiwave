@@ -239,3 +239,22 @@
 1. **Merge gate:** PR #3 is a shared-crate fix with cross-seat review pending. If Athena confirms it helps Windows, does her approval auto-merge it, or do you want eyes on every rustkit-* merge this early?
 2. **Threshold sanity:** settings now fails at 17.9% vs t15. Its remaining diff is real (form controls, background-clip:text). Keep t15 and let the trench grind it, or re-tier thresholds once after the re-pin so "pass" stays meaningful? (Recommend: keep t15, grind.)
 3. **CI truth:** CI's settings scored 100% while local scores 30.8% on identical code+baselines — CI's swarm path likely has its own failure (crash/timeout recorded as 100). Worth one CI run on atlas/trench before Friday to confirm the metric pipeline isn't lying. Say go and I'll trigger it tomorrow night.
+
+## 2026-07-09 live session (Atlas + Pete, daytime — not a nightly)
+**Metric: 69.2% (18/26) → 73.1% (19/26), avg diff 14.5 → 13.6 — campaign high.**
+- Smoke test exposed as liveness-only (measurement lie #6, caught by Pete's eyes):
+  visual_test_runner.sh now pixel-diffs all 13 cases vs chrome-148 with parity
+  thresholds (hiwave-macos@6460a42). Honest smoke baseline: 7/13 → post-merge higher.
+- **Line-box lane phases 1+2 SHIPPED + MERGED (PRs #15, #16, continue-directive;
+  flagged for Athena post-hoc):**
+  - Phase 1: layout_text wraps via TextShaper::wrap_text (had ZERO callers) into
+    per-line fragments; render_text emits per-line commands. Plus css-text-3 §5.2
+    fix: unbreakable words overflow instead of grapheme force-break.
+  - Phase 2: estimate_min_content_width had no Text arm — text contributed 0px to
+    every intrinsic width in the engine. Now measured (min=longest word,
+    max=one-line); flex-basis:auto = max-content per css-flexbox-1 §9.2.3.C.
+  - card-grid 32.6→8.9 PASS, gradient pills render one-line/content-sized,
+    flex-positioning 10.5, bg-solid 6.7. Zero regressions.
+- Direction (Pete): macOS leads, Windows deferred; goal = real websites chrome-like.
+- Decisions needed from Pete: none — session 10 re-scoped to line-box phase 3
+  (mixed-inline line boxes; css-selectors 30.4 has not moved all campaign).

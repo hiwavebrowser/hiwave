@@ -96,25 +96,13 @@ PRE-FLIGHT: add `fastrender/` to hiwave-macos `.alephignore` + rebuild index —
 2. Full-suite re-measure after; report new pass count vs the 12/26 basis.
 3. parity-capture is seat-local tooling (not shared crate) — commit direct to atlas/trench; any rustkit-* spillover goes to PR.
 
-## Day-sprint session 5 EXIT (2026-07-08 evening): 46.2% (12/26) → **57.7% (15/26)**, avg 17.8 → 15.9
-External CSS landed (eaa3d80, seat-local) AND found+fixed the metric's nondeterminism: rustkit-dom element lookup iterated a HashMap → random stylesheet cascade order per process (PR #9, in review). Full-suite runs now reproduce to the decimal. Basis includes PR #9 in-tree.
-
-## Day-sprint session 6 (2026-07-08 late, decisions 2+3 approved as recommended — supersedes the session-5 digest proposal)
+## Day-sprint session 6 (2026-07-08 late, decisions 2+3 approved as recommended)
 Trendline rule: annotate everything before session 5 as "pre-determinism" — the campaign metric only moves forward; no historical re-measures.
 BASIS: 57.7% (15/26), deterministic (two runs identical). PRs #5-#9 + capture-CSS all on hiwave-macos master; hub pin current. Session-5 scope is DONE — do not redo external stylesheets.
 1. Cheap flips first: combinators 16.3 (needs 1.3pp), images-intrinsic 12.2 vs t10 (needs 2.2pp) — small, real gaps; a pass is a pass.
 2. Then the real dig: gpu-gradient-regression 38.6 — worst non-paint-known case; A/B vs Chrome, root-cause, PR lane for shared crates.
 3. If time remains: css-selectors 29.8 (keeps the selector/cascade lane hot).
 Cap ~2h. Aleph-first (index excludes fastrender). Digest as always.
-
-## Day-sprint session 7 (scoped 2026-07-08 23:58; runs now or at the 01:07 nightly)
-BASIS: 61.5% (16/26) deterministic; PRs #5-#10 all on hiwave-macos master; hub pin current.
-PRE-FLIGHT: the HUB .aleph does not honor the submodule .alephignore and steers to fastrender (bit session 4 AND 6). Fix: add fastrender/ + vendor to the HUB-level .alephignore at ~/Repos/hiwave/.alephignore, then aleph_rebuild the hub index. Verify with one aleph_search that results resolve to crates/rustkit-*.
-1. **Heading UA line-height first** (managerial synthesis of digest decision 3): Chrome's UA 'normal' ≈ 1.14-1.2, rustkit uses a larger factor (h1 48 vs Chrome ~38). Breadth fix — narrows every heading page (combinators residual, bg-solid family). Measure suite-wide both directions.
-2. **images-intrinsic 12.43 vs t10** — carried cheap flip, still closest.
-3. **gpu-gradient-regression 36.41 root-cause** — the dig, if time remains.
-Ledger note: container border 2px missing from layout AND paint (combinators residual #2) — chase only if it falls out of item 1's A/B.
-Cap ~2h. Shared crates → PR lane (gh pr edit/comment now permitted, submodule seat included).
 
 ## Session 9 scope (2026-07-09, first run at the new 3h cap)
 BASIS: 69.2% (18/26) — PRs #12 (inline-flex atomic) + #13 (flex-item intrinsic width) MERGED to master. Aleph-first is enforced now; hiwave-web added to hub .alephignore (ledger d).
@@ -123,10 +111,154 @@ Ledger, worst-first (all real renders): sticky-scroll 48.2 (grid 1fr min-content
 2. **gpu-gradient-regression 18.2** — now that flex-width is fixed, the residual is finally real gradient parity; dig into the actual gradient renderer.
 3. Cap ~3h now — you have room for one real dig plus a second target. Aleph-first (aleph_search/resolve, not grep).
 
-## Session 10 scope (set 2026-07-09 session-9 exit; Pete may override at noon)
-BASIS: 69.2% (18/26), avg 14.5 committed / 13.7 with PR #14. Session-9 findings: gpu-gradient-regression is line-box drift (NOT gradients); text NEVER wraps engine-wide (line-box model = Friday lane, do not chase at night).
-0. Merge queue first: if Athena approved PR #14 → merge, re-measure (card-grid 19.61, shelf 26.13 expected on merge).
-1. **settings 19.16** — closest flip (4.2pp), was the session-8 debrief recommendation. A/B vs Chrome; avoid text-wrap-bound regions when scoping the fix.
-2. **image-gallery 21.57 vs t10** — network-image loading, seat-local capture tooling (no engine risk, parallel-safe vs the Friday wrap lane).
-3. Ledger (not chased): inline-block strut descent (~6px/line-box) — belongs to the Friday line-box lane with text wrap.
-Cap ~3h. Aleph-first. Do NOT re-dig gradients — evidence in parity-tests/repro/gpu-row5-compare.png.
+## Session 10 scope — REVISED AGAIN 2026-07-09 evening (phases 1 AND 2 done live)
+Live session with Pete completed BOTH phases; PRs #15 + #16 MERGED to master.
+**Committed basis: 19/26 (73.1%), avg diff 13.6 — campaign high.** Phase 2 root
+cause: estimate_min_content_width had no Text arm (text contributed 0px to every
+intrinsic width in the engine); fixed + flex-basis:auto now max-content per spec.
+Remaining ledger, worst-first: sticky-scroll 48.1 (t25), css-selectors 30.4 (t15,
+UNMOVED all campaign), backgrounds 27.7, shelf 26.0 (needs text-overflow:
+ellipsis + overflow clip), image-gallery 21.6 (t10, network-image tooling),
+settings 19.2 (closest flip, 4.2pp), gpu-gradient-regression 18.2.
+Tonight (pick in order, cap ~3h):
+1. **Line-box phase 3: mixed-inline content** — multiple inline children
+   (text + <code>/<b>/<span>) currently wrap per-NODE, each starting a new
+   vertical stack, not per shared line box. css-selectors (30.4, never moved)
+   is full of exactly this; article-typography benefits too. Design note in
+   PLAN: build line boxes at the block level across inline children, reusing
+   phase-1's TextLine fragments per child.
+2. If phase 3 stalls early: settings 19.2 flip (4.2pp) — likely form-control
+   or heading metrics, A/B the diff heatmap first.
+3. Ledger, do not chase: intrinsic_cache test flake (parallelism, pre-exists).
+
+## Session 10 scope — REVISED 2026-07-09 evening (phase 1 DONE live with Pete)
+Atlas completed line-box phase 1 in the live session: **PR #15** (wrap block text
+into line boxes + css-text-3 §5.2 overflow of unbreakable words). Measured
+honestly: 18/26 → 17/26 BUT avg diff 14.5 → 13.9; card-grid 32.6 → 10.2 (PASS),
+bg-solid 6.7, combinators 6.0; gradient-backgrounds/gradient-no-radius lost
+their passes by 0.3/1.1pp because wrapping exposes under-computed shrink-to-fit
+widths (pill labels, shelf header) that no-wrap used to hide. Tonight:
+0. Merge queue: if PR #15 is merged by session start, rebase and re-measure —
+   the committed basis is whatever master says, no pre-merge numbers.
+1. **Phase 2 target: inline-block / shrink-to-fit width under-measurement.**
+   Chrome fits "135deg Purple" (gradient-backgrounds pills) and "Command
+   Palette" (shelf header) on one line; RustKit sizes those containers
+   narrower than their text, so wrapped text breaks where Chrome doesn't.
+   Minimal repro: one inline-block span with padding + short text, A/B width
+   vs Chrome layout-rects. Fix likely recovers BOTH gradient passes (they sit
+   0.3pp / 1.1pp over) and moves shelf.
+2. If time remains: shelf needs `text-overflow: ellipsis` + overflow clipping
+   to pass — scope it (implement only if small).
+3. Ledger: intrinsic_cache tests are parallelism-flaky on clean master —
+   seat-tooling item, do not chase mid-session.
+Shared-crate PRs as usual. Cap ~3h.
+
+## Session 10 scope (2026-07-09, Pete-directed: LINE-BOX LANE opens)
+Pete (2026-07-09): the goal is real websites rendering chrome-like — that names text
+wrapping (session 9's engine-wide gap: `layout_text` measures each text node as ONE
+run; `TextShaper::wrap_text` has zero callers) as the campaign's main lane. This is
+session 1 of a multi-session lane; do NOT try to finish it in one cap.
+0. Merge queue first, as always (any approved cross-seat PRs; Athena is deprioritized
+   per Pete — Windows ports wait, discoveries still go to the exchange).
+1. **Line-box phase 1 — wrap plain block text.** Wire `TextShaper::wrap_text` into the
+   inline path of rustkit-layout `layout_text` for the simplest case: a block
+   container whose inline content is a single text run. Available width = containing
+   block content width. Each returned line = one line box advancing by line-height.
+   Spec anchors: CSS2 §9.4.2 (inline formatting), css-text-3 §5 (line breaking).
+   Minimal repro FIRST (one <p> with long text, A/B vs Chrome), then the wiring,
+   behind rustkit-layout unit tests. Do not touch inline-block/mixed-inline yet —
+   that is phase 2+.
+2. Re-measure the full suite after. EXPECT NON-MONOTONIC MOVEMENT: pages that
+   accidentally benefited from nowrap layout may regress while text pages jump.
+   Report both directions honestly; the lane is judged over its whole arc, not night 1.
+3. Instrument note: `visual_test_runner.sh` now pixel-diffs vs chrome-148 with
+   parity thresholds (honest 7/13, was fake "13/13") — `--no-window` for headless.
+   parity_test.py remains the campaign metric; the runner must agree with it.
+Shared-crate (rustkit-layout/text) changes → PR lane; Pete may merge proven ones
+while Athena is deprioritized (flag for her post-hoc review). Cap ~3h.
+
+## Session 10 scope — FINAL (2026-07-09 ~18:00, phases 1-3 all done live; PRs #15/#16/#17 merged)
+Committed basis: **19/26 (73.1%), avg 13.8.** css-selectors moved for the first
+time all campaign (30.4 → 26.7 — inline-level boxes now share line boxes).
+Tonight's single target: **LINE-BOX PHASE 4 — css-text §4 whitespace processing.**
+Root cause located and documented: rustkit-engine lib.rs ~1434 drops
+whitespace-only text nodes entirely and trim()s kept text, so runs that now
+correctly share a line sit flush (buttons jammed, byline separators tight).
+1. At box build: between two INLINE-LEVEL kept siblings, materialize a
+   collapsed single-space Text(" ") node; never between block-level siblings
+   (that would add phantom rows — the reason the old code dropped them).
+2. Keep one leading/trailing collapsed space on kept text nodes whose raw text
+   had edge whitespace AND whose neighbor is inline-level (\"By <span>\" case);
+   line-start spaces should not paint (strip at line assembly, not box build).
+3. Re-measure. EXPECTED RECOVERIES: article-typography 15.6→~13, form-controls
+   10.2→~9, images-intrinsic 8.9→~6, css-selectors pushes below 25.
+4. If time remains: settings 19.2 flip (4.2pp) — A/B the heatmap first.
+Ledger unchanged: intrinsic_cache flake (do not chase); shelf needs
+text-overflow:ellipsis; sticky-scroll is grid-min-content + scroll-pinning.
+Shared-crate PRs; cap ~3h.
+
+## Session 10 scope — FINAL v2 (2026-07-09 late evening; phases 1-4 ALL merged: PRs #15-#18)
+Committed basis: **19/26 (73.1%), avg diff 13.5 — campaign-best average.**
+CI NOTE: master's metrics-history collector had failed on EVERY master push of
+the campaign (dirty-tree checkout cascade) — fixed (ca5c807) and verified green;
+the trendline branch finally collects. Treat pre-tonight trendline as absent.
+Tonight, closest flips first (the lane's architecture work is banked; tonight is
+harvest):
+1. **gpu-gradient-regression 18.2 (3.2pp from t15)** — ledgered as line-box/
+   strut family, NOT gradients (pixel A/B receipt committed: gpu-row5-compare
+   .png). Phases 1-4 may have moved the substrate under it; re-A/B FIRST, then
+   fix the residual (likely heading strut/half-leading).
+2. **settings 19.2 (4.2pp)** — A/B the heatmap before digging; form-control
+   metrics or heading line-height are the standing suspects.
+3. Stretch: **line-box phase 5 — IFC text splitting**: a text run that does NOT
+   fit the remaining line space currently drops to its own block row; Chrome
+   fills the remainder then wraps. Needs first-line-width support in wrap_text
+   (wrap against remaining width for line 1, full width after). article-
+   typography and css-selectors both gain.
+Ledger: shelf=text-overflow:ellipsis; sticky-scroll=grid-min-content+scroll
+pinning; image-gallery=network image tooling (t10). intrinsic_cache flake: NOT
+tonight. Shared-crate PRs; cap ~3h.
+
+## Session 10 scope — FINAL v3 (2026-07-09 night; basis 20/26 = 76.9%, avg 13.4, ALL instruments clean)
+Evening block 2 landed: PR #18 (whitespace collapsing), PR #19 (radial corner-
+ellipse spec radii — gpu-gradient-regression 14.59 PASS; NOTE: taxonomy AND the
+session-9 strut reclassification were both wrong, pixel-ramp arithmetic settled
+it), CI metrics-history fixed (failed every master push all campaign — lie #7),
+and a baseline-dimension audit (lie #8): settings/bg-solid/pseudo-classes were
+captured at wrong viewports; regenerated; generate_baselines.py now follows
+PARITY_BASELINE_SET. Settings' HONEST gap is 20.12 (5.1pp), not 19.2.
+Remaining ledger (6 fails): sticky-scroll 48.1, backgrounds 27.3, css-selectors
+26.7, shelf 25.9, image-gallery 21.6 (t10), settings 20.1.
+Tonight:
+1. **settings 20.1** — with the honest baseline, re-read the heatmap first
+   (old read is void). Suspects: per-row vertical drift (cumulative), form
+   control metrics.
+2. **Line-box phase 5 — IFC text splitting** (css-selectors + article-typo
+   both gain): text runs that don't fit remaining space should fill it then
+   wrap; needs first-line-width support in wrap_text.
+3. backgrounds 27.3 — never dug this campaign; A/B one background family
+   member first.
+Cap ~3h. Shared-crate PRs. Do NOT re-measure historical numbers.
+
+## Session 10 addendum (2026-07-10 ~00:30 ET, live pre-work by Atlas — READ BEFORE DIGGING)
+backgrounds (27.31) partially dug live; VERIFIED facts to build on, do not re-derive:
+- STRIPES EXONERATED: repeating-linear-gradient 45deg renders with correct
+  direction AND correct 28px period on the page itself (measured pixel
+  transitions, both engines identical). Earlier "mirrored/denser stripes"
+  reads were crop artifacts. Do NOT dig the gradient renderer for this case.
+- Minimal repros confirmed clean: plain 45deg two-stop (corners verified
+  red/blue), repeating with unpositioned first stop (28px period exact).
+  Repro files in the session scratchpad if needed.
+- REAL driver: VERTICAL DRIFT (~15-20px by section 2) — the checker band is
+  striped, so any y-offset makes its whole area diff; drift multiplies into
+  ~27%. UA h1 (bold/32px/21.44 margins) and p (16/16) defaults verified
+  correct — the term is elsewhere: suspect margin-collapse vs Chrome,
+  body/section defaults, or heading line-box height. METHOD: per-element
+  y-table — RustKit layout.json vs Chrome layout-rects.json top-to-bottom,
+  find the FIRST element whose y diverges, fix that term, iterate.
+- Also on this page: layered backgrounds test (two comma-stacked
+  linear-gradients on one element) — check whether background_layers renders
+  ALL layers or only the legacy single gradient; if single, that's a paint
+  gap on the lower sections.
+- settings (20.24) remains the other scoped target; same y-table method
+  applies (its rows are uniform-63.2px in Chrome, non-uniform in RustKit).
