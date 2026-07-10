@@ -1,5 +1,27 @@
 # Trench digest — macOS seat (Atlas)
 
+## Session 11 — 2026-07-10 night (backgrounds y-table dig — 21/26, campaign high)
+
+**Metric (unified pass rate, t15, vs pinned CfT 148):** committed basis **76.9% (20/26), avg 13.3** → with PR #22 applied: **80.8% (21/26), avg diff 11.9 — both campaign highs** (two identical runs; backgrounds 27.31→**12.98 PASS**, bg-solid →1.42, gpu-gradient-regression →8.26; zero regressions, every prior pass holds). Committed basis stays 20/26 until PR #22 merges.
+
+**The dig (addendum's y-table method worked first try):**
+Built `parity-tests/repro/y_table.py` (Chrome layout-rects vs RustKit layout.json, document order, first-divergence). One caution for future nights: the Chrome `layout-rects.json` in the baseline tree is captured at the CASE's viewport (backgrounds = 900×1000, not 1280×800) — compare at the case viewport or the table lies. First divergence at the very first test box exposed TWO rustkit-layout bugs, fixed together on **PR hiwavebrowser/hiwave-macos#22** (`6449b59`, branch `atlas/fix-inline-block-line-metrics`, shared crate — review lane):
+1. **Decorated inline-blocks painted border+padding up-left of Chrome** — the inline-flow position override placed the content rect at the margin-box cursor, dropping border+padding (−2px everywhere; −30px on backgrounds' 10px-border+20px-padding row, which pushed its first box to x=0).
+2. **Line boxes missed the strut descent below empty atomic inlines** (CSS2 §10.8.1: empty inline-block baseline = bottom margin edge; the strut extends the line below it). Chrome rows 126px, ours 120px — the missing 6px/row WAS the "vertical drift" from the pre-dig, accumulating to −68px by page bottom across the striped checker. Fix is deliberately conditional (`baseline_is_bottom_edge()`): content-filled inline-blocks (pills, shelf header) keep their internal baseline — that's why nothing regressed.
+235 crate tests pass; regression test added; one existing test's height expectation updated (it encoded bug 2; Chrome renders the new value). intrinsic_cache flake pre-exists, passes single-threaded.
+
+**settings 20.24 pre-dug (next session has a running start):**
+- Attribution: rows ~41% element-diff each, non-uniform row heights confirmed.
+- **Root cause reproduced minimally** (`parity-tests/repro/toggle-height.html`, committed with the y-table on hiwave-macos master `00bdde5`): an inline-flex box with explicit `height:26px` is correct as a block child (26.0) but **as a FLEX ITEM its definite height is ignored — box height becomes the sum of its children's heights** (40.4 in repro, 67.2 in situ). Every toggle row blows up ~+30px and shifts everything below. Same repro also shows `position:absolute; inset:0` not filling the parent (slider renders 4px wide).
+- Second term: adjacent-sibling margin collapse missing on h1→p.subtitle (gap 24 = 8+16 stacked; Chrome collapses to 16).
+- Residual ledger item: our `inline_strut_descent()` ≈7.7px vs Chrome's effective 6.0 → +1.7px/row remains on backgrounds (12.98, safely passing) — font-metric delta, not chased.
+
+**Landed:** hiwave-macos PR #22 (open, review lane); hiwave-macos master `00bdde5` (seat tooling: y_table.py, toggle repro, 21/26 receipt). Hub: this digest + scope update on `atlas/trench` (merged master in first — trench branch was 18 behind).
+
+**Decisions needed from Pete (≤3):**
+1. **Merge PR #22?** Proven: +1 flip, avg −1.4pp, zero regressions, two identical runs. Athena is deprioritized per your 07-09 direction — your call whether to merge it yourself (as with #15-#21) or wait for her post-hoc review.
+2. None else — next session is scoped: settings via the flex-item definite-height bug (repro committed), then css-selectors 26.7.
+
 ## Session 9 — 2026-07-09 night (card-grid flex-wrap + the gradient dig, first 3h-cap session)
 
 **Metric (unified pass rate, t15, vs pinned CfT 148):** **69.2% (18/26) → 69.2% (18/26)**, avg diff 14.5 flat on committed code. Pending PR #14 takes avg to **13.7** and card-grid 32.56→19.61 — no flip yet, because the residual on nearly every remaining failure turns out to be one engine-wide gap (finding 2).

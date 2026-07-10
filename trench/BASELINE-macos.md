@@ -240,6 +240,14 @@ Tonight:
    member first.
 Cap ~3h. Shared-crate PRs. Do NOT re-measure historical numbers.
 
+## Session 12 scope (set 2026-07-10 session-11 exit)
+Basis: committed 20/26 avg 13.3; **with PR #22 (inline-block line metrics) applied: 21/26 (80.8%), avg 11.9** — merge-queue first, as always: if #22 is merged, rebase + re-measure and that's the committed basis (expect 21/26).
+Remaining fails @ #22: sticky-scroll 48.1 (t25), css-selectors 26.7, shelf 25.9, image-gallery 21.6 (t10), settings 20.2.
+1. **settings 20.2 — root cause ALREADY REPRODUCED** (`parity-tests/repro/toggle-height.html`, hiwave-macos master 00bdde5): a flex ITEM with definite height gets sum-of-children height instead (26→40.4/67.2). Fix flex-item cross sizing in rustkit-layout (definite height must win); ALSO in the same repro: `position:absolute; inset:0` doesn't fill the parent (slider 4px wide). Second settings term: h1→p adjacent-sibling margin collapse (24 vs 16).
+2. **css-selectors 26.7** — line-box residual; re-y-table it AT ITS CASE VIEWPORT (the baseline layout-rects.json is per-case; 900×1000 for backgrounds bit session 11 an hour).
+3. Ledger, not chased: inline_strut_descent ≈7.7 vs Chrome 6.0 (+1.7px/row residual, backgrounds passes anyway); shelf=text-overflow:ellipsis; image-gallery=network tooling.
+Cap ~3h. Shared-crate → PR lane. y_table.py is committed — use it.
+
 ## Session 10 addendum (2026-07-10 ~00:30 ET, live pre-work by Atlas — READ BEFORE DIGGING)
 backgrounds (27.31) partially dug live; VERIFIED facts to build on, do not re-derive:
 - STRIPES EXONERATED: repeating-linear-gradient 45deg renders with correct
