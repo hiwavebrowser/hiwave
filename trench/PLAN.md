@@ -7,6 +7,7 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 ## Metrics
 - **Campaign metric (per seat, pinned in BASELINE-<os>.md):** pixel-parity vs **Chrome 148.0.7778.216 (pinned, frozen for the campaign)**. Re-pin only at campaign boundaries, deliberately, both seats in lockstep.
 - **North star (Friday trendline):** WPT (Web Platform Tests) pass-rate — absolute conformance, not defined in terms of Chrome. Stand up in Phase 0.5.
+- **Line-box / WPT strategy (Prometheus, 2026-07-10):** `trench/LINE_BOX_WPT_ROADMAP.md` — which WPT Tier-1 slices fund "replace Chrome", the Chrome-parity trap, and the honest line-box slice ladder (0→E). Campaign metric stays pinned-Chrome t15; Friday also plots Tier-1 WPT %.
 - **Thresholds (Pete-locked 2026-07-08): t15 stays.** No re-tiering after the re-pin — pass means pass, grind the rest.
 - **CI audits:** seats may trigger CI runs as needed (Pete, 2026-07-08) — first audit: settings 100%-vs-30.8% CI/local discrepancy.
 - **Quirks ledger (`trench/QUIRKS.md`):** diffs traced to Chrome deviating from spec get recorded and dropped, not chased. Match the spec, not the bug.
