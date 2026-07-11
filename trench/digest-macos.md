@@ -361,3 +361,12 @@ Decisions needed from Pete: none. Board is honest, ratchet armed.
 - Housekeeping in this commit: Prometheus's uncommitted docs ride along (IFC sketch status update, B2 brief, session-lock RECS, text-stack, hardening + 6 more forensics; VIEWPORT_RESOLUTION_PLAN.md) — same precedent as 3592e96.
 - Next in lane: Slice C (baseline/vertical-align subset, `mixed-inline-img.html` already smoke-green structurally: text+img+text share one 26px line box) is 1–2 nights per the brief. T2/T3 rect dual-gate and T4 WPT Tier-1 remain from the hardening plan.
 Decisions needed from Pete: none — PR #37 rides the normal review lane (Athena approve → auto-merge, or your merge sweep).
+
+## 2026-07-11 — afternoon blocks: CI honest, B2 landed, DIG-1 (PRs #37-#41)
+**Board: campaign 21/26 @ t15 avg 8.6 | holdout 6/6 avg 5.8 | tier1 —/—. css-selectors 18.94→16.65.**
+- **CI-1 (PR #38)**: pr-aggregate had NEVER worked (artifact upload strips run-id dir; discovery matched nothing — every aggregate empty-red since the job existed, Prometheus-diagnosed). Fixed: re-home + results[] schema alias + empty-report tripwire ('All 0 cases' can never pass again) + primary-viewport-only (exploit 100s inform, never block) + layer D found in local E2E (single-iteration scout rows would have red-locked on require-stable). First honest green: 'Merging runs: pr-156-shard-0..3', All 26 cases gated at native.
+- **CI-2 (PR #40)**: known_fail ceilings FROZEN per case in the registry (image-gallery may never exceed 22.4; brief's flat-15 would have red-locked, flat-25 was a free band). Verified both directions.
+- **PR #37 (IFC B2)** merged on fresh honest CI (rerun lesson ledgered: GitHub reruns use the OLD workflow snapshot — workflow fixes need a new commit). **PR #39 GradientText advance-carry** merged (last dual text path closed; about 16.79→16.66).
+- **Windows #16 + #15** reviewed + merged (Athena's stack order); her fidelity PR unblocked; her bg-clip plumbing independently converged on macOS #30's contract. Her instrument_smoke caught a REAL Windows gradient midpoint bug on first run (T5 thesis paid); macOS immunity confirmed with the standing probe receipt.
+- **DIG-1 (PR #41)**: TextInput/Select heights compose author padding+border (blob formula pretended to be the border-box; input 29px vs Chrome 35 slid sections 5-8 up 22-32px). Probe 200x35.0 EXACT. css-selectors 18.94→16.65, form-elements→4.23, form-controls steady.
+- Next per heatmap: DIG-2 buttons (S6, 42% density), DIG-3 card chrome, DIG-4 list markers. css-selectors has 1.65 to t15 — flag-clear within reach.
