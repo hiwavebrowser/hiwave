@@ -212,3 +212,13 @@ Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 inst
 - CI gate holds builtins+micro at t8 (GATE_SCOPE_CAPS): a PR regressing bg-solid to 8.5 now blocks. form-controls/gradient micros/images-intrinsic grandfathered at the cap (may not worsen).
 - Third duplicate THRESHOLDS table deleted (parity_test → parity_lib import).
 - known_fail ledger: 12/32 registered cases, each a named, gated, non-worsening debt. Ratchet: fix → clear flag → permanent.
+
+## 2026-07-11 — overnight blocks 9-11: HOLDOUT SWEPT 6/6 (PRs #34, #35, #36)
+**Board: campaign 21/26 @ t15 avg 8.7 | HOLDOUT 6/6 avg 5.8 (was 3/6 @ 22.2 at first measurement) | tier1 —/—**
+- **PR #34 canvas background (§14.2)**: holdout-flex-toolbar's 52.2 was never flex — pages shorter than the viewport left the canvas white below content. Body/html bg now propagates to a viewport-filling root. toolbar 52.2→2.2, gradient-text 31.8→7.5 PASS (same root cause). Invisible on all 26 campaign pages; the holdout found it in one run.
+- **PR #35 grid Phase 9.5**: auto rows sized by a text-blind estimate; row 2 placed through row 1's content. Items' REAL flowed heights now grow rows post-layout, subtrees shift (translate_subtree), container height honest. mosaic 27.4→3.4. Stale-dimension map called this site in advance.
+- **PR #36 ADVANCE CONTRACT** (Prometheus's brief, one-night option): DisplayCommand::Text ships layout's per-char advances + ascent; renderer glyph entries baseline-relative; the per-glyph THIRD TextShaper is deleted. Receipt: h1 painted ink 647 → 664 = layout's 664.5 to the pixel. Contract test: Σadvances == measured ±0.5. Campaign flat (font-vs-Chrome advance delta remains — now a single-stack problem).
+- Morning artifact refreshed (same URL): before/afters + the honest board.
+- Prometheus session-lock RECS consumed: holdout-first dig order followed (A-next-1 ✓✓), advance-contract (A-next-2 ✓); T2/T3/T4 next scripts block; Athena's W-merge order was executed by Pete's merge sweep earlier.
+- Ledger adds: emoji glyph fallback (📰 never painted — small mass, named), gradient-text letter-spacing at paint (advance contract covers the plumbing; needs GradientText command to carry advances too — B2-adjacent).
+Decisions needed from Pete: none. Board is honest, ratchet armed.
