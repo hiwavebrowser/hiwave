@@ -142,7 +142,7 @@ inline layout. Cap: **one PR**, pure behavioral with tests; no strut/flex.
 
 **Exit A:** session-3 fixture green under layout.json probe (not necessarily suite flip).
 
-### Slice B — Symmetric inline join (true mixed runs) — **B-min SHIPPED PR #31; B2 OPEN**
+### Slice B — Symmetric inline join (true mixed runs) — **B-min SHIPPED PR #31; B2 SHIPPED PR #37**
 
 **Goal:** Every inline-level sibling (Text, Inline, atomic, Image, FormControl)  
 **competes for the same line box** under one rule.
@@ -160,11 +160,11 @@ split `TextLine` rows (or synthetic pseudo-children). If that is too big for one
 ship Left/Justify complete in B and Center/Right split as **B2**.
 
 **Exit B-min (met):** fitting mixed runs share one line under center (`mixed-inline-center.html`).  
-**Exit B2 (open):** Center/Right mid-line split — design in  
-`forensics/2026-07-11-ifc-b2-midline-split-BRIEF.md`; fixtures  
-`mixed-inline-wrap.html` + `mixed-inline-img.html` drafted.
+**Exit B2 (met, PR #37 @53ab3ca):** Center/Right mid-line split — FLOW⊕ALIGN;  
+`text_flow_first_offset`; wrap hard 12/12; nested-inline residual ledgered.  
+Fixtures: `mixed-inline-wrap.html` + `mixed-inline-img.html` on master.
 
-### Slice C — Baseline / vertical-align (quality, bounded)
+### Slice C — Baseline / vertical-align (quality, bounded) — **OPEN 2026-07-11**
 
 **Goal:** Mixed replaced + text on one line shares a baseline; `vertical-align: middle/sub/super/baseline` for the common set.
 
@@ -179,6 +179,12 @@ line_height / line_below_baseline accumulators in the IFC loop.
 
 **Exit C:** `text + <img>` and form controls on one line match Chrome **structure**  
 (same line, baseline-ish), not pixel-perfect strut.
+
+**Implement brief (OPEN):** `forensics/2026-07-11-ifc-slice-c-baseline-BRIEF.md`  
+**Gate receipt:** `forensics/2026-07-11-ifc-slice-c-GATE-OPEN.md` — #37 master + wrap hard green.  
+Live pins @740656c: `vertical_align` parsed, still unread in layout; strut extends line  
+height only; member Y still top-of-line; fixture `mixed-inline-img.html` ready.  
+Atlas: C0 probe → C1/C2. Prometheus: outside-eye when PR opens.
 
 ---
 
@@ -283,13 +289,16 @@ Portable note on every IFC quality PR (one paragraph):
 |------------------|-------|----------------------|
 | sticky/overflow | Atlas | **CLOSED** (PR #25 era) |
 | A+B IFC quality | Atlas | **SHIPPED** PR #31 |
-| B2 mid-line Center/Right | Atlas | Design banked; implement when free |
-| advance-contract (text stack) | Atlas chore | Orthogonal; next chore-lane slot |
+| B2 mid-line Center/Right | Atlas | **SHIPPED** PR #37 @53ab3ca |
+| advance-contract (text stack) | Atlas | **SHIPPED** #36; GradientText residual **SHIPPED** #39 |
+| CI honesty (path/schema/VP/stability + KF freeze) | Atlas | **SHIPPED** #38 + #40 |
+| DIG-1 input border-box | Atlas | **SHIPPED** #41; css-selectors 18.94→16.65 |
+| Slice C baseline/valign | Atlas **OPEN** | Gate open: `forensics/2026-07-11-ifc-slice-c-GATE-OPEN.md` |
+| DIG-2 buttons | Atlas parallel | Separate PR; not combined with C |
 | paint stack | Athena | Orthogonal; portable IFC note on #31 |
-| **This sketch** | Prometheus | Living design; B2 brief is the active tip |
+| **This sketch** | Prometheus | Living design; next tip = outside-eye on C PR |
 
-**Greenlight:** A+B already greenlit and shipped early (Friday epic kicked same week).  
-B2/C do not need a second ceremony — Atlas implements from the B2 brief when capacity allows.
+**Greenlight:** A+B+B2 shipped. Slice C gate cleared 2026-07-11 — Atlas C0 without further ceremony.
 
 ---
 
