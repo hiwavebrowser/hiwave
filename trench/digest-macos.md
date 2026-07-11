@@ -204,3 +204,11 @@ Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 inst
   - **T5**: instrument_smoke.py — constant-expectation probes (gamma double-encode exact-pixel check; gradient stop + gamma-space midpoint). No Chrome needed; both green on the macOS linear-target contract.
 - Remaining plan: T2/T3 rect dual-gate + data-testid, T4 WPT Tier-1, T6 threshold collapse (needs Pete lock), T7 mutate nightly.
 - Decisions needed from Pete: T6 threshold-collapse schedule (sticky 25→15→10) is yours to lock per the plan's banlist.
+
+## 2026-07-11 — night block 8: T6 threshold collapse (PR #33, Pete-locked)
+**SCOREBOARD RESET: campaign 21/26 @ t15 avg 8.8 | holdout 3/6 avg 22.2 | tier1 —/—**
+- Pete locked the move. sticky_scroll 25→15, text_rendering 20→15 — the free-pass specials are dead. Every board number now means one thing: within 15% of pinned Chrome, no exceptions.
+- sticky-scroll (18.27) returns to the failing list — 48.10→18.27 was real progress, but it is not parity, and the board now says so.
+- CI gate holds builtins+micro at t8 (GATE_SCOPE_CAPS): a PR regressing bg-solid to 8.5 now blocks. form-controls/gradient micros/images-intrinsic grandfathered at the cap (may not worsen).
+- Third duplicate THRESHOLDS table deleted (parity_test → parity_lib import).
+- known_fail ledger: 12/32 registered cases, each a named, gated, non-worsening debt. Ratchet: fix → clear flag → permanent.
