@@ -1,7 +1,8 @@
 # IFC quality sketch — fragment grouping + line-level alignment
 
 **Author:** Prometheus (grind tick) · **Date:** 2026-07-10  
-**Status:** **DESIGN ONLY — NON-EXECUTABLE** until Pete/Atlas greenlight a multi-session epic.  
+**Status:** **A+B SHIPPED** (PR #31, 2026-07-11). **B2 design** banked in  
+`forensics/2026-07-11-ifc-b2-midline-split-BRIEF.md`. C still open.  
 **Lane:** Advise. Atlas/Athena implement; this seat does not open code PRs from this doc.
 
 > **Name collision:** Campaign PRs already shipped **line-box phases 1–5** (#15–#20).  
@@ -116,7 +117,7 @@ when leaves also write absolute x from text-align.
 
 ## 4. Design — three slices (multi-session)
 
-### Slice A — Kill leaf self-align (correctness foundation)
+### Slice A — Kill leaf self-align (correctness foundation) — **SHIPPED PR #31**
 
 **Goal:** Text leaves **never** apply `text-align` to `content.x` / `TextLine.x_offset`.  
 Alignment is **only** applied at the line-box (parent) layer.
@@ -141,7 +142,7 @@ inline layout. Cap: **one PR**, pure behavioral with tests; no strut/flex.
 
 **Exit A:** session-3 fixture green under layout.json probe (not necessarily suite flip).
 
-### Slice B — Symmetric inline join (true mixed runs)
+### Slice B — Symmetric inline join (true mixed runs) — **B-min SHIPPED PR #31; B2 OPEN**
 
 **Goal:** Every inline-level sibling (Text, Inline, atomic, Image, FormControl)  
 **competes for the same line box** under one rule.
@@ -158,8 +159,10 @@ inline layout. Cap: **one PR**, pure behavioral with tests; no strut/flex.
 split `TextLine` rows (or synthetic pseudo-children). If that is too big for one PR,  
 ship Left/Justify complete in B and Center/Right split as **B2**.
 
-**Exit B:** css-selectors / article-typography class pages stop stacking  
-`text + bold + text` as three vertical bands when width allows one line.
+**Exit B-min (met):** fitting mixed runs share one line under center (`mixed-inline-center.html`).  
+**Exit B2 (open):** Center/Right mid-line split — design in  
+`forensics/2026-07-11-ifc-b2-midline-split-BRIEF.md`; fixtures  
+`mixed-inline-wrap.html` + `mixed-inline-img.html` drafted.
 
 ### Slice C — Baseline / vertical-align (quality, bounded)
 
@@ -276,20 +279,17 @@ Portable note on every IFC quality PR (one paragraph):
 
 ## 9. Sequencing vs live epic
 
-| Now (2026-07-10) | Owner | Relation to this doc |
+| Now (2026-07-11) | Owner | Relation to this doc |
 |------------------|-------|----------------------|
-| sticky/overflow multi-day | Atlas | **Blocks night execution of this epic** |
-| paint stack | Athena | Orthogonal; IFC checklist later |
-| settings §11b definite-cross | Atlas micro if still open | Not IFC |
-| **This sketch** | Prometheus | Banked design; no code |
+| sticky/overflow | Atlas | **CLOSED** (PR #25 era) |
+| A+B IFC quality | Atlas | **SHIPPED** PR #31 |
+| B2 mid-line Center/Right | Atlas | Design banked; implement when free |
+| advance-contract (text stack) | Atlas chore | Orthogonal; next chore-lane slot |
+| paint stack | Athena | Orthogonal; portable IFC note on #31 |
+| **This sketch** | Prometheus | Living design; B2 brief is the active tip |
 
-**Greenlight criteria (Pete or Atlas):**
-
-1. Sticky epic plateau or explicit pause.  
-2. One multi-day seat capacity free (Atlas preferred for shared layout crate).  
-3. Slice A scoped to ≤1 night PR with tests; B/C estimated 2–4 more nights.
-
-Until then: **no nightly agent should “just start IFC quality.”** Refuse-list item.
+**Greenlight:** A+B already greenlit and shipped early (Friday epic kicked same week).  
+B2/C do not need a second ceremony — Atlas implements from the B2 brief when capacity allows.
 
 ---
 
