@@ -27,6 +27,23 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 - **Goal restated:** make RustKit's rendering of REAL websites converge on Chrome's. That names the line-box/text-wrap gap (session 9: `TextShaper::wrap_text` has zero callers; text never wraps) as the campaign's main lane — real pages are text-dominated, so nothing else moves the needle like wrapping. Line-box lane is greenlit as multi-session work.
 - **Smoke runner is honest now** (hiwave-macos `6460a42`): `visual_test_runner.sh` pixel-diffs every case against the pinned Chrome baselines with the same sensor + thresholds as parity_test.py. It was liveness-only ("13/13" while pages rendered wrong) — measurement lie #6, found by Pete's eyes. Honest baseline: **7/13**.
 
+## Path forward (ADOPTED 2026-07-10 — Prometheus's PATH_FORWARD.md, Atlas-reviewed, Pete-directed)
+- **Atlas epic: scroll/sticky/overflow** (3-5 days, milestones nightly; overflow/clip FIRST since parity baselines are unscrolled first frames, sticky math second). Parser-SSO chore PRs interleaved (one delete per two feature PRs). Then IFC quality.
+- **Athena epic: paint stack** (images → backgrounds/gradients) after W1 honest re-measure + W2 positioned-semantics port + W3 CI PRs. 
+- One multi-day epic per seat at a time; merge trains on Windows; portable notes on every epic PR; same metric formula both seats.
+- Full doc: trench/PATH_FORWARD.md. Decision board 1/2/4: YES per Pete via Atlas review; item 3 (shared IFC quality) queued for Friday.
+- **Day-1 exit met early (2026-07-10):** sticky-scroll 48.10 → 18.93 PASS (PR #25, grid Phase-9 subtree translation); committed 22/26 (84.6%), avg 10.3 — PATH_FORWARD §8 seven-day bar hit on day one.
+
+## Viewport/resolution plan (ADOPTED 2026-07-10 — Prometheus's VIEWPORT_RESOLUTION_PLAN.md, Atlas-reviewed)
+- **R0 (instrument integrity) SHIPPED on macOS (PR #28, 2026-07-10):** hard-fail dimension mismatch, `cases/registry.json`, baseline-audit CI, chrome-120 purge. Suite held 22/26 avg 9.3.
+- **R1 (fixed containing block = viewport) SHIPPED on macOS (PR #29):** empirical triage killed stale vh/vw and renderer-default claims; live bug was Fixed CB = flow block. vh/vw already correct.
+- **Windows R0 port (Athena):** unblocked. Contracts brief: `trench/forensics/2026-07-10-r0-windows-port-BRIEF.md` (Prometheus) — hard-fail first, then fork-local registry (same schema; keep `chrome.html` path; label subset digests), then audit script. Not a blind file port.
+- **Tiers 2–5 still gated** until Windows R0 contracts are green on that seat (expanding multi-viewport before hard-fail multiplies lie #8).
+
+## IFC quality (Bet #2) — greenlight status (2026-07-10)
+- Prometheus's IFC_PHASE3_SKETCH.md reviewed: slices A (kill leaf self-align) / B (symmetric inline join) / C (baseline subset) are the right decomposition; his own gate (sticky plateau) is now essentially met.
+- **Slice A greenlit for Friday** as the shared-epic kickoff (PATH_FORWARD decision board item 3): one-night PR, parent-only text-align + mixed-run fixtures. B/B2/C follow only after A's layout.json probe is green.
+
 ## Write policy (Pete-locked, 2026-07-07)
 - Platform-specific code: free-fire on your own OS.
 - Shared crates (fastrender core, rustkit-*): PR + **other-seat review**, and on approval the reviewing seat **auto-merges** (Pete, 2026-07-08: "go ahead and auto-merge shared-crate fixes"). Atlas reviews Athena's, Athena reviews Atlas's.

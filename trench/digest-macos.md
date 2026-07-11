@@ -280,3 +280,73 @@ Built `parity-tests/repro/y_table.py` (Chrome layout-rects vs RustKit layout.jso
 - Direction (Pete): macOS leads, Windows deferred; goal = real websites chrome-like.
 - Decisions needed from Pete: none — session 10 re-scoped to line-box phase 3
   (mixed-inline line boxes; css-selectors 30.4 has not moved all campaign).
+
+## 2026-07-10 — evening block 2 (limits-reset day, session 2): style truth
+**Committed: 22/26 (84.6%), avg 10.3 → 9.3. PRs #26, #27 merged.**
+
+- **PR #26 (flex rows):** sticky-scroll header scatter = four coupled flex bugs, one repro. (1) `estimate_max_content_width` ignored flex gaps → nav basis 120px narrow → re-layout flex-shrink smashed every link to ~2px; (2) whitespace-only text runs became flex items against css-flexbox-1 §4 (4 phantom gap slots); (3) step 11b summed a nested ROW's children heights (nav = 9 line-heights tall); (4) line cross size ignored §9.4.8 rule 1 + stale pre-pass height (60px header centered items against 64) → logo at y=96. Header now Chrome-exact: logo (60,10.8), nav y=17.2. sticky-scroll 18.93→18.74→(post-#27) 18.27; settings 20.14→19.76.
+- **PR #27 (style truth):** Prometheus's css-selectors autopsy verdict FALSIFIED by oracle repro (`parity-tests/repro/selector-oracle.html`: 20/20 selector families match, incl. negative controls; sibling wiring landed 6495b68 on 07-08 — his tree was stale). The real residual, found by following his fixture pointer:
+  1. **Element inheritance didn't exist** — only text nodes inherited. `body{font-size:14px}` never reached descendants (all unruled text ran 16px → +29px section drift). Engine now seeds inherited props from parent computed style.
+  2. **text-align was parsed and IGNORED** — zero TextAlign assignments in the whole engine. Every centered headline on every fixture has painted left-aligned since day one. Now applied; gradient h1 lands at Chrome's exact x.
+  3. **Bold system font never existed at paint** — ".AppleSystemUIFont-Bold" isn't a name; bold shaped+rasterized REGULAR (~6% narrow). Also the renderer passed raw CSS family LISTS to new_from_name — failed always → **everything painted Helvetica**. Both text stacks now use the UI-font API (emphasized ≥600) and split family lists.
+- Movement: css-selectors 26.67→18.94, backgrounds 12.98→3.39, gradients 3.58→1.06, rounded-corners 5.72→3.33, gpu-gradient 8.26→5.24.
+- Ledgered: underline paints ~4px high (probe: `underline-probe.html`); list bullets missing in css-selectors li context; renderer-vs-layout advance delta (two text stacks, unify later); remaining css-selectors 18.94 = drift residual + controls.
+- Instrument note: layout.json `text` box y for flex-item text still reports pre-flex y in some dumps — pair by geometry (known).
+
+Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 instrument PR queued behind tonight's block.
+
+## 2026-07-10 — evening block 3: R0 instruments (PR #28)
+- **VIEWPORT_RESOLUTION_PLAN Phase R0 SHIPPED**: comparePixels hard-fails dimension mismatch (score 100, taxonomy `instrument/dimension_mismatch`, RK_ALLOW_CROP=1 debug-only); `cases/registry.json` is the single case-size source of truth; `scripts/audit_baselines.py` + Baseline Audit CI (green on first runs, ~12s) assert every baseline PNG == registry size × dpr and metadata == pin.
+- Registry cutover proved P1.2 live: the five case-table copies had ALREADY diverged (parity_test had 26 cases, parity_lib/generators 24). All scripts now import from the registry.
+- Purged dead chrome-120 tree (6.3MB lie-#8 residue) + stale top-level metadata.json (chrome-120/dpi lies) → pointer file.
+- Hard-fail verified live: deliberate 640×480 capture vs 800×600 baseline → 100/instrument, not a plausible cropped diff.
+- Suite re-verified post-cutover: identical 22/26, avg 9.3.
+- Athena unblocked: registry format defined; her port = hard-fail in her compare + read cases/registry.json.
+
+## 2026-07-10 — evening block 4: Windows #12 review + R1 fixed-viewport (PR #29)
+- **Athena's hiwave-windows PR #12 reviewed post-hoc** (Prometheus design-approved, she merged): descendant matcher greedy-nearest-first is optimal (not an approximation); two-pass stretch matches macOS #26's definite-cross lesson. ⚠ Flagged follow-up: her whitespace-only-text skip is GLOBAL at box build — spec-valid only inside flex containers; will surface as joined-words when her IFC lands mixed inlines. Tracked behind her max-content flex-basis recovery PR.
+- **R1 empirically triaged — two of three claims were stale**: vh/vw resolve correctly at any size (probe verified 1:1 tracking); renderer syncs viewport from view size on both render paths. The live bug: **Fixed elements anchored to the flow block, not the viewport** (bottom:0 footer painted at y=280 in a 600px viewport). Fixed via viewport CB per CSS2 §10.1 + regression test (PR #29 merged). 237/237; suite steady 22/26 avg 9.3.
+- Method note now 3-for-3 today: every written claim about engine state (autopsy stub, layout-viewport-(0,0), renderer-default) was stale on contact with an instrument. Probes before patches.
+
+## 2026-07-10 — evening block 5: gradient text (PR #30) + text-stack design ask
+**Committed: 22/26 (84.6%), avg 9.3 → 8.8. about 25.20 → 16.79; settings 19.90 → 18.44.**
+- **Underline ledger item CLOSED by re-probe**: post-#27 the underline paints at baseline+2 (Chrome-correct). The earlier '4px high' was an artifact of the split font stacks. Fourth stale claim killed by a probe today.
+- **background-clip:text (PR #30)**: the feature existed at every layer, dead at every seam — engine never plumbed the properties onto text boxes (background-* correctly doesn't inherit; needs feature plumbing), layout's clip:Text arm painted the slab anyway, renderer's GradientText was a hardcoded PURPLE fallback. Now: slab suppressed + per-vertex gradient sampling across glyph quads (no offscreen mask needed — GPU interpolates). Hero paints real cyan letterforms.
+- **Prometheus design ask sent (broadcast #62)**: one-text-stack brief — layout measures 529 where paint inks ~509 (~4% divergence, third shaper in glyph.rs ascent lookup); asked for unification path, one-night contract option, Windows risk map, sequencing vs Slice A.
+- List bullets: no display:list-item/marker support anywhere — ledgered as a feature ticket (small pixel mass), not tonight.
+- about residual 16.79 = shrink-to-fit pills (button/chip full-width), hero letter-spacing at paint, emoji fallback.
+
+## 2026-07-11 — night block 6: IFC Slices A+B shipped (PR #31) — session-3 falsification CLOSED
+**Committed: 22/26 (84.6%), avg 8.8 — suite identical to the hundredth (pixel-neutral by design).**
+- **Slice A (parent-only alignment)**: layout_text never self-aligns; apply_text_align_offset is the sole owner, shifting recorded lines as units via translate_subtree (box-only shifts would strand a span's inner text once leaves stopped re-centering); wrapped runs get per-visual-line offsets (Right/Center only — phase-5 FLOW offsets under Left are never clobbered); block-path text recorded as single-item lines.
+- **Slice B minimal (symmetric join)**: the cursor_x>0 text gate is gone — fitting text joins the line from position 0. `Some <b>bold</b> text` was two stacked rows; now ONE line, midpoint exactly at block center (probe: 100.0 in a 200px block; right-align ends exactly 200.0). B turned out to be one gate once A's groundwork existed — sketch's 1-2 night estimate collapsed into the same night.
+- Fixture `mixed-inline-center.html` committed; 4 new contract tests; 239/239.
+- Prometheus's IFC_PHASE3_SKETCH delivered as designed — his decomposition was exactly right; B2 (Center/Right mid-line split) + C (baseline subset) remain.
+- Earlier this block: gamma probe PASSED on macOS (26,26,46 exact — linear-target architecture consistent, no port; invariant adopted); Athena's #13/#14 merged (Windows builtins 0.1→99 on new_tab); text-stack brief adopted (advance contract queued as next chore-lane PR).
+
+## 2026-07-11 — night block 7: test-fidelity hardening T0+T1+T5 (PR #32)
+**New scoreboard format: campaign 22/26 @ t15 avg 8.8 | holdout 3/6 avg 22.2 | tier1 —/—**
+- Prometheus's HARDENING plan (Pete-directed) first tranche implemented:
+  - **T0**: PR gate's flat --max-diff 25 (which never blocked anything — H3 verified live before fixing) replaced with per-case campaign thresholds + registry `known_fail` grandfather flags. Fixing a case and clearing its flag ratchets permanently.
+  - **T1**: holdout suite (6 cases, same feature classes, different DOM; dig sessions must not edit; policy field in registry). **First run measured the generalization gap: campaign avg 8.8 vs holdout avg 22.2.** Inheritance/sticky/IFC generalized (cascade-depth 4.5 PASS); flex-toolbar 52.2 / gradient-text 31.8 / grid-mosaic 27.4 are campaign-shaped — now the top of the dig queue.
+  - **T5**: instrument_smoke.py — constant-expectation probes (gamma double-encode exact-pixel check; gradient stop + gamma-space midpoint). No Chrome needed; both green on the macOS linear-target contract.
+- Remaining plan: T2/T3 rect dual-gate + data-testid, T4 WPT Tier-1, T6 threshold collapse (needs Pete lock), T7 mutate nightly.
+- Decisions needed from Pete: T6 threshold-collapse schedule (sticky 25→15→10) is yours to lock per the plan's banlist.
+
+## 2026-07-11 — night block 8: T6 threshold collapse (PR #33, Pete-locked)
+**SCOREBOARD RESET: campaign 21/26 @ t15 avg 8.8 | holdout 3/6 avg 22.2 | tier1 —/—**
+- Pete locked the move. sticky_scroll 25→15, text_rendering 20→15 — the free-pass specials are dead. Every board number now means one thing: within 15% of pinned Chrome, no exceptions.
+- sticky-scroll (18.27) returns to the failing list — 48.10→18.27 was real progress, but it is not parity, and the board now says so.
+- CI gate holds builtins+micro at t8 (GATE_SCOPE_CAPS): a PR regressing bg-solid to 8.5 now blocks. form-controls/gradient micros/images-intrinsic grandfathered at the cap (may not worsen).
+- Third duplicate THRESHOLDS table deleted (parity_test → parity_lib import).
+- known_fail ledger: 12/32 registered cases, each a named, gated, non-worsening debt. Ratchet: fix → clear flag → permanent.
+
+## 2026-07-11 — overnight blocks 9-11: HOLDOUT SWEPT 6/6 (PRs #34, #35, #36)
+**Board: campaign 21/26 @ t15 avg 8.7 | HOLDOUT 6/6 avg 5.8 (was 3/6 @ 22.2 at first measurement) | tier1 —/—**
+- **PR #34 canvas background (§14.2)**: holdout-flex-toolbar's 52.2 was never flex — pages shorter than the viewport left the canvas white below content. Body/html bg now propagates to a viewport-filling root. toolbar 52.2→2.2, gradient-text 31.8→7.5 PASS (same root cause). Invisible on all 26 campaign pages; the holdout found it in one run.
+- **PR #35 grid Phase 9.5**: auto rows sized by a text-blind estimate; row 2 placed through row 1's content. Items' REAL flowed heights now grow rows post-layout, subtrees shift (translate_subtree), container height honest. mosaic 27.4→3.4. Stale-dimension map called this site in advance.
+- **PR #36 ADVANCE CONTRACT** (Prometheus's brief, one-night option): DisplayCommand::Text ships layout's per-char advances + ascent; renderer glyph entries baseline-relative; the per-glyph THIRD TextShaper is deleted. Receipt: h1 painted ink 647 → 664 = layout's 664.5 to the pixel. Contract test: Σadvances == measured ±0.5. Campaign flat (font-vs-Chrome advance delta remains — now a single-stack problem).
+- Morning artifact refreshed (same URL): before/afters + the honest board.
+- Prometheus session-lock RECS consumed: holdout-first dig order followed (A-next-1 ✓✓), advance-contract (A-next-2 ✓); T2/T3/T4 next scripts block; Athena's W-merge order was executed by Pete's merge sweep earlier.
+- Ledger adds: emoji glyph fallback (📰 never painted — small mass, named), gradient-text letter-spacing at paint (advance contract covers the plumbing; needs GradientText command to carry advances too — B2-adjacent).
+Decisions needed from Pete: none. Board is honest, ratchet armed.
