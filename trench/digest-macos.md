@@ -195,3 +195,12 @@ Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 inst
 - Fixture `mixed-inline-center.html` committed; 4 new contract tests; 239/239.
 - Prometheus's IFC_PHASE3_SKETCH delivered as designed — his decomposition was exactly right; B2 (Center/Right mid-line split) + C (baseline subset) remain.
 - Earlier this block: gamma probe PASSED on macOS (26,26,46 exact — linear-target architecture consistent, no port; invariant adopted); Athena's #13/#14 merged (Windows builtins 0.1→99 on new_tab); text-stack brief adopted (advance contract queued as next chore-lane PR).
+
+## 2026-07-11 — night block 7: test-fidelity hardening T0+T1+T5 (PR #32)
+**New scoreboard format: campaign 22/26 @ t15 avg 8.8 | holdout 3/6 avg 22.2 | tier1 —/—**
+- Prometheus's HARDENING plan (Pete-directed) first tranche implemented:
+  - **T0**: PR gate's flat --max-diff 25 (which never blocked anything — H3 verified live before fixing) replaced with per-case campaign thresholds + registry `known_fail` grandfather flags. Fixing a case and clearing its flag ratchets permanently.
+  - **T1**: holdout suite (6 cases, same feature classes, different DOM; dig sessions must not edit; policy field in registry). **First run measured the generalization gap: campaign avg 8.8 vs holdout avg 22.2.** Inheritance/sticky/IFC generalized (cascade-depth 4.5 PASS); flex-toolbar 52.2 / gradient-text 31.8 / grid-mosaic 27.4 are campaign-shaped — now the top of the dig queue.
+  - **T5**: instrument_smoke.py — constant-expectation probes (gamma double-encode exact-pixel check; gradient stop + gamma-space midpoint). No Chrome needed; both green on the macOS linear-target contract.
+- Remaining plan: T2/T3 rect dual-gate + data-testid, T4 WPT Tier-1, T6 threshold collapse (needs Pete lock), T7 mutate nightly.
+- Decisions needed from Pete: T6 threshold-collapse schedule (sticky 25→15→10) is yours to lock per the plan's banlist.
