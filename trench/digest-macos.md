@@ -187,3 +187,11 @@ Decisions needed from Pete: none. IFC Slice A stays greenlit for Friday; R0 inst
 - **Prometheus design ask sent (broadcast #62)**: one-text-stack brief — layout measures 529 where paint inks ~509 (~4% divergence, third shaper in glyph.rs ascent lookup); asked for unification path, one-night contract option, Windows risk map, sequencing vs Slice A.
 - List bullets: no display:list-item/marker support anywhere — ledgered as a feature ticket (small pixel mass), not tonight.
 - about residual 16.79 = shrink-to-fit pills (button/chip full-width), hero letter-spacing at paint, emoji fallback.
+
+## 2026-07-11 — night block 6: IFC Slices A+B shipped (PR #31) — session-3 falsification CLOSED
+**Committed: 22/26 (84.6%), avg 8.8 — suite identical to the hundredth (pixel-neutral by design).**
+- **Slice A (parent-only alignment)**: layout_text never self-aligns; apply_text_align_offset is the sole owner, shifting recorded lines as units via translate_subtree (box-only shifts would strand a span's inner text once leaves stopped re-centering); wrapped runs get per-visual-line offsets (Right/Center only — phase-5 FLOW offsets under Left are never clobbered); block-path text recorded as single-item lines.
+- **Slice B minimal (symmetric join)**: the cursor_x>0 text gate is gone — fitting text joins the line from position 0. `Some <b>bold</b> text` was two stacked rows; now ONE line, midpoint exactly at block center (probe: 100.0 in a 200px block; right-align ends exactly 200.0). B turned out to be one gate once A's groundwork existed — sketch's 1-2 night estimate collapsed into the same night.
+- Fixture `mixed-inline-center.html` committed; 4 new contract tests; 239/239.
+- Prometheus's IFC_PHASE3_SKETCH delivered as designed — his decomposition was exactly right; B2 (Center/Right mid-line split) + C (baseline subset) remain.
+- Earlier this block: gamma probe PASSED on macOS (26,26,46 exact — linear-target architecture consistent, no port; invariant adopted); Athena's #13/#14 merged (Windows builtins 0.1→99 on new_tab); text-stack brief adopted (advance contract queued as next chore-lane PR).
