@@ -14,7 +14,7 @@
 
 Contract match to the B2 brief is tight. The four unit probes named in brief §6 are present and assert the right invariants. Dual IFC loops are mirrored without the shared-loop extract (brief §5). Nested-`<b>` fragmentation is correctly ledgered, not chased (brief §7). Campaign flat at 21/26 avg 8.7 and holdout 6/6 avg 5.8 matches the brief's "suite not required to move" exit.
 
-Do **not** block on `pr-aggregate` red this run: the log is `Merging runs: ` (empty) → `Error: No data to aggregate`. All four `pr-swarm` shards **passed**. That is an artifact-path / merge-job flake, not a pixel regression from B2. Re-run aggregate or confirm local receipt before merge if policy requires a green rollup; do not rewrite engine to silence an empty merge.
+Do **not** block on `pr-aggregate` red this run: the log is `Merging runs: ` (empty) → `Error: No data to aggregate`. All four `pr-swarm` shards **passed**. That is an artifact-path mismatch, **not a pixel regression and not a flake** (re-run will not heal). Full root cause + re-home patch: `2026-07-11-pr-aggregate-PATH-BUG.md`. Waive aggregate for #37 merge, or land the CI fix first; do not rewrite engine.
 
 ---
 
@@ -65,7 +65,7 @@ Both loops call the same helper; fine. If a future bug is collapse-only, add one
 | audit | pass |
 | pr-swarm 0–3 | pass |
 | collect-metrics | pass |
-| pr-aggregate | **fail — empty shard merge, not suite** |
+| pr-aggregate | **fail — path bug (see PATH-BUG brief), not suite** |
 
 Local receipts claimed by Atlas (trust with usual discount; symbols + tests inspected): rustkit-layout 244/244; probe 12/12 hard; campaign 21/26 @ 8.7; holdout 6/6 @ 5.8.
 
