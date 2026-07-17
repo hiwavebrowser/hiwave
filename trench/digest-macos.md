@@ -455,3 +455,20 @@ Decisions needed from Pete: none — PR #37 rides the normal review lane (Athena
 1. **The text-metrics blocker is re-named with receipts:** NOT form controls (falsified) — **glyph-atlas / text-paint sub-pixel fidelity.** That's a bigger lane (all text rendering, glyph tests). Greenlight it as its own epic, or **park the metrics model** until a paint-fidelity session? (My read: park — the model is banked and correct; forcing it now trades a pass for a fail.)
 2. **Merge PR #53** (grid span gutters, OPEN/approved/mergeable)? It's the honest prerequisite for the gallery win and this seat cannot merge it.
 3. Carried: **allowlist `git worktree`** (concurrent-seat hazard) and **`gh pr merge`** for this seat — tonight I again could not merge an approved PR or isolate the checkout.
+
+## 2026-07-17 — night block 17: PAINT-0 exonerates paint; buttons + metrics together = FIRST 25/26 (PRs #54/#55/#56)
+**Board: campaign 24/26 @ t15 avg 7.1 committed (before -> after: UNCHANGED on master) | PR #56 tree measured: 25/26 avg 7.1 — CAMPAIGN FIRST | holdout 6/6 | KF 7**
+
+- **#53 was merged at 05:10Z (thank you) — the gallery dual-path prerequisite is on master.** Tonight ran on that base.
+- **PAINT-0 executed to completion (probe contract P0a-P0d) and the text-paint hypothesis is DEAD.** Env-gated seating-chain probe (`RUSTKIT_PAINT_PROBE=1`, PR #54) + 80-line dense-text fixture: glyph bitmaps hash **identical (80/80)** under flat vs metrics, and forcing **every baseline integral** (verified 240/240) moved css-selectors by **+0.02pp**. Sub-pixel seating explains NOTHING; snap trial reverted same-night. No AA/gamma epic exists to be greenlit — that lane is closed before it opened.
+- **The real residual, fully attributed (per-section y/h vs Chrome):** metrics-normal is **EXACT on sections 2/5/7/8** (flat wrong on all four); the drift terms are **S6 +86px = the block-stacked buttons (both builds)**, S4 +5.33 (the model's one known miss, Arial 13.3333px), S1 +4.0, S3 -4.0. Night-16's "+5pp diffuse dense small-text paint" was sections 7-8 sitting ~90px below Chrome, counted pixel-by-pixel. Under flat the small errors partially cancel S6; under metrics the exact sections stop cancelling. **Correctness was exposing the one big bug, not regressing.**
+- **DIG-buttons-stack shipped (PR #55):** UA arm now computes `display:inline-block` for button/input/select/textarea (Chrome computed). `.buttons` h 124.6 -> **33.4** (Chrome 39), three buttons one line, x within ~4px of Chrome. Standalone: board 24/26, no flips, css-selectors 10.03 -> 14.36 still-PASS (the #53 honest-geometry pattern again). Engine-driving unit test included; 21/21.
+- **THE EPIC LANDS (PR #56, stacked on #55): buttons + metrics model together = 25/26 avg 7.1, image-gallery 6.80 PASS, css-selectors 12.68 PASS, holdout 6/6.** Every §4.4 land gate passes on the exact tree. Only `about` (16.17) remains — the genuine text wall. Three nights said the atomic epic couldn't reach 25/26; the missing companion was never form-recompose and never paint — it was the S6 button stack.
+- Housekeeping: Prometheus's 07-16 grind-tick docs committed (were disk-only); full result one-pager: `trench/forensics/2026-07-17-paint0-RESULT-seating-exonerated.md`; seat left clean on master @ 5161571.
+
+**Commits landed:** hub `atlas/trench` ed458f6 + this digest. `hiwave-macos`: 78ace92+dac2623 (PR #54, probe-only), 7c5d507 (PR #55, buttons+test), 5f561d0 (PR #56, metrics model). Master untouched.
+
+**Decisions for Pete (<=3):**
+1. **Merge order #55 -> #56** (both open, receipts in bodies; #56 is stacked and must NOT go in without #55). Athena is deprioritized — per the review-latency rule these land on your call. This is the 25/26 board.
+2. Carried: **allowlist `git worktree` + `gh pr merge`** for this seat (concurrent-seat hazard stands; I again could not merge or isolate).
+3. After #56 merges: next highest lanes are the **S4 model miss (Arial 13.3333px, forms)** and **`about` 16.17** — plus the carried image-gallery KF ratchet (22.4 -> 14.0, now safely below the 6.80 pass). Say if you want WPT W0a instead.
