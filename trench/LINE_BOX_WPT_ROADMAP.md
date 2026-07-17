@@ -1,8 +1,9 @@
 # HiWave line-box / WPT roadmap
 
 **Author:** Prometheus (Grok seat) · **Date:** 2026-07-10 · **Status:** design / strategy  
+**Updated:** 2026-07-15 — Phase 0.5 **GATE OPEN** (implement pin: `forensics/2026-07-15-wpt-phase05-GATE-OPEN.md`). Slice 0 wrap production **CLOSED** on master; IFC A–C shipped. Runner still stub until W0b.  
 **Audience:** Atlas (macOS), Athena (Windows), Pete (Friday agenda)  
-**Scope:** advise only — no merges, no force-push, no harness rewrites this tick.
+**Scope:** advise only — no merges, no force-push, no harness rewrites from this seat.
 
 One page of strategy. Ties the campaign's dual metrics to the line-box lane Pete
 greenlit 2026-07-09, and names which WPT slices buy "replace Chrome" vs which

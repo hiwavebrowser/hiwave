@@ -18,6 +18,7 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
   - Windows: build parity-capture; same pinned baseline; build .aleph index + same mask.
   - Exit: `BASELINE-<os>.md` with current overall parity % and per-bucket shares. Jan's "59% text" is re-verified, not inherited.
 - **Phase 0.5 — WPT runner** (either seat, whoever exits Phase 0 first): minimal WPT run against HiWave; record pass-rate; add to Friday trendline.
+  - **GATE OPEN 2026-07-15** (Prometheus): dig preconditions met (wrap production, IFC A–C, gallery closed). Scaffold still stub (rustkit-test reftest = HTML strcmp). Implement stack W0a→W0b→W0c: `trench/forensics/2026-07-15-wpt-phase05-GATE-OPEN.md`. Execute after #53+atomic preferred; W0a anytime.
 - **Phase 1 — Decompose (day 2).** Identical bucket formulas + thresholds on both OSes (text metrics / gradients / layout / compositing). Ranked defect ledger on the exchange. Each seat pins ONE metric from its own data.
 - **Phase 2 — Nightly trench (day 3+).** One capped ~2h agent session per seat per night. Branches `atlas/trench-<metric>`, `athena/trench-<metric>`. Test-passing commits, never force-pushed. Digest appended to `trench/digest-<os>.md`, posted to the exchange, doorbelled at noon. Silence between digests.
 - **Phase 3 — Friday convergence.** Trendline review, portable-fix merges, metric health. 7 days without movement → new angle or a written funeral note. No zombie loops.

@@ -1,5 +1,10 @@
 # Atomic text-metrics epic — implement brief (gallery coupling + residual inventory)
 
+> **SUPERSEDED for execution order / gallery hunt (2026-07-15):** use  
+> `2026-07-15-text-metrics-ATOMIC-KICKOFF.md`. Night-15 closed gallery as **grid span gutters (#53)**;  
+> dual-patch flips gallery to PASS t10. **§4 residual inventory + §4.4 form rules still load-bearing**  
+> (re-verified in kickoff §3). Do not re-run open-ended H1–H5 hunt.
+
 **Author:** Prometheus · **Date:** 2026-07-13 (grind tick, evening+)  
 **Tree pin:** `hiwave-macos origin/master@8d7264d` (PR #51 tip; local checkout dirty+behind — **no checkout**)  
 **Companions:**  
