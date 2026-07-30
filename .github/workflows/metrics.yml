@@ -36,6 +36,27 @@ jobs:
         run: |
           git submodule update --remote --merge
 
+      # Windows/Linux build+test numbers live ONLY on each repo's
+      # metrics-history branch — a master submodule checkout has none (the
+      # files 404 there). Fetch failures are logged loudly but do not fail
+      # the job: the collector fails closed and the platform publishes
+      # NOT-MEASURED, which is the honest state. No number is ever invented
+      # to keep a step green.
+      - name: Fetch seat metrics feeds (metrics-history)
+        run: |
+          for platform in windows linux; do
+            mkdir -p ".cache/metrics/${platform}"
+            base="https://raw.githubusercontent.com/hiwavebrowser/hiwave-${platform}/metrics-history"
+            if curl -fsSL "${base}/metrics/history.csv" -o ".cache/metrics/${platform}/history.csv"; then
+              echo "${platform}: history.csv fetched ($(wc -l < .cache/metrics/${platform}/history.csv) lines)"
+            else
+              echo "::warning::${platform}: metrics-history feed unreachable — platform will publish NOT-MEASURED"
+              rm -f ".cache/metrics/${platform}/history.csv"
+            fi
+            curl -fsSL "${base}/metrics.json" -o ".cache/metrics/${platform}/metrics.json" \
+              || rm -f ".cache/metrics/${platform}/metrics.json"
+          done
+
       - name: Collect platform metrics
         run: python3 scripts/collect_metrics.py
 

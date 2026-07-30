@@ -11,11 +11,14 @@ Usage:
     python3 scripts/collect_metrics.py [--test] [--verbose]
 """
 
+import csv
+import io
 import json
 import sys
+import urllib.request
 from pathlib import Path
-from datetime import datetime
-from typing import Dict, Any, Optional, List
+from datetime import datetime, timezone
+from typing import Dict, Any, Optional, List, Tuple
 import subprocess
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -47,6 +50,176 @@ SWARM_SOURCES = [
 
 # Unified results from CI aggregation
 UNIFIED_PARITY_FILE = METRICS_DIR / "parity_results.json"
+
+# ---------------------------------------------------------------------------
+# Seat metrics feeds (P1 adapter)
+#
+# Windows and Linux publish build + cargo-test results to an append-only
+# `metrics-history` branch in their own repos. Those numbers exist ONLY there:
+# a master checkout of the submodule has no metrics.json and no metrics/ dir,
+# which is why this collector used to print "No metrics found" for platforms
+# with green CI and hundreds of passing tests — it was reading a source that
+# is empty by construction (wrong source path + parity-only early return).
+#
+# The CI workflow drops each feed into .cache/metrics/<platform>/ before this
+# script runs; HTTPS raw is the fallback for local runs. A fetch failure
+# leaves the platform NOT-MEASURED — numbers fail closed, never invented.
+#
+# macOS is deliberately NOT wired here: its metrics-history schema is
+# parity-diff oriented and carries no build_ok. Its build badge staying
+# "unknown" is the honest state until a macOS seat publishes the Win/Linux
+# schema.
+SEAT_FEEDS = {
+    "windows": "https://raw.githubusercontent.com/hiwavebrowser/hiwave-windows/metrics-history",
+    "linux": "https://raw.githubusercontent.com/hiwavebrowser/hiwave-linux/metrics-history",
+}
+SEAT_CACHE_DIR = REPO_ROOT / ".cache" / "metrics"
+
+# A seat measurement older than this still publishes (it is real), but gets
+# flagged so a silently dead collector cannot keep wearing fresh-looking
+# numbers. Distinct from the badge-level 7-day STALE render threshold: this
+# one is provenance metadata in unified.json, that one is presentation.
+SEAT_STALE_AFTER_DAYS = 14
+
+HISTORY_CSV_COLUMNS = [
+    "timestamp", "commit", "branch", "build_ok",
+    "passed", "failed", "ignored", "warnings",
+]
+
+
+def parse_history_csv(text: str) -> Optional[Dict[str, str]]:
+    """Last master data row of a seat's metrics/history.csv, or None.
+
+    Row selection is pinned: skip the header, take the LAST row whose branch
+    is exactly "master" (case-sensitive, as written by the seats). PR-branch
+    rows never drive public numbers. No master row -> None, and the caller
+    publishes NOT-MEASURED rather than borrowing a branch row.
+    """
+    if not text:
+        return None
+    rows = list(csv.reader(io.StringIO(text)))
+    if not rows:
+        return None
+    header = [c.strip() for c in rows[0]]
+    if header[: len(HISTORY_CSV_COLUMNS)] != HISTORY_CSV_COLUMNS:
+        print(f"  Warning: unexpected history.csv header: {header}")
+        return None
+    last_master = None
+    for row in rows[1:]:
+        if len(row) < len(HISTORY_CSV_COLUMNS):
+            continue
+        if row[2].strip() == "master":
+            last_master = row
+    if last_master is None:
+        return None
+    return dict(zip(HISTORY_CSV_COLUMNS, (c.strip() for c in last_master)))
+
+
+def map_seat_metrics_to_unified(
+    platform: str,
+    row: Dict[str, str],
+    seat_json: Optional[Dict] = None,
+    now: Optional[datetime] = None,
+) -> Dict[str, Any]:
+    """Map a seat CSV row to the unified platform object the badges consume.
+
+    Two rules here are load-bearing and pinned:
+
+    - tests_total is passed + failed, RECOMPUTED. The seat JSON's own "total"
+      currently equals passed alone, and ignored tests do not belong in the
+      denominator. A number we can recompute is never trusted pre-summed.
+    - There is NO parity key. Windows/Linux parity has never been measured;
+      the harness's 100.0-on-empty-capture default is exactly the lie this
+      whole stack exists to stop. The parity badge stays "no data".
+
+    git_commit is the commit the measurement was TAKEN AT (from the CSV row),
+    not whatever the submodule pointer happens to be today — restamping an old
+    measurement onto a current SHA is the fourth defect, and it does not come
+    back through this path.
+    """
+    passed = int(row["passed"])
+    failed = int(row["failed"])
+    metrics: Dict[str, Any] = {
+        "build": {"ok": row["build_ok"] == "True", "warnings": int(row["warnings"])},
+        "tests_passed": passed,
+        "tests_failed": failed,
+        "tests_ignored": int(row["ignored"]),
+        "tests_total": passed + failed,
+        "tests_source": "cargo",
+        "git_commit": row["commit"][:7],
+        "metrics_commit": row["commit"],
+        "measured_at": row["timestamp"],
+        "metrics_source": "metrics-history/history.csv",
+    }
+    if seat_json and isinstance(seat_json.get("not_collected"), dict):
+        metrics["not_collected"] = seat_json["not_collected"]
+
+    now = now or datetime.now(timezone.utc)
+    try:
+        measured = datetime.fromisoformat(row["timestamp"].replace("Z", "+00:00"))
+        if measured.tzinfo is None:
+            measured = measured.replace(tzinfo=timezone.utc)
+        age_days = (now - measured).total_seconds() / 86400.0
+        if age_days > SEAT_STALE_AFTER_DAYS:
+            metrics["metrics_stale"] = True
+    except ValueError:
+        pass  # unparseable timestamp: publish without the flag, badge layer guards
+
+    return metrics
+
+
+def _read_url(url: str, timeout: int = 15) -> str:
+    with urllib.request.urlopen(url, timeout=timeout) as resp:
+        return resp.read().decode("utf-8")
+
+
+def fetch_seat_metrics(
+    platform: str,
+    cache_dir: Optional[Path] = None,
+    read_url=_read_url,
+) -> Tuple[Optional[Dict[str, str]], Optional[Dict]]:
+    """(last master CSV row, optional seat metrics.json) for a platform feed.
+
+    Source ranking is pinned: the CI-fetched cache file first, HTTPS raw as
+    fallback. Any failure returns (None, None) — fail closed. Numbers typed
+    into exchange messages, WORK_QUEUE pins, or design docs are never a
+    source; if the CSV cannot be read, the honest answer is NOT-MEASURED.
+    """
+    if platform not in SEAT_FEEDS:
+        return None, None
+    cache_dir = cache_dir if cache_dir is not None else SEAT_CACHE_DIR
+
+    csv_text = None
+    cache_csv = cache_dir / platform / "history.csv"
+    if cache_csv.exists():
+        csv_text = cache_csv.read_text()
+    else:
+        try:
+            csv_text = read_url(f"{SEAT_FEEDS[platform]}/metrics/history.csv")
+        except Exception as e:
+            print(f"  {platform}: seat feed unreachable ({e.__class__.__name__}) — "
+                  f"leaving NOT-MEASURED (numbers fail closed)")
+            return None, None
+
+    row = parse_history_csv(csv_text)
+    if row is None:
+        print(f"  {platform}: no master row in history.csv — leaving NOT-MEASURED")
+        return None, None
+
+    seat_json = None
+    cache_json = cache_dir / platform / "metrics.json"
+    if cache_json.exists():
+        try:
+            seat_json = json.loads(cache_json.read_text())
+        except Exception:
+            seat_json = None
+    else:
+        try:
+            seat_json = json.loads(read_url(f"{SEAT_FEEDS[platform]}/metrics.json"))
+        except Exception:
+            seat_json = None  # optional enrichment only; the CSV row stands alone
+
+    return row, seat_json
 
 
 def get_git_commit(submodule_path: Path) -> Optional[str]:
@@ -283,7 +456,13 @@ def collect_platform_metrics(platform: str, submodule_path: Path, verbose: bool 
     parity_data, parity_source = find_file(submodule_path, PARITY_TEST_SOURCES)
     baseline_data, baseline_source = find_file(submodule_path, BASELINE_SOURCES)
 
-    if not swarm_data and not parity_data and not baseline_data:
+    # Seat build/tests feed (Windows/Linux). Orthogonal to parity: either may
+    # populate a platform row. The old code returned None the moment parity
+    # artefacts were absent, which is the exact defect that kept two platforms
+    # grey through weeks of green CI.
+    seat_row, seat_json = fetch_seat_metrics(platform)
+
+    if not swarm_data and not parity_data and not baseline_data and not seat_row:
         print(f"  No metrics found for {platform}")
         return None
 
@@ -328,8 +507,18 @@ def collect_platform_metrics(platform: str, submodule_path: Path, verbose: bool 
             metrics["perf"] = baseline_metrics["perf"]
         metrics["tier_a_pass_rate"] = baseline_metrics.get("tier_a_pass_rate", 0)
 
-    # Add git commit
-    metrics["git_commit"] = get_git_commit(submodule_path)
+    if seat_row:
+        if seat_json:
+            print(f"  Found metrics-history feed (build + cargo tests, enriched)")
+        else:
+            print(f"  Found metrics-history feed (build + cargo tests)")
+        metrics.update(map_seat_metrics_to_unified(platform, seat_row, seat_json))
+
+    # Add git commit — only when the seat feed hasn't already pinned the
+    # commit the measurement was actually taken at. The submodule pointer is
+    # today's tree, not the measured tree.
+    if "git_commit" not in metrics:
+        metrics["git_commit"] = get_git_commit(submodule_path)
 
     return metrics
 
@@ -557,14 +746,21 @@ def main():
     for platform in ["macos", "windows", "linux"]:
         data = unified.get("platforms", {}).get(platform)
         if data:
-            parity = data.get("parity", 0)
+            parity = data.get("parity")
             source = data.get("parity_source", "unknown")
             passed = data.get("tests_passed", "?")
             total = data.get("tests_total", "?")
             grade = data.get("perf_grade", "?")
 
             print(f"\n  {platform.upper()}:")
-            print(f"    Visual Parity:  {parity:>6.2f}%  (source: {source})")
+            if parity is not None:
+                print(f"    Visual Parity:  {parity:>6.2f}%  (source: {source})")
+            else:
+                # No parity key means parity was never measured. Printing
+                # "0.00%" here would be the harness-100.0 defect inverted.
+                print(f"    Visual Parity:  not measured")
+            if data.get("tests_source"):
+                print(f"    Tests Source:   {data['tests_source']}")
             if data.get("builtins_parity"):
                 print(f"    - Builtins:     {data['builtins_parity']:>6.2f}%")
             if data.get("websuite_parity"):

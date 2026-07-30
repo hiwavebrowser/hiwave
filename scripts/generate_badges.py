@@ -355,16 +355,31 @@ def generate_all_badges(metrics: Dict[str, Any]) -> Dict[str, str]:
 
         badges[f"tests-{platform}.svg"] = generate_badge_svg("tests", value, color, label_width=40)
 
-    # Overall tests passing badge
-    total_passed = 0
-    total_tests = 0
-    for p in platforms.values():
-        if p and p.get("tests_passed") is not None:
-            total_passed += p.get("tests_passed", 0)
-            total_tests += p.get("tests_total", 0)
+    # Overall tests passing badge.
+    #
+    # Platforms do not all count the same thing: macOS's numbers are PARITY
+    # CASES (a 26-case pixel suite), Windows/Linux's are CARGO UNIT TESTS
+    # (hundreds per platform). Summing them into one fraction — 21/26 + 869/869
+    # rendered as 890/895 — is a number nobody measured, with the small honest
+    # denominator drowned by the large one. Same species as the missing
+    # parity denominator: true fields, lying total.
+    #
+    # Rule (pinned): once any platform reports cargo counts, overall
+    # aggregates ONLY platforms with the same tests_source, and the value
+    # names its source when other ontologies exist in the matrix. With no
+    # cargo platforms present, behaviour is unchanged.
+    with_tests = [
+        p for p in platforms.values() if p and p.get("tests_passed") is not None
+    ]
+    cargo = [p for p in with_tests if p.get("tests_source") == "cargo"]
+    pool = cargo if cargo else with_tests
+    source_tag = " · cargo" if cargo and len(cargo) < len(with_tests) else ""
+
+    total_passed = sum(p.get("tests_passed", 0) for p in pool)
+    total_tests = sum(p.get("tests_total", 0) for p in pool)
 
     if total_tests > 0:
-        value = f"{total_passed}/{total_tests}"
+        value = f"{total_passed}/{total_tests}{source_tag}"
         pass_rate = total_passed / total_tests
         if pass_rate >= 0.8:
             color = COLORS["green"]
