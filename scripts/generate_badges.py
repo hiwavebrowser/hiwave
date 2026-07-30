@@ -151,6 +151,45 @@ def load_metrics() -> Dict[str, Any]:
 
 PLATFORMS = ["macos", "windows", "linux"]
 
+# A measurement older than this is reported as STALE rather than as a current
+# number. Seven days is one full weekly cycle — long enough that a normally
+# running collector never trips it, short enough that a silently dead one is
+# caught within a week rather than after three.
+STALE_AFTER_DAYS = 7
+
+
+def _measured_age_days(data: Dict[str, Any], generated_at: Optional[str]) -> Optional[float]:
+    """Age of a platform's measurement at aggregation time, in days.
+
+    Returns None when either timestamp is missing or unparseable — absence of
+    provenance is NOT evidence of freshness, and the caller renders it as
+    unknown rather than assuming current.
+
+    This exists because of a real defect. The umbrella published macOS as
+    `parity 88.14 @ git_commit fd7e4c0` where fd7e4c0 was committed 2026-07-29
+    and `last_updated` said 2026-07-10. Every field was individually true; the
+    record was a lie by juxtaposition — a twenty-day-old measurement restamped
+    onto whatever commit happened to be HEAD the night the aggregation ran. A
+    reader sees a confident number against a current SHA and concludes the tree
+    was measured. It was not.
+    """
+    measured = data.get("last_updated") or data.get("measured_at")
+    if not measured or not generated_at:
+        return None
+    try:
+        m = datetime.fromisoformat(str(measured).replace("Z", "+00:00"))
+        g = datetime.fromisoformat(str(generated_at).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if m.tzinfo != g.tzinfo:  # one naive, one aware — compare on the wall clock
+        m, g = m.replace(tzinfo=None), g.replace(tzinfo=None)
+    return (g - m).total_seconds() / 86400.0
+
+
+def _is_stale(data: Dict[str, Any], generated_at: Optional[str]) -> bool:
+    age = _measured_age_days(data, generated_at)
+    return age is not None and age > STALE_AFTER_DAYS
+
 
 def _build_ok(data: Dict[str, Any]) -> Optional[bool]:
     """Read a platform's build status. Returns None for NOT-MEASURED.
@@ -177,20 +216,30 @@ def generate_all_badges(metrics: Dict[str, Any]) -> Dict[str, str]:
     """Generate all badges from metrics, return dict of filename -> svg content."""
     badges = {}
     platforms = metrics.get("platforms", {})
+    generated_at = metrics.get("generated_at")
 
     # Per-platform parity badges
-    for platform in ["macos", "windows", "linux"]:
+    for platform in PLATFORMS:
         data = platforms.get(platform) or {}
         parity = data.get("parity") if data else None
 
-        if parity is not None:
+        if parity is not None and _is_stale(data, generated_at):
+            # MEASURED-but-old is its own state. Showing the bare number would
+            # present a three-week-old figure as current; hiding it would throw
+            # away a real measurement. Say both.
+            age = _measured_age_days(data, generated_at)
+            value = f"{parity:.1f}% · {int(age)}d stale"
+            color = COLORS["gray"]
+        elif parity is not None:
             value = f"{parity:.1f}%"
+            color = get_parity_color(parity)
         elif data.get("status") == "not_available":
             value = "coming soon"
+            color = get_parity_color(None)
         else:
             value = "no data"
+            color = get_parity_color(None)
 
-        color = get_parity_color(parity)
         badges[f"parity-{platform}.svg"] = generate_badge_svg("parity", value, color)
 
     # Overall parity badge — worst measured platform, WITH its coverage.
@@ -204,9 +253,13 @@ def generate_all_badges(metrics: Dict[str, Any]) -> Dict[str, str]:
     # invisible.
     #
     # Coverage is now always shown, so N=1 cannot masquerade as N=3.
+    # A stale measurement is not a current one, so it does not count toward
+    # coverage. Otherwise a project where nothing has been measured for three
+    # weeks still advertises "1/3 measured" and the denominator fix — the whole
+    # point of this badge — quietly stops meaning what it says.
     parity_values = [
         p.get("parity") for p in platforms.values()
-        if p and p.get("parity") is not None
+        if p and p.get("parity") is not None and not _is_stale(p, generated_at)
     ]
     total_platforms = len(PLATFORMS)
     if parity_values:
