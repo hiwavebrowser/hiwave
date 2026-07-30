@@ -149,6 +149,30 @@ def load_metrics() -> Dict[str, Any]:
     }
 
 
+PLATFORMS = ["macos", "windows", "linux"]
+
+
+def _build_ok(data: Dict[str, Any]) -> Optional[bool]:
+    """Read a platform's build status. Returns None for NOT-MEASURED.
+
+    Three-state on purpose (hiwave.platform_metrics.v1): True / False / None
+    map to MEASURED-passing / MEASURED-failing / NOT-MEASURED. Never guess a
+    fourth answer from an unrelated field — an absent build status is a real
+    and reportable state, and "unknown" is the honest badge for it.
+
+    Accepts either `build: bool` or `build: {"ok": bool}` so a platform feed can
+    carry warning counts and a run URL alongside the verdict.
+    """
+    if not data:
+        return None
+    build = data.get("build")
+    if isinstance(build, bool):
+        return build
+    if isinstance(build, dict) and isinstance(build.get("ok"), bool):
+        return build["ok"]
+    return None
+
+
 def generate_all_badges(metrics: Dict[str, Any]) -> Dict[str, str]:
     """Generate all badges from metrics, return dict of filename -> svg content."""
     badges = {}
@@ -169,19 +193,33 @@ def generate_all_badges(metrics: Dict[str, Any]) -> Dict[str, str]:
         color = get_parity_color(parity)
         badges[f"parity-{platform}.svg"] = generate_badge_svg("parity", value, color)
 
-    # Overall parity badge (minimum of available platforms)
+    # Overall parity badge — worst measured platform, WITH its coverage.
+    #
+    # This badge is the headline number on the front page of the project, so a
+    # missing denominator here is the most expensive kind. Before this change it
+    # read a bare "88.1%" computed as min() over platforms that happened to have
+    # data — and exactly one did. A reader saw a cross-platform claim; the truth
+    # was macOS alone. Same failure as a parity harness publishing a confident
+    # 100.0 on no capture: not a fabricated number, a number whose scope is
+    # invisible.
+    #
+    # Coverage is now always shown, so N=1 cannot masquerade as N=3.
     parity_values = [
         p.get("parity") for p in platforms.values()
         if p and p.get("parity") is not None
     ]
+    total_platforms = len(PLATFORMS)
     if parity_values:
         overall_parity = min(parity_values)
         badges["parity-overall.svg"] = generate_badge_svg(
-            "parity", f"{overall_parity:.1f}%", get_parity_color(overall_parity), label_width=50
+            "parity",
+            f"{overall_parity:.1f}% · {len(parity_values)}/{total_platforms}",
+            get_parity_color(overall_parity),
+            label_width=50,
         )
     else:
         badges["parity-overall.svg"] = generate_badge_svg(
-            "parity", "no data", COLORS["gray"], label_width=50
+            "parity", f"no data · 0/{total_platforms}", COLORS["gray"], label_width=50
         )
 
     # Per-platform Tier A badges
@@ -215,13 +253,26 @@ def generate_all_badges(metrics: Dict[str, Any]) -> Dict[str, str]:
     else:
         badges["perf-score.svg"] = generate_badge_svg("perf", "N/A", COLORS["gray"], label_width=40)
 
-    # Build status badges (placeholder - would need CI integration)
-    for platform in ["macos", "windows", "linux"]:
+    # Build status badges — read build status, never infer it from parity.
+    #
+    # This previously said "passing" whenever a parity number existed. Two ways
+    # that lies, and the first is the dangerous one:
+    #   - a platform with a RED build and any stale parity number read "passing"
+    #   - a platform that builds and tests perfectly but has no parity capture
+    #     read "unknown" forever, which is why Windows and Linux stayed blank
+    #     even once they had green CI and hundreds of passing tests
+    # Build health and pixel parity are unrelated measurements. Asserting one
+    # from the other is not a conservative default; it is a wrong answer wearing
+    # a plausible label.
+    for platform in PLATFORMS:
         data = platforms.get(platform) or {}
-        if data.get("status") == "not_available":
-            value, color = "N/A", COLORS["gray"]
-        elif data.get("parity") is not None:
+        build_ok = _build_ok(data)
+        if build_ok is True:
             value, color = "passing", COLORS["green"]
+        elif build_ok is False:
+            value, color = "failing", COLORS["red"]
+        elif data.get("status") == "not_available":
+            value, color = "N/A", COLORS["gray"]
         else:
             value, color = "unknown", COLORS["gray"]
         badges[f"build-{platform}.svg"] = generate_badge_svg("build", value, color, label_width=45)
