@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31T13:00:56.411046",
+  "generated_at": "2026-07-31T13:45:07.237072",
   "platforms": {
     "macos": {
       "visual_parity": 88.14,
@@ -242,9 +242,9 @@
       "tests_ignored": 5,
       "tests_total": 947,
       "tests_source": "cargo",
-      "git_commit": "ef3620a",
-      "metrics_commit": "ef3620ae",
-      "measured_at": "2026-07-31T13:00:35.968626+00:00",
+      "git_commit": "b73cf2b",
+      "metrics_commit": "b73cf2b0",
+      "measured_at": "2026-07-31T13:44:45.628770+00:00",
       "metrics_source": "metrics-history/history.csv",
       "not_collected": {
         "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Windows runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
