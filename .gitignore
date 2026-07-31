@@ -69,3 +69,6 @@ __pycache__/
 
 # CI-fetched seat metrics feeds (metrics-history working copies)
 .cache/
+
+# Aleph semantic index (local build artifact)
+.aleph/
