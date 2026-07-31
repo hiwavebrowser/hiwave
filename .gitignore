@@ -66,3 +66,6 @@ hiwave-web*
 __pycache__/
 *.pyc
 *.pyo
+
+# CI-fetched seat metrics feeds (metrics-history working copies)
+.cache/
