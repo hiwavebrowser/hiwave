@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30T11:50:02.251728",
+  "generated_at": "2026-07-31T00:50:49.809717",
   "platforms": {
     "macos": {
       "visual_parity": 88.14,
@@ -229,17 +229,49 @@
         "images": 0
       },
       "tier_a_pass_rate": 0.4,
-      "git_commit": "fd7e4c0",
+      "git_commit": "2fe1dee",
       "perf_grade": "?"
     },
-    "windows": null,
-    "linux": null
+    "windows": {
+      "build": {
+        "ok": true,
+        "warnings": 49
+      },
+      "tests_passed": 896,
+      "tests_failed": 0,
+      "tests_ignored": 5,
+      "tests_total": 896,
+      "tests_source": "cargo",
+      "git_commit": "cb74cc1",
+      "metrics_commit": "cb74cc1c",
+      "measured_at": "2026-07-31T00:13:05.215186+00:00",
+      "metrics_source": "metrics-history/history.csv",
+      "not_collected": {
+        "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Windows runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
+      },
+      "perf_grade": "?"
+    },
+    "linux": {
+      "build": {
+        "ok": true,
+        "warnings": 46
+      },
+      "tests_passed": 759,
+      "tests_failed": 0,
+      "tests_ignored": 5,
+      "tests_total": 759,
+      "tests_source": "cargo",
+      "git_commit": "af9280a",
+      "metrics_commit": "af9280a6",
+      "measured_at": "2026-07-30T21:05:27.519974+00:00",
+      "metrics_source": "metrics-history/history.csv",
+      "not_collected": {
+        "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Linux runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
+      },
+      "perf_grade": "?"
+    }
   },
   "history": [
-    {
-      "date": "2026-05-01",
-      "macos": 80.2
-    },
     {
       "date": "2026-05-02",
       "macos": 80.2
@@ -592,6 +624,10 @@
     },
     {
       "date": "2026-07-30",
+      "macos": 88.14
+    },
+    {
+      "date": "2026-07-31",
       "macos": 88.14
     }
   ],
