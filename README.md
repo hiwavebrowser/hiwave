@@ -46,6 +46,19 @@
 | Windows | ![Build](badges/build-windows.svg) | ![Parity](badges/parity-windows.svg) | ![Tests](badges/tests-windows.svg) | ![Perf](badges/perf-windows.svg) |
 | Linux | ![Build](badges/build-linux.svg) | ![Parity](badges/parity-linux.svg) | ![Tests](badges/tests-linux.svg) | ![Perf](badges/perf-linux.svg) |
 
+**Reading this table honestly:** the three platforms measure different things
+today. macOS numbers are visual-parity cases (pixel comparison against Chrome);
+Windows and Linux numbers are `cargo test` results from each platform's CI. A
+"no data" parity badge means parity has genuinely never been captured on that
+platform — it is not inferred from anything else, and a passing build is never
+evidence of pixel fidelity. Details in
+[How these numbers are produced](#how-these-numbers-are-produced).
+
+**Per-platform engine status** (what actually renders, what is parsed-but-inert,
+known gaps): see each platform README —
+[Windows](./hiwave-windows#readme) · [macOS](./hiwave-macos#readme) ·
+[Linux](./hiwave-linux#readme).
+
 <details>
 <summary>Parity Trend (click to expand)</summary>
 
@@ -94,19 +107,28 @@ RustKit engine is tested against Chrome 120 baselines using **triple verificatio
 
 ### Platform Support
 
-| Platform | Status | Notes |
-|----------|--------|-------|
-| macOS | Active | Full headless parity testing |
-| Windows | Pending | Awaiting headless rendering port |
-| Linux | Pending | Awaiting headless rendering port |
+| Platform | Parity capture | Build + unit tests |
+|----------|----------------|--------------------|
+| macOS | Active — full headless parity testing | Not yet published to the metrics feed |
+| Windows | Pending — awaiting headless rendering port | Published from CI (`metrics-history` branch) |
+| Linux | Pending — awaiting headless rendering port | Published from CI (`metrics-history` branch) |
 
-### Test Cases (23 total)
+Windows and Linux run hundreds of `cargo test` engine tests in CI on every
+master merge; those are real and drive the Build/Tests badges above. What they
+do **not** yet have is pixel capture, so their parity badges stay "no data"
+rather than borrowing a number from anywhere else.
+
+### Test Cases (26 total)
 
 | Category | Count | Cases |
 |----------|-------|-------|
 | Built-ins | 5 | `new_tab`, `about`, `settings`, `chrome_rustkit`, `shelf` |
 | Websuite | 8 | `article-typography`, `card-grid`, `css-selectors`, `flex-positioning`, `form-elements`, `gradient-backgrounds`, `image-gallery`, `sticky-scroll` |
-| Micro-tests | 10 | `backgrounds`, `bg-solid`, `combinators`, `form-controls`, `gradients`, `images-intrinsic`, `pseudo-classes`, `rounded-corners`, `specificity` |
+| Micro-tests | 13 | `backgrounds`, `bg-pure`, `bg-solid`, `combinators`, `form-controls`, `gpu-gradient-regression`, `gradient-no-radius`, `gradient-radius-only`, `gradients`, `images-intrinsic`, `pseudo-classes`, `rounded-corners`, `specificity` |
+
+The case list above is taken from the harness's own results file, not
+maintained by hand — if it drifts from `parity_test_results.json`, the results
+file wins.
 
 ### Running Parity Tests
 
@@ -125,6 +147,38 @@ xvfb-run python3 scripts/parity_swarm.py --scope all
 ```
 
 *Parity scores updated daily via [GitHub Actions](https://github.com/hiwavebrowser/hiwave/actions/workflows/parity-unified.yml)*
+
+---
+
+## How these numbers are produced
+
+Every number on this page has a path back to a machine that measured it. If a
+number has no such path, it does not get published — "no data" is a valid and
+honest state.
+
+| Number | Producer | Where it lives | Consumer |
+|--------|----------|----------------|----------|
+| macOS parity % | Headless pixel capture vs Chrome baselines (`parity_swarm.py`) | `hiwave-macos` parity artefacts | [`collect_metrics.py`](scripts/collect_metrics.py) |
+| Windows build + tests | Windows CI on master merges | [`hiwave-windows@metrics-history`](https://github.com/hiwavebrowser/hiwave-windows/tree/metrics-history) (`metrics/history.csv`, append-only) | same |
+| Linux build + tests | Linux CI on master merges | [`hiwave-linux@metrics-history`](https://github.com/hiwavebrowser/hiwave-linux/tree/metrics-history) (`metrics/history.csv`, append-only) | same |
+| Badges | [`generate_badges.py`](scripts/generate_badges.py) from `metrics/unified.json` | [`badges/`](badges/) | this README |
+
+The aggregation runs in [`metrics.yml`](.github/workflows/metrics.yml) (daily,
+and on dispatch from the platform repos). Rules the pipeline enforces rather
+than trusts anyone to remember:
+
+- **Numbers fail closed.** If a feed is unreachable, the platform publishes
+  NOT-MEASURED. Nothing is hand-filled, estimated, or carried forward as if
+  fresh.
+- **Only `master` rows drive public numbers.** A newer measurement from a PR
+  branch never wins.
+- **Build status is read, never inferred.** A parity number existing is not
+  evidence the build passes, and vice versa.
+- **Measurements carry their own commit and timestamp.** A number older than
+  its badge admits it (`… · Nd stale`) instead of posing as current.
+- **Different test ontologies never share a denominator.** macOS parity cases
+  and Windows/Linux cargo tests are counted separately, and the overall badge
+  names its source when both exist.
 
 ---
 
