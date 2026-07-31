@@ -60,3 +60,9 @@ pages/*
 
 #webpage
 hiwave-web*
+# Python bytecode. Global, not per-directory — a scripts/__pycache__/ rule
+# only covers one level and lets scripts/tests/__pycache__/ straight through.
+# That exact narrowness put five .pyc files on hiwave-macos master this week.
+__pycache__/
+*.pyc
+*.pyo
