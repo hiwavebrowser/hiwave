@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31T06:58:35.084478",
+  "generated_at": "2026-07-31T08:27:37.815654",
   "platforms": {
     "macos": {
       "visual_parity": 88.14,
@@ -237,14 +237,14 @@
         "ok": true,
         "warnings": 51
       },
-      "tests_passed": 912,
+      "tests_passed": 913,
       "tests_failed": 0,
       "tests_ignored": 5,
-      "tests_total": 912,
+      "tests_total": 913,
       "tests_source": "cargo",
-      "git_commit": "8bc6b54",
-      "metrics_commit": "8bc6b540",
-      "measured_at": "2026-07-31T06:58:08.871838+00:00",
+      "git_commit": "dc12b28",
+      "metrics_commit": "dc12b285",
+      "measured_at": "2026-07-31T08:27:05.531852+00:00",
       "metrics_source": "metrics-history/history.csv",
       "not_collected": {
         "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Windows runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
@@ -256,14 +256,14 @@
         "ok": true,
         "warnings": 46
       },
-      "tests_passed": 792,
+      "tests_passed": 794,
       "tests_failed": 0,
       "tests_ignored": 5,
-      "tests_total": 792,
+      "tests_total": 794,
       "tests_source": "cargo",
-      "git_commit": "02264c3",
-      "metrics_commit": "02264c35",
-      "measured_at": "2026-07-31T06:44:05.141732+00:00",
+      "git_commit": "b85909e",
+      "metrics_commit": "b85909ea",
+      "measured_at": "2026-07-31T07:12:30.314371+00:00",
       "metrics_source": "metrics-history/history.csv",
       "not_collected": {
         "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Linux runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
