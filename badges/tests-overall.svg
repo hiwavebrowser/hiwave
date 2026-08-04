@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="169" height="20" role="img" aria-label="tests: 1885/1885 · cargo">
-  <title>tests: 1885/1885 · cargo</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="169" height="20" role="img" aria-label="tests: 1888/1888 · cargo">
+  <title>tests: 1888/1888 · cargo</title>
   <linearGradient id="s" x2="0" y2="100%">
     <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
     <stop offset="1" stop-opacity=".1"/>
@@ -14,6 +14,6 @@
   </g>
   <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="11">
     <text x="20.0" y="14">tests</text>
-    <text x="104.5" y="14">1885/1885 · cargo</text>
+    <text x="104.5" y="14">1888/1888 · cargo</text>
   </g>
 </svg>
