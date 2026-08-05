@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-05T01:44:31.278241",
+  "generated_at": "2026-08-05T02:28:07.736109",
   "platforms": {
     "macos": {
       "visual_parity": 88.14,
@@ -229,7 +229,7 @@
         "images": 0
       },
       "tier_a_pass_rate": 0.4,
-      "git_commit": "2259193",
+      "git_commit": "4b607bb",
       "perf_grade": "?"
     },
     "windows": {
