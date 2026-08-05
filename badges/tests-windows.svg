@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="99" height="20" role="img" aria-label="tests: 988/988">
-  <title>tests: 988/988</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="99" height="20" role="img" aria-label="tests: 998/998">
+  <title>tests: 998/998</title>
   <linearGradient id="s" x2="0" y2="100%">
     <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
     <stop offset="1" stop-opacity=".1"/>
@@ -14,6 +14,6 @@
   </g>
   <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="11">
     <text x="20.0" y="14">tests</text>
-    <text x="69.5" y="14">988/988</text>
+    <text x="69.5" y="14">998/998</text>
   </g>
 </svg>
