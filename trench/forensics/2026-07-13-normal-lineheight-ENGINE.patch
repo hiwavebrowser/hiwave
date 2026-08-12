@@ -1,0 +1,248 @@
+diff --git a/crates/rustkit-css/src/lib.rs b/crates/rustkit-css/src/lib.rs
+index df26aeb..a3c10d7 100644
+--- a/crates/rustkit-css/src/lib.rs
++++ b/crates/rustkit-css/src/lib.rs
+@@ -1435,15 +1435,34 @@ impl Default for LineHeight {
+     }
+ }
+ 
++/// Fallback ratio for `line-height: normal` when no font metrics are available.
++///
++/// CSS says `normal` is derived from the font (ascent + descent + line-gap);
++/// this constant is only a stand-in for callers that cannot shape text. Layout
++/// must use [`LineHeight::to_px_with_normal`] instead — see its docs.
++pub const NORMAL_LINE_HEIGHT_FALLBACK_RATIO: f32 = 1.2;
++
+ impl LineHeight {
+-    /// Compute the line height in pixels.
++    /// Compute the line height in pixels, with no font metrics available.
+     ///
+-    /// - `Normal` uses the default multiplier (1.2)
+-    /// - `Number(n)` multiplies font_size by n
+-    /// - `Px(px)` returns the absolute pixel value
++    /// `Normal` falls back to a flat 1.2 x font-size, which is NOT what the
++    /// spec (or Chrome) does. Any caller that can shape text should call
++    /// [`LineHeight::to_px_with_normal`] and pass the font's own metrics.
+     pub fn to_px(&self, font_size: f32) -> f32 {
++        self.to_px_with_normal(font_size, font_size * NORMAL_LINE_HEIGHT_FALLBACK_RATIO)
++    }
++
++    /// Compute the line height in pixels, given the font's own `normal` height.
++    ///
++    /// `normal_px` is the font's ascent + descent + line-gap at this font-size
++    /// (rustkit-layout's `TextMetrics::height`). Only `Normal` consults it;
++    /// `Number`/`Px` are font-independent by definition.
++    ///
++    /// The flat-1.2 model this replaces was wrong by up to ~1.2px per line on
++    /// the common 16px system-ui case, and the error compounds down the page.
++    pub fn to_px_with_normal(&self, font_size: f32, normal_px: f32) -> f32 {
+         match self {
+-            LineHeight::Normal => font_size * 1.2,
++            LineHeight::Normal => normal_px,
+             LineHeight::Number(n) => font_size * n,
+             LineHeight::Px(px) => *px,
+         }
+diff --git a/crates/rustkit-layout/src/flex.rs b/crates/rustkit-layout/src/flex.rs
+index b84c1d4..231475b 100644
+--- a/crates/rustkit-layout/src/flex.rs
++++ b/crates/rustkit-layout/src/flex.rs
+@@ -1025,7 +1025,7 @@ fn get_content_cross_size(layout_box: &LayoutBox) -> f32 {
+     };
+ 
+     // Get line height (used for text and inline boxes)
+-    let line_height = layout_box.style.line_height.to_px(font_size);
++    let line_height = crate::resolve_line_height(&layout_box.style, font_size);
+ 
+     // For text boxes, use line height
+     if let crate::BoxType::Text(_) = &layout_box.box_type {
+@@ -1080,7 +1080,7 @@ fn get_content_cross_size(layout_box: &LayoutBox) -> f32 {
+     }
+ 
+     // For inline/block boxes without content, use line height as minimum
+-    layout_box.style.line_height.to_px(font_size)
++    crate::resolve_line_height(&layout_box.style, font_size)
+ }
+ 
+ /// Distribute lines according to align-content.
+@@ -1397,10 +1397,10 @@ fn get_intrinsic_main_size(layout_box: &crate::LayoutBox, main_axis: Axis) -> f3
+                     if content > 0.0 {
+                         content
+                     } else {
+-                        style.line_height.to_px(font_size)
++                        crate::resolve_line_height(style, font_size)
+                     }
+                 }
+-                Axis::Vertical => style.line_height.to_px(font_size),
++                Axis::Vertical => crate::resolve_line_height(style, font_size),
+             }
+         }
+         crate::BoxType::Text(text) => {
+@@ -1419,10 +1419,10 @@ fn get_intrinsic_main_size(layout_box: &crate::LayoutBox, main_axis: Axis) -> f3
+                     if w > 0.0 {
+                         w
+                     } else {
+-                        style.line_height.to_px(font_size)
++                        crate::resolve_line_height(style, font_size)
+                     }
+                 }
+-                Axis::Vertical => style.line_height.to_px(font_size),
++                Axis::Vertical => crate::resolve_line_height(style, font_size),
+             }
+         }
+     }
+@@ -1476,7 +1476,7 @@ fn get_intrinsic_cross_size(
+         },
+         crate::BoxType::Text(_) => {
+             // Text boxes have intrinsic height based on line height
+-            let line_height = style.line_height.to_px(font_size);
++            let line_height = crate::resolve_line_height(style, font_size);
+             match cross_axis {
+                 Axis::Vertical => line_height,
+                 Axis::Horizontal => 0.0, // Text width depends on content
+@@ -1485,7 +1485,7 @@ fn get_intrinsic_cross_size(
+         _ => {
+             // For block/inline boxes, provide a minimum based on line height
+             // This ensures flex items have non-zero cross size
+-            let line_height = style.line_height.to_px(font_size);
++            let line_height = crate::resolve_line_height(style, font_size);
+             match cross_axis {
+                 Axis::Vertical => line_height,
+                 Axis::Horizontal => 0.0,
+diff --git a/crates/rustkit-layout/src/grid.rs b/crates/rustkit-layout/src/grid.rs
+index 2a43c0b..8fca893 100644
+--- a/crates/rustkit-layout/src/grid.rs
++++ b/crates/rustkit-layout/src/grid.rs
+@@ -270,7 +270,7 @@ impl<'a> GridItem<'a> {
+         };
+ 
+         // Get line height in pixels
+-        let line_height_px = self.layout_box.style.line_height.to_px(font_size);
++        let line_height_px = crate::resolve_line_height(&self.layout_box.style, font_size);
+ 
+         // Count text children (simplified)
+         let text_lines = self.count_text_lines();
+@@ -321,7 +321,7 @@ impl<'a> GridItem<'a> {
+                 Length::Px(px) => px,
+                 _ => font_size,
+             };
+-            let child_line_height_px = child_style.line_height.to_px(child_font_size);
++            let child_line_height_px = crate::resolve_line_height(child_style, child_font_size);
+ 
+             // Estimate child's content height
+             let child_content_height = if let crate::BoxType::Text(_) = &child.box_type {
+diff --git a/crates/rustkit-layout/src/lib.rs b/crates/rustkit-layout/src/lib.rs
+index 4bcdbcc..01251d0 100644
+--- a/crates/rustkit-layout/src/lib.rs
++++ b/crates/rustkit-layout/src/lib.rs
+@@ -63,6 +63,73 @@ pub enum LayoutError {
+     TextShapingError(String),
+ }
+ 
++thread_local! {
++    /// Memo for [`normal_line_height`]: shaping a probe glyph per box per layout
++    /// pass showed up as real time, and the answer only depends on the font.
++    static NORMAL_LINE_HEIGHT_CACHE: std::cell::RefCell<
++        std::collections::HashMap<(String, u32, u16, u8), f32>,
++    > = std::cell::RefCell::new(std::collections::HashMap::new());
++}
++
++/// The font's own `line-height: normal`, in px, matching Blink's model:
++/// `round(ascent) + round(descent) + line_gap`.
++///
++/// Two things matter here, and only the pair of them gets Chrome's answer:
++///
++/// 1. `normal` is derived from the FONT (ascent + descent + line-gap), not from
++///    a flat ratio. RustKit hardcoded `font_size * 1.2`, drifting up to ~1.2px
++///    per line at 16px system-ui and compounding down the page.
++/// 2. Blink rounds ascent and descent to whole pixels INDEPENDENTLY before
++///    summing (SimpleFontData). So `normal` is always an integer, and line
++///    boxes land on whole pixels. Summing the raw floats instead is *closer on
++///    average* yet scores WORSE on the pixel meter: fractional line boxes push
++///    every baseline onto a sub-pixel offset and antialiasing diverges
++///    everywhere. Measured: 24/26 -> 23/26 with raw floats. Rounding is not a
++///    cosmetic detail, it is the mechanism.
++///
++/// Verified against Chrome 148 on 20 font/size pairs drawn from the committed
++/// baselines (`crates/rustkit-layout/tests/normal_line_height_probe.rs` and
++/// `scripts/probe_normal_lineheight.py`): exact on 19/20.
++///
++/// Falls back to the flat ratio only when shaping yields no usable metrics
++/// (missing font) -- same behaviour as before this existed.
++pub fn normal_line_height(style: &ComputedStyle, font_size: f32) -> f32 {
++    let key = (
++        style.font_family.clone(),
++        font_size.to_bits(),
++        style.font_weight.0 as u16,
++        style.font_style as u8,
++    );
++    if let Some(px) = NORMAL_LINE_HEIGHT_CACHE.with(|c| c.borrow().get(&key).copied()) {
++        return px;
++    }
++
++    let m = measure_text_advanced(
++        "x",
++        &style.font_family,
++        font_size,
++        style.font_weight,
++        style.font_style,
++    );
++    let px = if m.ascent > 0.0 {
++        m.ascent.round() + m.descent.round() + m.leading
++    } else {
++        font_size * rustkit_css::NORMAL_LINE_HEIGHT_FALLBACK_RATIO
++    };
++
++    NORMAL_LINE_HEIGHT_CACHE.with(|c| c.borrow_mut().insert(key, px));
++    px
++}
++
++/// Resolve a box's `line-height` to px, consulting font metrics for `normal`.
++pub fn resolve_line_height(style: &ComputedStyle, font_size: f32) -> f32 {
++    match style.line_height {
++        // Only `normal` needs the font; skip shaping entirely otherwise.
++        rustkit_css::LineHeight::Normal => normal_line_height(style, font_size),
++        other => other.to_px(font_size),
++    }
++}
++
+ /// CSS position property values.
+ #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+ pub enum Position {
+@@ -1516,7 +1583,7 @@ impl LayoutBox {
+             Length::Px(px) => px,
+             _ => 16.0,
+         };
+-        let line_height = self.style.line_height.to_px(font_size);
++        let line_height = resolve_line_height(&self.style, font_size);
+         let metrics = measure_text_advanced(
+             "x",
+             &self.style.font_family,
+@@ -1539,8 +1606,7 @@ impl LayoutBox {
+             Length::Px(px) => px,
+             _ => 16.0,
+         };
+-        // Use the LineHeight enum's to_px method for proper calculation
+-        self.style.line_height.to_px(font_size)
++        resolve_line_height(&self.style, font_size)
+     }
+ 
+     /// Perform layout with margin collapse context.
+@@ -2381,7 +2447,7 @@ impl LayoutBox {
+         let text_extents = |s: &ComputedStyle| -> (f32, f32) {
+             let fs = font_px(s);
+             let m = measure_text_advanced("x", &s.font_family, fs, s.font_weight, s.font_style);
+-            let line_h = s.line_height.to_px(fs);
++            let line_h = resolve_line_height(s, fs);
+             let half_leading = ((line_h - (m.ascent + m.descent)) / 2.0).max(0.0);
+             (half_leading + m.ascent, half_leading + m.descent)
+         };
+@@ -4494,7 +4560,8 @@ impl DisplayList {
+             // Calculate half-leading for proper baseline alignment
+             // CSS line-height creates extra space above and below the text content
+             // The half-leading is split evenly above and below the text
+-            let line_height = style.line_height.to_px(font_size);
++            // (must resolve `normal` exactly as layout did, or the baseline moves)
++            let line_height = resolve_line_height(style, font_size);
+ 
+             // Get font metrics for accurate baseline calculation
+             let metrics = measure_text_advanced(

@@ -11,6 +11,13 @@ deps
 # Capture/baseline/golden trees: binary + generated test-page churn.
 # Masking keeps symbol search clean and bounds the temporal git-log scan
 # (unscoped, per-commit numstat over PNG churn is effectively unbounded).
+# Session-7 preflight (2026-07-08): the hub index does NOT honor submodule
+# .alephignore files, so mask fastrender here — parity renders with
+# crates/rustkit-*, and fastrender steers agents to the wrong engine
+# (bit sessions 4 and 6). vendor listed explicitly per session-7 scope.
+fastrender
+vendor
+
 .browsers
 parity-baseline
 parity-history

@@ -1,12 +1,17 @@
 # WPT Tier-1 subset (≤200) — Friday north-star seed
 
-**Author:** Prometheus · **Date:** 2026-07-10  
-**Purpose:** Concrete list for Phase 0.5 runner — **not** a full WPT import.  
-**Rule:** Prefer tests that fail if wrap/line metrics/cascade are wrong; skip Chrome-bug reftests.
+**Author:** Prometheus · **Date:** 2026-07-10 · **Updated:** 2026-07-15  
+**Purpose:** **Seed source for the MANIFEST** (was: menu). W0a landed 2026-07-29 — the live list is
+`hiwave-macos:trench/wpt/MANIFEST.json`, pinned to WPT `a6f29b0` (PR #69). This file is where the seed
+came from and where the next growth round shops; it is no longer the thing a runner reads.  
+**Rule:** Prefer tests that fail if wrap/line metrics/cascade are wrong; skip Chrome-bug reftests.  
+**Gate:** Phase 0.5 **GATE OPEN** — implement pin `trench/forensics/2026-07-15-wpt-phase05-GATE-OPEN.md` (W0a manifest → W0b engine reftest → W0c Friday field). Dig preconditions met (wrap production, IFC A–C, gallery closed); runner still stub until W0b.  
+**Seed size for first K/N:** ≤30 from this menu (see GATE-OPEN §4), not the full ~200 ceiling.
 
 Sources: css-text-3, css-inline-3, css-flexbox-1 (minimal). Paths are WPT-relative
 (`css/css-text/...`). Exact filenames vary by WPT pin — resolve against the pin
-Atlas chooses for the runner.
+Atlas chooses for the runner — now resolved: `hiwave-macos:trench/wpt/MANIFEST.json` (JSON, not YAML),
+14 entries verified verbatim against pinned directory listings.
 
 ---
 
