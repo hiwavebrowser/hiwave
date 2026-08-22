@@ -63,3 +63,28 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
 
 - **DIVERGENCE HAS A NUMBER (Athena session 3, 2026-07-08):** salvage falsified with data. rustkit-CSS ports wholesale (91KB superset compiles on Windows — banked). But the ENGINE cascade transplant = 245 errors in engine + ripple into renderer/compositor/net/bindings: the macOS engine drags box types (FormControl/Image), DOM methods, animation plumbing the Windows fork lacks. VERDICT: file-level reuse between the two engines is NOT viable below the whole-crate-set level. Friday choice is concrete — adopt the macOS crate-set wholesale on Windows, OR accept the fork. Athena chose a native minimal cascade (~300 lines) for session 4 to unblock Windows parity NOW; the strategic re-unify call is Pete's.
 - **TWO ENGINES ON macOS TOO (session 4, 2026-07-08):** parity renders via `crates/rustkit-*`; the repo also carries `fastrender/` — larger, more sophisticated (real font-metric line-heights, full cascade w/ style-sharing), and it is what January's work (and the ~98.7% claims) built. Aleph currently indexes fastrender and steers sessions to the wrong engine. TACTICAL (done): sessions target rustkit (the metric engine); Aleph re-scoped. STRATEGIC (Pete, Friday): which engine is HiWave's future — grind rustkit to parity, or make fastrender the capture engine and re-baseline? This may be the single biggest resource-allocation decision of the campaign.
+
+## Direction update (Atlas, 2026-08-22 evening — Pete greenlight executed, post-landing retarget)
+- **The board landed today.** E0 lane #147→#148→#149 merged to `master` in the Prometheus
+  land order. #150 (soft-wrap slice-0) retargeted and merged to `develop` per the standing
+  ruling, with the banked docs lane (#151). n27 decision 1 and n29 decision 1's #150 half
+  are closed. NOTE for the seat: n29's "nothing merged all week" reading predates this.
+- **Trunk answer (interim, Atlas manager call): `develop` is the measurement tree.**
+  @font-face (#124–#133) + slice-0 + docs all live on develop; measuring master kept the
+  Tier-1 board's `blocked_by: @font-face` attribution pointed at the wrong tree — n29's
+  finding (overflow-wrap-001/002 "blocked" yet flipped by slice-0 alone) confirms the
+  over-claim. Until develop→master promotion (external-R1 ceremony, queued on the
+  exchange), nightly boards measure **develop tip**.
+- **Tonight's scope, in order (cap ~3h):**
+  1. Fresh parity-capture on develop tip; re-run Tier-1 + campaign boards; commit the new
+     develop basis to BASELINE-macos.md. Re-attribute every remaining fail honestly.
+  2. Then the named engine lane: the #150 ink residual (glyph ink ~2–3px right of correct
+     boxes on lba001/002, paint-side advance under the new breaker — n29 localized it,
+     forensics 2026-08-22-abspos-overlay-two-bugs-one-pattern.md). It now lives on develop;
+     one contained fix + line-count + ink assertions. PR to develop, review lane.
+  3. #152 (abspos margin-collapse + paint-order fixes) is retargeted to develop and queued
+     for cross-seat R1 — do not merge it from the trench seat.
+- Carried ask (n17→n29) on allowlisting `git worktree`/`gh pr merge`/`null_exchange`:
+  still with Pete, re-flagged. MCP-unreachable (n28/n29): likely the fastembed cache
+  corruption fixed 2026-08-22 14:04 — tonight's session is the verdict; escalate if it
+  recurs.
