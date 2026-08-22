@@ -88,3 +88,4 @@ HiWave stalled at the berserker→trench transition (mirror session, 2026-07-07)
   still with Pete, re-flagged. MCP-unreachable (n28/n29): likely the fastembed cache
   corruption fixed 2026-08-22 14:04 — tonight's session is the verdict; escalate if it
   recurs.
+- **Addendum (22:xx):** master was sync-merged into develop (#153) — develop now carries E0 + slice-0 + docs. #152 is CONFLICTING vs develop (real overlap with #150 in shared crates): tonight, REBASE `atlas/abspos-overlay` onto develop and resolve — you authored both sides — before any R1 ping.
