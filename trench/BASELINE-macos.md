@@ -1,6 +1,25 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## RE-BASED 2026-08-23 (night 30): develop is the measurement tree
+Per the 2026-08-22 retarget (PLAN §Direction update), nightly boards measure
+**hiwave-macos `develop` tip** until the develop→master promotion ceremony.
+First develop basis, fresh parity-capture at `a23f8c2` (#153: E0 lane +
+slice-0 + @font-face lane + docs, all in one tree):
+- **Campaign pixel board: 26/26 PASS, avg diff 5.3%** (was 6.5 on master —
+  improvement is the merged tree, zero regressions).
+- **WPT Tier-1: 9/25 (36.0%)** — pass 9 / fail 16 / skip 4 / error 1, n=30.
+  Matches n29's stack prediction. 12 fails still attributed `blocked_by:
+  @font-face` — read as "declares a web font", not "fails because of it"
+  (n29 over-claim finding stands; 5 passes remain SUSPECT).
+- lba001/002 measure 0.30%/0.25% on develop (worse than the n29 stack's
+  0.085%/0.068%) because #152's abspos margin-collapse + paint-order fixes
+  are not yet on develop.
+- Night-30 finding: the "#150 ink residual" is NOT a slice-0 bug — it is a
+  global glyph-seating bug (raster bitmap padding never folded into the
+  bearings; every glyph on every page painted (+2,+2)px off). Fix on
+  `atlas/glyph-raster-bearing` (rustkit-text, shared-crate PR lane).
+
 ## RE-PINNED 2026-07-08 (night 1, Phase 0 exit)
 - **Unified pass rate vs pinned Chrome for Testing 148.0.7778.216: 9/26 (34.6%)**, avg diff 19.3% — this replaces the 46.2% chrome-120 number below as the campaign metric. The 120-era baselines were flattering (rounded-corners 9.5→26.4, gradients 9.6→22.8 under Chrome 148's own rendering changes); Athena saw the same drop shape on Windows.
 - Baseline tree: `hiwave-macos:baselines/chrome-148/` (26 cases, exact binary in metadata.json), captured with ANGLE swiftshader + PARITY_CHROME_PATH pin. Instrument commits: hiwave-macos@5d14baf, @fc7531d on `atlas/trench`.
