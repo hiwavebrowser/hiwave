@@ -1,6 +1,15 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-08-27 (night 34): develop `d223b31` (#162 W3 layout half + #163 web-font lane)
+Fresh parity-capture on develop tip, reproduced bit-for-bit before any edit:
+- **Campaign pixel board: 26/26 PASS, avg diff 4.06%** (was 5.3 at the n30 basis).
+- **WPT Tier-1: 18/26 (69.2%)** — pass 18 / fail 8 / skip 4 / error 0, n=30. The
+  `blocked_by` tag is attribution only since n33 (faces load; TTF/OTF).
+- On PR #164 (`atlas/n34-wpt-tail`, not yet on develop): **21/26 (80.8%)**, campaign
+  unchanged. Remaining fails: lba001/002 (AA-noise column — tolerance decision),
+  owa002/003 (monospace `ch` + overflow-clip family), empty-span-size-002 (outline).
+
 ## RE-BASED 2026-08-23 (night 30): develop is the measurement tree
 Per the 2026-08-22 retarget (PLAN §Direction update), nightly boards measure
 **hiwave-macos `develop` tip** until the develop→master promotion ceremony.
