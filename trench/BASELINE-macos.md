@@ -1,6 +1,14 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-08-28 (night 35): develop `6e5d944` (#164 n34 tail + #165 measure-side font chain)
+Fresh parity-capture on develop tip, reproduced bit-for-bit before any edit:
+- **Campaign pixel board: 26/26 PASS, avg diff 4.0586%.**
+- **WPT Tier-1: 22/26 (84.6%)** — pass 22 / fail 4 / skip 4 / error 0, n=30.
+- On PR #166 (`atlas/n35-overflow-clip` @ b363d76, not yet on develop): **24/26 (92.3%)**,
+  campaign 26/26 avg 4.0546 (new_tab 2.3646 → 2.2600, 25 byte-flat). Remaining fails:
+  lba001 0.0173 (AA column — tolerance decision), empty-span-size-002 0.0121 (outline paint).
+
 ## BASIS 2026-08-27 (night 34): develop `d223b31` (#162 W3 layout half + #163 web-font lane)
 Fresh parity-capture on develop tip, reproduced bit-for-bit before any edit:
 - **Campaign pixel board: 26/26 PASS, avg diff 4.06%** (was 5.3 at the n30 basis).
