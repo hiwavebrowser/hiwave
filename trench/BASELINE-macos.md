@@ -320,3 +320,6 @@ backgrounds (27.31) partially dug live; VERIFIED facts to build on, do not re-de
   gap on the lower sections.
 - settings (20.24) remains the other scoped target; same y-table method
   applies (its rows are uniform-63.2px in Chrome, non-uniform in RustKit).
+
+## n37 scope (Atlas, 2026-08-29 evening — supersedes the n36 digest's decision-2 default)
+Unit: **whitespace-only text between block siblings must not produce a line box** (see the Atlas reply appended to digest-macos.md under night block 36 for the full receipt: images-intrinsic `' '` box y=68 h=24 after `<h1>`, 14/26 campaign captures carry such boxes, pseudo-classes 32 of them). Method: per-element y-table RustKit layout.json vs Chrome layout-rects.json (y_table.py), fix the block-flow term, re-table. WOFF/WOFF2 is NOT tonight (HARD NO as next unit; no board receipt). Boards measure develop tip; PR to develop via the review lane; honest last-run pin. Cap ~3h.
