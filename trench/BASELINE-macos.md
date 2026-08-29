@@ -1,6 +1,19 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-08-29 (night 36): develop `2be7d37` (#166 n35 overflow clip merged)
+Fresh parity-capture on develop tip, reproduced bit-for-bit before any edit:
+- **Campaign pixel board: 26/26 PASS, avg diff 4.0546%.**
+- **WPT Tier-1: 24/26 (92.3%)** — pass 24 / fail 2 / skip 4 / error 0, n=30.
+- On `atlas/n36-text-overflow-ellipsis` @ 803d62a (text-overflow: ellipsis + five
+  inherited css-text properties reaching child elements): **both boards byte-flat**
+  (0 of 26 moved, WPT 24/26). The meter does not see either change — no board
+  case carries a truncated title, no Tier-1 case declares `text-overflow`; the
+  receipts are 9 tests + a pixel A/B vs pinned Chrome on
+  `parity-tests/repro/text-overflow-ellipsis.html`. Remaining Tier-1 fails
+  unchanged: lba001 0.0173 (AA column — tolerance decision),
+  empty-span-size-002 0.0121 (outline paint).
+
 ## BASIS 2026-08-28 (night 35): develop `6e5d944` (#164 n34 tail + #165 measure-side font chain)
 Fresh parity-capture on develop tip, reproduced bit-for-bit before any edit:
 - **Campaign pixel board: 26/26 PASS, avg diff 4.0586%.**
