@@ -1,6 +1,18 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-08-30 (night 37): develop `2be7d37` (unchanged; #168/#169/#171 all open)
+Basis = n36's byte-flat develop receipts (campaign 26/26 avg 4.0546, WPT 24/26);
+no engine PR merged between n36 and n37.
+- On `atlas/n37-ws-line-box` @ 4b1c2f8 (cross-node whitespace collapse + inline
+  svg box): **campaign 26/26, avg 3.9318%** — images-intrinsic 8.4501 → 5.2510,
+  shelf 5.1992 → 5.2051 (+9 px), settings +1 px, 23 of 26 byte-flat.
+  **WPT Tier-1 24/26 (92.3%) unchanged**, same two fails (lba001 0.0173 AA
+  column — tolerance decision; empty-span-size-002 0.0121 outline paint).
+- Census correction: of 129 whitespace-only text boxes with height>0 across the
+  26 captures, only 2 were phantom LINES (images-intrinsic, shelf); the rest are
+  same-line spaces Chrome renders too. `scratch_n37/ws_rows.py` classifies.
+
 ## BASIS 2026-08-29 (night 36): develop `2be7d37` (#166 n35 overflow clip merged)
 Fresh parity-capture on develop tip, reproduced bit-for-bit before any edit:
 - **Campaign pixel board: 26/26 PASS, avg diff 4.0546%.**
