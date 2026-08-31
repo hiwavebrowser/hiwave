@@ -1,6 +1,20 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-08-31 (night 38): develop `2be7d37` (unchanged; #167–#171 all open)
+Basis = the n37 branch receipts (campaign 26/26 avg 3.9318, WPT 24/26 on
+`atlas/n37-ws-line-box` @ 4b1c2f8) — n38 stacks on that branch since the n37
+svg box is a hard dependency.
+- On `atlas/n38-inline-svg-paint` @ d340072 (inline svg paint + three
+  rustkit-svg parser fixes): **campaign 26/26, avg 3.9332** — shelf 5.2051 →
+  5.2428 (the search icon paints as an outline in black, Chrome's currentColor
+  is gray #6b7280), 25 of 26 byte-flat. **WPT Tier-1 24/26 (92.3%) unchanged.**
+- The board carries exactly ONE inline svg (shelf). `images-intrinsic` is 14
+  `<img>` elements — the seven-inline-svg file is `image-intrinsic-size/`,
+  which is NOT in the registry. The lane's receipts are the pinned-Chrome
+  repro A/B (`parity-tests/repro/inline-svg.html`): post-fix bboxes match
+  Chrome within 1–2px on path/circle/polygon/text.
+
 ## BASIS 2026-08-30 (night 37): develop `2be7d37` (unchanged; #168/#169/#171 all open)
 Basis = n36's byte-flat develop receipts (campaign 26/26 avg 4.0546, WPT 24/26);
 no engine PR merged between n36 and n37.
