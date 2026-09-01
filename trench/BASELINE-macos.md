@@ -1,6 +1,23 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-01 (night 39): develop `5b89ed8` (#168 grid re-flow + #169 ellipsis merged in)
+Fresh clean-develop capture reproduced before-numbers on the SAME tree/binary
+path as the after-numbers (stash-rebuild-measure, no stale-binary risk):
+- **Clean develop: campaign 26/26 PASS, avg 4.0404** (about 11.5860 is the top
+  case), **WPT Tier-1 24/26 (92.3%)** — same two fails (lba001 AA column,
+  empty-span-size-002 outline paint).
+- On `atlas/n39-inline-badge-width` @ a274a16 (PR #176: atomic inlines with
+  width:auto shrink to fit, CSS2 §10.3.9): **campaign 26/26, avg 4.0404 →
+  3.9232** — about 11.5860 → 8.5404 (−3.05pp), new_tab −0.003pp, 24/26
+  unchanged. **WPT 24/26 flat.** Badge receipt: border box 672.0 @ x=64 →
+  106.6 @ x=346.7 vs Chrome 104.6 @ x=347.7.
+- about's remaining visible-region residual after the fix (9 elements >2px):
+  card-3 block sits dy −8 (h2.card-title dh −5.4 — heading line-height/margin
+  term; its <p>s ride at −13.4) and a.sponsor-btn dh −8 (inline-flex vertical
+  sizing: block path gives 42 vs Chrome 50). Below the fold only:
+  div.features cells in cards 4/5 misplace by dx ≈ +486 (column placement).
+
 ## BASIS 2026-08-31 (night 38): develop `2be7d37` (unchanged; #167–#171 all open)
 Basis = the n37 branch receipts (campaign 26/26 avg 3.9318, WPT 24/26 on
 `atlas/n37-ws-line-box` @ 4b1c2f8) — n38 stacks on that branch since the n37
