@@ -1,6 +1,21 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-02 (night 40): develop `5b89ed8` (unchanged since n39; #174/#173/#176 still open)
+Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
+avg 4.0404, WPT Tier-1 24/26); no engine PR merged between n39 and n40.
+- On `atlas/n40-fallback-face-line-height` @ de1ff02 (PR #179: a glyph the
+  primary face lacks is shaped by its fallback face; `normal` line boxes
+  unite the used faces, Blink model): **campaign 26/26, avg 4.0404 ->
+  3.9294** — about 11.5860 -> 9.3213 (-2.26pp), image-gallery 5.6028 ->
+  5.0638 (-0.54pp), card-grid -0.06, chrome_rustkit -0.05, sticky-scroll
+  +0.03, 21 of 26 byte-flat. **WPT 24/26 flat.** Repro receipt: 12/12 row
+  heights match pinned Chrome (16px emoji line 18 -> 26, button 42 -> 50,
+  flex h2 23.55 -> 29, Arial 17.52 -> 18).
+- about's two named visible terms (a.sponsor-btn dh -8, h2.card-title
+  dh -5.4) were BOTH the emoji line — not inline-flex sizing. Remaining:
+  #176's badge width (separate PR), features-grid dx +486 below the fold.
+
 ## BASIS 2026-09-01 (night 39): develop `5b89ed8` (#168 grid re-flow + #169 ellipsis merged in)
 Fresh clean-develop capture reproduced before-numbers on the SAME tree/binary
 path as the after-numbers (stash-rebuild-measure, no stale-binary risk):
