@@ -1,6 +1,20 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-03 (night 41): develop `5b89ed8` (unchanged since n39; #174/#173/#176/#179 still open)
+Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
+avg 4.0404, WPT Tier-1 24/26); no engine PR merged between n39 and n41.
+- On `atlas/n41-about-features-grid` @ 5822115 (PR #182: `repeat(auto-fit|
+  auto-fill)` fits the container instead of a hardcoded 4; fr re-find after
+  flooring (§12.7.1); content-box grid items keep padding inside the track):
+  **campaign 26/26, avg 4.0404 -> 4.0336** — new_tab 2.2600 -> 2.0819
+  (-0.18pp), 25 of 26 byte-flat; about byte-flat (its `.features` grids sit
+  at y 800–1200, below the 800x600 fold). **WPT 24/26 flat.** Receipt: every
+  card-4 `.feature` cell matches pinned Chrome (x 89 / 300.3 / 511.7, w 199.3,
+  h 77); repro grid-auto-fit-minmax.html 4x150 -> 3x199.33.
+- about's visible residual is now fully claimed by open PRs (#176 badge /
+  sponsor width, #179 emoji line); nothing unclaimed remains in view.
+
 ## BASIS 2026-09-02 (night 40): develop `5b89ed8` (unchanged since n39; #174/#173/#176 still open)
 Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
 avg 4.0404, WPT Tier-1 24/26); no engine PR merged between n39 and n40.
