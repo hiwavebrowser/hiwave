@@ -1,6 +1,28 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-04 (night 42): develop `5b89ed8` (unchanged since n39; #174/#173/#176/#179/#182 still open)
+Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
+avg 4.0404, WPT Tier-1 24/26); no engine PR merged between n39 and n42.
+- On `atlas/n42-flex-item-padding-column-basis` @ 0398324 (PR #184: an
+  auto-width flex item's basis no longer adds its padding twice; a column
+  container re-derives content-sized rows' heights after child layout —
+  new step 11d — against its own definite height or max(content,
+  min-height); 11b's column-item width is per-axis): **campaign 26/26,
+  avg 4.0404 -> 3.6097** — flex-positioning 10.1126 -> 1.7460 (-8.37pp),
+  gradient-no-radius -0.96, gradient-backgrounds -0.84, gradient-radius-only
+  -0.60, shelf -0.58, chrome_rustkit -0.09, card-grid -0.04; new_tab 2.2600
+  -> 2.5394 (+0.28: its `.container` is now at Chrome's x/w, y -6, and the
+  develop-hardcoded four-column shortcuts grid — PR #182's lane — is fully
+  in view instead of half below the fold); 17 of 26 byte-flat. **WPT 24/26
+  flat.** Receipt: `.flex-item` 83.2/85.3/85.7 @ x 45/138.1/233.4 vs Chrome
+  83.1/85.3/85.7 @ 45/138.1/233.4; nested rows y 491/548 = Chrome; repro
+  flex-item-padding-column-basis.html five sections within 1px at the
+  container/item level.
+- Unclaimed after tonight: css-selectors 11.20 (board #2; first divergence
+  `.direct-child` dy +4 at Chrome y 66, several ±4px block-flow terms),
+  article-typography 7.46 (one span wraps to a different line — text).
+
 ## BASIS 2026-09-03 (night 41): develop `5b89ed8` (unchanged since n39; #174/#173/#176/#179 still open)
 Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
 avg 4.0404, WPT Tier-1 24/26); no engine PR merged between n39 and n41.
