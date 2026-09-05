@@ -1,6 +1,28 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-05 (night 43): develop `5b89ed8` (unchanged since n39; #174/#173/#176/#179/#182/#184 still open)
+Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
+avg 4.0404, WPT Tier-1 24/26; `scratch_n39/board_develop_basis.json`);
+about / flex-positioning / article-typography reproduced byte-for-byte
+tonight. No engine PR merged between n39 and n43.
+- On `atlas/n43-css-selectors-block-flow` @ 00950d4 (PR #185: CSS 2.1
+  §8.3.1 parent/child through-collapse at both edges — first-child margin
+  chain adjoins above the parent, last-child margin adjoins the parent's
+  own bottom margin, flex/grid items and the root element are formatting
+  roots; form controls resolve their author margins; text-line controls
+  use the hang baseline, checkbox/radio the bottom edge): **campaign 26/26,
+  avg 4.0404 -> 3.6746** — css-selectors 11.2043 -> 2.6694 (-8.53pp),
+  combinators 2.4780 -> 1.9466 (-0.53), form-elements 3.8742 -> 3.4294
+  (-0.44), new_tab -0.002, form-controls +0.001; 21 of 26 byte-flat.
+  **WPT 24/26 flat**, last-run pinned on 00950d4. Receipt: css-selectors
+  geometry mismatches 43 -> 1 (the label beside the checkbox, dy -6.4);
+  repro margin-through-collapse.html sections A-D 0.0px on 25 elements vs
+  pinned Chrome.
+- Unclaimed after tonight: article-typography 7.46 (one span wraps to a
+  different line — text), the checkbox-label baseline term (Slice C
+  vertical-align, css-selectors' last 1 element).
+
 ## BASIS 2026-09-04 (night 42): develop `5b89ed8` (unchanged since n39; #174/#173/#176/#179/#182 still open)
 Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
 avg 4.0404, WPT Tier-1 24/26); no engine PR merged between n39 and n42.
