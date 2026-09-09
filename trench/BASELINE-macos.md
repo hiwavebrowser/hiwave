@@ -1,6 +1,34 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-09 (night 44): develop `afd73ab` = master (queue #174–#188 all merged 2026-09-08; #190 promoted develop to master)
+Basis = fresh clean-tree parity-capture on develop `afd73ab` tonight
+(campaign 26/26 **avg 2.6944**, WPT Tier-1 24/26; `scratch_n44/board_develop_basis.json`;
+matches the #188 receipt exactly). Per-case on this basis: about 5.2462,
+article-typography 7.4646, image-gallery 5.0638, form-controls 5.0167,
+shelf 4.6185, card-grid 4.4169, specificity 3.6467, gpu-gradient-regression
+3.5781, settings 3.5404, form-elements 3.4294, new_tab 2.6835 (NOTE: 2.26 on
+n43's basis — rose with #182+#184 merged, contrary to the n42 prediction),
+css-selectors 2.6694, backgrounds 2.6170.
+- On `atlas/n44-svg-currentcolor` @ 87e7255 (PR #192: currentColor is a
+  render-time input to rustkit-svg carried on DisplayCommand::Image from the
+  box's CSS color; user-action/target pseudo-classes are static-false in BOTH
+  the subject and the ancestor/sibling matcher (`.card:hover .title` and
+  `.wrapper:focus-within .icon` used to match with the state off);
+  StrokeCircle is a real annulus at r ± w/2 instead of a colored disc plus an
+  opaque white disc): **campaign 26/26, avg 2.6944 -> 2.6258** — shelf
+  4.6185 -> 2.9264 (-1.69pp), new_tab -0.09, form-controls +0.0001; 23 of 26
+  byte-flat. **WPT 24/26 flat**, last-run pinned on 87e7255. Receipt: repro
+  inline-svg.html icon-gray px 0 -> 64 at Chrome's bbox ±1px, near-black
+  149 -> 80 = Chrome; shelf ring `94a3b8` = Chrome's rgb(148,163,184).
+- Measurement: the currentColor change ALONE read byte-flat 26/26 while the
+  shelf frame changed (black -> accent icon) — the t15 meter is blind to
+  which wrong color a pixel is. Pixel-diff banked frames on any paint-color
+  lane before believing "flat".
+- Unclaimed after tonight: article-typography 7.46 (text), about 5.25
+  (re-table: #176/#179 landed, what is left is unnamed), image-gallery 5.06,
+  form-controls 5.02, new_tab 2.59 (re-table, see NOTE).
+
 ## BASIS 2026-09-05 (night 43): develop `5b89ed8` (unchanged since n39; #174/#173/#176/#179/#182/#184 still open)
 Basis = n39's fresh clean-develop capture on this same commit (campaign 26/26
 avg 4.0404, WPT Tier-1 24/26; `scratch_n39/board_develop_basis.json`);
