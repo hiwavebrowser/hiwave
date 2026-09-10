@@ -1,6 +1,35 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-10 (night 45): develop `da8f413` (#191 rounded gradient clip + #192 currentColor merged 2026-09-10 01:50Z)
+Basis = fresh clean-tree parity-capture on develop `da8f413` tonight
+(campaign 26/26 **avg 2.6245**, WPT Tier-1 24/26; `scratch_n45/board_develop_basis.json`;
+25 of 26 byte-flat vs the n44 receipt — the mover is #191's gradient-backgrounds
+1.1826 -> 1.0583). Per-case on this basis: article-typography 7.4646, about 5.2462,
+image-gallery 5.0638, form-controls 5.0168, card-grid 4.4169, specificity 3.6467,
+gpu-gradient-regression 3.5781, settings 3.5404, form-elements 3.4294, shelf 2.9264,
+css-selectors 2.6694, backgrounds 2.6170, new_tab 2.5924.
+- On `atlas/n45-unknown-pseudo-class` @ 450c554 (PR to develop: the matcher's
+  `_ => true` arm is gone — an unknown pseudo-class invalidates the whole selector
+  list as Chrome does; `:is()`/`:where()`/`:not(list)`, the `-of-type` family,
+  `:link`, `:empty`, `:placeholder-shown`, the form-state pseudo-classes are
+  decided; pseudo-element base selectors get the host's real sibling context):
+  **campaign 26/26, avg 2.6245 -> 2.6279** — settings +0.0895 (the toggle knob's
+  `input:checked + .toggle-slider::before` rule matches for the first time, as in
+  Chrome, and reveals a pre-existing abspos `bottom:` bug that places the pseudo
+  box against the containing block's TOP: knob y 289 for a slider at 310, before
+  and after); 25 of 26 byte-flat. **WPT 24/26 flat**, last-run pinned on 450c554.
+  Receipt: repro unknown-pseudo-class.html — develop 14 of 15 swatches wrong,
+  branch 15/15 = Chrome 148.
+- Measurement: the census (`scratch_n45/census.py` over `cases/registry.json`)
+  shows NO board case uses a pseudo-class this lane fixes — the meter is blind to
+  the whole class by construction; the repro is the instrument. A revealed
+  defect reads as a regression until the layout dump is read.
+- Unclaimed after tonight: article-typography 7.46 (text), about 5.25 (re-table),
+  image-gallery 5.06, form-controls 5.02, new_tab 2.59 (re-table); plus the new
+  ledger item: abspos `bottom:` on pseudo boxes (settings knob, every
+  badge/knob idiom).
+
 ## BASIS 2026-09-09 (night 44): develop `afd73ab` = master (queue #174–#188 all merged 2026-09-08; #190 promoted develop to master)
 Basis = fresh clean-tree parity-capture on develop `afd73ab` tonight
 (campaign 26/26 **avg 2.6944**, WPT Tier-1 24/26; `scratch_n44/board_develop_basis.json`;
