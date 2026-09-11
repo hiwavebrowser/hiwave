@@ -1,6 +1,35 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-11 (night 46): develop `da8f413` (unchanged since n45; #193 and #194 still open)
+Basis = fresh clean-tree parity-capture on develop `da8f413` tonight
+(campaign 26/26 **avg 2.6245**, WPT Tier-1 24/26; `scratch_n46/board_develop_basis.json`,
+byte-for-byte the n45 basis).
+- On `atlas/n46-abspos-bottom` @ 0f85be6 (PR #195 to develop: an abspos
+  child's `bottom:`/`right:` and `inset` stretch re-anchor to the parent's
+  FINAL padding box once the parent is final — `reanchor_absolute_children`
+  after `apply_position_offsets` in both layout paths and after flex item
+  re-layout; a box whose size changes in `reanchor_absolute` re-anchors its
+  own abspos children; the in-loop definite-height-only re-anchor and its
+  content-box CB are gone): **campaign 26/26, avg 2.6245 -> 2.6832** —
+  about 5.2462 -> 6.7731 (+1.53pp), 25 of 26 byte-flat. **WPT 24/26 flat**,
+  last-run pinned on 0f85be6. Receipt: repro abspos-bottom-right.html six
+  sections, develop wrong on four (knob y 146/216/322/340), branch = pinned
+  Chrome 148 on all six (46/84/170/240/330/400); settings' knob box 289.19
+  -> 313.19 for the slider at 310.19 (Chrome 313.19).
+- Stacked on #194 (`scratch_n46/board_stacked194.json`): settings 3.6299 ->
+  **3.5327** — closes #194's +0.0895 and 0.008 more; every other case equal
+  to the fix-only board.
+- about's +1.53 is a REVEALED renderer bug, not layout: about's layout dump is
+  identical before/after (343 boxes, 0 changed). `.sponsor-btn::before {
+  inset:0; transform: translateX(-100%) }` is now the button's size (was 0px
+  tall) and paints as a shine bar left of the button where Chrome clips it
+  under `overflow: hidden` — rustkit-renderer clips in pre-transform document
+  space (`draw_clipped_quad` → `push_color_quad`). Named next lane.
+- Unclaimed after tonight: article-typography 7.46 (text), about 6.77 (the
+  clip-order term above, then re-table), image-gallery 5.06, form-controls
+  5.02, new_tab 2.59 (re-table).
+
 ## BASIS 2026-09-10 (night 45): develop `da8f413` (#191 rounded gradient clip + #192 currentColor merged 2026-09-10 01:50Z)
 Basis = fresh clean-tree parity-capture on develop `da8f413` tonight
 (campaign 26/26 **avg 2.6245**, WPT Tier-1 24/26; `scratch_n45/board_develop_basis.json`;
