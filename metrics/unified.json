@@ -1,7 +1,237 @@
 {
-  "generated_at": "2026-09-12T11:57:29.946224",
+  "generated_at": "2026-09-12T12:54:06.590765",
   "platforms": {
-    "macos": null,
+    "macos": {
+      "visual_parity": 97.31,
+      "builtins_parity": 96.53,
+      "websuite_parity": 97.49,
+      "tests_passed": 26,
+      "tests_failed": 0,
+      "tests_total": 26,
+      "pass_rate": 100.0,
+      "test_results": [
+        {
+          "case_id": "new_tab",
+          "type": "builtins",
+          "parity": 97.32,
+          "diff_pct": 2.68,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "about",
+          "type": "builtins",
+          "parity": 94.75,
+          "diff_pct": 5.25,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "settings",
+          "type": "builtins",
+          "parity": 96.46,
+          "diff_pct": 3.54,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "chrome_rustkit",
+          "type": "builtins",
+          "parity": 98.73,
+          "diff_pct": 1.27,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "shelf",
+          "type": "builtins",
+          "parity": 95.38,
+          "diff_pct": 4.62,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "article-typography",
+          "type": "websuite",
+          "parity": 92.54,
+          "diff_pct": 7.46,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "card-grid",
+          "type": "websuite",
+          "parity": 95.58,
+          "diff_pct": 4.42,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "css-selectors",
+          "type": "websuite",
+          "parity": 97.33,
+          "diff_pct": 2.67,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "flex-positioning",
+          "type": "websuite",
+          "parity": 98.25,
+          "diff_pct": 1.75,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "form-elements",
+          "type": "websuite",
+          "parity": 96.57,
+          "diff_pct": 3.43,
+          "threshold": 12,
+          "passed": true
+        },
+        {
+          "case_id": "gradient-backgrounds",
+          "type": "websuite",
+          "parity": 98.91,
+          "diff_pct": 1.09,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "image-gallery",
+          "type": "websuite",
+          "parity": 94.94,
+          "diff_pct": 5.06,
+          "threshold": 10,
+          "passed": true
+        },
+        {
+          "case_id": "sticky-scroll",
+          "type": "websuite",
+          "parity": 97.96,
+          "diff_pct": 2.04,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "backgrounds",
+          "type": "micro",
+          "parity": 97.38,
+          "diff_pct": 2.62,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "bg-solid",
+          "type": "micro",
+          "parity": 99.52,
+          "diff_pct": 0.48,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "bg-pure",
+          "type": "micro",
+          "parity": 100,
+          "diff_pct": 0,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "combinators",
+          "type": "micro",
+          "parity": 98.05,
+          "diff_pct": 1.95,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "form-controls",
+          "type": "micro",
+          "parity": 94.98,
+          "diff_pct": 5.02,
+          "threshold": 12,
+          "passed": true
+        },
+        {
+          "case_id": "gradients",
+          "type": "micro",
+          "parity": 99.55,
+          "diff_pct": 0.45,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "gradient-no-radius",
+          "type": "micro",
+          "parity": 98.97,
+          "diff_pct": 1.03,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "gradient-radius-only",
+          "type": "micro",
+          "parity": 98.82,
+          "diff_pct": 1.18,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "gpu-gradient-regression",
+          "type": "micro",
+          "parity": 96.42,
+          "diff_pct": 3.58,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "images-intrinsic",
+          "type": "micro",
+          "parity": 99.02,
+          "diff_pct": 0.98,
+          "threshold": 10,
+          "passed": true
+        },
+        {
+          "case_id": "pseudo-classes",
+          "type": "micro",
+          "parity": 98.56,
+          "diff_pct": 1.44,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "rounded-corners",
+          "type": "micro",
+          "parity": 97.6,
+          "diff_pct": 2.4,
+          "threshold": 15,
+          "passed": true
+        },
+        {
+          "case_id": "specificity",
+          "type": "micro",
+          "parity": 96.35,
+          "diff_pct": 3.65,
+          "threshold": 15,
+          "passed": true
+        }
+      ],
+      "parity": 97.31,
+      "parity_source": "pixel_diff",
+      "last_updated": "2026-09-08T17:50:19.303368",
+      "issue_clusters": {
+        "sizing_layout": 0,
+        "paint": 0,
+        "text": 0,
+        "images": 0
+      },
+      "tier_a_pass_rate": 0.4,
+      "git_commit": "afd73ab",
+      "perf_grade": "?"
+    },
     "windows": {
       "build": {
         "ok": true,
@@ -399,7 +629,8 @@
       "macos": 97.31
     },
     {
-      "date": "2026-09-12"
+      "date": "2026-09-12",
+      "macos": 97.31
     }
   ],
   "overall": {
