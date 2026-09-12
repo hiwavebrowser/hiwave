@@ -1,6 +1,35 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-12 (night 47): develop `da8f413` (unchanged since n45; #193, #194, #195 open)
+Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
+Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
+not moved and n45/n46 reproduced it byte-for-byte.
+- On `atlas/n47-renderer-clip-transform` @ d65f906 (PR #197 to develop,
+  rustkit-renderer only: clip entries are stored in screen space
+  (`clip_entry_under`) and quads are mapped through the transform BEFORE
+  they are clipped (`clip_quad_under`, `textured_corners` for the four
+  textured sites); identity path emits the old vertices; rotation/skew falls
+  back to the old pre-transform clip): **campaign 26/26 byte-flat, avg
+  2.6245** — no board case has a non-zero-size transformed descendant of an
+  `overflow: hidden` box until #195 lands. **WPT 24/26 flat**, pinned on
+  d65f906. Receipt: repro clip-transform-order.html vs pinned Chrome 148 —
+  A (translateX(-100%)) 5928 -> 1550 differing px (the bar is gone), B (-50%)
+  5253 -> 1253, D (text in a translated child) 4840 -> 1247; C/F controls
+  flat.
+- **Stacked on #195** (`scratch_n47/board_stacked195.json`, local branch
+  `atlas/n47-stacked-195`, not pushed): about 6.7731 -> **5.2338** (below
+  the develop basis 5.2462), campaign avg 2.6832 -> **2.6240**, 25/26
+  byte-flat; the only moved about pixels are the shine bar's 11,628.
+- Correction to n46: the `.hero::before` glow residual (rows 160–199) is NOT
+  clip order — `.hero` has no overflow clip and this fix moves no pixel
+  there; it is the glow's radial gradient.
+- Unclaimed after tonight: article-typography 7.46 (text), about 5.23 (after
+  #195+#197; re-table), image-gallery 5.06, form-controls 5.02, new_tab 2.59
+  (re-table). Ledger candidate with real-page reach: a `transform: scale()`
+  box with `overflow: hidden; border-radius` paints NOTHING (repro section
+  E; layout correct).
+
 ## BASIS 2026-09-11 (night 46): develop `da8f413` (unchanged since n45; #193 and #194 still open)
 Basis = fresh clean-tree parity-capture on develop `da8f413` tonight
 (campaign 26/26 **avg 2.6245**, WPT Tier-1 24/26; `scratch_n46/board_develop_basis.json`,
