@@ -1,6 +1,29 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-13 (night 48): develop `da8f413` (unchanged since n45; #193–#197 open)
+Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
+Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
+not moved; n45/n46/n47 reproduced it byte-for-byte.
+- On `atlas/n48-scale-clipper-paints-nothing` @ b32ef78 (PR #198 to develop,
+  rustkit-renderer only: `current_transform` composed the transform origin
+  backwards, `T(-o)·M·T(+o)` for `T(+o)·M·T(-o)`; `affine_about_origin`
+  fixes it, five tests): **campaign 26/26 byte-flat, avg 2.6245** — by
+  construction: every scale/rotate/skew declaration in the 26 case sources
+  sits in `@keyframes`, `:hover`, `:active`, or is a singular `scaleY(0)`
+  at rest (`scratch_n48/census.py`). **WPT 24/26 flat**, pinned on b32ef78.
+  Receipt: repro transform-origin.html vs pinned Chrome 148 — fill/box ink
+  3285/1000 -> 11568/9600 vs Chrome 11592/9600; differing px 30850 -> 7823
+  (5437 stacked on #197; the remainder is #197's shine-bar clip on row G);
+  n47's clip-transform-order section E band 5209 -> 897 stacked on #197.
+- n47's ledger line "a `transform: scale()` box with `overflow: hidden;
+  border-radius` paints NOTHING" is closed: it painted at `M·o − o` away —
+  y = 900, off the frame. Every scaled/rotated box on every page was
+  misplaced the same way; translate() alone hid it all campaign.
+- Unclaimed after tonight: article-typography 7.46 (text), about 5.25
+  (5.23 after #195+#197; re-table), image-gallery 5.06, form-controls 5.02,
+  new_tab 2.59 (re-table).
+
 ## BASIS 2026-09-12 (night 47): develop `da8f413` (unchanged since n45; #193, #194, #195 open)
 Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
 Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
