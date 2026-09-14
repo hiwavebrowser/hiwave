@@ -1,6 +1,34 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-14 (night 49): develop `da8f413` (unchanged since n45; #193–#198 open)
+Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
+Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
+not moved; n45–n48 reproduced it byte-for-byte.
+- On `atlas/n49-article-typography` @ 592e2bb (PR #199 to develop,
+  rustkit-layout only: `text-align: justify` distributes each soft-broken
+  line's slack across its word separators (`TextLine::justify_space`,
+  measured against the ink width via paint's `shape_line_advances`); the
+  line-break fit test trims the hanging break-point space (§4.1.3) and a
+  closed line's width is its ink; a paragraph's first long run takes the
+  flow path so its last line stays open for the next inline sibling; the
+  vertical-align pass reads a split run's LAST line as its top): **campaign
+  26/26, avg 2.6245 -> 2.5965** — article-typography 7.4646 -> **6.7360**
+  (-0.73pp), 25 of 26 byte-flat. **WPT 24/26 flat**, pinned on the fix.
+  Receipt: repro text-align-justify.html vs pinned Chrome 148 — sections
+  A–D 60,652 -> 48,064 differing px; every word on every justified line at
+  Chrome's x to the pixel; the left-aligned control paragraph reads 1.1
+  differing px per Chrome ink px with exact word positions = the text-AA
+  floor on this seat.
+- article-typography's residual is that floor plus: the h1 at 382.7px vs
+  Chrome's 446 ink (Georgia 700 — suspect face substitution; 4,936 px, the
+  largest visible term), the unjustified mixed line holding the span (dx
+  -3.1), and below the fold `<pre>` collapsed to one line (65 vs 195px),
+  `column-count`, `::first-letter`, inline `code` x drift.
+- Unclaimed after tonight: article-typography 6.74 (h1 bold width, mixed
+  line), about 5.25 (5.23 after #195+#197; re-table), image-gallery 5.06,
+  form-controls 5.02, new_tab 2.59 (re-table).
+
 ## BASIS 2026-09-13 (night 48): develop `da8f413` (unchanged since n45; #193–#197 open)
 Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
 Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
