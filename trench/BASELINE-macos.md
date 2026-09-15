@@ -1,6 +1,33 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-15 (night 50): develop `da8f413` (unchanged since n45; #193–#199 open)
+Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
+Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
+not moved; n45–n49 reproduced it byte-for-byte.
+- On `atlas/n50-pre-line-boxes` @ 461cfa1 (PR #200 to develop; rustkit-text
+  + rustkit-layout + rustkit-html + rustkit-engine): **campaign 26/26, avg
+  2.6245 -> 2.5774** — article-typography 7.4646 -> **6.1844** (-1.28pp),
+  css-selectors -0.0005, new_tab 2.5924 -> 2.6490 (+0.06: the `<kbd>` keys
+  are `font-weight: 600` monospace, now painted Menlo-Bold as Chrome does,
+  at their pre-existing wrong y), 23 of 26 byte-flat. **WPT 24/26 flat**,
+  pinned on 461cfa1.
+- Three bugs: (1) the LAYOUT font resolver tried the bare family name before
+  its `-Bold`/`-Italic` guesses, so every bold/italic run on a named family
+  MEASURED with the regular face while paint drew the bold one (h1 443px of
+  crammed bold ink vs Chrome 508; now `family_face`, a CoreText descriptor
+  by family + weight trait with css-fonts-4 §5.2 corrections, on both
+  sides — probe = Chrome on every row); (2) `<pre>` had no UA `white-space:
+  pre`, the block path never made line boxes at preserved newlines, and the
+  parser kept the newline after `<pre>` (repro 179,023 -> 14,526 px vs
+  Chrome); (3) revealed: a block advanced ONE line-height past an inline
+  child whose text wrapped to n lines (`<p><span>long</span></p>` one line
+  tall; now the phase-5 split bookkeeping).
+- Unclaimed after tonight: article-typography 6.18 (text-AA floor ~1.1
+  px/ink px + the mixed justified line + below-fold column-count), about
+  5.25 (5.23 after #195+#197; re-table), image-gallery 5.06, form-controls
+  5.02, new_tab 2.65 (kbd rows 63px high; re-table).
+
 ## BASIS 2026-09-14 (night 49): develop `da8f413` (unchanged since n45; #193–#198 open)
 Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
 Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
