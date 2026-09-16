@@ -1,6 +1,39 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-16 (night 51): develop `da8f413` (unchanged since n45; #193–#200 open)
+Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
+Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
+not moved; n45–n50 reproduced it byte-for-byte.
+- **The merged-set number, measured:** a local stack of the eight open PRs'
+  code commits on develop (`atlas/n51-stack`, not pushed; two conflicts,
+  #195↔#196 flex.rs and #199↔#200 lib.rs, both resolved keep-both):
+  **campaign 26/26, avg 2.6245 -> 2.5416**, 20/26 byte-flat —
+  article-typography 7.4646 -> **5.4559** (#199 + #200 compose), sticky-scroll
+  2.0387 -> **1.8569** (new; #193 or #196), about -> 5.2338, settings ->
+  3.5327, css-selectors -0.0005, new_tab -> 2.6490 (n50's honest +0.06).
+  `scratch_n51/board_stack.json`.
+- On `atlas/n51-grid-row-shrink` @ 10f3064 (PR #201 to develop;
+  rustkit-layout): **campaign 26/26, avg 2.6245 -> 2.6265** — new_tab 2.5924
+  -> **2.6459**, settings 3.5404 -> 3.5378, 24 of 26 byte-flat. **WPT 24/26
+  flat**, pinned on 10f3064. The meter reads new_tab UP while every box on
+  the page moved from 33–66px off Chrome to inside 10px (y-table in the
+  forensics): pixelmatch charges a near-miss twice and an absence once, and
+  the old 832px grid's empty dark stretches matched Chrome's dark background.
+- Two bugs: (1) grid Phase 9.5 re-measured `auto` rows after layout but was
+  grow-only, so track sizing's per-text-NODE estimate (seven nodes on one
+  flex line = seven lines) stood: new_tab's `.shortcuts` rows 143px for 60px
+  items, grid 832 for Chrome's 400, container taller than the viewport so
+  body's centring put it at y 0; now an intrinsic row shrinks to its tallest
+  single-row item (repro 83,608 -> 12,694 px vs Chrome, every rect = Chrome);
+  (2) `layout_form_control` resolved px/em only, so `padding: 1rem 1.5rem`
+  read as no padding and `#searchInput` was the bare 19px blob (Chrome 52;
+  now 51).
+- Unclaimed after tonight: new_tab 2.65 (`.shortcut` 57 vs 60 per row; +32
+  below the section — footer in flow), article-typography 5.46 on the stack,
+  about 5.23, image-gallery 5.06, form-controls 5.02 (byte-flat on the input
+  fix — its controls are px/em or bare).
+
 ## BASIS 2026-09-15 (night 50): develop `da8f413` (unchanged since n45; #193–#199 open)
 Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
 Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
