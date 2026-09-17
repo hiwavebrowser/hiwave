@@ -1,6 +1,35 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-17 (night 52): develop `da8f413` (unchanged since n45; #193–#201 open)
+Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
+Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
+not moved; n45–n51 reproduced it byte-for-byte.
+- On `atlas/n52-flex-item-height-and-grid-rem-padding` @ f4c6a65 (PR #202 to
+  develop; rustkit-layout: a grid item's `rem` padding/border resolves
+  against the 16px root — grid.rs passed the item's OWN font size as the
+  root, so `padding: 0.75rem` on a 14px card read 10.5; flex steps 11d/11b
+  take a block item's height from the flowed extent instead of the
+  un-collapsed sum of its children's margin boxes, and step 11 keeps a
+  flex item's last-child bottom margin inside it as a BFC root):
+  **campaign 26/26, avg 2.6245 -> 2.6249** — new_tab 2.5924 -> 2.6042
+  (+0.012: Chrome-height rows on #201's still-143px tracks), settings
+  3.5404 -> 3.5389, 24 of 26 byte-flat. **WPT 24/26 flat**, pinned on
+  f4c6a65. `scratch_n52/board_fix.json`.
+- **Stacked on #201** (`atlas/n52-stack-201`, local): **new_tab 2.6459 ->
+  1.9261**, settings 3.5378 -> 3.5361, campaign **avg 2.6265 -> 2.5987**,
+  24/26 byte-flat (`scratch_n52/board_stack.json`). Every new_tab box is
+  within 2.5px of Chrome (container 34/732 vs 33.5/733, grid 400 = 400,
+  rows 60/60/50 = Chrome, first key x 389 = 389). new_tab's re-table is
+  closed.
+- Receipt: repro flex-row-cross-3px-short.html vs pinned Chrome 148 — rem
+  grid rows 60/50 = Chrome, column item with a collapsed seam 122 = Chrome
+  (was 152), bare item keeps its last-child margin 36 = Chrome.
+- Unclaimed after tonight: form-controls 5.02 and image-gallery 5.06 (no
+  ledger line), about 5.23 on the stack, article-typography 5.46 on the
+  stack; new_tab's footer x (fixed child of a flex container should take
+  the sole-item static position) and the input's 1px.
+
 ## BASIS 2026-09-16 (night 51): develop `da8f413` (unchanged since n45; #193–#200 open)
 Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
 Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
