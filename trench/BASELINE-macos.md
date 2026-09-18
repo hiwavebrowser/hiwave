@@ -1,6 +1,43 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-18 (night 53): develop `9272261` (#193–#202 ALL merged 2026-09-17; PR #204 open)
+Basis = fresh clean-tree parity-capture on develop `9272261` tonight
+(campaign 26/26 **avg 2.5146**, WPT Tier-1 24/26; `scratch_n53/board_basis.json`).
+The merged set landed 0.027 below n51's stack prediction (2.5416) plus #202:
+article-typography 5.4559, about 5.2338, image-gallery 5.0638, form-controls
+5.0168, card-grid 4.4169, specificity 3.6467, gpu-gradient-regression 3.5781,
+settings 3.5282, form-elements 3.4294, shelf 2.9264, css-selectors 2.6689,
+backgrounds 2.6170, new_tab 1.9504, sticky-scroll 1.8569.
+- On `atlas/n53-form-controls` @ b2fb909 (PR #204 to develop; rustkit-layout
+  + one rustkit-engine arm: an inline-block with in-flow content sits on its
+  LAST line box's baseline (CSS2 §10.8.1; `inline_block_baseline_y`) — the
+  align pass had skipped every inline-block with children; a textarea's
+  baseline is its bottom edge so the strut descent hangs below it; `<input
+  type=submit|reset|button>` builds a Button, not a 160px text field; bare
+  widths at the UA control font — text input 149, textarea 0.6em·cols + 18,
+  select = widest option + 2 / + 24; the engine's control font is Arial, as
+  the pinned oracle computes for every unstyled control on every case):
+  **campaign 26/26, avg 2.5146 -> 2.4847** — form-controls 5.0168 ->
+  **4.6275**, css-selectors 2.6689 -> **2.3786**, form-elements 3.4294 ->
+  **3.2923**, shelf +0.027 (its search input measures in Arial now), new_tab
+  +0.003, flex-positioning +0.009; 20 of 26 byte-flat. **WPT 24/26 flat**,
+  pinned on b2fb909. `scratch_n53/board_fix2.json`.
+- Build 1 applied the overflow-not-visible → bottom-edge clause to inline-flex
+  too and about's `a.sponsor-btn` hung a strut descent under itself (about
+  5.2338 -> 6.1796, page +3.375 below it); Blink exempts flex/grid
+  containers, narrowed to inline-block only, about byte-flat on build 2.
+- Receipt: form-controls y-table — every visible box within 1.5px of Chrome
+  except the five bare buttons (+20 wide) and the listbox row (-3); repro
+  inline-block-baseline-and-control-widths.html vs pinned Chrome 148:
+  checkbox row +18/+18/+0 = Chrome, textarea containers 62/107 = Chrome,
+  pill/tall/clipped spans +16/+3/+0 within 0.4px.
+- Unclaimed after tonight: article-typography 5.46, about 5.23 (re-table on
+  the merged tree), image-gallery 5.06, form-controls 4.63 (the line-box
+  strut floor: inline-block-only rows advance by the tallest child, 19 vs
+  Chrome 24, listbox row 50 vs 53; and the bare-button +24 blob vs Chrome's
+  border-only 4 under the reset), card-grid 4.42.
+
 ## BASIS 2026-09-17 (night 52): develop `da8f413` (unchanged since n45; #193–#201 open)
 Basis = the n46 clean-tree develop board (campaign 26/26 **avg 2.6245**, WPT
 Tier-1 24/26; `scratch_n46/board_develop_basis.json`), reused — develop has
