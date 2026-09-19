@@ -1,6 +1,38 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-19 (night 54): develop `011ffee` (#204 + #203 merged 2026-09-18; PR #205 open)
+Basis = n53's `board_fix2.json` on b2fb909, reused: develop `011ffee` differs
+from it by #203's CI test file only (`git diff b2fb909 origin/develop --
+crates parity-tests scripts` = one python test). Campaign 26/26 **avg
+2.4847**, WPT Tier-1 24/26. Before-captures banked in
+`scratch_n54/captures_basis` before the first fixed build.
+- On `atlas/n54-line-box-strut-floor` @ e937a7c (PR #205 to develop;
+  rustkit-layout only: a closing line box is `max(above, strut_above) +
+  max(below, strut_below)` over its baseline-anchored members (CSS2 §10.8.1;
+  `line_member_baseline_extents` + `line_advance`), the older tallest-member
+  accounting kept as a floor; sizing extents are whole pixels above the
+  baseline as in Blink — strut (18, 6), 12px/18px label (13, 5), an
+  inline-block's inner baseline floored; a Button/TextInput/dropdown Select
+  with an author height centres its line so half the spare height hangs
+  below the baseline): **campaign 26/26, avg 2.4847 -> 2.4177** — settings
+  3.5282 -> **2.3006**, form-controls 4.6275 -> **4.1961**, backgrounds
+  2.6170 -> 2.5599, images-intrinsic 0.9780 -> 0.9525, card-grid -0.0001;
+  21 of 26 byte-flat, no case up. **WPT 24/26 flat**, pinned on e937a7c.
+  `scratch_n54/board_fix3.json`.
+- Three builds: build 1 (raw metrics) 2.4245; build 2 (rounded the
+  inline-block's geometric baseline UP: wrapped-label row 38 for Chrome 37)
+  2.4337 with form-controls back at 4.61; build 3 (floor + control centring)
+  2.4177.
+- Receipt: settings `.setting-row` pitch 60.2 -> 63.2 vs Chrome 63.19
+  (`strong` y offsets -1.4/-4.4/-7.4 -> constant +1.6); form-controls
+  y-table every container down to y 849 at +0.0 vs Chrome.
+- Note: lba001 reads 0.0246% on n53's AND tonight's runs; the 0.0173 carried
+  in the n35–n52 entries is stale as of n53 (not moved by this lane).
+- Unclaimed after tonight: article-typography 5.46, about 5.23, image-gallery
+  5.06, card-grid 4.42, form-controls 4.20 (listbox row 50.6 vs 53, bare
+  button +20, +10px below the fold untabled).
+
 ## BASIS 2026-09-18 (night 53): develop `9272261` (#193–#202 ALL merged 2026-09-17; PR #204 open)
 Basis = fresh clean-tree parity-capture on develop `9272261` tonight
 (campaign 26/26 **avg 2.5146**, WPT Tier-1 24/26; `scratch_n53/board_basis.json`).
