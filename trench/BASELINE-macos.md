@@ -28,6 +28,11 @@ campaign 26/26 **avg 2.4847**, WPT Tier-1 24/26. Before-captures =
   flat, pinned on 73e6a95. `scratch_n58/board_fix3.json`. Census:
   sticky-scroll {0:15,-3:18} -> {0:33}; article-typography {0:3,-3:5} ->
   {0:7,-1:1}.
+- Build 4 @ 3625b7f: the inline shift recurses (text leaves stay at every
+  inline depth; `span > strong` text was a half-leading low). Campaign
+  **byte-flat 26/26, avg 2.2541**; receipt = pinned-Chrome A/B on
+  `parity-tests/repro/nested-inline-seat.html` (ink rows 156-167 -> 149-160 =
+  Chrome). WPT 24/26 flat, **pinned on 3625b7f**. 410 tests.
 - Local stack #205 + #206 AT BUILD 2 (`scratch/n58-stack-205`, NOT pushed; one keep-both
   conflict in lib.rs, removed from #206 by 5d15c9a; the receipts JSONs still
   conflict as always): **avg 2.2058**, 413 tests. settings 2.3006 -> 2.3462 on
