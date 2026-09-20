@@ -20,7 +20,15 @@ campaign 26/26 **avg 2.4847**, WPT Tier-1 24/26. Before-captures =
   1.7225; 17 moved, 9 byte-flat, **one case up: chrome_rustkit +0.0195** (a
   14px emoji run, synthetic 17.5 ascent now rounds to 18; already a row low).
   **WPT 24/26 flat**, pinned on 87a6ca9. `scratch_n58/board_fix{,2}.json`.
-- Local stack #205 + #206 (`scratch/n58-stack-205`, NOT pushed; one keep-both
+- Build 3 @ 73e6a95 (same PR): a span's direct text children keep their
+  line slot — the content-area shift translated them too, so the run's
+  leading was applied twice (`shift_inline_content_area`). **avg 2.2700 ->
+  2.2541**: sticky-scroll 1.6922 -> **1.4456**, article-typography 5.1112 ->
+  4.9904, css-selectors 2.1678 -> 2.1216; 23 byte-flat, none up; WPT 24/26
+  flat, pinned on 73e6a95. `scratch_n58/board_fix3.json`. Census:
+  sticky-scroll {0:15,-3:18} -> {0:33}; article-typography {0:3,-3:5} ->
+  {0:7,-1:1}.
+- Local stack #205 + #206 AT BUILD 2 (`scratch/n58-stack-205`, NOT pushed; one keep-both
   conflict in lib.rs, removed from #206 by 5d15c9a; the receipts JSONs still
   conflict as always): **avg 2.2058**, 413 tests. settings 2.3006 -> 2.3462 on
   the stack: no settings text is on-row in either tree (boxes ±1–2px off —
@@ -30,8 +38,8 @@ campaign 26/26 **avg 2.4847**, WPT Tier-1 24/26. Before-captures =
   excluded): about {0:4,-1:2} -> {0:6}; card-grid {0:15,-1:8} -> {0:23};
   sticky-scroll's ten -1 rows -> 0; flex-positioning {0:10,1:34} -> {0:44};
   form-elements -> {0:9}. Still off-row: new_tab {3:4,1:3,-2:1}, css-selectors
-  {-1:5,3:2}, form-controls {1:7,3:5}, article-typography {-3:5}, sticky-scroll
-  {-3:18}, settings (all).
+  {-1:5,3:2}, form-controls {1:7,3:5}, settings (all) — article-typography
+  and sticky-scroll cleared by build 3.
 - MEASURED, NOT FIXED — glyph ink weight: at identical positions Chrome lays
   down 1.10x RustKit's ink dark-on-light (Helvetica 16px stem 1.55px vs 1.40)
   and 1.32–1.37x light-on-dark (1.81 vs 1.40; about's paragraphs 1.36x).
@@ -40,8 +48,8 @@ campaign 26/26 **avg 2.4847**, WPT Tier-1 24/26. Before-captures =
   the letter, though CG's gray-context smoothing (0.3/side, 0.6 top) overshoots
   it. `parity-tests/repro/glyph-weight.html` + `scratch_n58/{rows,glyphgrid,
   inkbyelem}.py`. This is most of the "text-AA floor".
-- Unclaimed after tonight (on #206): article-typography 5.11, image-gallery
-  5.06, about 4.79, form-controls 4.58 (4.13 stacked), card-grid 4.09.
+- Unclaimed after tonight (on #206 build 3): image-gallery 5.06,
+  article-typography 4.99, about 4.79, form-controls 4.58 (4.13 stacked), card-grid 4.09.
 
 ## BASIS 2026-09-19 (night 54): develop `011ffee` (#204 + #203 merged 2026-09-18; PR #205 open)
 Basis = n53's `board_fix2.json` on b2fb909, reused: develop `011ffee` differs
