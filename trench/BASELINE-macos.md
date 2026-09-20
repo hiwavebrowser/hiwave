@@ -1,6 +1,48 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-20 (night 55): develop `011ffee` unchanged (PR #205 still open; PR #206 open)
+Basis = n53's `board_fix2.json` again (develop has not moved since n54):
+campaign 26/26 **avg 2.4847**, WPT Tier-1 24/26. Before-captures =
+`scratch_n54/captures_basis` (same tree). Branch is `atlas/n58-about-retable`
+— the n55–n57 branch names were already taken by day-seat work.
+- On `atlas/n58-about-retable` @ 87a6ca9 (+ a pure-move 5d15c9a; PR #206 to
+  develop; rustkit-layout only): (1) `render_text` seats the baseline as Blink
+  does — whole-pixel ascent/descent, the leading above the text FLOORED
+  (`blink_baseline_offset`); (2) `form_control_intrinsic_size` is the one
+  control sizing model for block flow AND flex items (flex.rs's three blob
+  copies ignored author padding/border), and a styled control's content line
+  is its font's `normal` line, not `font_size + 1`. **Campaign 26/26, avg
+  2.4847 -> 2.3856 (seat) -> 2.2700 (controls)** — form-elements 3.2923 ->
+  **1.3994**, flex-positioning 1.7552 -> **0.9245**, specificity 3.6467 ->
+  3.1669, about 5.2338 -> 4.7915, article-typography 5.4559 -> 5.1112,
+  card-grid 4.4169 -> 4.0902, combinators 1.9466 -> 1.7172, new_tab 1.9538 ->
+  1.7225; 17 moved, 9 byte-flat, **one case up: chrome_rustkit +0.0195** (a
+  14px emoji run, synthetic 17.5 ascent now rounds to 18; already a row low).
+  **WPT 24/26 flat**, pinned on 87a6ca9. `scratch_n58/board_fix{,2}.json`.
+- Local stack #205 + #206 (`scratch/n58-stack-205`, NOT pushed; one keep-both
+  conflict in lib.rs, removed from #206 by 5d15c9a; the receipts JSONs still
+  conflict as always): **avg 2.2058**, 413 tests. settings 2.3006 -> 2.3462 on
+  the stack: no settings text is on-row in either tree (boxes ±1–2px off —
+  n54's ledgered top-aligned inline spans), the seat reshuffles it.
+  `scratch_n58/board_stack205.json`.
+- Seating census (`scratch_n58/census.py` = `dyscan.py` per case; holdouts
+  excluded): about {0:4,-1:2} -> {0:6}; card-grid {0:15,-1:8} -> {0:23};
+  sticky-scroll's ten -1 rows -> 0; flex-positioning {0:10,1:34} -> {0:44};
+  form-elements -> {0:9}. Still off-row: new_tab {3:4,1:3,-2:1}, css-selectors
+  {-1:5,3:2}, form-controls {1:7,3:5}, article-typography {-3:5}, sticky-scroll
+  {-3:18}, settings (all).
+- MEASURED, NOT FIXED — glyph ink weight: at identical positions Chrome lays
+  down 1.10x RustKit's ink dark-on-light (Helvetica 16px stem 1.55px vs 1.40)
+  and 1.32–1.37x light-on-dark (1.81 vs 1.40; about's paragraphs 1.36x).
+  Chrome also fringes an integer-aligned 20px Ahem square (+0.10 each side,
+  +0.21 top, 0 bottom) — so n33's "Skia/Chrome disable smoothing" is wrong at
+  the letter, though CG's gray-context smoothing (0.3/side, 0.6 top) overshoots
+  it. `parity-tests/repro/glyph-weight.html` + `scratch_n58/{rows,glyphgrid,
+  inkbyelem}.py`. This is most of the "text-AA floor".
+- Unclaimed after tonight (on #206): article-typography 5.11, image-gallery
+  5.06, about 4.79, form-controls 4.58 (4.13 stacked), card-grid 4.09.
+
 ## BASIS 2026-09-19 (night 54): develop `011ffee` (#204 + #203 merged 2026-09-18; PR #205 open)
 Basis = n53's `board_fix2.json` on b2fb909, reused: develop `011ffee` differs
 from it by #203's CI test file only (`git diff b2fb909 origin/develop --
