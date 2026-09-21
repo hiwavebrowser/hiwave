@@ -1,6 +1,18 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-21 (night 56): develop `011ffee` unchanged (PRs #205, #206 open; #207 opened)
+Develop basis is still n53's board: campaign 26/26 **avg 2.4847**, WPT Tier-1
+24/26. Tonight's lane needed both open PRs, so the working basis is the
+**#205 + #206 stack** (`313a7e1`, measured fresh): 26/26 **avg 2.1899**
+(`scratch_n59/board_basis.json`, before-captures `scratch_n59/captures_basis`).
+- On `atlas/n59-inline-baseline-drop` @ 406f3ef (PR #207 to develop, stacked;
+  rustkit-layout only): non-atomic inlines drop to the line baseline and feed
+  the line box extents; the align pass is whole-pixel throughout. Campaign
+  **2.1899 -> 2.1859** (css-selectors 2.1216 -> 2.0774, form-controls 4.1293
+  -> 4.0856, settings 2.3462 -> 2.3289; 23 byte-flat, none up), WPT 24/26
+  flat. `scratch_n59/board_fix2.json`, `captures_fix2`.
+
 ## BASIS 2026-09-20 (night 55): develop `011ffee` unchanged (PR #205 still open; PR #206 open)
 Basis = n53's `board_fix2.json` again (develop has not moved since n54):
 campaign 26/26 **avg 2.4847**, WPT Tier-1 24/26. Before-captures =
