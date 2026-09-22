@@ -1,6 +1,24 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-22 (night 57): develop `011ffee` unchanged (PRs #205–#207 open; #209 opened by the day seat; #210 opened)
+Develop basis re-measured fresh on a clean checkout of `011ffee`: campaign
+26/26 **avg 2.4847** (matches n53's board to the fourth place), WPT Tier-1
+24/26. `scratch_n60/board_basis.json`, before-captures
+`scratch_n60/captures_basis`. Branch is `atlas/n60-…` (n57–n59 taken).
+- On `atlas/n60-negative-leading-and-emoji-ascent` @ a27e6ff (PR #210 to
+  develop, from develop tip; rustkit-layout only): half-leading is SIGNED
+  (six `.max(0.0)` sites → one `half_leading` helper), and under an explicit
+  line-height a run is seated on its PRIMARY face, not the united
+  primary+fallback metrics (`seat_metrics`). Campaign **2.4847 -> 2.4808**
+  (sticky-scroll 1.8569 -> 1.7731, new_tab 1.9538 -> 1.9450, card-grid
+  4.4169 -> 4.4089; 23 byte-flat, none up), WPT 24/26 flat pinned on a27e6ff.
+  `scratch_n60/board_fix.json`, `captures_fix`. Pinned-Chrome A/B
+  `parity-tests/repro/negative-leading.html`: 9/12 rows exact
+  (`scratch_n60/chrome_repro`, `nl_{basis,fix}.ppm`, `rows.py`).
+- Same fix pre-resolved onto the #207 tip: `atlas/n60-negative-leading-stack`
+  @ 56fd93c (no PR; 420 layout tests). Stack board: see the n57 digest.
+
 ## BASIS 2026-09-21 (night 56): develop `011ffee` unchanged (PRs #205, #206 open; #207 opened)
 Develop basis is still n53's board: campaign 26/26 **avg 2.4847**, WPT Tier-1
 24/26. Tonight's lane needed both open PRs, so the working basis is the
