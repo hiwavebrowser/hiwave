@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T14:06:19.000569",
+  "generated_at": "2026-09-22T14:21:26.107019",
   "platforms": {
     "macos": {
       "visual_parity": 97.31,
@@ -249,6 +249,7 @@
       "not_collected": {
         "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Windows runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
       },
+      "metrics_stale": true,
       "perf_grade": "?"
     },
     "linux": {
