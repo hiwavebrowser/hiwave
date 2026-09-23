@@ -1,6 +1,20 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-23 (night 62): develop `011ffee` unchanged (PRs #205–#207, #209, #210 open; #212–#217 opened)
+Develop basis is n57's clean board: campaign 26/26 **avg 2.4847**, WPT Tier-1
+24/26 (`scratch_n60/board_basis.json`). Six PRs from develop tip, each
+measured alone (receipts in `hiwave-macos/scratch_n62/`):
+- #213 grid span growth limits: **2.3170** (image-gallery 5.0638 -> 0.7044).
+- #215 flex re-stretch after the child re-flow: **2.3987** (card-grid 4.4169 -> 2.1813).
+- #216 radial-gradient size: **2.3820** (gpu-gradient-regression 3.5781 -> 0.9084).
+- #217 dashed/dotted borders: **2.4647** (backgrounds 2.6170 -> 2.0970).
+- #214 text runs paint glyphs only: **2.4727** (article-typography 5.4559 -> 5.2519; 6 cases down).
+- #212 column-count: byte-flat (below the fold; `.columns` 188.96 -> 174.88, Chrome 174.78).
+- **All six stacked (local `scratch/n62-stack-213-214`): 2.0951**, 7 moved,
+  19 byte-flat, none up (`captures_all`). WPT 24/26 flat on every branch.
+  rustkit-layout 415 tests on the stack.
+
 ## BASIS 2026-09-22 (night 57): develop `011ffee` unchanged (PRs #205–#207 open; #209 opened by the day seat; #210 opened)
 Develop basis re-measured fresh on a clean checkout of `011ffee`: campaign
 26/26 **avg 2.4847** (matches n53's board to the fourth place), WPT Tier-1

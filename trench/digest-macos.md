@@ -1082,3 +1082,70 @@ Decisions needed from Pete: none — PR #37 rides the normal review lane (Athena
 1. **Merge order.** Four of mine (#205, #206, #207, #210) and the day seat's #209 all touch rustkit-layout. My recommendation: **#205 → #206 → #207 → then `atlas/n60-negative-leading-stack` in place of #210** (it is #210 already resolved onto #207; close #210 unmerged), **then #209 rebased by its author** — the stack is four nights of measured campaign receipts (2.4847 → 2.1859 → tonight), #209 is unmeasured on this seat. If you'd rather land #209 first, say so and I rebase the whole stack over it tomorrow night — a full night, no new lane.
 2. **Next lane, my order:** (a) **settings' uniform −1/−2** (n56 (a) — needs the merged stack); (b) **the fractional content-area rect + negative-leading inline rects** (small, closes the last repro rows, one night); (c) **glyph ink weight** (n55 (a), still needs your nod). Silence means (a) from a merged develop, (b) from develop tip if nothing has merged.
 3. Carried: allowlist `git worktree` + `gh pr merge` + `rustfmt --check` + `cp -R` (in-repo) on this seat; lba001 tolerance (at 0.0246, one test); control UA padding/border into the cascade — yes/no.
+
+
+## n62 — 2026-09-23 (macOS seat, Atlas) — six gaps no seating ledger named: a spanning grid item split its extra space evenly, stretched flex items lost their stretch to the child re-flow, text runs repainted their parent's gradient, radial gradients ignored their size, dashed borders painted solid, and column-count did nothing
+
+**Metric:** develop is still `011ffee` (nothing has merged since n53). The basis is n57's clean board: **26/26 avg 2.4847**, WPT 24/26. Tonight I opened six PRs, each from develop tip and each measured alone:
+
+| PR | fix | campaign | case |
+|---|---|---|---|
+| #213 | grid: spanning items fill tracks up to their growth limits | **2.4847 → 2.3170** | image-gallery 5.06 → **0.70** |
+| #215 | flex: stretched row items keep their line's size after the child re-flow | **→ 2.3987** | card-grid 4.42 → **2.18** |
+| #216 | css: radial-gradient reads its size keyword and radii | **→ 2.3820** | gpu-gradient-regression 3.58 → **0.91** |
+| #217 | paint: dashed/dotted borders (Blink's dash/gap selection) | **→ 2.4647** | backgrounds 2.62 → 2.10 |
+| #214 | paint: a text run paints glyphs only | **→ 2.4727** | article-typography 5.46 → 5.25, +4 cases |
+| #212 | layout: `column-count` (balanced columns) | byte-flat | below the fold; layout-rects are the receipt |
+
+**All six stacked (local, measured): 2.4847 → 2.0951**, 7 moved, 19 byte-flat, **none up**. WPT Tier-1 24/26 flat on every branch. This is the largest single-night move of the campaign. It sits entirely on develop tip, independent of #205–#210: stacked with those (2.18 on their tip), the two sets should land near 1.8, but that's unmeasured.
+
+**Why I left the standing rule.** n57 said silence means lane (b) from develop tip: the fractional content-area rect plus negative-leading inline rects. On develop tip every line of that lane is a hunk #206/#210 already rewrites, so a fifth seating PR there would conflict by construction. n57's own digest says so. So I took #211's census finding (`column-count`), which stacks on nothing. That fix was right but meter-blind, so I went looking for big solid-red blocks in the diff PNGs of cases no open PR touches. Five of the six fixes came from reading a diff image and asking "what CSS makes that shape"; none came from a ledger line.
+
+**The five, in one line each:**
+- **image-gallery:** Tower (`span 2`, min-height 416) sits over row 3 (City Skyline, 200) and an empty row 4. Its 200px of extra space went 100/100, so row 3 was 300 and City's caption fell off the frame. css-grid §12.5.1 grows tracks up to their limits first, so the empty row takes it all.
+- **card-grid:** step 11 re-flows each item's children and writes the flow height over the stretched one. Every short card in a wrapped row kept its content height (256.7 in a 279.4 row).
+- **Text runs:** the engine copies `background_gradient` onto every text child (gradient-text plumbing), and paint gave text boxes backgrounds. Every emoji in the gallery sat on a rescaled copy of its card's gradient.
+- **Radial size:** `parse_radial_gradient` hardcoded farthest-corner, even though the renderer has resolved all four keywords for months.
+- **Borders:** ComputedStyle had no border-style at all.
+
+**Receipts:** `hiwave-macos/scratch_n62/`:
+- boards: `board_{fix,fix2,grid}.json`, and one `captures_<lane>/` per lane plus `captures_stack`, `captures_stack3`, `captures_all`
+- crops: `radial_fix.png`, `dash_fix.png`, `hl_zoom.png`
+- scripts: `cols.py` / `after.py` (the column y-table), `cmp.py` (per-case board diff)
+
+**Layout-rect receipts against pinned Chrome:**
+- City card 592×300 → 592×200 (Chrome 200).
+- All six cards 279.5/283.5 (Chrome 279.4/283.4).
+- `.columns` 188.96 → 174.88 (Chrome 174.78); p2 at x 660; the next h2 +11.31 → −2.77 (the −2.87 carried in).
+
+**Tests:** rustkit-layout 406 → 415 on the stack; rustkit-engine 87 → 88.
+
+- **Merge seams (checked by stacking all six locally):** one conflict, #214 against #217 (both added a test at the same anchor). I pushed a pure-move commit to #217 (`b0e8183`), so they now merge in either order. #212 and #209 do conflict: #209 adds an argument to `layout_block_children_with_collapse` next to #212's new `else if`. That's a one-line resolve, and #212's PR body wrongly says it touches none of #209's lines (I can't edit PR bodies from this seat). `git merge-tree` is refused here, so seams against #205–#210 were checked by reading hunks, not by merging.
+- **Float, sized and not landed:** #211's second finding is real (nothing sets `LayoutBox.float` from CSS), but no line-layout path consults `FloatContext` either. Wiring floats alone would paint text over floated images, which is worse than today's stacking. It needs float-aware line boxes on both the block and inline paths, a multi-night lane (decision 2).
+- **Ledgered, not chased:**
+  - `.highlight`'s `background-size: 100% 0.3em` / `background-position` aren't applied on the legacy single-gradient path (full fill vs Chrome's thin band).
+  - Thick dotted borders are square here and round in Chrome.
+  - Multicol only breaks between children; `column-width`/`columns`/`column-span` aren't handled.
+  - Percent radial radii aren't parsed.
+  - backgrounds' repeating-linear stripes are out of phase (the next paint term on that case).
+- Operational: Aleph located `shift_inline_content_area`/`inline_content_area`, but it indexes the stack branch's bodies, not develop's, so named-file search did the rest. A board is about 60s tonight: incremental builds, no cold links. A `python3 - <<` heredoc with a Rust `matches!` guard tripped the brace filter; writing the patch to `scratch_n62/*.py` worked. The branch first pushed as `atlas/n62-inline-content-area` (named before the pivot) was renamed to `atlas/n62-multicol-column-count` and the stray remote ref deleted within a minute. Session 06:52–~07:55 EDT; I stopped early on review load, not cap.
+
+**Commits landed** (hiwave-macos, all from develop `011ffee`, pushed, PRs open to develop):
+- #212 `atlas/n62-multicol-column-count`: `5f1d54c` (fix), `fe44c8d` (receipts)
+- #213 `atlas/n62-grid-span-growth-limits`: `5d366fc` (fix), `60d6c1e` (receipts)
+- #214 `atlas/n62-text-run-paints-glyphs-only`: `c31eaa9` (fix), `5968048` (receipts)
+- #215 `atlas/n62-flex-restretch-after-reflow`: `9af2cf6` (fix), `ab7fefb` (receipts)
+- #216 `atlas/n62-radial-gradient-size`: `5b2401e` (fix), `6afea79` (receipts)
+- #217 `atlas/n62-border-style-dashed`: `2e92695` (fix), `7d6cbb2` (receipts), `b0e8183` (test move)
+
+The local stack `scratch/n62-stack-213-214` was not pushed. Hub `atlas/trench`: this digest + the BASELINE n62 basis. **Develop and master are untouched.**
+
+**Decisions for Pete (≤3):**
+1. **Merge tonight's six first, then the seating stack.** They're small, independent, and each is none-up on its own board. Together they're 2.4847 → 2.0951 on develop, and each merges clean onto develop in any order. #205 is five nights un-reviewed, and under the plan's latency rule you may merge or waive. Recommended order: **#213, #215, #216, #217, #214, #212**, then n57's order (#205 → #206 → #207 → the n60 stack branch in place of #210), then #209 rebased by its author. #212 needs the one-line resolve against #209, whichever lands second.
+2. **Next lane, my order:**
+   - (a) Keep mining the diff PNGs of cases no open PR touches. Tonight showed that's where unnamed terms are cheapest (backgrounds' stripe phase, `.highlight` background-size, shelf).
+   - (b) Settings' uniform −1/−2 once the seating stack merges.
+   - (c) **Floats:** wire `float` from CSS plus float-aware line boxes. It's multi-night and meter-blind on the campaign (only `::first-letter` floats), but it's the biggest real-page gap #211 found, so it needs your nod.
+
+   Silence means (a) from develop tip.
+3. Carried: allowlist `git worktree` + `git merge-tree` + `gh pr merge` + `gh pr edit` + `rustfmt --check` on this seat (tonight: one PR-body correction I couldn't make — #212 vs #209 — and a merge check I couldn't run); lba001 tolerance (0.0246); control UA padding/border into the cascade — yes/no.
