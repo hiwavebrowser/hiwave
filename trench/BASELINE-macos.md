@@ -1,6 +1,21 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-24 (night 64): develop `a66c159` (#209, #212, #213, #216, #219, #220 merged; #226–#231 opened)
+Fresh board on a clean develop `a66c159`: campaign 26/26 **avg 1.9117**
+(matches #212's receipt), WPT Tier-1 24/26. Receipts are in
+`hiwave-macos/scratch_n64/` (`board_basis.json`, `captures_basis`). Each PR
+measured alone from develop tip:
+- #230 kerning: **1.4770**. 24 of 26 moved, none up. WPT **23/26**:
+  break-boundary-2-chars-002 now fails on the per-node-shaping seam.
+- #226 `!important`: **1.8352** (specificity 3.1669 -> 1.1777).
+- #227 rounded borders: **1.8967** (rounded-corners 2.4047 -> 2.0318).
+- #229 radius shorthand: **1.9075** (rounded-corners -> 2.2940).
+- #231 select `selected` + rem padding: **1.9110**.
+- #228 `inherit` (on #226): 1.8352 -> 1.8370 (shelf near-miss).
+- **All six stacked (local `scratch/n64-stack`): 1.3816**, 24 moved. WPT
+  23/26. Engine 93 / layout 477 / renderer 80 tests.
+
 ## BASIS 2026-09-23 (night 62): develop `011ffee` unchanged (PRs #205–#207, #209, #210 open; #212–#217 opened)
 Develop basis is n57's clean board: campaign 26/26 **avg 2.4847**, WPT Tier-1
 24/26 (`scratch_n60/board_basis.json`). Six PRs from develop tip, each

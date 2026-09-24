@@ -1149,3 +1149,70 @@ The local stack `scratch/n62-stack-213-214` was not pushed. Hub `atlas/trench`: 
 
    Silence means (a) from develop tip.
 3. Carried: allowlist `git worktree` + `git merge-tree` + `gh pr merge` + `gh pr edit` + `rustfmt --check` on this seat (tonight: one PR-body correction I couldn't make — #212 vs #209 — and a merge check I couldn't run); lba001 tolerance (0.0246); control UA padding/border into the cascade — yes/no.
+
+
+## n64 — 2026-09-24 (macOS seat, Atlas) — runs were never kerned (every micro h1 drifted right; campaign 1.91 → 1.48 on one fix), plus five cascade/paint gaps: `!important` was never honoured, `inherit` didn't override the UA sheet, borders ignored `border-radius`, the multi-value radius shorthand was dropped, and a select ignored `<option selected>`
+
+**Metric.** Develop moved overnight (#209, #212, #213, #216, #219, #220 all merged), so tonight's basis was measured fresh on develop `a66c159`: **26/26, avg 1.9117**, WPT Tier-1 24/26. That matches #212's receipt exactly. Tonight I opened six PRs, five from develop tip plus #228 stacked on #226, and measured each alone:
+
+| PR | fix | campaign | case |
+|---|---|---|---|
+| **#230** | text: runs carry the font's pair kerning | **1.9117 → 1.4770** | 24 of 26 down, none up; about 4.79 → 3.75, combinators 1.72 → 0.65, pseudo-classes 1.44 → 0.43 |
+| #226 | engine: `!important` outranks specificity and the inline style | → 1.8352 | specificity 3.17 → **1.18** |
+| #227 | paint: borders follow `border-radius` (one rounded ring) | → 1.8967 | rounded-corners 2.40 → 2.03; settings, card-grid down |
+| #229 | css: the `border-radius` shorthand takes 1–4 values | → 1.9075 | rounded-corners → 2.29 |
+| #231 | forms: a select shows its `selected` option; control padding resolves `rem` | → 1.9110 | new_tab down; settings +0.0005 (near-miss) |
+| #228 | engine: `inherit` copies the parent's value (stacked on #226) | +0.0018 vs #226 | shelf 2.84 → 2.89 (near-miss, see below) |
+
+**All six stacked (local `scratch/n64-stack`, cherry-picked clean in the order #226, #228, #229, #227, #230, #231): 1.9117 → 1.3816.** 24 cases moved. Tests on the stack: engine 93, layout 477, renderer 80. WPT on the stack is **23/26** (the kerning trade, below).
+
+**The kerning find.** Every micro case's diff PNG showed the same shape: the h1 starts exact and the last word is red. I measured it with a ctypes CoreText probe (`scratch_n64/h1probe.py`). For "CSS Specificity Test" at 32px bold system-ui, the summed nominal glyph advances are 303.70px and a CTLine lays it out at 300.03px. The 3.67px gap is our +4px overrun to the pixel; at 16px the gap is 0.51px, matching the +1px subtitle overrun. `TextShaper::shape` took advances from `CTFontGetAdvancesForGlyphs`, which never kerns. Through the advance contract, paint drew those unkerned positions too. The fix builds a CTLine per run with ligatures off and folds each unit's pen-position delta into its advance. h1 ink extents now equal pinned Chrome's on specificity, pseudo-classes and combinators (they were +4 each). article-typography is byte-flat because Core Text applies no kerning to Georgia (probe: line = nominal).
+
+**The WPT trade (decision 1).** `break-boundary-2-chars-002` goes PASS → FAIL (0.23%).
+- The test is `abc<span>xyz</span>def`, three text nodes. The reference is one run.
+- The harness renders both in system-ui, where SF kerns `c|x` and `z|d`, so the reference is 0.62px narrower (probed: 142.19 vs 142.81).
+- The test passed only because nothing kerned. Blink shapes across same-font inline boundaries, and RustKit shapes per text node.
+
+Kerning made the seam gap measurable; it didn't create it.
+
+**Near-miss charges (shipped on receipts, not on the meter).**
+- **#228, shelf:** the `font-family: inherit` placeholder now paints in system-ui. Its ink run is 186px wide, exactly Chrome's (Arial was 181). It now sits +2px x / +1px y off Chrome. The x term is `form_text_seat`'s hardcoded 1px control border, which `border: none` should remove (carried decision 3).
+- **#231, settings:** the select now shows "days" (right option) at the right inset, but in a box narrower than Chrome's (no arrow gutter).
+
+**Other receipts.**
+- **#227:** repro `parity-tests/repro/rounded-border.html` A/B against pinned Chrome. It covers mixed widths/colours, radius smaller than width, one rounded corner, pill, and a single side. Straight edges are pixel-exact; row-1 boxes differ by 24–116px each (corner AA). Four more frames changed under the meter's threshold, all closer to Chrome on sum-abs except shelf (+142, AA only).
+- **#226, test harness:** `test_engine()` in web_font_tests now holds a lock. `line_break_anywhere…`'s EngineTestAhem install could land inside `a_declared_web_font…`'s no-@font-face control. With one more Engine test in the binary it failed 2 of 3 full runs; it passed 4 of 4 with the lock. Develop still has this race (one flake seen on the kerning branch).
+
+**Ledgered, not chased:**
+- elliptical radii (`a / b`) and per-axis `%`, because `BorderRadius` is one scalar per corner: rounded-corners §3/§4, the next term on that case
+- dashed/dotted sides under a radius: #227 is solid-only, and whichever of #217/#227 lands second must add the style check
+- `::placeholder` colour
+- control border-radius, select arrow gutter and chevron
+- light-on-dark ink weight on about (runs are now the right width, strokes are thinner; n55's measured-not-fixed item)
+- cross-node shaping/kerning at inline seams
+
+**Operational:**
+- The cloud seat is on n63 (#225), so this seat's branches use n64.
+- The `wpt_tier1.py` STALE guard fired after a test-only edit. That's the guard working; rebuild and rerun.
+- One self-inflicted hang: the new lock deadlocked a test that called `test_engine()` twice. Found with `scratch_n64/hang.py` (per-test timeout) and fixed by dropping the first engine.
+- Session 07:05–~08:30 EDT. I stopped on review load (six PRs) and the kerning decision, not on the cap.
+
+**Commits landed** (hiwave-macos, all pushed, PRs open, none merged):
+- #226 `atlas/n64-important-cascade`: `1126cf5`
+- #228 `atlas/n64-inherit-keyword` (base = #226's branch): `26c3d9d`
+- #227 `atlas/n64-rounded-border`: `ca03d1c`
+- #229 `atlas/n64-border-radius-shorthand`: `b99c1e0`
+- #230 `atlas/n64-kerning`: `40cf251`
+- #231 `atlas/n64-select-selected-rem-padding`: `169e80c`
+
+Local stack `scratch/n64-stack` was not pushed. Receipts are in `hiwave-macos/scratch_n64/`: `board_*.json`, `captures_*`, `h1probe.py`, `hang.py`, `rc_*.png`, `shelf_inh.png`, `settings_ctl2.png`, `rb_ab.png`. Hub `atlas/trench` has this digest and the BASELINE n64 basis. **Develop and master are untouched.**
+
+**Decisions for Pete (≤3):**
+1. **Take #230 (kerning) with WPT 24 → 23?** My call is yes. It's −0.43 on the campaign, the largest single fix of the campaign, and it matches Chrome's h1 widths to the pixel. The one WPT loss is a pre-existing per-node-shaping gap that kerning made visible. Suggested merge order: **#226 → #228 → #229 → #227 → #230 → #231** (clean cherry-pick stack, measured 1.3816). #227 vs #217 needs the one-line dashed-style check, whichever lands second.
+2. **Next lane, my order:**
+   - (a) Cross-node shaping at inline seams. That recovers WPT 24, and it's real-page text: links and `<strong>` inside sentences.
+   - (b) Per-axis elliptical radii.
+   - (c) The control box model: UA border/padding in the cascade, select arrow gutter, control radius. Shelf and settings are now the evidence.
+
+   Silence means (a).
+3. Carried: allowlist `git worktree` / `git merge-tree` / `gh pr merge` / `gh pr edit` / `rustfmt --check`; lba001 tolerance; control UA padding/border into the cascade (now blocking #228's and #231's residuals).
