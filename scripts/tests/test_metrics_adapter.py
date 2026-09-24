@@ -296,3 +296,46 @@ class TestTestsOverallOntology:
         badges = generate_all_badges(metrics)
         assert "no data" in badges["parity-windows.svg"]
         assert "passing" in badges["build-windows.svg"]
+
+
+# --- macOS parity from hiwave-macos metrics-history (2026-09-23) ------------
+# hiwave-macos stopped committing parity_test_results.json; the umbrella must
+# read macOS parity from that repo's metrics-history, master rows only, and
+# fail closed when it can't.
+
+from collect_metrics import fetch_macos_parity  # noqa: E402
+
+MACOS_CSV = (
+    "timestamp,commit,branch,avg_diff,passed,failed,total,worst_case,worst_diff\n"
+    "2026-09-09T02:38:50,afd73ab5,master,2.69,26,0,26,article-typography,7.46\n"
+    "2026-09-24T04:10:00,d02aa000,develop,1.91,26,0,26,about,4.79\n"
+)
+
+
+def _no_network(url):
+    raise OSError("network disabled in tests")
+
+
+def test_macos_latest_master_json_gives_per_case_results(tmp_path):
+    (tmp_path / "macos").mkdir()
+    (tmp_path / "macos" / "latest-master.json").write_text(
+        '{"timestamp": "2026-09-25T04:10:00", "branch": "master", "passed": 2, "failed": 0,'
+        ' "tests": [{"name": "about", "type": "builtins", "diff": 4.79, "threshold": 15},'
+        '           {"name": "card-grid", "type": "websuite", "diff": 1.85, "threshold": 15}]}'
+    )
+    data, src = fetch_macos_parity(cache_dir=tmp_path, read_url=_no_network)
+    assert src == "metrics-history/latest-master.json"
+    assert [r["pixel"]["diffPercent"] for r in data["results"]] == [4.79, 1.85]
+
+
+def test_macos_history_csv_uses_last_master_row_never_develop(tmp_path):
+    data, src = fetch_macos_parity(
+        cache_dir=tmp_path,
+        read_url=lambda url: MACOS_CSV if url.endswith("history.csv") else _no_network(url),
+    )
+    assert src == "metrics-history/history.csv"
+    assert data["summary_only"] and data["average_diff"] == 2.69 and data["commit"] == "afd73ab5"
+
+
+def test_macos_feed_unreachable_fails_closed(tmp_path):
+    assert fetch_macos_parity(cache_dir=tmp_path, read_url=_no_network) == (None, None)

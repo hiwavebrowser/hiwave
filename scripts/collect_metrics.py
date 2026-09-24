@@ -75,6 +75,14 @@ SEAT_FEEDS = {
 }
 SEAT_CACHE_DIR = REPO_ROOT / ".cache" / "metrics"
 
+# macOS parity feed (2026-09-23). hiwave-macos stopped committing per-run
+# parity outputs (parity_test_results.json) — they made every PR conflict.
+# Its parity-metrics workflow publishes to its own metrics-history branch:
+# metrics/latest-master.json (per-case, written from the first master run
+# after hiwave-macos#220) and metrics/history.csv (avg only, available now).
+# Used only when the submodule has no local parity results; fails closed.
+MACOS_PARITY_FEED = "https://raw.githubusercontent.com/hiwavebrowser/hiwave-macos/metrics-history"
+
 # A seat measurement older than this still publishes (it is real), but gets
 # flagged so a silently dead collector cannot keep wearing fresh-looking
 # numbers. Distinct from the badge-level 7-day STALE render threshold: this
@@ -171,6 +179,70 @@ def map_seat_metrics_to_unified(
 def _read_url(url: str, timeout: int = 15) -> str:
     with urllib.request.urlopen(url, timeout=timeout) as resp:
         return resp.read().decode("utf-8")
+
+
+def fetch_macos_parity(
+    cache_dir: Optional[Path] = None,
+    read_url=_read_url,
+) -> Tuple[Optional[Dict], Optional[str]]:
+    """(parity_test_results-shaped dict, source label) from hiwave-macos's
+    metrics-history branch, or (None, None).
+
+    Ranking: CI cache latest-master.json, raw latest-master.json (per-case),
+    then the last master row of history.csv (average only, no per-case rows).
+    Only master rows drive public numbers; develop rows never do.
+    """
+    cache_dir = cache_dir if cache_dir is not None else SEAT_CACHE_DIR
+    latest = None
+    cache_latest = cache_dir / "macos" / "latest-master.json"
+    try:
+        if cache_latest.exists():
+            latest = json.loads(cache_latest.read_text())
+        else:
+            latest = json.loads(read_url(f"{MACOS_PARITY_FEED}/metrics/latest-master.json"))
+    except Exception:
+        latest = None
+    if latest and latest.get("tests"):
+        results = [
+            {
+                "case_id": t.get("name"),
+                "type": t.get("type", "unknown"),
+                "threshold": t.get("threshold", 15),
+                "pixel": {"diffPercent": t.get("diff")},
+            }
+            for t in latest["tests"]
+            if not t.get("not_measured")
+        ]
+        return {
+            "timestamp": latest.get("timestamp"),
+            "passed": latest.get("passed"),
+            "failed": latest.get("failed"),
+            "results": results,
+        }, "metrics-history/latest-master.json"
+
+    try:
+        text = read_url(f"{MACOS_PARITY_FEED}/metrics/history.csv")
+    except Exception as e:
+        print(f"  macos: parity feed unreachable ({e.__class__.__name__}) — NOT-MEASURED")
+        return None, None
+    last = None
+    for row in csv.DictReader(io.StringIO(text)):
+        if (row.get("branch") or "").strip() == "master":
+            last = row
+    if last is None:
+        return None, None
+    try:
+        return {
+            "timestamp": last["timestamp"],
+            "summary_only": True,
+            "average_diff": float(last["avg_diff"]),
+            "passed": int(last["passed"]),
+            "failed": int(last["failed"]),
+            "total": int(last["total"]),
+            "commit": last["commit"],
+        }, "metrics-history/history.csv"
+    except (KeyError, ValueError):
+        return None, None
 
 
 def fetch_seat_metrics(
@@ -454,6 +526,13 @@ def collect_platform_metrics(platform: str, submodule_path: Path, verbose: bool 
 
     # Try to find parity test results (priority - this has REAL pixel data)
     parity_data, parity_source = find_file(submodule_path, PARITY_TEST_SOURCES)
+    parity_summary = None
+    if platform == "macos" and not parity_data and not swarm_data:
+        feed, feed_source = fetch_macos_parity()
+        if feed and feed.get("summary_only"):
+            parity_summary, parity_source = feed, feed_source
+        elif feed:
+            parity_data, parity_source = feed, feed_source
     baseline_data, baseline_source = find_file(submodule_path, BASELINE_SOURCES)
 
     # Seat build/tests feed (Windows/Linux). Orthogonal to parity: either may
@@ -462,7 +541,7 @@ def collect_platform_metrics(platform: str, submodule_path: Path, verbose: bool 
     # grey through weeks of green CI.
     seat_row, seat_json = fetch_seat_metrics(platform)
 
-    if not swarm_data and not parity_data and not baseline_data and not seat_row:
+    if not swarm_data and not parity_data and not parity_summary and not baseline_data and not seat_row:
         print(f"  No metrics found for {platform}")
         return None
 
@@ -487,9 +566,24 @@ def collect_platform_metrics(platform: str, submodule_path: Path, verbose: bool 
         metrics["parity_source"] = "pixel_diff"
         metrics["last_updated"] = parity_data.get("timestamp", datetime.now().isoformat())
 
+    # Average-only macOS feed (history.csv): no per-case rows to recompute.
+    elif parity_summary:
+        print(f"  Found {parity_source} (average only)")
+        total = parity_summary["total"]
+        metrics.update({
+            "visual_parity": round(100 - parity_summary["average_diff"], 2),
+            "tests_passed": parity_summary["passed"],
+            "tests_failed": parity_summary["failed"],
+            "tests_total": total,
+            "pass_rate": round(parity_summary["passed"] / total * 100, 1) if total else 0,
+        })
+        metrics["parity"] = metrics["visual_parity"]
+        metrics["parity_source"] = "metrics_history_avg"
+        metrics["last_updated"] = parity_summary["timestamp"]
+
     # Extract supplementary data from baseline report
     if baseline_data:
-        if not swarm_data and not parity_data:
+        if not swarm_data and not parity_data and not parity_summary:
             print(f"  Found {baseline_source} (baseline only)")
         baseline_metrics = extract_baseline_metrics(baseline_data)
 
