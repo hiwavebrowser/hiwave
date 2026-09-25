@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T22:55:37.729228",
+  "generated_at": "2026-09-25T01:14:30.992847",
   "platforms": {
     "macos": {
       "parity": 0,
@@ -12,7 +12,7 @@
         "images": 0
       },
       "tier_a_pass_rate": 0.4,
-      "git_commit": "2c17931",
+      "git_commit": "5abe6ff",
       "perf_grade": "?"
     },
     "windows": {
@@ -57,10 +57,6 @@
     }
   },
   "history": [
-    {
-      "date": "2026-06-27",
-      "macos": 80.2
-    },
     {
       "date": "2026-06-28",
       "macos": 80.2
@@ -414,6 +410,10 @@
     },
     {
       "date": "2026-09-24",
+      "macos": 0
+    },
+    {
+      "date": "2026-09-25",
       "macos": 0
     }
   ],
