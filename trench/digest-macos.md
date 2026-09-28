@@ -1216,3 +1216,44 @@ Local stack `scratch/n64-stack` was not pushed. Receipts are in `hiwave-macos/sc
 
    Silence means (a).
 3. Carried: allowlist `git worktree` / `git merge-tree` / `gh pr merge` / `gh pr edit` / `rustfmt --check`; lba001 tolerance; control UA padding/border into the cascade (now blocking #228's and #231's residuals).
+
+
+## n65 — 2026-09-27/28 (macOS seat, Atlas) — the kerning seam is closed (WPT back to 24), and a `border: none` control stopped painting a frame (shelf 2.87 → 1.08)
+
+**Metric.** Basis measured fresh on a clean develop `5472087` (#310 tip): **campaign 26/26, avg 1.2534**, WPT Tier-1 **23/26**. Both match the last known numbers. n64's decision 1 (#230) merged with the 24 → 23 trade, and decision 2 was silent, so tonight's lane was (a), cross-node shaping.
+
+| PR | fix | campaign | WPT |
+|---|---|---|---|
+| **#313** `atlas/n65-cross-node-shaping` `57e9e46` | text: kern the pair across a same-font inline seam | 1.2534, 26/26 byte-flat | **23 → 24** (break-boundary-2-chars-002 passes) |
+| **#315** `atlas/n65-control-border-none` `c1f0a4d` | forms: a `border-style: none` control paints no frame and seats its text at its edge | **1.2534 → 1.1782** | 23 flat |
+
+**Both stacked (local `scratch/n65-stack`, clean cherry-pick): 1.1782, WPT 24/26.** 3 cases down, 23 byte-flat, none up.
+
+**#313, the seam.** Blink shapes across element boundaries when the font is the same, so `abc<span>xyz</span>def` kerns `c|x` and `z|d`. RustKit shapes per text node. The inline loops now carry the edge character of the last text placed on the open line. When the next child's first text leaf has the same font, the cursor moves by `w("cx") − w("c") − w("x")`. That covers both block-children twins and the inline-box loop. The rule also applies through a plain inline with no margin, border or padding on that edge, but not across whitespace or letter-spacing.
+- Two tests pin it: `xyz` and `def` land within 0.02px of their one-run positions, and a padded inline edge breaks the seam.
+- The campaign is byte-flat. The board's seams are whitespace or font changes (`<strong>` is a different face).
+- Ledgered: intrinsic min/max-content widths still sum the per-node runs.
+
+**#315, the control frame.** `render_form_control` hardcoded `border_width: 1.0` at all four control sites. A 1px frame (gray when the author colour was transparent) was painted over every control whose author wrote `border: none`, and the text was inset behind it. Layout already composed the zero border into the box, so only paint disagreed.
+- shelf 2.8711 → **1.0781**, css-selectors → 1.3819, flex-positioning → 0.6327.
+- Gate B within-fraction rose on all three cases, with no new discrete failures. I checked this because #302's lesson is that diff_pct alone can hide a Gate B drop.
+- This closes n64's shelf "+x" term from #228.
+
+**Operational.**
+- The first basis run was **contaminated and discarded**: I edited rustkit-layout while `parity_test.py`'s cargo build was still compiling. I stopped it, parked the patch, and rebuilt clean. Rule: bank the basis before the first edit, and don't overlap the two.
+- `font_resolve_tests::a_new_web_font_set_invalidates_the_cache` fails 1 in 2 full-suite runs **on clean develop**. It's a web-font generation race with another test's install, the same class as n64's Engine lock. Not mine, but CI will flake on it.
+- Two other trench lanes ran alongside this one tonight: cascade-speed (#311) and real-site hourly. I stayed in `~/Repos/hiwave/hiwave-macos` and on `atlas/n65-*` branches, so there was no overlap.
+- Session 23:15–01:30 EDT, under the cap.
+
+**Commits landed** (hiwave-macos, pushed, PRs open, none merged): #313 `57e9e46`, #315 `c1f0a4d`. Receipts are in `hiwave-macos/scratch_n65/`: `board_{basis,fix,cb,stack}.json`, `captures_*`, `wpt_*.log`, `gateb_*.json`, `cmp.py`, `gateb.py`. **Develop and master are untouched.**
+
+**Decisions for Pete (≤3):**
+1. **Merge #313 + #315** (independent, clean in either order, stack measured at 1.1782 / WPT 24). Both need cross-seat R1.
+2. **Next lane, my order:**
+   - (a) The rest of the control box model: the UA border/padding goes into the cascade, so authored `border: 2px solid` and `border-width: 0` paint as written, plus the select arrow gutter. form-controls 3.24 and settings 2.09 are the evidence.
+   - (b) article-typography 4.79, the top case: re-table it on the current tree.
+
+   Silence means (a).
+3. Carried:
+   - Fix or quarantine the web-font cache test race (one Engine/webfont test lock, as in n64).
+   - Allowlist `git merge-tree` / `kill` for this seat. Tonight a contaminated build couldn't be killed directly, and a merge check needed a scratch branch.

@@ -1,6 +1,16 @@
 # Trench Baseline — macOS seat (Atlas)
 Recorded 2026-07-07. Source: live CI metrics (github-actions, updated 2026-07-07 12:25 UTC) + metrics/parity_results.json (10:53 UTC run).
 
+## BASIS 2026-09-27 (night 65): develop `5472087` (#310 tip; #230 kerning and the n64 set merged)
+Fresh board on a clean develop `5472087`: campaign 26/26 **avg 1.2534**, WPT
+Tier-1 **23/26** (fails: empty-span-size-002, line-break-anywhere-001,
+break-boundary-2-chars-002). Receipts in `hiwave-macos/scratch_n65/`.
+- #313 cross-node seam kern (`57e9e46`): campaign byte-flat, **WPT 23 -> 24**.
+- #315 `border: none` control frame (`c1f0a4d`): **1.2534 -> 1.1782** (shelf
+  2.8711 -> 1.0781, css-selectors -> 1.3819, flex-positioning -> 0.6327; none
+  up), WPT flat, Gate B within-fraction up on all three.
+- Stack (local `scratch/n65-stack`): **1.1782, WPT 24/26**.
+
 ## BASIS 2026-09-24 (night 64): develop `a66c159` (#209, #212, #213, #216, #219, #220 merged; #226–#231 opened)
 Fresh board on a clean develop `a66c159`: campaign 26/26 **avg 1.9117**
 (matches #212's receipt), WPT Tier-1 24/26. Receipts are in
