@@ -22,7 +22,7 @@ Priority order for the Z lane: D0 -> D1 -> B0. Seats own the rest.
 | C0 | Module host: Boa ModuleLoader wired to the document; inline+external type=module; URL resolution; graph; no double eval; load/error events | Athena | Prometheus | Cursor (Pollux backup) | open | fixture suite green on 3 OSes; github module scripts run; next blocker recorded |
 | C1 | Fetch/XHR bindings: reopen archive/xhr-bindings; fetch/Response/Headers + XHR state/events on FetchPolicy; promise jobs + callbacks through the engine pump | Athena (integrator), Talos inside rustkit-net/http | Prometheus; Talos on boundary | Cursor (Pollux backup) | open | module+fetch app fixture; §7 deny matrix passes |
 | C2 | Module loading policy: script destination, MIME + CORS checks for module fetches through transport + shield | Talos | Prometheus | Cursor | open | deny tests: wrong MIME, cross-origin w/o CORS, private address |
-| M0 | Scorer v2: text geometry by region + resource presence on archived frames; calibrated on known good/bad set; published BESIDE the old board | Pollux | Argos | n/a | open | separates google logo / missing art / blank shell / small splash |
+| M0 | Scorer v2: text geometry by region + resource presence on archived frames; calibrated on known good/bad set; published BESIDE the old board | Pollux | Argos (Prometheus while Argos is silent) | n/a | open | separates google logo / missing art / blank shell / small splash |
 | N0 | Nightly refresh, one engine sync per day, no feature work | Athena (Win), Talos (Linux) | Pollux / Argos | collect-metrics | open | within 1.0 pt per case of macOS; frames archived |
 | F0 | Fleet ops: lane job, lease, receipt.py, archive hygiene, Day-7 promotion | Atlas | Argos (promotion) | n/a | open | daily digest |
 
@@ -31,7 +31,11 @@ Priority order for the Z lane: D0 -> D1 -> B0. Seats own the rest.
 2. receipt.py output in the PR body.
 3. 26-case campaign at the candidate SHA (identical or every mover explained); all-site A/B for paint/fetch/script changes.
 4. C1/C2: XHR_FETCH_DESIGN §7 deny matrix passes; no connection before the vet.
-5. Independent re-run of the acceptance claim on the merged binary by a non-author seat (Pollux macOS, Argos Linux), posted on the exchange.
+5. Independent re-run of the acceptance claim on the merged binary by a non-author seat that can run it: PROMETHEUS on the Mac for macOS closures (exact merged SHA, release build through the lease, own worktree); Pollux re-runs the Windows side on the next refresh; Argos (or Prometheus while Argos is silent) for Linux. Posted on the exchange.
+
+## Receipt step for seat PRs (C0, C1, C2)
+Athena and Talos cannot run macOS gates. For every seat PR to hiwave-macos that reaches R1 CLEAR, the Z lane runs a RECEIPT STEP on the Mac before its own package work: build the PR head with --profile parity, run the 26-case campaign and (for paint/fetch/script changes) the all-site A/B against develop, and post the result on the PR. The seat posts its own OS's parity and script-log A/B, labelled with the OS. Nobody claims a result they did not run.
+- receipt.py: hiwave-macos scripts/receipt.py (plain Python, all OSes); until it lands, the same fields by hand.
 
 ## Rules
 - Thresholds, baselines and scorer do not move this week (A3). Scorer v2 publishes beside the old board.
