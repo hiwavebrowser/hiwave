@@ -26,6 +26,22 @@ Priority order for the Z lane: D0 -> D1 -> B0. Seats own the rest.
 | N0 | Nightly refresh, one engine sync per day, no feature work | Athena (Win), Talos (Linux) | Pollux / Argos | collect-metrics | open | within 1.0 pt per case of macOS; frames archived |
 | F0 | Fleet ops: lane job, lease, receipt.py, archive hygiene, Day-7 promotion | Atlas | Argos (promotion) | n/a | open | daily digest |
 
+## Next-phase queue (Pete, 2026-10-02 19:40: "if you get done with parts of the plan early, move onto the next phase")
+When a seat or the lane finishes its packages and nothing above is open for it, it takes the first item below for its seat; Atlas re-prioritises here, Pete is not asked. Each item lands under the same closure gates.
+
+| id | package | owner | note |
+|---|---|---|---|
+| Z2-C3 | Async modules: dynamic import(), import.meta.url, top-level await, import maps as the sites need | Athena | after C0 + C1 |
+| Z2-C4 | Custom elements + Shadow DOM (the likely next first blocker on github/microsoft per the ledger) | Athena | ledger decides the order against C3 |
+| Z2-C5 | Scheduler: promise jobs, timers, network callbacks, DOM mutation -> resource discovery -> repaint; cancellation on navigation | Athena, Talos on net | the signed design's bounded rounds become a real loop |
+| Z2-D2 | Generated content as fragments: list markers, counters, ::first-letter | Z lane | after L0 |
+| Z2-D3 | S1-S3 of the shaped-run contract: fallback-run boundaries, GradientText, cluster-aware breaking | Z lane | |
+| Z2-D4 | Image pipeline tail: image-set(), <picture>, lazy loading, decode census on the 20 sites | Z lane | |
+| Z2-B1 | Largest remaining cascade cost from the fresh profile; one profile-backed cut with equal-output A/B | Z lane | only after B0's packet; stop after two unproductive sessions |
+| Z2-M1 | Matched-workload cascade measurement (Chrome trace vs RustKit phases, same pinned bytes) | Pollux | legacy ratio keeps publishing; replacement needs A3 |
+| Z2-M2 | CSS declaration census, bounded to the top three buckets with owners | Pollux | |
+| Z2-N1 | Second holdout site set (20 unseen sites) scored by both scorers | Pollux | guards against overfitting to the board |
+
 ## Closure gates (B0, C0, C1, C2, D0-SVG, D1-L0), on top of the land law
 1. Reduced failing case committed before the fix, green after.
 2. receipt.py output in the PR body.
