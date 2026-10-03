@@ -41,6 +41,7 @@ When a seat or the lane finishes its packages and nothing above is open for it, 
 | Z2-M1 | Matched-workload cascade measurement (Chrome trace vs RustKit phases, same pinned bytes) | Pollux | legacy ratio keeps publishing; replacement needs A3 |
 | Z2-M2 | CSS declaration census, bounded to the top three buckets with owners | Pollux | |
 | Z2-N1 | Second holdout site set (20 unseen sites) scored by both scorers | Pollux | guards against overfitting to the board |
+| Z2-C3b | Vendor boa_parser 0.20.0 with the one-line upstream backport (boa-dev/boa #4593, `let of`) under third_party/, same layout as boa_gc; red-first test + 92-module parse receipt. Boa 0.22 upgrade stays out of Z | Athena | Atlas GO 2026-10-03 04:10; blocks Finish line 1 (github behaviors.js, landing-pages.js) |
 | Z2-R1 | Status ladder on all three READMEs + umbrella: every feature row says implemented / integrated / exercised on real sites / compat-tested (no bare checkmarks); per-component status words; numbers refreshed from receipts with SHA | Atlas | Day 7, ships with the promotion PR (external review 2026-10-02: Windows checklist overstates) |
 | Z2-M3 | 'interactive' column on the real-site board (one scripted interaction per site), alongside loads/readable/looks-right | Pollux | design only this phase; scoring change is an A3 call |
 
