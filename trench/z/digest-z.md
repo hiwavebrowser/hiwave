@@ -63,3 +63,22 @@ One section per lane session or seat milestone: `## <date> <HH:MM> <owner> <pack
 **Still open on D0:** #443 has no live board page with an http raster background in the first viewport to be validated on (unchanged from the last census).
 
 **Found, not fixed:** image requests still carry the transport's navigation defaults `Sec-Fetch-Dest: document`, `Sec-Fetch-Mode: navigate` and `Upgrade-Insecure-Requests: 1` (`rustkit-http/src/lib.rs` ORDERED and ORDERED_H2). That is Talos's boundary. Walmart's `/akam/13/pixel_...` beacon is fetched as an image and not blocked by the shield.
+
+## 2026-10-03 04:55 Z-lane D0
+
+**#470 (image Accept without AVIF) LANDED** 07:08Z (merge a238ae8; R1 CLEAR, R2-STAMP PASS). Fourth landed D0 receipt; the stop rule does not trigger.
+
+**Receipt step run for two seat PRs.** Both were at R1 CLEAR when the session started, and both merged while the A/B was running, at the SHAs measured.
+- **#468 Athena Z2-C3 import maps @ d509d3f** and **#469 Pollux rustls provider @ 0fa1e82**, against their merge-base b01556c, in one three-arm pass. Campaign **26/26 identical** on both (mean 1.1069). All-site A/B: no site moves beyond its own variance on either. Receipts are posted on both PRs.
+- Not shown by it: github did not capture on any arm (30 s limit), so the A/B says nothing about #468's bare `react` import on the live page. #469's panic does not reproduce on the Mac base.
+- **shopify's unexplained 3.00% frame from #470 is the site.** The same one-frame 3.00% appeared on #469's arm and later on develop a238ae8 itself (within develop 3.00%). Noted on #470.
+
+**Post-mutation image discovery: fix written, NOT in a PR.** Branch `atlas/z-post-mutation-images`: red tests 07a8390 -> merge of develop 5a473b4 -> fix 3524172 (pushed).
+- Change: after page scripts and their DOM flush, `navigate` runs one more image pass. It fetches only URLs the view has not attempted (new per-view `images_attempted` set, reset by each full pass), skips cached ones, and lays out again only if a new image arrived. One file, `rustkit-engine/src/lib.rs`.
+- The two red tests are green at 3524172. I did not run the full headless suite. The "no second request for a failed image" property has no test, because the recording server cannot serve a failing image.
+- Campaign at 3524172 vs develop a238ae8: **26/26 identical** (mean 1.1069; candidate binary d1df917b..., base eb1e5aa4...).
+- All-site A/B: 16 of the 17 sites that captured are 0.00% or inside their own variance. google's 4.09% is its two served variants; a re-run showed both on each arm. github, cnn and instagram did not capture on either arm. Capture time did not grow on any site.
+- **Blocker for the PR: yahoo.** Develop is identical on 6 of 6 frames. The fix arm differs on 3 of 6 (19 to 20%). In two of those the hero photo and the small icons are missing (grey placeholders), and one of the two took 13 s instead of 20 and has a different trending list. In the third the hero is a different carousel photo. yahoo may be serving a second variant, but develop never showed it, so I do not know whether the fix loses images or exposes a variant. Gate 3 (every mover explained) is not met, so there is no PR.
+- Next session, first: yahoo x10 per arm with stderr kept; diff which image URLs load, fail or time out per frame; check whether the post-script pass's fresh 8 s budget or its relayout changes what the capture sees.
+
+**Still open on D0:** #443 has no live board page with an http raster background in the first viewport (unchanged).
