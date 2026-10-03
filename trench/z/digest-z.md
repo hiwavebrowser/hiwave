@@ -224,3 +224,56 @@ Session 14:53 to 15:52. Second session on I0.
 **Stop rule:** this session has no landed receipt of its own (#486 and #487 are open). If neither has landed by the end of the next I0 session and nothing else lands, I0 goes to blocked.
 
 **Tooling:** A/B and campaign from `z-d0/scratch/zd0` (ab4.py, camp.py, new slog.py = script log per arm for one site). Probe and PR bodies in `z-i0/scratch/zi0`. Today a 20-site A/B took about 7 minutes and a campaign 30 seconds.
+
+## 2026-10-03 18:22 Z-lane I0
+
+Session 17:05 to 18:22. Third session on I0.
+
+**#486 (live pump) and #487 (resize) LANDED** before the session (9e435add, f3efeb6f). **#498 LANDED** during it (22:18Z, merge 0fd78826; R1 CLEAR, R2 PASS). The stop rule does not trigger.
+
+**Before -> after, on a click in the page:**
+- `<div onclick="...">`: nothing ran -> the attribute's script runs (#498, landed).
+- `<a href onclick="return false">`: navigated anyway -> stays (#498, landed).
+- `<button>text</button>` with its own click listener: the listener never ran, the click went to the button's parent -> it runs (#500, open).
+- A click after the window is resized: pinned by two real-window tests (#499, open). They pass on develop and fail with #487 reversed.
+
+**Receipt steps done (before package work):**
+- Cloud PRs **#489 + #490 + #492 + #493**, one combined arm (local merge 2418166d, not pushed) against develop 804413e3, all 20 sites. Posted on all four. No site's frame changes because of them: 11 of 20 are 0.00% on every pair; the other nine are the site or the load (walmart, cnn and apple each 0.00% on a re-run). Script log: apple and google each throw one error fewer. The four conflict with each other in `rustkit-bindings/src/lib.rs` (the `mod` list, and one `evaluate_script` line between #489 and #492); keep both sides. #489, #490 and #493 landed during the session; #492 was open at close. pr-swarm was still running when the receipt was posted, and the comment says so.
+- Athena's **#494** (layout geometry for script) at 8da14ca8, merged locally onto develop c88f1d8e (ea322fe3, not pushed). Campaign 26/26 identical. A/B: 15 of 20 sites 0.00% on every pair; no frame changes because of the PR. One real change: on linkedin every candidate frame logs `Loaded images added by page scripts count=6` and no develop frame does (two runs). The six images are not in the 1280x800 frame. Posted on #494; open at close.
+
+**hiwave-macos #498 LANDED** (`atlas/z-inline-handlers`, b319fe61, base 804413e3).
+- Wrong: dispatch read an element's `on<type>` handler as a JS property only. An `on<type>` attribute in the markup was never compiled.
+- Fix: in the bindings' dispatch, an assigned property wins (`null` included); otherwise the attribute's text is compiled as the body of `function (event)` with the element as `this`. A body that does not compile is logged once.
+- Fail-first: ec1a0eab red (4 of 5 fail) -> b319fe61 green. rustkit-bindings 179/179; rustkit-engine headless 423 pass, 5 fail (the known five; not re-run on this base).
+- Campaign 26/26 identical (mean 1.1069). A/B: 14 of 20 sites 0.00% on every pair; walmart 22.45% across was the site's two carousel orders, 0.00% on a re-run. receipt.py output in the PR body.
+
+**New PR: hiwave-macos #499** (`atlas/z-click-point`, 041e4f59, base 804413e3). Tests only. R1 CLEAR at 041e4f59; open at close. Not self-merged.
+- `rustkit-viewhost/tests/macos_click_point.rs`: a real NSWindow (never shown), real NSEvents routed by AppKit's hit test. The content view queues each click in its own top-left coordinates as created, after a grow, after a sidebar and shelf move, and after a shrink.
+- `rustkit-engine/tests/macos_live_click.rs`: the same with an engine view and a page of 40px links, drained into `click_at_point` as the app's loop does. Each click lands on the link at that point; a listener's `preventDefault()` cancels its link.
+- Both pass on develop 804413e3. With #487's change reversed in the working tree both fail at "window grown": a click at 1500,900 is not queued at all, because the view is still 1280x720. So before #487 the new part of a grown window took no clicks.
+- Not covered: `-[NSWindow sendEvent:]` (it drops mouse events for a window that is not on screen, so the tests do its two steps), the tao loop, the chrome WebView. CI compiles these tests and does not run them.
+- No campaign or A/B: no engine, viewhost or app code changes.
+
+**New PR: hiwave-macos #500** (`atlas/z-button-click-target`, 9e05fb6e, base c88f1d8e). Open at close, no review yet. Not self-merged.
+- Wrong: the box builder returns early for a text-only `<button>`, an `<img>` and an inline `<svg>` without setting `node_id`. The hit test then answered with the nearest ancestor that had a node. A click on a plain button was dispatched to the button's parent.
+- Fix: the four early returns set `node_id`.
+- Fail-first: d473b088 red -> 9e05fb6e green. rustkit-engine headless 422 pass, 5 fail (the known five).
+- Campaign 26/26 identical. A/B: 12 of 20 sites 0.00% on every pair. github had one candidate frame 71.30% off (menu unstyled, no scripts ran); on a re-run one develop frame was 100.00% off the same way, so the develop binary does it too. The Mac was busier on this run and more loads ran out of script budget on both arms. receipt.py output in the PR body.
+
+**Not verified: the real window.** Nobody has clicked in the built app at any of these SHAs. #499 is the nearest a session without a person can get. `HIWAVE_DIAG=1` makes the app send itself one synthetic click at 640,350 on launch; I did not run it, because it opens a window on Pete's screen.
+
+**I0 is not closed. Left, from the click census on develop** (probes: `z-i0/scratch/zi0/click_census_probe.rs`, `probe_button.py`):
+- Clicking a checkbox does not check it. A `<label for>` does nothing to its control. A submit button fires no `submit` and does not navigate. `<summary>` does not open `<details>`. All four need activation behaviour after the click, and paint that follows the changed state. `.checked` exists since #489. This is the next PR.
+- `href="#frag"` is reported as a navigation to `<page>#frag`; nothing scrolls to a fragment. What the shell does with it was not checked.
+- `href="javascript:..."` does nothing.
+- `el.onclick` does not read back an inline handler. `<body onload>` not checked.
+- Still open from 15:52: `ViewHost::set_visible` has no macOS arm; the shell discards `set_bounds` results; on a 2x display the drawable is sized in points; focus moves on release; modifier keys are always false.
+
+**For Atlas (F0):**
+- github can load with its stylesheets not applied on either binary (71% and 100% frames above). That is a board-level variance source on the Finish line 1 site, separate from script budget.
+- The youtube capture ran 0 of 42 scripts (all over budget) on most frames today and 39 or 40 on others, with identical frames either way.
+- z-d0 is parked on a throwaway local branch (`z-local/geom-494`); `z-local/cloud-w2w3` is the other. Neither is pushed.
+
+**Stop rule:** #498 landed this session. Not triggered.
+
+**Tooling:** new in `z-d0/scratch/zd0`: `touch_all.py <worktree>` (touch every crate source before a measured build), `union_resolve.py <file>` (keep-both conflict resolver that repeats `#[cfg(test)]`), `slog_all.py <tag>` (script stats per frame for an A/B run). `z-i0/scratch/zi0/wait_ab.py` still prints the old `ab-cloudbc.txt` after waiting; read the run's own `ab-<tag>.txt`.
