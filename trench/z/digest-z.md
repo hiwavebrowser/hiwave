@@ -25,3 +25,19 @@ One section per lane session or seat milestone: `## <date> <HH:MM> <owner> <pack
 - Next D0 blocker: bing's logo now reaches the vector lane but still paints nothing, because rustkit-svg has no gradient paint servers (`fill="url(#a)"` is parsed and never rendered). After that: post-mutation discovery.
 - Headless engine suite: 395 pass, 8 fail, all in the pre-existing localhost x 127.0.0.1 class flagged for Talos last session.
 
+## 2026-10-03 00:25 Z-lane D0
+
+**#462 (data: SVG + viewBox-less SVG images) LANDED** 03:22Z (merge 7a757a7). Second landed D0 receipt; the stop rule does not trigger.
+
+**New PR: hiwave-macos #463** (`atlas/z-svg-gradients`, base develop 90bb34f, head 44d0827). Awaiting R1 Prometheus, R2 Cursor; not self-merged; CI green. No exchange broadcast sent (session rule: do not ping).
+- Change: SVG gradient paint servers. `fill="url(#id)"` was parsed and never painted, so every gradient-filled shape drew nothing. rustkit-svg now reads `<linearGradient>`/`<radialGradient>` (stops, stop-opacity, gradientUnits, gradientTransform, spreadMethod, href stop templates) and fills paths, polygons, rects, circles and ellipses. One file; no renderer or display-list change, so it is the same on all three OSes.
+- Fail-first: 4ffd450 (three tests red on develop) -> 467fdef (green). rustkit-svg 30/30, rustkit-engine 314/314.
+- Before -> after, repro vs pinned Chrome 148 (`parity-tests/repro/svg-gradient-fill.html`): **37.427% -> 0.044%** pixelmatch diff; inked pixels 0 -> 72,822 (Chrome 73,477).
+- Campaign at the candidate: **26/26 identical** (avg 1.1069 both arms). No campaign case has a gradient-filled SVG.
+- All-site A/B: no site moves beyond its own variance. That is expected on develop 90bb34f, where bing's `data:` logo never reached the vector lane. Stacked locally on #462's head, bing's Copilot logo paints (0.01% of pixels, both arms stable). With #462 now on develop, #463 alone paints it after merge.
+- Known limits, in the PR: about 5,000 flat polygons per gradient shape (the repro's five SVGs emit 24,847 commands); faint banding on shapes wider than 64 px; no gradient strokes, focal points or `<pattern>`.
+
+**Next D0 slice, found by this session's census (not started): the image lane advertises AVIF and cannot decode it.** 44 `<img>` loads fail with `DecodeError("Unknown image format")` on microsoft (24), shopify (12) and walmart (8). rustkit-http's default `Accept` (`crates/rustkit-http/src/lib.rs:497` and `:658`) is Chrome's navigation string, which lists `image/avif`; rustkit-codecs has WebP but no AVIF. I fetched 12 of the failing URLs by hand: with that `Accept` all 12 come back `image/avif`, and with no `Accept` or one without avif they come back jpeg, png or webp. Recommended fix: the image fetch sets its own `Accept` without avif (caller headers already win over the default), leaving the navigation header's browser shape alone. It touches fetch, so it needs the all-site A/B, and it sits on Talos's rustkit-net/http boundary if the default itself is changed.
+
+**Also from the census:** on the 14 sites that captured, the display list holds zero http raster `background_image` commands, so #443 still has no live board page to be validated on. Post-mutation discovery is confirmed missing: `navigate` runs `run_page_scripts` then `flush_script_dom_writes` (`rustkit-engine/src/lib.rs:2674-2679`) and never calls `load_images` again, so an image or background a script adds is never fetched.
+
