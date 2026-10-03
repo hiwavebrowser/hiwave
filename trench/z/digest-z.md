@@ -149,3 +149,30 @@ Session 09:05 to 10:15. No seat PR was waiting on a receipt step (the only open 
 **Not done (named in the PR):** background positions in em, rem or viewport units (the parser has no font size or viewport), and `calc()` in `background-size`. I did not look for a live page that uses either.
 
 **D0 has no work left.** Every item in the package row has landed except #475, which only needs its merge. Finish line 2 still cannot be shown on the live board: no board site has a url background in its first viewport. Next session: if #475 has merged, set D0 done; start D1 (L0) either way. D1 has been unblocked since #454 and has had no session yet.
+
+## 2026-10-03 13:10 Z-lane I0
+
+Session 11:33 to 13:15. First session on I0. No seat PR was waiting on a receipt step (#476 is Pollux's Z2-I1, not a C0/C1/C2 seat PR).
+
+**D0 closed.** #475 merged 14:16Z (1585ad1). D0 set to done.
+
+**New PR: hiwave-macos #480** (`atlas/z-live-click`, head 732c9a0, base develop 1585ad1). I0 part (a). Awaiting R1 Prometheus, R2 Cursor; not self-merged. No exchange broadcast sent (session rule: do not ping).
+- Before: a click in the live browser hit-tested for focus and a link and never told the page. No mousedown, mouseup or click reached a listener. A link whose listener cancels the click navigated anyway.
+- After: the engine fires mousedown on press, mouseup and click on release, through the page's own listener registry. It lays out what the listeners wrote, then focuses and follows the link unless the click was cancelled. The shell calls it.
+- Second fault found on the way: a click on a block link's line box hit a layout box with no DOM node, so it reached no element. `hit_test` now reports the nearest ancestor's node for such a box. This reverses an earlier comment in the tests; flagged for R1 in the PR.
+- Fail-first: e793237 red (0 of 3) -> 732c9a0 green (4 new tests). One test changed between the two commits: it built a link with `a.href = ...`, which our bindings do not reflect to the attribute.
+- rustkit-engine headless lib 413 pass, 8 fail (the localhost x 127.0.0.1 class; not re-run on the base). rustkit-layout 605/605, rustkit-bindings 150/150. hiwave-app type-checks.
+- Campaign at 732c9a0 vs 1585ad1: **26/26 identical** (mean 1.1069; candidate binary 344b2817..., base 0699c051...).
+- All-site A/B: 12 sites 0.00% on every pair. google, linkedin and netflix moved and are the site: google has the same two frames on both arms; linkedin moves 3.43% within the candidate arm on a re-run; netflix moves 3.45% to 12.83% with the develop binary on both arms. facebook, github, squarespace and cnn did not capture on either arm; instagram once per arm.
+- receipt.py output is in the PR body.
+
+**Not verified: the real window.** Nobody has clicked in the built app at this SHA. The engine half is tested headless; the shell half only compiles. One click on a script-driven control in the live app is the acceptance check (Pete or Prometheus). The red test is engine-level, not an action-script test, because Z2-I1 (#476) has not landed.
+
+**I0 is not closed. Left:**
+- (c) late content: cause confirmed, not fixed. `RustKitView::process_events()` in hiwave-app is an empty function. Nothing on the live loop runs timers, promise jobs or network callbacks after load. A `setTimeout` set by a click listener never fires either. This is the next PR.
+- (b) plain link clicks failing and the inverse resize scale: not looked at. The line-box fix does not explain it, because the link lookup already inherited from ancestors.
+- Found, not fixed: `a.href = '...'` does not set the attribute. Inline `onclick="..."` handlers not checked. Focus moves on release, not press. Modifier keys are always false in the event.
+
+**Stop rule:** this session has no landed receipt (#480 is open). If #480 has not landed by the end of the next I0 session and nothing else lands, I0 goes to blocked.
+
+**Tooling:** worktree `z-i0` (no Aleph index, same as z-d0). The first `cargo check -p hiwave-app` there took 8 min 39 s. Campaign and A/B still run from `z-d0/scratch/zd0` (camp.py, ab4.py); raw A/B table `ab-click.txt`.
