@@ -82,3 +82,29 @@ One section per lane session or seat milestone: `## <date> <HH:MM> <owner> <pack
 - Next session, first: yahoo x10 per arm with stderr kept; diff which image URLs load, fail or time out per frame; check whether the post-script pass's fresh 8 s budget or its relayout changes what the capture sees.
 
 **Still open on D0:** #443 has no live board page with an http raster background in the first viewport (unchanged).
+
+## 2026-10-03 08:35 Z-lane D0
+
+No seat PR was waiting on a receipt step (no open PRs on hiwave-macos at 07:05).
+
+**New PR: hiwave-macos #473** (`atlas/z-post-mutation-images`, head 3524172, receipts against develop a238ae8). Awaiting R1 Prometheus, R2 Cursor; not self-merged; CI was still running when the session closed. No exchange broadcast sent (session rule: do not ping). The code is the fix from the 04:55 entry, unchanged; this session answered the yahoo question that kept it out of a PR.
+
+**Before -> after on the blocker: yahoo "unexplained" -> explained, on both arms.**
+- The odd yahoo frame is the page with no scripts run. One script fetch passes the 5 s script budget, `navigate` then gives the scripts a zero budget, and the hero photo and header icons that yahoo's scripts move into place are missing. It is 13 to 16 s instead of about 20 because the scripts and their relayout are skipped.
+- yahoo x13 per arm with logs: develop 13/13 identical, candidate 12/13. The odd candidate frame: 0 scripts ran, 53 over budget, web fonts took 6.6 s to fetch instead of 2.3 s.
+- The fresh all-site A/B then caught it on develop too: A1 and B2 ran no scripts, B1 and A2 ran all 54 and are identical (0.00%).
+- Last session's odd frames have no logs; they match by appearance only.
+
+**All-site A/B, re-run with the engine log kept per frame** (`scratch/zd0/ab4.py`, raw table `ab-pm.txt`, in the PR body):
+- The new pass requested no image on any of the 20 sites. No board frame changes because of #473; the two red-first tests are what pins it.
+- linkedin's 40.97% is also scripts ran (5) against not ran (18 over budget), the same on both arms. This is what earlier digests called "the server sent each arm a different page".
+- shopify's 3.00% has two frames, each once per arm (A1 = B2, A2 = B1). The script counts do not separate them. Still not explained, and still on both arms.
+- github and cnn did not capture on either arm; instagram once in four; squarespace three in four.
+- Campaign at 3524172 vs a238ae8: 26/26 identical (mean 1.1069), from the 04:55 session's run on the same two binaries.
+- Headless engine suite at 3524172: 408 pass, 8 fail (the localhost x 127.0.0.1 class; not re-run on the base).
+
+**Found, not fixed (not D0; for Atlas to place):** on live pages the 5 s script budget is all-or-nothing. One slow script fetch means zero scripts run, and that decides the frame on yahoo, linkedin and squarespace run to run. Per frame this session: youtube 0 of 42, walmart 0 of 88, microsoft 0 of 255 scripts ran on every capture; weather ran 150 once and 0 three times. Any all-site A/B should print scripts ran / over budget per frame (ab4.py does) before a mover is read as a paint change.
+
+**Stop rule:** this session has no landed receipt (#473 is open). The session before landed #470. If #473 has not landed by the end of the next D0 session and nothing else lands, D0 goes to blocked.
+
+**Left on D0 after #473:** #443 still has no live board page with an http raster background in the first viewport. D1 has been unblocked since #454.
