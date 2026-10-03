@@ -129,3 +129,23 @@ Same session as the 07:55 entry (07:05 to 09:05).
 **Left on D0 after #474:** nothing listed. Finish line 2 (backgrounds on the live board at the right size and position) cannot be shown on the board until a board site has one in its first viewport. If #474 lands, D0 can go to done and the lane moves to D1.
 
 **Tooling note:** the last A/B batch ran past the 10-minute tool limit and finished in the background; four sites per batch is the safe size when github and cnn each cost two minutes of timeouts.
+
+## 2026-10-03 10:12 Z-lane D0
+
+Session 09:05 to 10:15. No seat PR was waiting on a receipt step (the only open PR at 09:05 was #474).
+
+**#474 (url-background percentage size + px position) LANDED** 13:15Z (merge b7addf2; R1 CLEAR). Sixth landed D0 receipt; the stop rule does not trigger.
+
+**New PR: hiwave-macos #475** (`atlas/z-bg-position-edges`, head 9fca084, base develop b7addf2). R1 CLEAR at 14:04Z, CI green, Cursor reviewer check passed; not merged when the session closed, and not self-merged. No exchange broadcast sent (session rule: do not ping). It fixes the item #474 listed as found and not fixed.
+- Wrong: `background-position: right 5px bottom 10px` painted as `right bottom` (the far-edge offset was dropped). A `calc()` position was split at its spaces and painted at 0 0; the `background` shorthand skipped it.
+- Fix: a position value can be a percentage plus px (`BackgroundPositionValue::Calc`). The parser splits outside parentheses and turns a far-edge offset into `100% - offset`. Layout passes it as the `(position, offset)` pair from #474. The renderer is unchanged.
+- Fail-first: ebff7b9 red -> 9fca084 green. rustkit-engine lib 320/320, rustkit-layout 605/605, rustkit-css 49/49. Headless engine suite 409 pass, 8 fail (the localhost x 127.0.0.1 class; not re-run on the base).
+- Before -> after, nine-case repro vs pinned Chrome 148: **7.157% -> 0.525%** pixelmatch diff (ink px 411,743 -> 415,237; Chrome 416,956). Every image is where Chrome puts it. What is left is resampling at the edges of the down-scaled images and a one-pixel line on a tile row that starts at y = 367.5.
+- Campaign at 9fca084 vs 5cf8e38 (the develop tree): **26/26 identical** (mean 1.1069; candidate binary 0699c051..., base b93b0ff6...).
+- All-site A/B: no site changes because of the PR, so the board does not show the fix. 11 sites are 0.00% on every pair. github and cnn did not capture; facebook once in four; instagram three in four.
+- Three movers looked like the fix and are the site. linkedin was 40.81% across with 0.00% within each arm, twice: the server has two landing pages and each arm got one on all four frames; a third run gave both arms the same page, 0.00%. netflix was 4.8% across against 2.1% within: its "Get Started" button was white on both develop frames and red on both candidate frames, and the develop binary alone then painted it white, then red, on two loads. bing's 0.24% is the header with or without "Copilot".
+- receipt.py output is in the PR body.
+
+**Not done (named in the PR):** background positions in em, rem or viewport units (the parser has no font size or viewport), and `calc()` in `background-size`. I did not look for a live page that uses either.
+
+**D0 has no work left.** Every item in the package row has landed except #475, which only needs its merge. Finish line 2 still cannot be shown on the live board: no board site has a url background in its first viewport. Next session: if #475 has merged, set D0 done; start D1 (L0) either way. D1 has been unblocked since #454 and has had no session yet.
