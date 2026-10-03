@@ -178,3 +178,49 @@ Session 11:33 to 13:15. First session on I0. No seat PR was waiting on a receipt
 **Tooling:** worktree `z-i0` (no Aleph index, same as z-d0). The first `cargo check -p hiwave-app` there took 8 min 39 s. Campaign and A/B still run from `z-d0/scratch/zd0` (camp.py, ab4.py); raw A/B table `ab-click.txt`.
 
 **Lead for (b), read only, NOT verified (13:15):** the shell sizes the content view in logical points (`wry_set_bounds`), the engine lays out and sizes the wgpu surface at that same number (`resize_view` -> `resize_surface`), and the viewhost only calls `setFrame:` on the NSView. The CAMetalLayer is created and owned by wgpu (`macos.rs:280`, "let wgpu manage it"). If that layer's frame does not follow the view on resize, a wider surface is squeezed into the old layer: bigger window, smaller page, and clicks land in the wrong place. That would be one cause for both of Pete's reports. First check next session: log the layer's frame and `drawableSize` against the view frame before and after one resize. Nothing was run to test this.
+
+## 2026-10-03 15:52 Z-lane I0
+
+Session 14:53 to 15:52. Second session on I0.
+
+**#480 (live click dispatch) LANDED** 17:35Z (merge 71de6bc; R1 CLEAR, R2 PASS). The stop rule does not trigger.
+
+**Receipt step done for cloud pilot PRs #481 + #483** (both R1 CLEAR, R2 PASS, CI green, held for this). One combined arm (local merge 5eaf1fc2, not pushed) against develop 387ccf88, all 20 sites. Posted on both PRs.
+- No site's frame changes because of the two PRs. 15 of 20 sites are 0.00% on every pair. All 20 captured on both arms, github and cnn included (first time today).
+- One real change, in the script log: on linkedin the 510 KB main bundle stops throwing `require is not defined` and a timer gets past `crypto.getRandomValues() not supported`. Scripts that ran clean: 5 on develop, 6 with the PRs, on every frame. `crypto.getRandomValues` is #483's.
+- The two PRs conflict with each other in `rustkit-bindings/src/lib.rs` (a `mod` line each at the same place). Keep both lines. Whichever lands second needs that.
+- #481 landed during the session (767c602b). #483 was still open when the session closed. Nothing more is owed on either from the lane.
+
+**New PR: hiwave-macos #486** (`atlas/z-live-pump`, head 35f29d3e, base develop 387ccf88). I0 part (c). R1 CLEAR at 35f29d3e (19:29Z), CI green and CLEAN; no R2 stamp when the session closed. Not self-merged. No exchange broadcast sent (session rule: do not ping).
+- Before: after the load nothing ran a page's timers or sent its fetches. `process_events()` in hiwave-app was empty and the loop slept until input.
+- After: `Engine::pump_live` runs one turn (timers on real elapsed time, the page's requests through its own FetchPolicy, one layout, new images) and says when the next timer is due. The shell runs it each loop pass and wakes for the next timer.
+- Fail-first: a2d35cd2 red (0 of 4) -> b11f9042 green (4 of 4, plus one bindings test). 35f29d3e is the shell wiring.
+- rustkit-engine headless lib 420 pass, 5 fail; the same 5 fail on develop 387ccf88 (run this session). rustkit-bindings 151/151. hiwave-app type-checks.
+- Campaign at 35f29d3e vs 387ccf88: **26/26 identical** (mean 1.1069).
+- All-site A/B: no site moves because of the change; 15 of 20 are 0.00% on every pair, all 20 captured. google was 4.09% across with 0.00% inside each arm on the first pass; three re-runs each gave a candidate frame identical to a develop frame.
+- receipt.py output is in the PR body.
+
+**New PR: hiwave-macos #487** (`atlas/z-view-resize`, head 2a28f8cf, base develop 387ccf88). I0 part (b), the inverse resize scale. R1 CLEAR at 2a28f8cf (19:40Z), CI green and CLEAN; no R2 stamp when the session closed. Not self-merged.
+- Cause, measured: `ViewHost::set_bounds` (the one the engine calls) had only a Windows arm. On macOS the NSView never changed size. The engine resized its drawable and laid out at the new size, and the drawable was stretched into the old view.
+- A probe with a real, never-shown NSWindow: on develop the view stays 1280x720 and the page scale is 0.800 at 1600x920 and 1.600 at 800x420. With the fix it is 1.000 at every size.
+- The 13:10 lead (wgpu's Metal layer not following the view) was wrong. wgpu follows the view; the view was not moving.
+- Fail-first: d85be3d7 red (frame stays 1280x720) -> 2a28f8cf green. The test makes a real NSWindow and runs without the test harness.
+- Campaign at 2a28f8cf vs 387ccf88: **26/26 identical** (mean 1.1069). No all-site A/B: the change is window geometry, and parity-capture's headless views never reach it.
+- CI compiles the new test and does not run it (f1-test-compile builds every test target; unit-suites runs --lib only). It ran on this Mac only.
+
+**Not verified: the real window, for all three parts.** Nobody has clicked, waited or resized in the built app at these SHAs. The engine and viewhost halves are tested; the tao loop wake-up in #486 is type-checked only. Acceptance checks for Pete or Prometheus are named in each PR body.
+
+**I0 is not closed. Left:**
+- Plain link clicks failing (the other half of b): #487 should explain it (a view that keeps its old frame is hit-tested at the wrong scale, and it also does not move when the sidebar or shelf change the content rectangle), but no click was tested in the window.
+- How real sites feel with their timers running (#486): intervals, animation loops and polling now run on the UI thread, with a full relayout per DOM-writing turn and up to 2 s blocked per fetching turn. Not measured on any site.
+- Found, not fixed: `ViewHost::set_visible` has the same Windows-only gap; `MacOSViewHost` in macos.rs is a dead copy of the view host; the shell discards every `set_bounds` result; on a 2x display the drawable is sized in points (half resolution, stretched), not checked on Retina; `a.href = ...` does not reflect; inline `onclick` not checked.
+
+**For Atlas (F0), found this session: the shared Z target dir can build a wrong binary with no error.** `z-cargo.py` gives every Z worktree one `CARGO_TARGET_DIR`. Cargo gives a workspace crate the same unit hash in every worktree and judges freshness by file time, so a build in one worktree reuses a crate compiled from another worktree's sources when its own files are older.
+- It broke a build here: the engine in z-i0 linked the bindings compiled from z-d0.
+- I rebuilt every measured arm after touching all crate sources. The #486 candidate is byte-identical. The develop base and the cloud arm differ only in three embedded path strings plus UUID and signature (three crates had been compiled in the other worktree from identical sources). No result changes; notes are on #481, #483 and #486.
+- Earlier Z receipts from today were not re-checked.
+- Fix to consider: one target dir per worktree in z-cargo.py (sccache keeps rebuilds near 25 s). Until then the lane touches every crate source before a measured build.
+
+**Stop rule:** this session has no landed receipt of its own (#486 and #487 are open). If neither has landed by the end of the next I0 session and nothing else lands, I0 goes to blocked.
+
+**Tooling:** A/B and campaign from `z-d0/scratch/zd0` (ab4.py, camp.py, new slog.py = script log per arm for one site). Probe and PR bodies in `z-i0/scratch/zi0`. Today a 20-site A/B took about 7 minutes and a campaign 30 seconds.
