@@ -12,7 +12,7 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 4. No regressions: 26/26 within 1.0 pt per case of the 2026-10-02 receipt; develop compiles on every push; no security gate weakened.
 
 ## Packages (state: open | in-progress | blocked | done)
-Priority order for the Z lane: D0 -> D1 -> B0. Seats own the rest.
+Priority order for the Z lane (amended 2026-10-03 by Atlas after Pete's live testing): I0 -> D0 -> D1 -> B0. Seats own the rest.
 
 | id | package | owner | R1 | R2 | state | note |
 |---|---|---|---|---|---|---|
@@ -42,6 +42,10 @@ When a seat or the lane finishes its packages and nothing above is open for it, 
 | Z2-M2 | CSS declaration census, bounded to the top three buckets with owners | Pollux | |
 | Z2-N1 | Second holdout site set (20 unseen sites) scored by both scorers | Pollux | guards against overfitting to the board |
 | Z2-C3b | Vendor boa_parser 0.20.0 with the one-line upstream backport (boa-dev/boa #4593, `let of`) under third_party/, same layout as boa_gc; red-first test + 92-module parse receipt. Boa 0.22 upgrade stays out of Z | Athena | Atlas GO 2026-10-03 04:10; blocks Finish line 1 (github behaviors.js, landing-pages.js) |
+| I0 | LIVE INTERACTION (Z lane, macOS): (a) the live click path (hiwave-app main.rs drain_pending_clicks) only does focus_at_point + link_at_point and never dispatches mousedown/mouseup/click to the DOM, so every JS-driven control is dead; wire DomEvent dispatch with hit-test target, default action (link navigation) only if not preventDefault'ed, then relayout+render; (b) Pete reports plain link clicks also fail and resize scales inversely (bigger window -> smaller page; small window -> huge text): find the window->viewport->layout scale mismatch (one root cause likely explains both: hit test in the wrong coordinate space); (c) late-arriving content never shows in the live browser: confirm whether timers/fetch/image completions after load schedule a relayout+render on the live loop | Z lane | Prometheus | Cursor | open | red-first: action-script test (I1) failing before the fix |
+| Z2-I1 | Action-script harness: parity-capture --actions 'wait:N;click:x,y;key:..;resize:WxH;capture:name' with the same script driven through Playwright on pinned Chrome; frame diff per step. Headless, CI-able. Catalog = websuite/interactions-top20.json (Z2-M3) | Pollux | Prometheus | Cursor | | covers DOM events + post-event relayout + resize relayout |
+| Z2-I2 | Real-window driver (macOS): launch HiWave, synthetic CGEvent clicks/scroll/keys + AppleScript/AX window resize, screencapture -l <window>, log assertions (content click -> Link clicked/DOM click -> Navigating). Prometheus runs it and judges frames (vision as secondary judge, Chrome-at-same-step as primary). Needs one-time Accessibility + Screen Recording grant (Pete) | Z lane builds, Prometheus drives | Argos/Cursor | | tests the real shell path the harness cannot |
+| Z2-M4 | Time-stable board: (1) frames at t=1/3/5/10 s in both engines, compare matched times; 'late content' = Chrome changes between t1 and t10 and RustKit does not; (2) record/replay: freeze a site's bytes once and serve both engines from the archive with a pinned clock, so moving pages compare like-for-like. Publishes BESIDE the board (A3 untouched) | Pollux | Prometheus | Cursor | | Pete 2026-10-03: snapshots differ moment to moment |
 | Z2-R1 | Status ladder on all three READMEs + umbrella: every feature row says implemented / integrated / exercised on real sites / compat-tested (no bare checkmarks); per-component status words; numbers refreshed from receipts with SHA | Atlas | Day 7, ships with the promotion PR (external review 2026-10-02: Windows checklist overstates) |
 | Z2-M3 | 'interactive' column on the real-site board (one scripted interaction per site), alongside loads/readable/looks-right | Pollux | design only this phase; scoring change is an A3 call |
 
