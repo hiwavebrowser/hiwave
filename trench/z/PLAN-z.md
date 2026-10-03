@@ -58,9 +58,10 @@ When a seat or the lane finishes its packages and nothing above is open for it, 
 4. C1/C2: XHR_FETCH_DESIGN §7 deny matrix passes; no connection before the vet.
 5. Independent re-run of the acceptance claim on the merged binary by a non-author seat that can run it: PROMETHEUS on the Mac for macOS closures (exact merged SHA, release build through the lease, own worktree); Pollux re-runs the Windows side on the next refresh; Argos (or Prometheus while Argos is silent) for Linux. Posted on the exchange.
 
-## Receipt step for seat PRs (C0, C1, C2)
+## Receipt step for seat and cloud PRs
 Athena and Talos cannot run macOS gates. For every seat PR to hiwave-macos that reaches R1 CLEAR, the Z lane runs a RECEIPT STEP on the Mac before its own package work: build the PR head with --profile parity, run the 26-case campaign and (for paint/fetch/script changes) the all-site A/B against develop, and post the result on the PR. The seat posts its own OS's parity and script-log A/B, labelled with the OS. Nobody claims a result they did not run.
 - receipt.py: hiwave-macos scripts/receipt.py (plain Python, all OSes); until it lands, the same fields by hand.
+- Cloud pilot PRs (branches cloud/*, amended 2026-10-03): same rule. To keep it to ONE lane run: when several cloud PRs are R1 CLEAR and confined to rustkit-bindings/rustkit-js with green pr-swarm (the CI's macOS 26-case run), merge their heads into one throwaway local branch, run the all-site A/B of that against develop once, and post the same result on each PR naming the SHAs covered. If the combined run regresses a site, bisect by PR. A cloud PR does not land without this.
 
 ## Rules
 - Thresholds, baselines and scorer do not move this week (A3). Scorer v2 publishes beside the old board.
