@@ -17,7 +17,7 @@ Priority order for the Z lane: D0 -> D1 -> B0. Seats own the rest.
 | id | package | owner | R1 | R2 | state | note |
 |---|---|---|---|---|---|---|
 | B0 | Cascade decision: fix ab2.py build-count exclusion + share_check explicit arms; one quiet profile at tip; tree-reuse decision packet (A2) | Z lane (ONE session) | Prometheus | Cursor | open | packet -> digest; legacy ratio republished; absolute ms budget per site |
-| D0 | Image pipeline: validate #443 paints on live pages; SVG background consumer (drop the .svg skip in discover_background_images); post-mutation discovery+paint | Z lane | Prometheus | Cursor | in-progress | all-site A/B per PR |
+| D0 | Image pipeline: validate #443 paints on live pages; SVG background consumer (drop the .svg skip in discover_background_images); post-mutation discovery+paint | Z lane | Prometheus | Cursor | open | all-site A/B per PR |
 | D1 | L0 (docs/LAYOUT_CONSTRAINTS_FRAGMENTS_2026-09-30.md §4-§6), then S1 fallback-run boundaries | Z lane | Prometheus | Cursor | open | starts after D0's SVG PR lands |
 | C0 | Module host: Boa ModuleLoader wired to the document; inline+external type=module; URL resolution; graph; no double eval; load/error events | Athena | Prometheus | Cursor (Pollux backup) | open | fixture suite green on 3 OSes; github module scripts run; next blocker recorded |
 | C1 | Fetch/XHR bindings: reopen archive/xhr-bindings; fetch/Response/Headers + XHR state/events on FetchPolicy; promise jobs + callbacks through the engine pump | Athena (integrator), Talos inside rustkit-net/http | Prometheus; Talos on boundary | Cursor (Pollux backup) | open | module+fetch app fixture; §7 deny matrix passes |
