@@ -41,3 +41,25 @@ One section per lane session or seat milestone: `## <date> <HH:MM> <owner> <pack
 
 **Also from the census:** on the 14 sites that captured, the display list holds zero http raster `background_image` commands, so #443 still has no live board page to be validated on. Post-mutation discovery is confirmed missing: `navigate` runs `run_page_scripts` then `flush_script_dom_writes` (`rustkit-engine/src/lib.rs:2674-2679`) and never calls `load_images` again, so an image or background a script adds is never fetched.
 
+
+## 2026-10-03 02:20 Z-lane D0
+
+**#463 (SVG gradient paint servers) LANDED** 04:25Z (merge 382efbe; R1 CLEAR, R2-STAMP PASS). Third landed D0 receipt; the stop rule does not trigger. No seat PR was waiting on a receipt step.
+
+**New PR: hiwave-macos #470** (`atlas/z-image-accept`, base develop 092a354, head 03e6504). Awaiting R1 Prometheus, R2 Cursor; not self-merged. No exchange broadcast sent (session rule: do not ping).
+- Change: image requests send their own `Accept` (Chrome's image header minus `image/avif`). They used to carry rustkit-http's navigation default, which lists AVIF; there is no AVIF decoder, and the CDNs answered with AVIF. One file, `rustkit-engine/src/lib.rs` (`SubresourceReferrer::get_for`). rustkit-net and rustkit-http are untouched.
+- Fail-first: 4a27f00 (red on develop) -> 03e6504 (green).
+- Before -> after, "Unknown image format" failures in one capture per arm: microsoft 24 -> 0, shopify 13 -> 0, walmart 7 -> 1 (**44 -> 1**). The one left is walmart's Akamai beacon URL, which is not an image.
+- Campaign at 03e6504: **26/26 identical** (mean 1.1069 both arms, parity profile, both built through the lease).
+- All-site A/B: **walmart 64.40% is the fix** (both arms stable; develop paints text on white where the hero and category photos are, the candidate paints the photos; I looked at the frames). microsoft is 0.00%: its 24 images decode now and none is in the first viewport as this engine lays the page out. linkedin, netflix and google move only within their own variance. github and cnn did not capture on either arm; instagram captured once in four.
+- **Not fully explained: shopify.** One of the two candidate frames sits 1 to 2 px higher below the hero (3.00%); the other is identical to both develop frames. A re-run ten minutes later failed all eight captures on both arms (30 s capture limit, images over the subresource budget), so there is no more data. It is in the PR body for R1.
+- Headless engine suite at 03e6504: 398 pass, 8 fail. The 8 are the cross-origin `localhost` x 127.0.0.1 class from the earlier digests. I did not re-run them on the base this session.
+- receipt.py output is in the PR body (candidate binary 48da6ac6..., base e779f8bf...).
+
+**Next D0 slice started, red tests only: `atlas/z-post-mutation-images` (07a8390, pushed, no PR).** Two tests fail on develop b01556c: an `<img>` a script appends and a CSS background a script turns on by class are never requested by the navigation. Each test's control passes (a second `load_subresources` finds the image), so the script and the restyle work and only the discovery order is wrong.
+- The fix is NOT a bare second `load_images` after `flush_script_dom_writes`. `load_images` counts cached images as loaded and re-requests every image that failed, so that would relayout every scripted page a second time and give stalled images a second 8 s budget. shopify already sits near the 30 s capture limit. The second pass needs a per-view set of URLs already attempted (cleared on navigation), should fetch only new ones, and should relayout only if one of those loaded.
+- It touches fetch, so it needs the all-site A/B, and it overlaps Athena's Z2-C5 scheduler (DOM mutation -> resource discovery -> repaint). Keep it to the one post-script pass inside `navigate`.
+
+**Still open on D0:** #443 has no live board page with an http raster background in the first viewport to be validated on (unchanged from the last census).
+
+**Found, not fixed:** image requests still carry the transport's navigation defaults `Sec-Fetch-Dest: document`, `Sec-Fetch-Mode: navigate` and `Upgrade-Insecure-Requests: 1` (`rustkit-http/src/lib.rs` ORDERED and ORDERED_H2). That is Talos's boundary. Walmart's `/akam/13/pixel_...` beacon is fetched as an image and not blocked by the shield.
