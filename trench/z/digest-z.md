@@ -108,3 +108,24 @@ No seat PR was waiting on a receipt step (no open PRs on hiwave-macos at 07:05).
 **Stop rule:** this session has no landed receipt (#473 is open). The session before landed #470. If #473 has not landed by the end of the next D0 session and nothing else lands, D0 goes to blocked.
 
 **Left on D0 after #473:** #443 still has no live board page with an http raster background in the first viewport. D1 has been unblocked since #454.
+
+## 2026-10-03 09:03 Z-lane D0
+
+Same session as the 07:55 entry (07:05 to 09:05).
+
+**#473 (post-mutation image discovery) LANDED** 12:03Z (merge 877fa55; R1 CLEAR). Fifth landed D0 receipt; the stop rule does not trigger.
+
+**New PR: hiwave-macos #474** (`atlas/z-bg-size-position`, head 5cf8e38, base develop 877fa55). Awaiting R1 Prometheus, R2 Cursor; not self-merged. No exchange broadcast sent (session rule: do not ping). This is D0's "validate #443" item.
+- How it was found: no board page has an http raster background in the first viewport, so I probed 12 other live pages. wordpress.org has one (`wcus_map.png`, `cover`), and it is fetched and painted. Then nine url() background cases over a local http server, RustKit against pinned Chrome: six matched, three did not.
+- Wrong: `background-size` with a percentage (`50% auto`, `auto 100%`) painted nothing; `background-position` in px (`10px 20px`, the sprite-sheet case) painted at 0 0.
+- Fix: rustkit-layout resolves the percentage where the command is emitted; `DisplayCommand::BackgroundImage` carries a px `offset` that the shared `background_tiles` adds. Engine and renderer pass it through.
+- Fail-first, twice: c33638c red -> bd9a385 green; f86c288 red -> e2c42a1 green. rustkit-layout 604/604. Headless engine suite not run on this branch.
+- Before -> after, repro vs pinned Chrome: **7.399% -> 0.166%** pixelmatch diff (ink px 316,136 -> 272,023; Chrome 272,228). Before is develop a238ae8, after is e2c42a1.
+- Campaign at 5cf8e38 vs 877fa55: **26/26 identical** (mean 1.1069; candidate binary b93b0ff6..., base 71b84287...).
+- All-site A/B: no site moves outside its own variance, so the board does not show the fix. google's 8.49% is one develop frame; linkedin's differences are all present between the two develop frames; shopify is its two frames again. github and cnn did not capture; instagram once in four; squarespace three in four.
+
+**Found, not fixed (in the PR body):** a float after a block collapses its top margin with the block's bottom margin (row 10 px high; layout, D1 territory). wordpress.org's hero box is 680x741 where Chrome has a 1280x92 banner (layout). `images.rs` `render_background_image` is a second copy of the tile placement with no caller outside its tests. Edge-offset and `calc()` background positions are not parsed.
+
+**Left on D0 after #474:** nothing listed. Finish line 2 (backgrounds on the live board at the right size and position) cannot be shown on the board until a board site has one in its first viewport. If #474 lands, D0 can go to done and the lane moves to D1.
+
+**Tooling note:** the last A/B batch ran past the 10-minute tool limit and finished in the background; four sites per batch is the safe size when github and cnn each cost two minutes of timeouts.
