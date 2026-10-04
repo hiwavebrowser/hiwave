@@ -64,6 +64,7 @@ Athena and Talos cannot run macOS gates. For every seat PR to hiwave-macos that 
 - Cloud pilot PRs (branches cloud/*, amended 2026-10-03): same rule. To keep it to ONE lane run: when several cloud PRs are R1 CLEAR and confined to rustkit-bindings/rustkit-js with green pr-swarm (the CI's macOS 26-case run), merge their heads into one throwaway local branch, run the all-site A/B of that against develop once, and post the same result on each PR naming the SHAs covered. If the combined run regresses a site, bisect by PR. A cloud PR does not land without this.
 
 ## Rules
+- D1 (L0 fragments) rebases on Athena's Shadow DOM slice 2 (flat tree: rustkit-dom shadow root field + flat_children() in the layout build), approved 2026-10-03 21:50 ET. The lane does not start D1's tree-build changes until slice 2 has landed or Athena says it is parked.
 - Thresholds, baselines and scorer do not move this week (A3). Scorer v2 publishes beside the old board.
 - Stop rule: two consecutive sessions on one package with no landed receipt -> state=blocked + one-line decision packet in digest-z.md; the lane takes the next package.
 - Pete decides only: A2 (tree-reuse), A3 (any threshold change), A4 (reset spend, Day 6), A5 (ship/hold, Day 7). Silence for 24h = Atlas's recommendation.
