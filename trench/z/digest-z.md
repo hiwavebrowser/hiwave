@@ -277,3 +277,56 @@ Session 17:05 to 18:22. Third session on I0.
 **Stop rule:** #498 landed this session. Not triggered.
 
 **Tooling:** new in `z-d0/scratch/zd0`: `touch_all.py <worktree>` (touch every crate source before a measured build), `union_resolve.py <file>` (keep-both conflict resolver that repeats `#[cfg(test)]`), `slog_all.py <tag>` (script stats per frame for an A/B run). `z-i0/scratch/zi0/wait_ab.py` still prints the old `ab-cloudbc.txt` after waiting; read the run's own `ab-<tag>.txt`.
+
+## 2026-10-03 20:17 Z-lane I0
+
+Session 19:05 to 20:17. Fourth session on I0.
+
+**Landed since the last digest: #499** (real-window click tests, bcff1487, 22:44Z, between sessions), **#500** (button, image and svg click target, merge ec21b4f1, 23:17Z) and **#502** (checkbox, radio and label activation, merge cd018121, 00:10Z). **Open: #504** (submit and reset buttons). The stop rule does not trigger.
+
+**Before -> after, on a click in the page:**
+- A plain `<button>` with its own click listener: the click went to the button's parent -> the listener runs (#500, landed).
+- A checkbox: nothing -> it is checked when its click listeners run, `input` and `change` fire, a cancelled click puts it back (#502, landed).
+- A radio button: nothing -> it takes over its group; only it gets `change` (#502, landed).
+- A `<label>`: nothing -> it clicks its control (#502, landed).
+- `input:checked + x` styles and the painted tick: read the `checked` attribute, so never changed -> follow the click and `box.checked = ...` from script (#502, landed).
+- A submit button: nothing -> validation, `submit` with the submitter, and navigation with the form's data and the button's pair unless a listener cancels (#504, open). GET forms only, as on Enter.
+- A reset button: nothing -> `form.reset()` (#504, open).
+
+**#500 restacked** at the start: it conflicted with develop (two tests appended at the same place as #498's; both kept). Merge 8cfd922a, no force-push. Re-run at the new head: campaign 26/26 identical; A/B 14 of 20 sites 0.00% on every pair, no frame moved by the PR. Posted on the PR. It landed 23:17Z.
+
+**hiwave-macos #502 LANDED** (`atlas/z-activation`, c98c33a6, base bcff1487; R1 CLEAR, R2 PASS, CI green).
+- Wrong: a click was dispatched and nothing more. No activation behaviour ran. The engine decided `:checked`, the tick and the submitted data from the `checked` attribute; checkedness lives in script (`web_forms.js`) and the engine never saw it.
+- Fix: `dispatchEvent` asks `web_forms.js` for the click's activation before the listeners and calls it after. Script records every checkedness change for the engine (`take_checked_writes`, the same shape as `take_value_writes`). The box builder reads an `<input>`'s attributes with `checked` present exactly when the control is checked, so the cascade and paint both follow.
+- Fail-first: c010e431 red (3 engine tests) -> c98c33a6 green. rustkit-bindings 210/210; rustkit-engine headless 426 pass, 5 fail (the known five).
+- Campaign 26/26 identical (mean 1.1069). A/B: 13 of 20 sites 0.00% on every pair; no frame moved by the PR. receipt.py output in the PR body.
+
+**New PR: hiwave-macos #504** (`atlas/z-submit-click`, head a8ce75bd, base develop). Open at close; no review yet at this head. Not self-merged.
+- Was stacked on #502; #502 landed and the branch took develop cd018121 by merge. The measured head is 2a1ef963, which has the same source tree as a8ce75bd (the diff between them is empty). Not rebuilt at a8ce75bd.
+- Fix: submit and reset buttons are activation targets. An uncancelled `submit` is recorded for the engine (`take_submit_requests`); `click_at_point` answers the submission's URL as the click's navigation, which the app already follows. `form_submission_for_focus` is split so a form and its submitter can be given.
+- Fail-first: bf2f06f8 red (2 engine tests) -> b637b173 green. rustkit-bindings 218/218; rustkit-engine headless 430 pass, 5 fail (the known five).
+- Campaign at 2a1ef963 vs develop 1ea87b89: 26/26 identical. A/B: 12 of 20 sites 0.00% on every pair; no frame moved by the PR. lyft answered HTTP 504 on one capture in each run (one on each arm). receipt.py output in the PR body.
+
+**Receipt steps done:**
+- Athena's **#494 + #501** as one arm: #501 head bceb6f85 contains #494 head 74882f9b; base develop bcff1487. Campaign 26/26 identical. A/B: 14 of 20 sites 0.00% on every pair, no frame moved by the PRs. linkedin logs six post-script images on the PR arm only, as in the earlier #494 receipt; they are outside the frame. Posted on both. #494 had already landed (1ea87b89) when the receipt went up; #501 was open at close.
+- Cloud **#503** (text backend name, c29369be, base 1ea87b89): campaign 26/26 identical; its two provenance tests pass on the Mac. No A/B: the diff is two constants and one test assertion. Posted. Open at close.
+
+**Not verified: the real window.** Nobody has clicked a checkbox, a label or a submit button in the built app at these SHAs. The event order and the cancelled-click behaviour are from the HTML spec, not from the same page in pinned Chrome.
+
+**netflix has no stable frame.** In all five A/B runs today no two netflix frames were identical, on either arm, develop against itself included (2% to 13% apart). An identical pair cannot clear a PR on that site; each receipt says so. For Atlas (F0): the A/B needs a second way to read such a site (the region that moves, or a frozen copy as in Z2-M4).
+
+**I0 is not closed. Left:**
+- `<summary>` does not open `<details>`, and a closed `<details>` lays out its content today. Probe on develop: a link inside a closed `<details>` is hit at its place below the summary; `details.open` is `undefined`; no `toggle`. The engine, the CSS crate and the layout crate have no code for the element. Fixing it hides content that is visible now, so expect real-site frames to move (github uses `<details>` a lot). This is the next PR, and it needs a careful A/B.
+- `href="#frag"` is reported as a navigation and nothing scrolls. `href="javascript:..."` does nothing.
+- `el.matches(':checked')` and `querySelector(':checked')` still read the attribute (only the cascade and paint read the live state).
+- A label click does not focus its control. The user's click on a disabled control is still dispatched.
+- POST forms submit nothing (click or Enter). `formaction`/`formmethod`/`form=`. `form.submit()` is a no-op. A checkbox with no `value` submits an empty value, not `on`. Enter in a field fires no `submit` event.
+- Still open from 15:52: `ViewHost::set_visible` has no macOS arm; the shell discards `set_bounds` results; on a 2x display the drawable is sized in points; focus moves on release; modifier keys are always false.
+
+**Stop rule:** #500 and #502 landed this session. Not triggered.
+
+**Tooling:**
+- `ab4.py` appends to `ab-<tag>.txt`. A tag used before leaves its old lines at the top of the file (`target3` this session); use a new tag per run.
+- Two tool calls sent in one block run at the same time: touch and build went out together once and I rebuilt in order to be sure.
+- z-d0 is parked detached at develop cd018121. z-i0 is on `atlas/z-submit-click`. New in `z-i0/scratch/zi0`: `find.py` (substring search over crate sources; there is no Aleph index in z-i0 either), `red_activation.py`, `green_activation.py`, `red_submit.py`, `green_submit.py`, `mk_pr_activation.py`, `mk_pr_submit.py`.
+- Banked binaries: `pc-dev-bcff148`, `pc-dev-1ea87b8`, `pc-target-8cfd922`, `pc-activation-c98c33a`, `pc-submit-2a1ef96`, `pc-cstyle-bceb6f8`, `pc-cloudw4-c29369b`.
