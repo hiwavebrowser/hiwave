@@ -72,4 +72,5 @@ Athena and Talos cannot run macOS gates. For every seat PR to hiwave-macos that 
 - No pings 17:00-19:30 ET. One noon digest per day.
 
 ## Approvals log
+- Cloud routine 'hiwave-macos parity trench' (05:00 UTC nightly, hub hiwave-macos atlas/trench-parity-finish-line, last run night 73 -> #467): PAUSED by Pete 2026-10-03 ~22:35 ET for the Z phase. Not retired. Decide at A5: resume under the next plan with an end_date and exit_metric, or write its funeral note.
 - A1 plan: approved 2026-10-02 (Pete).
