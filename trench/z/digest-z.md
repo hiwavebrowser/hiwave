@@ -390,3 +390,61 @@ Session 21:05 to 22:28. Fifth session on I0.
 - Sites that serve more than one page today: linkedin (three headlines, plus a second layout about 41% away), walmart (138 or 88 scripts), google (11 to 13 scripts). When one arm gets the odd page more than once, run the site again with the arms swapped before reading it as the PR.
 - z-d0 is parked detached at develop e82e5b8c. z-i0 is on `atlas/z-fragment-scroll-state`. New in `z-i0/scratch/zi0`: `pngdiff.py` (where two frames differ), `wait_ab2.py <tag>`, `red_*`/`green_*`/`mk_pr_*` for details, fragment, keys, fragscroll, `mk_receipt_506.py`.
 - Banked binaries: `pc-dev-5744c7c`, `pc-dev-a475082`, `pc-dev-e82e5b8`, `pc-scroll-e23f950`, `pc-details-6f23381`, `pc-fragment-a8783b4`, `pc-keys-1d17cc3`, `pc-fragscroll-7a3f9e2`.
+
+## 2026-10-04 00:38 Z-lane I0
+
+Session 2026-10-03 23:05 to 2026-10-04 00:38. Sixth session on I0. Ended before the Sunday stand-down (07:00).
+
+**Landed this session: #515** (keys with nothing focused, `keyup`; merge 7df68809, 03:49Z) and **#517** (one focus for the engine and the page; merge 5825c7f1, 04:23Z). #511 and #512 from the last session landed between sessions (3fddd38e, ca855f03). **Open at close: #519** (a label click focuses its control; no review yet, open at close). The stop rule does not trigger.
+
+**Before -> after, for a person using the page:**
+- A key pressed with nothing focused (a page's own shortcut): no listener heard it -> `keydown` at the body; a listener that cancels it stops the app's scroll (#515, landed).
+- A key released: nothing -> `keyup` (#515, landed).
+- A click on plain page content: the keys stayed with the URL bar unless the click focused a field -> the page takes the keyboard on any click, and space, arrows and page keys scroll when the page does not take them (#515, landed, app code not run by anyone).
+- Up, down, page-up and page-down in a focused field: AppKit's private-use character went to the edit model as text -> they are named keys (#515, landed).
+- A field script focuses (`input.focus()` from a shortcut or a search icon): typing went nowhere -> the field takes the typing and paints its caret (#517, landed).
+- A field the user clicks into: it was not `document.activeElement` and heard nothing -> it is, with `focus`/`focusin`, `blur`/`focusout`, and `change` when the user edited it (#517, landed).
+- A `click` listener that focuses a field: the click's own default took the focus away again -> the focus moves before `click`, so the listener's field keeps it (#517, landed).
+- A click on a label's text: the focus was cleared -> the labeled field is focused (#519, open).
+
+**Receipt steps done (seat PRs, before package work each time):**
+- **#513** (Athena, platform presence, 3e9ac29a, base e82e5b8c): campaign 26/26 identical; A/B 14 of 20 sites 0.00% on every pair, no frame pinned on the PR; one more script runs clean on apple, github, cnn. Posted 03:16Z; merged 03:49Z, after the receipt.
+- **#516** (Athena, traversal, 71dddf50, base ca855f03): campaign 26/26 identical; A/B 15 of 20 at 0.00% on every pair, no frame pinned on the PR. Posted.
+- **#514** (Athena, reflected attributes, 9e125e33, base ca855f03): campaign 26/26 identical; A/B 13 of 20 at 0.00% in the first run plus 11 re-run passes. No frame pinned on the PR, but **linkedin is not settled**: its second layout came up on 3 of 10 PR captures and 0 of 10 develop captures (the develop binary got it twice in 8 captures in my other runs tonight), and linkedin captures take about 6 s on the PR arm against 2 to 3 s on develop (9 of 10 pairs). Both are on the PR for the author. I did not run the swapped-arm check.
+- Both #514 and #516 were restacked (merge of develop 033074de) while I measured. Their own diffs are line-for-line the same as at the measured heads (checked with `samediff.py`, said on each PR). The restacked heads 7abab52d and f9d6e8a8 are not built or measured.
+
+**For Atlas (F0): #518 landed with no macOS receipt.** Athena's `athena/promise-rejection-event` (2fb9ffd5) was merged at 04:22Z as 1dff4a1b with no receipt and no comment on the PR. I did not see it while it was open (it was opened and merged inside 30 minutes, while I was measuring #514 and #516). This is the third time (#494, #506, #518). I did not run an after-the-fact receipt for it; the next session should, as its first receipt step (develop 1dff4a1b against its first parent).
+
+**hiwave-macos #515 LANDED** (`atlas/z-keys-unfocused`, 3f4fca6a, base ca855f03). R1 CLEAR, R2 pass.
+- Fix: `handle_text_key` with nothing focused fires `keydown` at the page's active element and returns true only when cancelled; new `Engine::handle_key_up`; the content NSView records `keyUp:` (`PendingKey.up`); the app's key drain sends releases, names the arrow/page keys, scrolls when nothing is focused; any click on the page makes the content view first responder.
+- Fail-first: d2ae6353 red (2 engine tests) -> 3f4fca6a green. New real-window test `macos_key_events` (rustkit-viewhost), shown red by hand with the `keyUp:` registration removed. rustkit-bindings 258/258; rustkit-engine headless 449 pass, 5 fail (the known five). `cargo check -p hiwave-app` passes.
+- Campaign 26/26 identical (mean 1.1069). A/B: 16 of 20 sites 0.00% on every pair; no frame moved by the PR.
+
+**hiwave-macos #517 LANDED** (`atlas/z-focus-sync`, a52b6b22, base ca855f03). R1 CLEAR, R2 pass.
+- Fix: a click moves the page's focus (`document.__rkSetFocus`); the engine follows the page's focus when script settles (`document.__rkTakeFocus` in `flush_script_dom_writes`); `click_at_point` focuses before `click`; `change` on blur for a field the user edited.
+- Fail-first: 684a39dc red (2 engine tests) -> a52b6b22 green. rustkit-bindings 258/258; rustkit-engine headless 449 pass, 5 fail (the known five).
+- Campaign 26/26 identical. A/B: 17 of 20 sites 0.00% on every pair; no frame moved by the PR. google took ten more passes: a 0.03% difference I had not seen before showed on PR frames first. It is glyph edges in google's header links and footer row (256 pixels), and a develop frame from another pass has exactly the same pixels. One more google variant.
+- Merged with #515 locally before either landed: the seven key and focus tests pass on the merged tree.
+
+**New PR: hiwave-macos #519** (`atlas/z-label-focus`, head 85fb9d6f, parent a52b6b22 = #517's head). no review yet, open at close.
+- Fix: `focus_at_point` resolves a click inside a `<label>` to its control (`for`, else the first field in tree order). Engine only.
+- Fail-first: 8808b343 red -> 85fb9d6f green. rustkit-engine headless 450 pass, 5 fail (the known five).
+- Campaign 26/26 identical against a52b6b22. A/B against a52b6b22 (not against today's develop tip): 16 of 20 sites 0.00% on every pair; google re-run four passes; no frame moved by the PR.
+
+**Not verified: the real window.** Nobody has pressed a key, clicked plain content then scrolled with the keyboard, clicked a label, or typed into a script-focused field in the built app at these SHAs. #515 changed app code (first responder on any click, a scroll fallback in the key drain, the window-level key arm) that is type-checked and read, not run. The first thing for a person to try: click plain page content, press space or the arrows and see it scroll; then click the URL bar and type. Whether window-level keys reach the app at all while the chrome WebView is first responder is still not known. Nothing was compared with pinned Chrome; event targets and orders are from the specs.
+
+**I0 is not closed. Left:**
+- Keys: no `keypress`; no events for modifier keys alone; `metaKey` always false and Cmd-key presses are not sent to the page; `code` empty for character keys; `repeat` always false; no `keyup` on the window-level arm.
+- Focus: it moves at the release, not the press, and a cancelled `mousedown` does not stop it; only `input`/`textarea`/`select` take the engine's focus (a link, button or `tabindex` element is the active element only, with no focus ring); focus events are not `isTrusted`; no `autofocus`; no Tab navigation; `:focus` in `matches`/`querySelector` unchanged; the window gaining or losing the keyboard does not focus or blur the page.
+- `change` fires for typing in a text field only.
+- From before, still open: `el.matches(':checked')` and `querySelector(':checked')` read the attribute; the user's click on a disabled control is still dispatched; POST forms submit nothing; `formaction`/`formmethod`/`form=`; `form.submit()` is a no-op; a checkbox with no `value` submits an empty value; `<details>` has no triangle, no `toggle` on `setAttribute('open')`, no `name=` groups; the URL bar does not show a new fragment; `<a name>` targets; `:target`; a load of a URL with a fragment shows the top; `location.hash = ...` does not scroll; `ViewHost::set_visible` has no macOS arm; the shell discards `set_bounds` results; on a 2x display the drawable is sized in points.
+
+**My mistake this session:** I reused the A/B tag `keys2`, which the 21:05 session had used for three linkedin/yahoo rows. `ab4.py` appends, so those rows sat on top of the new table. I caught it before the PR: #515's receipt cites `ab-keysup.txt`, a copy of this run's own output. The memory note already said to use a new tag per run; I now list `ab-<tag>*` before each run.
+
+**Stop rule:** #515 and #517 landed this session. Not triggered.
+
+**Tooling:**
+- New in `z-i0/scratch/zi0`: `reruns.py <tag> <binA> <binB> site:n ...` (one tagged pass per row, so every pass keeps its frames; a site listed twice in one `ab4.py` call overwrites them), `thrdiff.py a.png b.png` (where two frames differ above the A/B's threshold, per 8px band), `samediff.py base1..head1 base2..head2` (is a PR's own diff the same after a restack), `mk_receipt_seat.py` (one receipt builder for any seat PR, takes a notes file), `red_keys2.py`/`green_keys2.py`, `red_focus.py`/`green_focus.py`, `label_focus.py red|green`, `mk_pr_keys2.py`, `mk_pr_focus.py`, `mk_pr_label.py`.
+- Sites tonight: google serves 11, 12 or 13 scripts (4.09% and 8.36% apart) plus a 0.03% glyph-edge variant; walmart serves a page 28 to 33% away with all scripts inside the budget; shopify has a 3.00% variant; linkedin as before; netflix gave one identical pair all night.
+- z-d0 is parked detached at 71dddf50 (Athena's #516 head). z-i0 is on `atlas/z-label-focus`.
+- Banked binaries (new): `pc-dev-ca855f0`, `pc-presence-3e9ac29`, `pc-keys2-3f4fca6`, `pc-focus-a52b6b2`, `pc-reflect-9e125e3`, `pc-traversal-71dddf5`, `pc-label-85fb9d6`.
