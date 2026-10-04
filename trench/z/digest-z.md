@@ -502,3 +502,74 @@ Session 01:05 to 02:16. Seventh session on I0. Ended before the Sunday stand-dow
 - Sites tonight: google served a 14-script page (an extra 342-byte inline script) on both binaries; walmart has frames 15.80%, 26 to 27%, 36.51% and 41% from its usual one with all 88 scripts inside the budget; linkedin's other layout showed twice in about 40 captures; cnn has a 5.23% variant; netflix gave no identical pair.
 - z-d0 is parked detached at 2b6d90dd. z-i0 is on `atlas/z-pointer-sequence`.
 - Banked binaries (new): `pc-dev-033074d`, `pc-rej-1dff4a1`, `pc-dev-2b6d90d`, `pc-checked-7c14ef5`, `pc-disabled-f49e874`, `pc-pointer-142a3db`.
+
+## 2026-10-04 04:42 Z-lane I0
+
+Session 03:05 to 04:42. Eighth session on I0. Ended before the Sunday stand-down (07:00).
+
+**Landed this session: #523** (the page hears the mouse move; merge 5f397bc6, 07:46Z), **#524** (a new document starts with nothing hovered; merge fdd50497, 08:22Z), **#525** (the focus moves at the press; merge eb7e4d97) and **#526** (a press and a release on different elements click their common ancestor; merge 8e86ed6e, 08:36Z). #522 from the last session landed between sessions (1230b470). **Open at close: #527** (a correction to #526; R1 CLEAR, CI running, open at close). The stop rule does not trigger.
+
+**Two of the five PRs are corrections to the other three.** #524 fixes a bug #523 shipped; #527 fixes a wrong expectation #526 shipped. See "My mistakes".
+
+**Before -> after, for a person using the page:**
+- Moving the mouse over a page: the page heard nothing -> `pointermove`/`mousemove`, and the over/out/enter/leave events when the element under the pointer changes, with the button state during a drag, and the leave events when the pointer goes off the page area (#523, landed). A menu a script opens on `mouseenter` or `mouseover` has something to open it. **A menu that opens from CSS `:hover` alone still does not.**
+- After a navigation, the first mouse move: compared against a node of the old page -> starts from nothing (#524, landed).
+- Clicking an option in a list under a search field (the list cancels `mousedown` to keep the field focused): the field was blurred anyway before `click` -> it keeps the focus. Pressing in a field focuses it at the press, not the release; a press released somewhere else leaves the focus where the press put it (#525, landed).
+- A press on one link dragged and released on another: the second link was followed -> `click` goes to the element both are in and neither link is followed (#526, landed). Two parts of the same link: still followed on develop; not followed with #527 (open), which is what Chrome does.
+
+**New this session: the expected lines of these tests are Chrome logs, not my reading of the specs.** `tools/parity_oracle/pointer_event_log.mjs` (#523) and `focus_press_log.mjs` (#525) drive the oracle's Playwright Chromium with `page.mouse.move/down/up` on the test's own page and log every event with its fields; the engine tests replay the same steps and assert the same lines (54 for moves, 38 for focus). Things the logs settled that I would have written wrong: all four pointer boundary events come before the four mouse ones; `which` is 0 on a `mousemove` with no button held; a child-to-parent move sends no enter; a cancelled `pointerdown` stops the focus move as well as the `mousedown`; `blur` fires with `document.activeElement` already the body.
+- **For Atlas (F0): the oracle's Chromium reports itself as 143.0.7499.4.** The memory notes and receipts say "pinned Chrome 148". I did not look into which is right for the board's baselines; these scripts launch through the same `getDeterministicLaunchOptions()` as the baseline capture.
+- A scratch probe at the end of the session (`z-i0/tools/parity_oracle/zi0_probe.mjs`, untracked; log in `scratch/zi0/chrome-probe.txt`) gave four more facts the engine does not match yet: a disabled button gets `pointerdown` and `pointerup` but no `mousedown`/`mouseup` (the engine sends both, from #521); a press on a link that moves starts a drag and sends no `pointerup`, `mouseup` or `click`; a label's release is `click` on the label, `focus` on its field, then a second `click` on the field (the engine focuses first); a press on a link focuses the link.
+
+**Receipt step: none due.** #514 and #516 still conflict with develop and have not been restacked.
+
+**hiwave-macos #523 LANDED** (`atlas/z-mouse-move`, 33d67fee, base 1230b470). R1 CLEAR (GitHub diff only), R2 pass.
+- Fix: `Engine::mouse_move_at_point` (hit test, compare with the last hovered element, boundary events for the elements left and entered, then the two move events, one flush) and `Engine::mouse_leave`. `__rkFireMouse`: enter/leave neither bubble nor cancel; `relatedTarget`; `movementX/Y`; `which` from `buttons` on move and boundary events. The content NSView records `mouseMoved:`, `mouseDragged:`, `mouseExited:` behind one tracking area and collapses consecutive moves; the app's click drain delivers them (`PendingClick.input`).
+- Fail-first: 52d57bbf red (an empty `mouse_move_at_point`) -> 33d67fee green. rustkit-engine headless 457 pass, 5 fail (the known five); rustkit-bindings 271/271; rustkit-viewhost unit tests and the four real-window tests, with the new `macos_pointer_moves`; `cargo check -p hiwave-app` passes.
+- Campaign 26/26 identical (mean 1.1069). A/B: 15 of 20 sites 0.00% on every pair; four sites re-run swapped; no frame pinned on the PR.
+
+**hiwave-macos #524 LANDED** (`atlas/z-mouse-move`, 0a27a7c4, base 5f397bc6). R1 CLEAR, R2 pass.
+- Fix: the two per-document resets also clear the hovered element, the last pointer position, the held button and the cancelled-press flag.
+- Fail-first: 0ed6667d red -> 0a27a7c4 green. rustkit-engine headless 458 pass, 5 fail (the known five).
+- Campaign 26/26 identical. A/B measured against 1230b470 (develop before #523), not against 5f397bc6: 16 of 20 at 0.00% on every pair; no frame pinned on the PR. The PR says which base.
+
+**hiwave-macos #525 LANDED** (`atlas/z-focus-at-press`, 1f50e758, base 0a27a7c4; merged 08:30Z). R1 CLEAR; an R2 stamp is on the PR.
+- Fix: `mouse_down_at_point` moves the focus after an uncancelled `mousedown` (and `pointerdown`); `click_at_point` after a press only focuses a label's control; a `click_at_point` with no press before it does both, as before.
+- Fail-first: 2d153feb red -> 1f50e758 green. rustkit-engine headless 459 pass, 5 fail (the known five); `cargo check -p hiwave-app` passes.
+- Campaign 26/26 identical. A/B against 0a27a7c4: 15 of 20 at 0.00% on every pair; linkedin re-run swapped five passes; no frame pinned on the PR.
+
+**hiwave-macos #526 LANDED** (`atlas/z-click-common-ancestor`, b871ea6f, base 1f50e758). R1 CLEAR, R2 pass.
+- Fix: the press remembers its element; the release fires `click` at the nearest element both are in, follows a link only when that element is in one, and skips the label step. #525's test now asserts all 38 lines of its Chrome log.
+- Fail-first: cc983a50 red -> b871ea6f green. rustkit-engine headless 460 pass, 5 fail (the known five).
+- Campaign 26/26 identical. A/B against 1f50e758: 15 of 20 at 0.00% on every pair. **The first run split by arm on three sites** (linkedin and shopify: both base captures identical, both PR captures identical, every cross pair different; google no identical cross pair). Ten swapped passes: a PR capture identical to a base capture in every pass, each variant on both binaries. Nothing pinned on the PR; the raw rows are in the body.
+
+**New PR: hiwave-macos #527** (`atlas/z-click-common-ancestor`, head 0cb85978, base develop 8e86ed6e, whose tree is b871ea6f). R1 CLEAR, CI running, open at close.
+- Fix: `click_at_point` follows the link at the point only when the press and the release were on the same element. One commit: the test's expectation and the code change together.
+- The 27 click, focus, hover and link tests pass at 0cb85978. The whole engine suite was not re-run at this head.
+- Campaign 26/26 identical. A/B measured against 1f50e758 (develop before #526), not against 8e86ed6e: 15 of 20 at 0.00% on every pair; bing split by arm (0.24%) and google had no identical cross pair, both re-run swapped (bing 0.00% on every pair in three of four passes); no frame pinned on the PR. The PR says which base.
+
+**My mistakes this session:**
+- **I pushed to a branch whose PR had just landed, and rewrote the landed PR's body.** #523 was merged at 07:46:28Z at 33d67fee. I pushed 0ed6667d and 0a27a7c4 to `atlas/z-mouse-move` about a minute later and replaced #523's body with one for 0a27a7c4, without looking at the PR's state. For about 20 minutes #523's body described two commits develop did not have. I put the body back, said so on #523, and opened #524. Before the push for #527 I did check, and #526 had landed, so #527 is its own PR and #526's body is untouched.
+- **The bug #524 fixes shipped in #523.** I wrote the hover state without reading the per-document reset (`edit_states.clear()` and its neighbours, with a long comment on exactly this hazard). develop had the stale-hover bug from 07:46Z to 08:22Z.
+- **#526 shipped a test that pins behaviour Chrome does not have.** I asserted that a press and release on two parts of one link follows the link, from the specs, and marked it "not from a Chrome log" in the PR instead of running the 30-second probe first. The probe, run after the PR was open, shows Chrome starts a drag and follows nothing. develop followed the link in that case before #526 as well, so no behaviour got worse; the wrong expectation is in a landed test until #527 lands. In the same PR I removed a disabled-fieldset case as "made up"; the probe shows that one was right.
+- The pattern in all three: I opened the PR before finishing the checks I already knew how to run, and the review pipeline lands a PR within about 15 minutes.
+
+**Not verified: the real window.** Nobody has moved a mouse over a page, pressed in a field, or dragged between links in the built app at these SHAs. The viewhost test calls the view's handlers directly in a window that is never shown: it shows the view asks for moves (the tracking area) and records them, not that AppKit sends `mouseMoved:` to this view in the live app beside the chrome WebView. The cost of a move on a heavy page (up to ten small scripts and a flush per loop turn) was not timed. The first thing for a person to try: a page with a script hover menu; then check that scrolling and clicking feel the same.
+
+**I0 is not closed. Left:**
+- **CSS `:hover` following the pointer.** I read the path and did not start it: `:hover` is in `pseudo_class_is_static_false`, which three matcher sites read (the subject matcher, the ancestor/sibling matcher, and the prepared-compound builder, where it sets `never` and the rule is dropped). The `:checked` route (`live_attributes`, a substituted attribute map for `input` only, at two build sites) is the model, but hover needs the whole ancestor chain and a relayout on every hover change. It touches the cascade B0 is about to measure, so it needs an all-site A/B and a timing check. One full session.
+- From the probe: no `mousedown`/`mouseup` on a disabled control; a press on a link, a button or a `tabindex` element should focus it; a label's click should come before its field's focus, with a second click on the field; drag-and-drop (Chrome sends no click after a drag starts).
+- Mouse: no `dblclick` or click count above 1, no `contextmenu`/`auxclick`/other buttons, no modifier keys on mouse events, no pointer capture, no enter/leave at the document or window, the cursor never changes. `el.click()` still builds a MouseEvent with `detail` 0.
+- Focus: no `autofocus`; no Tab navigation; `:focus` in the cascade and in script queries.
+- Keys: no `keypress`; no events for modifier keys alone; `metaKey` always false; `code` empty for character keys; `repeat` always false.
+- Forms: POST forms submit nothing; `formaction`/`formmethod`/`form=`; `form.submit()` is a no-op; a checkbox with no `value` submits an empty value.
+- From before, still open: `<details>` has no triangle; the URL bar does not show a new fragment; `:target`; a load of a URL with a fragment shows the top; `location.hash = ...` does not scroll; `ViewHost::set_visible` has no macOS arm; on a 2x display the drawable is sized in points.
+
+**Stop rule:** four PRs landed this session. Not triggered.
+
+**Tooling:**
+- New in the repo: `tools/parity_oracle/pointer_event_log.mjs` + `pointer_event_page.html` (#523), `focus_press_log.mjs` + `focus_press_page.html` (#525). Run with `node` from the worktree root; each prints the Chromium version and the log per step.
+- New in `z-i0/scratch/zi0`: `mk_pr_base.py <name> <binary> <template.md> <movers.md> <base sha> <base binary>[@<base campaign json>] <base sha256> <candidate campaign json> [extra runs]` (the PR-body builder with the base as arguments, for stacked PRs), `hover.py`, `hover_nav.py`, `focus_press.py`, `click_anc.py` (each `red|green`; the first and third build the test's expected lines from `chrome-hover.txt` / `chrome-focus.txt`), `hover_host.py`, `tpl-*.md` and `movers-*.md` for the five PRs.
+- Sites tonight: linkedin has a 5-script page (1.55%), 2.34%, 2.64%, 2.96% and 3.43% variants and the 7-script other layout (41%), each seen on more than one binary; google 12, 13 or 14 scripts; shopify's 3.00% variant came up in every run; bing has a 0.24% variant; walmart 8.84%, 20.6 to 20.8% odd frames; yahoo one 23.95% frame; youtube, cnn, weather, github, instagram and netflix captures flip over the script budget with identical frames. An arm split in one run (both A identical, both B identical, cross pairs different) happened three times tonight and was the server each time; the swapped re-run is what tells.
+- z-d0 is parked detached at 1230b470. z-i0 is on `atlas/z-click-common-ancestor` at 0cb85978, with one untracked probe script under `tools/parity_oracle/`.
+- Banked binaries (new): `pc-dev-1230b47`, `pc-hover-33d67fe`, `pc-hover-0a27a7c`, `pc-fpress-1f50e75`, `pc-clickanc-b871ea6`, `pc-clickanc-0cb8597`.
