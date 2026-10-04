@@ -448,3 +448,57 @@ Session 2026-10-03 23:05 to 2026-10-04 00:38. Sixth session on I0. Ended before 
 - Sites tonight: google serves 11, 12 or 13 scripts (4.09% and 8.36% apart) plus a 0.03% glyph-edge variant; walmart serves a page 28 to 33% away with all scripts inside the budget; shopify has a 3.00% variant; linkedin as before; netflix gave one identical pair all night.
 - z-d0 is parked detached at 71dddf50 (Athena's #516 head). z-i0 is on `atlas/z-label-focus`.
 - Banked binaries (new): `pc-dev-ca855f0`, `pc-presence-3e9ac29`, `pc-keys2-3f4fca6`, `pc-focus-a52b6b2`, `pc-reflect-9e125e3`, `pc-traversal-71dddf5`, `pc-label-85fb9d6`.
+
+## 2026-10-04 02:16 Z-lane I0
+
+Session 01:05 to 02:16. Seventh session on I0. Ended before the Sunday stand-down (07:00).
+
+**Landed this session: #520** (`:checked` in script queries; merge d92c2c1b, 05:51Z) and **#521** (the user's click on a disabled control; merge f4325165, 06:05Z). #519 from the last session landed between sessions (2b6d90dd). **Open at close: #522** (a click is the full pointer and mouse sequence, the item added to PLAN-z at 01:52; no review yet, CI running, open at close). The stop rule does not trigger.
+
+**Before -> after, for a person using the page:**
+- A page that asks which box is ticked (`form.querySelector('input[name=x]:checked')`, `el.matches(':checked')`): it was told the HTML's default, whatever the user had clicked -> it is told what the page shows (#520, landed).
+- A click on a greyed-out button, checkbox or field: the page's `click` handlers ran, on the control and on everything above it -> no `click` is sent; the same for a control inside `<fieldset disabled>` (#521, landed).
+- A press and release: `mousedown`, `mouseup`, `click` as plain MouseEvents with `detail` 0 and no `which` -> `pointerdown`, `mousedown`, `pointerup`, `mouseup`, `click`, the click a PointerEvent of the mouse, click count 1, `which` 1, `pageX/Y` with the scroll added, `offsetX/Y` from the target's box (#522, open). A listener on `pointerdown`, or one that checks `which === 1`, now runs.
+
+**Receipt step done: #518** (Athena, PromiseRejectionEvent and SubmitEvent; merged at 04:22Z with no receipt). After the fact, develop 1dff4a1b against its first parent 033074de: campaign 26/26 identical; A/B 14 of 20 sites 0.00% on every pair, no frame pinned on the PR. lyft runs 31 scripts where it ran 7 (the PR's claim holds here); its frames are identical. linkedin split by arm in the first run (41% apart) and did not in three swapped passes. Posted on the PR.
+- **#514 and #516 got no new receipt.** Both still conflict with develop and their R1 is stale at the restacked heads (7abab52d, f9d6e8a8). They need a restack by the author first; the receipts at 9e125e33 and 71dddf50 stand for those heads only.
+
+**hiwave-macos #520 LANDED** (`atlas/z-checked-selector`, 7c14ef57, base 2b6d90dd). R1 CLEAR (GitHub diff only, the reviewer said so).
+- Fix: the bindings keep the checkedness script holds and pass it to the selector matcher; `node_matches` reads the subject and its earlier siblings through it, the substitution the cascade already makes. `SelectorMatchFn` takes a third argument.
+- Fail-first: 74ab770a red -> 7c14ef57 green. rustkit-engine headless 453 pass, 5 fail (the known five); rustkit-bindings 271/271; `cargo check -p hiwave-app` passes.
+- Campaign 26/26 identical (mean 1.1069). A/B: 13 of 20 sites 0.00% on every pair; no frame pinned on the PR. google ran 14 scripts on two PR captures (not seen before); the log shows the extra one is a 342-byte inline script in the HTML google served, and the develop binary got the same page later in the night.
+
+**hiwave-macos #521 LANDED** (`atlas/z-disabled-click`, f49e8746, base 2b6d90dd). R1 CLEAR, R2 pass.
+- Fix: `click_at_point` asks `disabled_control_at_point` before `click`: the nearest button, input, select, textarea, option or optgroup has `disabled`, or sits in a disabled fieldset outside its first legend. `mouseup` still fires.
+- Fail-first: 68613c4e red -> f49e8746 green. rustkit-engine headless 453 pass, 5 fail (the known five). Bindings and the app check were not re-run (engine only).
+- Campaign 26/26 identical. A/B: 14 of 20 sites 0.00% on every pair; no frame pinned on the PR.
+
+**New PR: hiwave-macos #522** (`atlas/z-pointer-sequence`, head 142a3db2, base 2b6d90dd). no review yet, CI running, open at close.
+- Fix: `mouse_down_at_point` fires `pointerdown` then `mousedown`; `click_at_point` fires `pointerup`, `mouseup`, `click`. A cancelled `pointerdown` stops that press's `mousedown` and `mouseup`. `__rkFireMouse` builds PointerEvents for `pointer*` and `click`. `MouseEvent.which`.
+- Fail-first: 9764003e red -> 142a3db2 green. rustkit-engine headless 453 pass, 5 fail (the known five); rustkit-bindings 271/271. The app check was not run.
+- Campaign 26/26 identical. A/B: 14 of 20 sites 0.00% on every pair; no frame pinned on the PR. The PR's first capture was the odd frame on four sites, so those four were re-run with the arms swapped: the same variants came up on the develop binary.
+- Measured against 2b6d90dd, not against today's tip f4325165. Merged onto f4325165 locally: no conflict, the 19 click tests pass. That tree was not built for pixels.
+- **The plan's live checks (weather.com drawer, yahoo.com More menu) were not run.** See the next item.
+
+**For Pollux (Z2-I1) and Atlas: the action harness does not click the way a person does.** `parity-capture --actions` handles `click` with a selector by calling `el.click()` from script, and with `x,y` by focusing the point and calling `document.activeElement.click()`. Neither calls the engine's `mouse_down_at_point` / `click_at_point`. So it sends no `pointerdown`, `mousedown`, `pointerup` or `mouseup` on any binary, and it skips the engine's hit test, focus, disabled check and link default. If the weather and yahoo forensics ("click dispatches, no throw, framework does not react") came from that harness, they describe `el.click()`. #522 changes what a person's click sends; the harness will not show it until its click goes through the engine (press and release at the element's box centre). I did not change the harness: it is Pollux's package.
+
+**Not verified: the real window.** Nobody has ticked a box, clicked a disabled button, or clicked anything in the built app at these SHAs. Nothing was compared with pinned Chrome; the event order and fields in #522 are from the specs.
+
+**I0 is not closed. Left:**
+- Mouse: no move or hover events (`pointermove`, `mousemove`, over/enter/out/leave), so a menu that opens on hover does not open. The viewhost records presses and releases only (`mouseDown:`/`mouseUp:`); this needs viewhost, app and engine work, and is the likely next blocker after #522 for yahoo's More menu if that menu is a hover menu. No `dblclick`, `contextmenu`, other buttons, modifier keys on mouse events, pointer capture. `click` targets the release point, not the common ancestor of press and release. `el.click()` still builds a MouseEvent with `detail` 0, and dispatches on a disabled control.
+- `option:checked`, `:indeterminate`, `:default`, `:focus` in script queries.
+- Keys: no `keypress`; no events for modifier keys alone; `metaKey` always false; `code` empty for character keys; `repeat` always false.
+- Focus: it moves at the release, not the press; only `input`/`textarea`/`select` take the engine's focus; no `autofocus`; no Tab navigation.
+- Forms: POST forms submit nothing (I read the path this session: it needs a navigation with a body through the engine, the app and the fetch policy, more than one slice); `formaction`/`formmethod`/`form=`; `form.submit()` is a no-op; a checkbox with no `value` submits an empty value.
+- From before, still open: `<details>` has no triangle; the URL bar does not show a new fragment; `:target`; a load of a URL with a fragment shows the top; `location.hash = ...` does not scroll; `ViewHost::set_visible` has no macOS arm; on a 2x display the drawable is sized in points.
+
+**My mistake this session:** I sent the bank step for the develop binary in the same block as the candidate build, so the two ran at once. The copy finished before the build linked, and I rebuilt develop afterwards to check: the same bytes (sha256 9b07e1e4). The note about one call per block was already in memory.
+
+**Stop rule:** #520 and #521 landed this session. Not triggered.
+
+**Tooling:**
+- The machine is much faster than the notes say: a warm `--profile parity` build is about 25 s (sccache), the 26-case campaign about 1 min, the 20-site A/B 7 to 9 min. Three full PR cycles and one seat receipt fit in 75 minutes.
+- New in `z-i0/scratch/zi0`: `mk_pr_any.py <name> <binary> <template.md> <movers.md>` (one PR-body builder from a template with MOVERS/TABLE/RECEIPT lines), `checked_sel.py`, `disabled_click.py`, `pointer_seq.py` (each `red|green`), `fix_receipt_518.py`, `tpl-pointerseq.md`.
+- Sites tonight: google served a 14-script page (an extra 342-byte inline script) on both binaries; walmart has frames 15.80%, 26 to 27%, 36.51% and 41% from its usual one with all 88 scripts inside the budget; linkedin's other layout showed twice in about 40 captures; cnn has a 5.23% variant; netflix gave no identical pair.
+- z-d0 is parked detached at 2b6d90dd. z-i0 is on `atlas/z-pointer-sequence`.
+- Banked binaries (new): `pc-dev-033074d`, `pc-rej-1dff4a1`, `pc-dev-2b6d90d`, `pc-checked-7c14ef5`, `pc-disabled-f49e874`, `pc-pointer-142a3db`.
