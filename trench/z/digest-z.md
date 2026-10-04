@@ -330,3 +330,63 @@ Session 19:05 to 20:17. Fourth session on I0.
 - Two tool calls sent in one block run at the same time: touch and build went out together once and I rebuilt in order to be sure.
 - z-d0 is parked detached at develop cd018121. z-i0 is on `atlas/z-submit-click`. New in `z-i0/scratch/zi0`: `find.py` (substring search over crate sources; there is no Aleph index in z-i0 either), `red_activation.py`, `green_activation.py`, `red_submit.py`, `green_submit.py`, `mk_pr_activation.py`, `mk_pr_submit.py`.
 - Banked binaries: `pc-dev-bcff148`, `pc-dev-1ea87b8`, `pc-target-8cfd922`, `pc-activation-c98c33a`, `pc-submit-2a1ef96`, `pc-cstyle-bceb6f8`, `pc-cloudw4-c29369b`.
+
+## 2026-10-03 22:28 Z-lane I0
+
+Session 21:05 to 22:28. Fifth session on I0.
+
+**Landed this session: #508** (details/summary, merge a475082c, 01:46Z) and **#509** (fragment and `javascript:` links, merge bba8d899, 02:03Z). **#504** (submit and reset buttons) landed between sessions (7f8d4ae7, 00:40Z). **Open at close: #511** (keys reach the page; R1 CLEAR and R2 PASS at 1d17cc37, not merged by me) and **#512** (a fragment jump tells script; no review yet). The stop rule does not trigger.
+
+**Before -> after, for a person using the page:**
+- A closed `<details>`: everything inside it was laid out and clickable -> only its summary shows (#508, landed).
+- A click on a `<summary>`: nothing -> it opens and closes its details; `details.open` exists; `toggle` fires (#508, landed).
+- A click on `<a href="#id">`: the app loaded the page again from the top -> the page scrolls to the element, the URL and history change, `hashchange` fires, nothing is loaded (#509, landed).
+- A click on `<a href="javascript:...">`: nothing -> the script runs and its DOM writes are laid out (#509, landed).
+- A key typed in a field: no event reached the page -> `keydown` before the edit (a cancelled one types nothing) and `input` after it (#511, open).
+- Enter in a field: the app built the form's URL with no `submit` event -> `keydown`, a click on the form's default button, validation, `submit`; a listener that cancels keeps the page (#511, open).
+- After a fragment jump: `scrollY` read the old offset and no `scroll` fired -> script reads the new offset and hears `scroll` (#512, open).
+
+**Receipt step done: Athena's #506** (script scroll, e23f950a, base 5744c7ce). Campaign 26/26 identical. A/B: no frame I can pin on the PR; 15 of 20 sites 0.00% on every pair in run 1. Posted on the PR. Two things to know:
+- #506 was merged at 01:10Z, about ten minutes BEFORE the receipt went up (the same happened with #494). The receipt found nothing, but the rule says a seat PR does not land without it. For Atlas (F0): whoever merges should check for the receipt comment.
+- walmart split by arm in run 1 (develop ran 138 scripts twice, the PR 88 twice, frames 64% apart). In two re-runs develop ran 88 as well and the arms matched. I read it as walmart serving two pages and said on the PR that eight captures cannot rule the PR out.
+
+**hiwave-macos #508 LANDED** (`atlas/z-details`, 6f23381e, base 5744c7ce).
+- Fix: the box builder keeps only the first `<summary>` child of a `<details>` without `open`. `web_forms.js` makes that summary an activation target and adds `HTMLDetailsElement.open` and `toggle`.
+- Fail-first: 2c70525b red (2 engine tests) -> 6f23381e green. rustkit-bindings 230/230; rustkit-engine headless 434 pass, 5 fail (the known five).
+- Campaign 26/26 identical (mean 1.1069). A/B: 16 of 20 sites 0.00% on every pair; no frame moved by the PR. github is 0.00%: its closed `<details>` are not in the first 1280x800, so the A/B does not show the fix on a real site.
+
+**hiwave-macos #509 LANDED** (`atlas/z-fragment-links`, a8783b46, base 5744c7ce).
+- Fix: `click_at_point` handles a URL that differs from the document's only in its fragment (scroll, URL, history entry, `hashchange`, no load) and runs a `javascript:` link's script.
+- Fail-first: 6c350291 red (2 engine tests) -> a8783b46 green. One assertion of the red commit changed in the fix commit (it compared a number's debug form); the commit message says so.
+- Campaign 26/26 identical. A/B: 16 of 20 sites 0.00% on every pair; no frame moved by the PR.
+
+**New PR: hiwave-macos #511** (`atlas/z-key-events`, head 1d17cc37, base a475082c). R1 CLEAR, R2 PASS, open at close.
+- Fix: `handle_text_key` fires `keydown` and `input`; new `submit_focused_form` runs implicit submission in script; the app's Enter path calls it.
+- Fail-first: 802d11eb red (2 engine tests) -> 1d17cc37 green. rustkit-bindings 247/247; rustkit-engine headless 443 pass, 5 fail (the known five). `cargo check -p hiwave-app` passes.
+- Campaign 26/26 identical. A/B: 14 of 20 sites 0.00% on every pair; no frame moved by the PR. linkedin took six passes: the first PR-arm capture was linkedin's other sign-in layout three times (41% away), never on develop. With the arms swapped it showed on neither binary in 12 captures, and one pass is 0.00% on every pair. All of it is in the PR body.
+- It changes what Enter does for a person: the default button's name/value pair is now sent; an invalid required field blocks the submit; Enter in a textarea no longer submits.
+
+**New PR: hiwave-macos #512** (`atlas/z-fragment-scroll-state`, head 7a3f9e23, base e82e5b8c). No review yet.
+- Fix: `navigate_to_fragment` publishes the new offset to script before `hashchange` and tells the page it scrolled. Engine only, 20 lines.
+- Fail-first: 026d5094 red -> 7a3f9e23 green. rustkit-bindings 258/258; rustkit-engine headless 445 pass, 5 fail (the known five).
+- Campaign 26/26 identical. A/B: 14 of 20 sites 0.00% on every pair; no frame moved by the PR.
+
+**Not verified: the real window.** Nobody has clicked a summary or a fragment link, or typed in a field, in the built app at these SHAs. Every test drives the engine on a headless view. Nothing was compared with pinned Chrome; the event orders are from the specs. No capture clicks or types, so the campaigns and A/Bs only show the load path is unchanged.
+
+**My mistake this session:** I ran `cargo test` in z-i0 while #506's first A/B was capturing. Four PR-arm captures went over the script budget and I had to re-run four sites. The receipt says so. After that, nothing ran beside an A/B.
+
+**I0 is not closed. Left:**
+- Keys: no `keyup`; no keys when nothing is focused (page shortcuts like `/`); no `focus`/`blur`/`change` events; `metaKey` always false.
+- `<details>`: no disclosure triangle (list markers are Z2-D2); a closed one with no summary renders nothing (Chrome shows "Details"); `toggle` does not fire on `setAttribute('open')`; `name=` groups.
+- Fragment links: the app's URL bar does not show the new fragment; `<a name>` targets; `:target`; loading a URL that already has a fragment shows the top; `location.hash = ...` from script does not scroll.
+- `el.matches(':checked')` and `querySelector(':checked')` still read the attribute.
+- A label click does not focus its control. The user's click on a disabled control is still dispatched.
+- POST forms submit nothing. `formaction`/`formmethod`/`form=`. `form.submit()` is a no-op. A checkbox with no `value` submits an empty value, not `on`.
+- Still open from 15:52: `ViewHost::set_visible` has no macOS arm; the shell discards `set_bounds` results; on a 2x display the drawable is sized in points; focus moves on release.
+
+**Stop rule:** #508 and #509 landed this session. Not triggered.
+
+**Tooling:**
+- Sites that serve more than one page today: linkedin (three headlines, plus a second layout about 41% away), walmart (138 or 88 scripts), google (11 to 13 scripts). When one arm gets the odd page more than once, run the site again with the arms swapped before reading it as the PR.
+- z-d0 is parked detached at develop e82e5b8c. z-i0 is on `atlas/z-fragment-scroll-state`. New in `z-i0/scratch/zi0`: `pngdiff.py` (where two frames differ), `wait_ab2.py <tag>`, `red_*`/`green_*`/`mk_pr_*` for details, fragment, keys, fragscroll, `mk_receipt_506.py`.
+- Banked binaries: `pc-dev-5744c7c`, `pc-dev-a475082`, `pc-dev-e82e5b8`, `pc-scroll-e23f950`, `pc-details-6f23381`, `pc-fragment-a8783b4`, `pc-keys-1d17cc3`, `pc-fragscroll-7a3f9e2`.
