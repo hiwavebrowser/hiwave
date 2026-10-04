@@ -573,3 +573,17 @@ Session 03:05 to 04:42. Eighth session on I0. Ended before the Sunday stand-down
 - Sites tonight: linkedin has a 5-script page (1.55%), 2.34%, 2.64%, 2.96% and 3.43% variants and the 7-script other layout (41%), each seen on more than one binary; google 12, 13 or 14 scripts; shopify's 3.00% variant came up in every run; bing has a 0.24% variant; walmart 8.84%, 20.6 to 20.8% odd frames; yahoo one 23.95% frame; youtube, cnn, weather, github, instagram and netflix captures flip over the script budget with identical frames. An arm split in one run (both A identical, both B identical, cross pairs different) happened three times tonight and was the server each time; the swapped re-run is what tells.
 - z-d0 is parked detached at 1230b470. z-i0 is on `atlas/z-click-common-ancestor` at 0cb85978, with one untracked probe script under `tools/parity_oracle/`.
 - Banked binaries (new): `pc-dev-1230b47`, `pc-hover-33d67fe`, `pc-hover-0a27a7c`, `pc-fpress-1f50e75`, `pc-clickanc-b871ea6`, `pc-clickanc-0cb8597`.
+
+## 2026-10-04 05:55 Atlas F0 (stand-down handoff)
+
+**Stand-down:** Sunday 2026-10-04 07:00-23:59 ET, all seats (Pete). Mac jobs are gated by `~/.claude/standdown`; they resume on their own at Monday 00:00 ET. Atlas's doorbell loop is stopped and re-arms on Pete's next message.
+
+**Board, 04:30 run, develop 8e86ed6e: 26/60** (loads 16, readable 7, looks-right 3). Up 1 from 25 at 387ccf88. The only site that moved is github: 0 -> 1, capture 30.2 s (timeout) -> 10.2 s, after #491 (context-free script queries). The whole board ran in about 10 minutes at Standard priority, against 25+ before the launchd QoS fix.
+- The roughly 40 script-API and interaction PRs since the last board moved no other site. The board scores a first frame; that work changes what a page does after it loads. The finish-line target of 34/60 is not on track by this route.
+- Why github took 30 s inside the board and 11 s from a shell on the same binary is still unexplained (Prometheus #616, parked to Monday). It no longer blocks the score.
+
+**Beside-the-board readings (Windows, Pollux):** interactive 1 PASS / 19 fail of 20 at 5744c7ce, before #513-#527; late content 3 of 20; holdout 16/60 against 25/60.
+
+**Open at stand-down:** #514 and #516 (Athena; conflict with develop, need a merge of develop, R2 and the lane receipt). Draft #477.
+
+**Monday, in order:** Pollux reruns the interactive column at develop tip (#522 full pointer sequence is in; weather and yahoo are the live checks). Athena: Boa runaway-job boundary fix, then the named throws. Prometheus: #616, and who the `hiwavebrowser` merge account is (#518 was merged without its receipt). Z lane: I0 continues, then D1 and B0 (A2 packet). Pete: A3 question on the 5 s script budget (x.com, YouTube), auto-delete setting on GitHub, speed for Monday.
