@@ -900,3 +900,67 @@ Both were stacked on branches whose PRs merged with branch deletion, and GitHub 
 - `z-i0` is on a detached head at #541's `33595121`; scratch is untracked. New tools in `z-i0/scratch/zi0`: `keepboth.py` (keep-both conflict resolver for the bindings lists), `budget.py` (scripts ran or over budget per capture, arms alternating), `slogdiff.py` (per-script outcome diff of two frames of an A/B), `touch.py` (this worktree's own copy), `pcclick/modes.py` (does a harness click reach the page, per load mode). Banked: `pc-dev-7391c0a`, `pc-w4batch-0d98276`, `pc-disabledpress-5c07eec`, `pc-pcclick-a30143f`, `pc-pcclick-3359512`, `app-dev-7391c0a`, `app-liveimg-83c3031`.
 
 **Next session:** receipts first (#514, #516, #530, #531 will each need a keep-both merge once its pair lands; a restack that is only that needs no second run). Then I0: answer R1 on #542; then, each with a Chrome log first: a press on a link, a button or a `tabindex` element focuses it; a label's click comes before its field's focus; `:focus` and `:focus-within` by #535's marks. H6 (wheel) and the pixel half of every check still need Pete at an unlocked Mac with the two grants.
+
+## 2026-10-05 16:21 Z-lane I0
+
+Session 15:05 to 16:21.
+
+### Receipt step (first, as the plan says)
+
+Nothing owed. #514, #516, #530, #531, #540, #541 and #542 all merged between 12:30 and 15:05. The three open PRs (#477, #528, #543, Cursor's test-only ones) have no R1 CLEAR.
+
+### Hand-test consequence (Z2-I2)
+
+The driver on the app built in the lane's own worktree at develop `feb0667c`: **PASS 37, FAIL 0, NOT RUN 7**. Preflight at 15:08 on a Monday afternoon: no Accessibility, no Screen Recording, screen locked, display asleep. So the window half has still never run, and Z2-I2 stays blocked on Pete's packet.
+
+### H6 (wheel scroll): one cause fixed, one ruled out, most sites not explained
+
+I took H6 because it was the hand-test item with no cause at all, and two of its possible causes can be tested with no grant.
+
+**Ruled out: the wheel getting lost before the app's loop.** The app scrolls from tao's `WindowEvent::MouseWheel`, and the content view has no `scrollWheel:`. A new test puts the content view in a real tao window, hands a real scroll `NSEvent` to the view AppKit's hit test picks, and the loop gets `MouseWheel`. It passes on develop. It has no chrome WebViews in the window.
+
+**Fixed: pages with a viewport-tall body could not scroll at all.** The scrollable extent was the root box's height. `html, body { height: 100% }` makes that one viewport, whatever the page holds.
+
+- **Chrome first:** 25 page shapes, the pinned Chromium's answer for the wheel and for `window.scrollTo` stored beside each (`tools/parity_oracle/scroll_extent_cases.json`).
+- **Before -> after:** shapes off Chrome by script 13 of 25 (11 of them could not scroll at all) -> 3; by wheel 15 -> 5. The ones left are named in the test with their reasons.
+- **On the real app** (driver check `h6_extent`, new, needs no grant): develop `scrollY 0 of 3804` FAIL -> with the fix `3804 of 3804` PASS. All checks with the fix: PASS 41, FAIL 0, NOT RUN 8.
+- **On the 20 real sites:** 3 change, 17 do not.
+
+| site | develop | fix | pinned Chrome |
+|---|---|---|---|
+| wikipedia article | 0 | 73212 | 6729 |
+| x | 0 | 50 | 0 |
+| walmart | 1699 | 2298 | 3930 |
+
+**What this does not show.** 15 of the 20 sites already had a scroll extent on develop (cnn 27946, github 14966). If Pete's wheel did nothing there, this fix is not why. The hand test was on `15d2c3a6`, before #533 and #539 stopped held requests freezing the loop for seconds at a time; that may be the rest of H6, and only the driver's `h6` at an unlocked Mac says. **Nothing was seen in the window and no wheel was turned.**
+
+**Two faults the fix exposed, neither fixed:**
+
+- **The Wikipedia article is 11 times as long in the engine as in Chrome.** `#bodyContent` is 73554 px tall with 12338 px of content in it. Its parent `main.mw-body` is a grid, so this looks like a grid row sized far past its content. Same with `RUSTKIT_L0=0`, so it is not the L0 work. The page scrolls now, through mostly empty space.
+- **x.com gains 50 px of scroll it should not have.** Its loading `<svg>`s are absolutely positioned with all insets 0 (centred in Chrome); the engine puts them below the viewport.
+
+### #544 `atlas/z-wheel-loop` (head `c6abb74c`, base develop `feb0667c`)
+
+- Red test `e9e37431`, fix `8e54dd7f` (40 lines in rustkit-engine), wheel pin `e1cee5db`, driver check `7da6d977`.
+- Engine suite 468 passed, 5 failed (the five that fail on develop). Campaign 26/26 identical.
+- 20 sites: 13 at 0.00% on every pair, no frame pinned on the change. google looked arm-linked (4.10% across, 0.00% inside each arm); with the arms swapped it is 0.00% across, and a third run moved inside both arms. cnn and yahoo each had one differing frame on the fix arm and were not re-run.
+- **R1 CLEAR at head (19:52 UTC). R2 FAIL, and only because of CI:** `f1-test-compile`, `unit-suites` and `pr-swarm (0)` were cancelled after 15 minutes in the queue with no step run. No runner took them.
+- **BLOCKER: someone has to re-run those three jobs** (`gh run rerun 37366064246 --failed`). The lane seat is not allowed to, and a new commit would move the head off the R1 stamp. I ran the same workspace test compile locally (it compiles) and said so on the PR.
+
+Not in the PR, stated in it: Chrome's wheel does not scroll a viewport with `overflow: hidden` and the engine's still does (left that way on purpose: a page whose unlock script fails would be stuck); a page that scrolls inside an inner box still cannot be scrolled; transforms and relative offsets do not extend the page (relative offsets are not applied by the engine at all).
+
+### My mistakes this session
+
+- The red commit message says 12 shapes stop short and 10 at zero. It is 13 and 11: I counted from a `tail` that cut one line. Corrected in the PR body; the commit stays.
+- Two PR comments were first posted with a time a few minutes ahead of the clock. Both edited.
+- I first ran the Wikipedia check on the portal page, not the board's article.
+
+### State at close
+
+- I0 **open**. Nothing landed this session (#542 merged at 14:11 ET, between sessions). #544 is up with R1 CLEAR and waits on the CI re-run. **Stop rule: this is one session with nothing landed; a second sets I0 blocked.**
+- Z2-I2 **blocked** (unchanged). D1 open, not touched. B0 done; A2 still Pete's.
+- Machine not checked for quiet.
+- `z-i0` is on `atlas/z-wheel-loop`. New in `z-i0/scratch/zi0`: `extent_probe.py` + `extent_census.py` (old and new extent per real site), `lowest.py` (lowest boxes of a site's layout), `tallest_chain.py` (where a layout's height comes from), `mk_extent_cases.py`. `tools/parity_oracle/zi0_extent_live.mjs` (untracked) reads live pages in Chrome; it reads 0 on pages with smooth scrolling. Banked: `pc-dev-feb0667`, `pc-extent-7da6d97`, `app-dev-feb0667`, `app-extent-7da6d97`.
+- Not looked into: `hwdrive window` reports the app's window as 1254x816 where the app asks for 1280x800 inside.
+
+**Next session:** receipts first. Then #544: if CI was re-run and it merged, fine; if not, it is the second session and I0 goes blocked on that one line. For H6 after that, in order: the Wikipedia grid row (a reduced page first; it may belong to D1), the x.com abspos centring, then the wheel on inner scrollers. The focus items from 12:30 (press on a link, button or `tabindex` element; label before field; `:focus`) are still open and each needs a Chrome log first.
