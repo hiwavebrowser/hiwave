@@ -650,3 +650,52 @@ There was an hour left, so the lane took I0's next item, the driver's red `h4_sl
 **What is still not known:** whether any of this changes what Pete sees. Nothing has looked at the window. The two fixes remove a 2 s and an unbounded stall of the UI thread that real pages would hit constantly; H2, H3 and H6 have not been run once.
 
 **Banked:** `pc-liveimg-ae8b9d5` (sha256 c24aac43...240b; same after touching every source).
+
+## 2026-10-05 04:30 Z-lane I0
+
+**Before -> after.** Before: no element ever matched `:hover` or `:active`, and a 403 or 404 with a page showed nothing. After, in two PRs that are open and unreviewed: the engine restyles what the pointer is over and what is pressed the way the oracle's Chrome does, and a server's error page is shown as the page. **Nothing was seen in the window.** H3 has no real-app evidence at all; H8 has it at the request and log level.
+
+**Reviews first, as the plan said.** #532, #533 and #534 had no R1 and no comment at 03:10 or at 04:25, so there was nothing to answer. Five lane PRs now wait for R1 (#532 to #536); none has merged since #527 (2026-10-04 08:55Z).
+
+**New PR: hiwave-macos #535** (`atlas/z-css-hover`, head 666bd27d, base develop 15d2c3a6). H3. R2 stamp PASS at the head, CI green.
+- `:hover` matches the element under the pointer and every element above it; `:active` the element pressed and those above it, from the press to the release. As a subject, an ancestor, an earlier sibling and inside `:not()`.
+- How: a reserved mark (`\u{1}hover`, `\u{1}active`) that the build adds as an attribute on the element (the subject matcher reads attributes; this is the `:checked` route, now asked for every element) and as a class on it as an ancestor or sibling. The cascade's caches already key on those, so nothing else changed.
+- A restyle is a whole relayout on the UI thread. Measured (release, one run per page): wikipedia 93 to 110 ms, github 392 ms, yahoo 103 to 129 ms, microsoft 29 to 36 ms. So the third commit pair restyles only when an element that gained or lost the pointer matches a compound that carries the pseudo-class: wikipedia's plain moves went from about 100 ms to under 10 ms; yahoo still restyles on 14 of 25 moves (not looked into).
+- Chrome first: `tools/parity_oracle/css_hover_log.mjs` (Chromium 143). `:active` holds until the release wherever the pointer goes, and `:hover` keeps following the pointer meanwhile. Every expected line of the `:active` test is Chrome's output.
+- Three red/green pairs: d80cb4f2 -> f039ac11, f51d0d5b -> 8c1ec2d8, ffe43f5f -> 64f31090. Head 666bd27d is a comment-only commit; its parity binary has the same sha256 as 64f31090's (19175eab...6b09).
+- rustkit-engine headless at 64f31090: 463 pass, 5 fail (the known five; not re-run at the base).
+- Campaign 26/26, `diffPixels` identical to develop's. A/B against develop: 15 of 20 at 0.00% on every pair; google, linkedin, yahoo, shopify and netflix moved, and three swapped passes put the odd frames on both arms (yahoo 0.00% in all three). Four passes with the base binary in both arms showed linkedin's 41% other-layout page twice without the change.
+- Real app, driver, built at 64f31090: 29 PASS, 3 FAIL, 6 NOT RUN. `h3` is NOT RUN (locked screen, no Accessibility). The three FAILs are `h1_slow` and `h4_slow`, which #533 and #534 fix and this branch does not have.
+- Limits in the PR: not re-hit-tested after a restyle moves the page; script does not see it (`matches(':hover')`, `getComputedStyle`); `:focus` and the rest still never match; no incremental restyle.
+
+**New PR: hiwave-macos #536** (`atlas/z-error-body`, head 310b1fa1, base develop 15d2c3a6). H8. CI at close: every check green except pr-aggregate, still running (all four pr-swarm shards passed); no R2 stamp yet.
+- `load_url` reads the body of a non-2xx response; with a body the navigation commits and renders it, logs the status and keeps it (`Engine::http_status`); with an empty body it fails as before.
+- `parity-capture` still reports a non-2xx document as a failed load with no frame, so no board counts an error page as a load (checked against a local server with the base and the candidate binary; rows in the PR). A3 untouched.
+- Red 9c285bb0 -> green 310b1fa1. rustkit-engine headless: 461 pass, 5 fail (the known five).
+- Campaign 26/26 identical. A/B: 16 of 20 at 0.00% on every pair; google, linkedin, shopify, netflix moved, one swapped pass in the PR.
+- Real app: new driver check `h8` (pushed to #532's branch as 57c43916, comment on #532). App at 64f31090: the 403 page is fetched, its script does not run, its image is not asked for, `HTTP error` in the log (3 FAIL). App at 310b1fa1 (sha256 9b0508d7...e4c9): script ran, image asked for, log line present (5 PASS, 1 NOT RUN: pixels). ebay itself was not loaded.
+
+**Seams.** develop + #534 (with #533 under it) + #535 + #536 merge locally with no conflict, and the merged tree runs 466 pass, 5 fail (the known five) in rustkit-engine headless. The merged tree was not built for parity or run on the board.
+
+**Not done: H6 (wheel).** The app takes the wheel from tao's window event, not from the content view (`main.rs`, "verified live 2026-08-05"). Pete says it does not scroll now. I could not find out why without input in a window, and did not change input code blind.
+
+**My mistakes this session:**
+- #535's first code comment said markup cannot spell the mark. It can (U+0001 in a class). Caught on my own re-read before the push; fixed in a comment-only commit and the PR says so.
+- The Chrome probe first printed `querySelectorAll(':hover')` columns that came back empty for every step. I removed them from the committed probe rather than explain them; I do not know why they were empty.
+- I misjudged the clock twice (thought an hour had gone when nine minutes had) and nearly dropped the `:active` half and H8 for time.
+- A PR-body sentence said shopify's 3.00% frame was "the same frame" as an earlier run's; I had not compared them. Reworded before the PR was opened.
+
+**Tooling (all in `z-i0/scratch/zi0`):** `css_hover.py`, `css_active.py`, `css_filter.py`, `error_body.py red|green` (the patches as scripts); `zmove.py on|off` and `zmove_run.py <binary> <urls>` (a scratch `zmove` action in parity-capture to time pointer moves; never commit it); `bbox.py a.ppm b.ppm` (where two frames differ); `err403.py <binaries>` (what a capture reports for 200, 403 with a page, empty 404); `mk_pr_csshover.py`, `mk_pr_errbody.py`. `z-i2/scratch/zi2/add_h8.py`.
+
+**Banked:** `pc-csshover-8c1ec2d` (b76113f2...), `pc-csshover-64f3109` (19175eab...6b09, same at 666bd27d), `pc-errbody-310b1fa` (3c9590b2...1c91). Base for all: `pc-clickanc-0cb8597`.
+
+**State at close:** I0 open. Z2-I2 blocked (unchanged: grants and an unlocked Mac). z-i0 is on `atlas/z-error-body` at 310b1fa1; z-i2 on `atlas/z-real-window-driver` at 57c43916.
+
+**Stop rule.** Read strictly ("no landed receipt" = nothing merged), this is the second session on I0 with nothing landed and I0 should be blocked. I did not block it: every PR carries its receipt and waits on R1, and unblocked I0 work remains. The lane has read the rule this way since 2026-10-05 01:55. If Atlas or Pete reads it the other way, the packet is: "I0: five PRs with receipts wait for R1; block I0 and send the lane to B0 until they clear." My recommendation for the next session either way: do not stack a sixth I0 PR; take B0 (one session, feeds Pete's A2) unless R1 has moved.
+
+**Next for I0, in order:**
+1. R1 on #532 to #536 (answer, do not merge).
+2. At an unlocked Mac with the grants: the driver's `h3`, `h2`, `h6` and every pixel assertion. That is the only way H2, H3 and H6 move from "engine says" to "window shows".
+3. `:focus` and `:focus-within` by the same marks as #535. A page with `autofocus` or a load-time `focus()` will change its first frame, so it needs the pinned-Chrome comparison.
+4. H6 once it can be seen. First question for the driver's log: does `wheel burst started` appear at all.
+5. Still on the UI thread: the load, dynamic `import()` in a live turn, and now each hover restyle.
