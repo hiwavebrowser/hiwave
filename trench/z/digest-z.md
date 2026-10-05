@@ -587,3 +587,47 @@ Session 03:05 to 04:42. Eighth session on I0. Ended before the Sunday stand-down
 **Open at stand-down:** #514 and #516 (Athena; conflict with develop, need a merge of develop, R2 and the lane receipt). Draft #477.
 
 **Monday, in order:** Pollux reruns the interactive column at develop tip (#522 full pointer sequence is in; weather and yahoo are the live checks). Athena: Boa runaway-job boundary fix, then the named throws. Prometheus: #616, and who the `hiwavebrowser` merge account is (#518 was merged without its receipt). Z lane: I0 continues, then D1 and B0 (A2 packet). Pete: A3 question on the 5 s script budget (x.com, YouTube), auto-delete setting on GitHub, speed for Monday.
+
+## 2026-10-05 01:55 Z-lane Z2-I2 (real-window driver), then I0
+
+**Before -> after.** Before: nothing ran the built app without a person. After: a driver that launches the app from the lane's own build and asserts on what it asks the network for and what it logs (runs now, on this seat); its window half (input, resize, frames) is written and has never run. Two real-app failures reproduced with it; one has a fix up.
+
+**The seat cannot see or touch the window.** Measured at 01:10: no Accessibility, no post-event and no Screen Recording grant for the lane's launchd session, **and the Mac is locked overnight**. A locked screen stops both whatever the grants: posted events go to the login window and `screencapture` answers `could not create image from display`. So H2 (resize), H3 (hover/press) and H6 (wheel) were **not reproduced and not run**, and no check has looked at pixels. Decision packet on Z2-I2 in PLAN-z (Pete): run `hwdrive request` once at the Mac and run the driver only while it is unlocked (it takes the pointer for about a minute), or pull an in-app test channel forward from Z2-I3. Atlas recommends the first, at lunch.
+
+**New PR: hiwave-macos #532** (`atlas/z-real-window-driver`, head 15b79643, base develop 15d2c3a6). Tools only. R2 stamp PASS at the first commit (5c1223e6); open at close.
+- `tools/real_window/driver.py --app <hiwave binary>`: a fresh app per check on a throwaway profile (`HOME` set for the app process only; Pete's tabs and vault untouched), restored on a fixture page served on 127.0.0.1. Asserts on the fixture's request log, the app's log, window pixels, and what follows real HID input (`hwdrive.swift`). PASS / FAIL / NOT RUN per assertion; NOT RUN names the missing grant and is not a pass.
+- Checks `h1`, `h1_slow`, `h2`, `h3`, `h4`, `h4_slow`, `h6`.
+- Never executed: every `hwdrive` command that posts an event or resizes, the frame capture, every pixel assertion. Whoever runs them first should expect to fix them.
+
+**What the driver found on the app at develop 15d2c3a6** (app sha256 00bf6513...41a2, built in `z-i2` through the lease):
+- Not reproduced at the request/log level: H1 on a simple page (one-second ticks keep running after the load, a late fetch reaches `then()`, a late image is fetched and logged as loaded by the live loop); H4 (five of five images requested, `Loaded images count=5`); H2's script side (the side panel taking 220 px after the load gives the page a `resize` at 1060, through the same `apply_layout -> set_bounds` a window resize uses). Whether any of it reached the window's pixels was not seen.
+- **RED, `h1_slow`:** one request held 3 s stopped a 200 ms tick for exactly 2.00 s, then ten ticks came at once; the request reached neither `then` nor `catch`. `pump_live` waited for the network on the app's UI thread (`LIVE_NETWORK_BUDGET` 2 s), so for those two seconds the loop took no input and drew nothing (read in the code; input and paint not observed).
+- **RED, `h4_slow`:** an image a script adds after the load, held 3 s, stops the page for the whole 3.00 s (0 ticks). Same thread, `load_images_added_by_scripts` awaited inside the turn. **Not fixed.** Measured on the app with #533 in it.
+- Also seen, not chased: a fetch started during the load and held 2 s keeps the first live tick until +3.2 s (the load itself waits on the UI thread). The load runs five one-second ticks in 0.1 s (its virtual clock).
+- These fit Pete's H1/H3/H6 on real sites (a page with a request or image in flight most of the time has a loop that is mostly waiting), but that link is not shown.
+
+**New PR: hiwave-macos #533** (`atlas/z-live-requests`, head c6b81875, base develop 15d2c3a6). I0 (c). Open at close, no review yet when written.
+- Fix: a live turn starts the page's XHR/fetch requests and does not wait for them; it gives the ones that are out 2 ms and delivers those with an answer; `LivePump.in_flight` makes the app turn again in 10 ms; 30 s per request; a new document drops the last one's.
+- Fail-first: ac3f7676 red (the turn that takes a 300 ms request lasted 448 ms) -> c6b81875 green. The red commit's test had a broken wait loop past the failing line; fixed in the fix commit and said so in the PR. One older test's expectation changed (both answers on the first turn -> turn until answered).
+- rustkit-engine headless at c6b81875: 461 pass, 5 fail (image_loader_routing, three referrer, remote_font); not re-run at the base this session.
+- Real app, driver, c6b81875 (app sha256 6170232e...9732): `h1_slow` passes (widest tick gap 0.21 s; `slow-then` at +3.2 s). All checks: 26 PASS, 0 FAIL, 5 NOT RUN.
+- Campaign 26/26, `diffPixels` identical to the base's in every case. A/B against `pc-clickanc-0cb8597`: 15 of 20 at 0.00% on every pair; google, linkedin, walmart, shopify and netflix moved inside one arm alone; two swapped passes and six more google passes are in the PR. `parity-capture` never calls `pump_live`, so the gates show the build and the load path are unchanged, not the fix.
+- Limits in the PR: dynamic `import()` modules and script-added images are still fetched inside the turn; the load still waits on the UI thread; rendering every 10 ms while a request is out was not timed on a heavy page.
+
+**My mistakes this session:**
+- `campdiff.py` first compared a field that does not exist and printed "identical" for two empty comparisons. I caught it on the next step by printing a row; the claim in #533 is from the corrected script (`pixel.diffPixels`, with an assertion that no case is missing).
+- `ab5.py`'s first PPM reader split on whitespace past the header and crashed at github (a frame whose first pixel byte is whitespace); fifteen sites had run. Fixed, the last five run after. The fifteen are valid: a frame it misread would have failed the reshape the same way.
+- #533's first body said google's odd frames came on the candidate arm twice in the re-runs; it is three and three. Corrected before any review.
+
+**Tooling:**
+- `z-d0` no longer exists, and `camp.py`, `ab4.py`, `slog.py` went with it. Rewritten in `z-i0/scratch/zi0`: `camp.py <tag> <binary>` (stub cargo, copies the binary to `target/release`), `campdiff.py a.json b.json`, `ab5.py <tag> <binA> <binB> [sites]` (A,B,A,B; a pixel differs when a channel is more than 8 apart: my threshold, maybe not ab4's), `wait_ab5.py <tag>`, `bank.py <profile> <bin> <name>`. 20 sites took 5.5 minutes; a campaign about 40 s.
+- `z-i2` (new worktree) is on `atlas/z-real-window-driver`; `scratch/zi2/sh.py` runs one command (swiftc and built binaries need a python wrapper on this seat).
+- Banked: `pc-livereq-c6b8187` (sha256 367bc61e...d7a3; rebuilt after touching every crate source, same sha256).
+- No Aleph index in `z-i2` or `z-i0`; grep and sed were used.
+
+**I0 is not closed. Next, in order:**
+1. `h4_slow`: script-added images off the turn (split `load_images_pass` into start and settle for the live path; it is shared with the load, so it needs the full A/B).
+2. The load on the UI thread (the engine-thread item; Z2-C5 is Athena's).
+3. Everything on the 2026-10-04 list that was waiting (CSS `:hover` following the pointer first).
+
+**Stop rule:** not triggered (first session on Z2-I2; I0 has a PR up with its receipt).
