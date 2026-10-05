@@ -631,3 +631,22 @@ Session 03:05 to 04:42. Eighth session on I0. Ended before the Sunday stand-down
 3. Everything on the 2026-10-04 list that was waiting (CSS `:hover` following the pointer first).
 
 **Stop rule:** not triggered (first session on Z2-I2; I0 has a PR up with its receipt).
+
+## 2026-10-05 02:20 Z-lane I0 (addendum to 01:55)
+
+There was an hour left, so the lane took I0's next item, the driver's red `h4_slow`.
+
+**New PR: hiwave-macos #534** (`atlas/z-live-images`, head ae8b9d57, base `atlas/z-live-requests`, so stacked on #533). Open at close, no review yet.
+- Fix: `load_images_pass` is three parts in place: `plan_image_loads` (waits for nothing), `fetch_planned_images` (owns what it needs), `keep_fetched_images` (SVG cache insert). The load runs them one after the other, as the old function did. A live turn plans, keeps the fetch with the view, polls it 2 ms a turn, and lays out on the turn the images arrive. `settle_live` is generic.
+- Fail-first: a01c6207 red (the turn that finds a 300 ms image lasted 434 ms) -> ae8b9d57 green.
+- rustkit-engine headless at ae8b9d57: 462 pass, 5 fail, the same five. Two of those five are the image-routing and referrer tests: they are red before and after on a cross-origin request they do not get, so they do not vouch for the refactor's cross-origin path. Said in the PR.
+- Real app, driver, ae8b9d57 (app sha256 1929af2e...8b7a): `h4_slow` passes (widest tick gap 0.21 s, was 3.00 s). **Every check this seat can run passes: 32 PASS, 0 FAIL, 6 NOT RUN** (input and pixels).
+- Campaign 26/26, `diffPixels` identical to develop's. A/B against develop (`pc-clickanc-0cb8597`), which here is a real test of the load path: 15 of 20 at 0.00% on every pair. walmart split by arm in the first run (candidate frames identical to each other, base frames 48.63% apart, no cross pair alike) and was 0.00% on every pair in three swapped passes; google the same shape, 0.00% on every pair in the first swapped pass; linkedin and bing have their known variants on both arms; netflix had no two frames alike in four passes on either arm. Raw rows in the PR.
+
+**#533:** R2 stamp PASS at c6b81875, CI green (pr-swarm included); no R1 yet. **#532:** R2 stamp PASS at its first commit; a second commit (`h4_slow`) was pushed after it.
+
+**State at close:** Z2-I2 blocked (decision packet in PLAN-z: grants plus an unlocked Mac). I0 open. Three PRs open, none merged by the lane.
+
+**What is still not known:** whether any of this changes what Pete sees. Nothing has looked at the window. The two fixes remove a 2 s and an unbounded stall of the UI thread that real pages would hit constantly; H2, H3 and H6 have not been run once.
+
+**Banked:** `pc-liveimg-ae8b9d5` (sha256 c24aac43...240b; same after touching every source).
