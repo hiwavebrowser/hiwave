@@ -1,20 +1,7 @@
 {
-  "generated_at": "2026-10-04T15:09:29.099880",
+  "generated_at": "2026-10-05T16:55:44.185005",
   "platforms": {
-    "macos": {
-      "parity": 0,
-      "parity_source": "baseline_estimate",
-      "last_updated": "2026-01-10T22:29:45.612258",
-      "issue_clusters": {
-        "sizing_layout": 0,
-        "paint": 0,
-        "text": 0,
-        "images": 0
-      },
-      "tier_a_pass_rate": 0.4,
-      "git_commit": "de2a008",
-      "perf_grade": "?"
-    },
+    "macos": null,
     "windows": {
       "build": {
         "ok": true,
@@ -55,10 +42,6 @@
     }
   },
   "history": [
-    {
-      "date": "2026-07-07",
-      "macos": 80.2
-    },
     {
       "date": "2026-07-08",
       "macos": 80.2
@@ -413,6 +396,9 @@
     {
       "date": "2026-10-04",
       "macos": 0
+    },
+    {
+      "date": "2026-10-05"
     }
   ],
   "overall": {
