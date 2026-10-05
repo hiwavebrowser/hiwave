@@ -65,6 +65,13 @@ Athena and Talos cannot run macOS gates. For every seat PR to hiwave-macos that 
 - Cloud pilot PRs (branches cloud/*, amended 2026-10-03): same rule. To keep it to ONE lane run: when several cloud PRs are R1 CLEAR and confined to rustkit-bindings/rustkit-js with green pr-swarm (the CI's macOS 26-case run), merge their heads into one throwaway local branch, run the all-site A/B of that against develop once, and post the same result on each PR naming the SHAs covered. If the combined run regresses a site, bisect by PR. A cloud PR does not land without this.
 
 ## Rules
+- PETE'S HAND TEST 2026-10-04 evening, live app built at develop 15d2c3a6 (so #486 live timers, #487 NSView resize, #522 pointer sequence are all IN the build). Works now: left/right sidebar and top bar show/hide; many sites display better; button and link clicks navigate. STILL BROKEN in the real app, each of which our tests call fixed or do not cover:
+  (H1) pages do not change after their first appearance (late content never arrives), despite #486;
+  (H2) resizing/scaling the window is still wrong, despite #487;
+  (H3) no visible feedback on hover or press: no :hover / :active restyle or repaint, so a working click looks dead;
+  (H4) only the first image on a page appears; later images do not;
+  (H5) reddit is now the worst-displayed site.
+  CONSEQUENCE: the lane's FIRST Monday item is Z2-I2, the real-window driver (launch the built app, CGEvent click/move/scroll/type, AppleScript/AX resize, screencapture of the window, log assertions), with H1-H4 as its first four red checks ON THE REAL APP. A fix for H1-H4 is not 'landed' until that driver shows it in the window. Headless engine tests passing is not evidence for the live app; #486 and #487 are the proof.
 - I0 next item (2026-10-04, from Pollux's weather/yahoo forensics: click dispatches, no throw, framework does not react): audit the engine's click against the full pointer/mouse sequence (pointerdown, mousedown, pointerup, mouseup, click) and fields (button, buttons, clientX/Y, bubbles, composed, isTrusted, target). Red test first: a root-delegated listener checking event.button === 0 and a pointerdown listener both fire. Live checks: weather.com drawer, yahoo.com More menu.
 - D1 (L0 fragments) rebases on Athena's Shadow DOM slice 2 (flat tree: rustkit-dom shadow root field + flat_children() in the layout build), approved 2026-10-03 21:50 ET. The lane does not start D1's tree-build changes until slice 2 has landed or Athena says it is parked.
 - Thresholds, baselines and scorer do not move this week (A3). Scorer v2 publishes beside the old board.
