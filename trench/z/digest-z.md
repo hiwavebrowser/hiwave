@@ -699,3 +699,81 @@ There was an hour left, so the lane took I0's next item, the driver's red `h4_sl
 3. `:focus` and `:focus-within` by the same marks as #535. A page with `autofocus` or a load-time `focus()` will change its first frame, so it needs the pinned-Chrome comparison.
 4. H6 once it can be seen. First question for the driver's log: does `wheel burst started` appear at all.
 5. Still on the UI thread: the load, dynamic `import()` in a live turn, and now each hover restyle.
+
+## 2026-10-05 08:05 Z-lane B0
+
+**Before -> after.** Before: the cascade ratio of record was 13.8x (wikipedia), the A/B tools dropped pairs the change under test could cause, and share_check's "off" arm had been sharing since #441. After: the two tools are fixed with a red test first; the ratio of record turns out to have been measured on the efficiency cores; at normal priority develop tip reads 3.2x on the legacy numbers and 1.6x to 3.3x against Chrome on the same pinned bytes; tree reuse is measured and checked at tip; the A2 packet is below. No engine change and no hiwave-macos PR.
+
+**First, the hand-test line and I0.** Z2-I2's window half is still blocked: at 07:06 `hwdrive preflight` said no Accessibility, no post-event, no Screen Recording, screen locked, display asleep. #532 to #536 had no R1 review and no comment to answer (each has R2 PASS at its head and green CI). **I0 is set to blocked under the stop rule** (third session with nothing merged); the packet is in its PLAN row: it reopens when R1 answers on any of the five. D1 was skipped: its tree-build work waits for Athena's Shadow DOM slice 2 (Rules), and she is parked until Wednesday.
+
+### The finding that changes the package: the ratio of record was a background-priority number
+
+- The cascade trench ran from a launchd job with `ProcessType = Background` (`~/Library/LaunchAgents/paused/com.alephnull.trench-cascade.plist`; the real-site trench's plist says the same). On this Mac that confines the job's processes to the efficiency cores. The Z lane's job and the quiet board's are `Standard`.
+- Same binary, same pinned pages, this session (Standard): the trench's own last binary `cascade-target/pc-dev-e006c68` reads wikipedia **64 ms**, github 217, cnn 134 (two rounds of 3 loads). Its number of record from 2026-10-02 was about 245, 779, 478.
+- The same binary under `taskpolicy -b` (the same clamp), interleaved with the above: wikipedia 204 and 176, github 669 and 631, cnn 445 and 406. That is 2.7x to 3.3x slower and reproduces most of the old numbers. `z-b0/scratch/zb0/bg_bench.py`.
+- So every absolute cascade ms and every ratio in `digest-cascade.md` is about 3x too high for a foreground process. The lane's relative results (80.6x to 13.8x, the per-PR B/A medians) were both arms under the same clamp and I have no reason to doubt them.
+- What I do not know: the priority Chrome's legacy numbers (210, 110, 20 ms) were taken at. They are one sample each from live pages on 2026-09-26.
+
+### Ratio republished (develop 15d2c3a6, release, pinned pages, 2026-10-05 07:26 to 07:37)
+
+| site | RustKit cascade ms (10 loads, median) | with tree reuse | Chrome legacy ms | legacy ratio | Chrome matched ms (3 traces) | matched ratio | matched, with reuse |
+|---|---|---|---|---|---|---|---|
+| cnn | 140.0 | 120.5 | 210 | 0.7x | 84.1, 57.3, 63.3 (median 63.3) | 2.2x | 1.9x |
+| github | 224.5 | 187.0 | 110 | 2.0x | 66.5, 70.5, 68.7 (68.7) | **3.3x** | 2.7x |
+| wikipedia | 64.0 | 50.0 | 20 | **3.2x** | 40.0, 41.3, 41.2 (41.2) | 1.6x | 1.2x |
+
+- Legacy ratio (A3 untouched, same frozen Chrome numbers): worst **3.2x**, wikipedia. The old trench's exit target was 3.0.
+- Matched ratio is Pollux's Z2-M1 tool (`scripts/cascade_bench.py --measure-chrome`, #457): Chrome's style self time on the same pinned, script-free bytes, same Mac, same priority. Worst **3.3x**, github. The Chrome it launches is Playwright's Chromium 143 (chromium-1200), not the pinned 148.
+- **Not a quiet read.** Load was 8 to 13 the whole session: this session's own Aleph server (`aleph.cli serve .` in z-hub, child of the session) ran eight indexer workers at 100% from 07:05 and was still running at 07:59 (54 minutes). `kill` is not permitted on this seat and I did not go around that. The machine has 12 CPUs; the loads were steady run to run (wikipedia 64, 64, 64). By the lane's own rule (nothing above load 6 counts) these are not numbers of record until someone repeats them quiet. Prometheus's gate-5 re-run can be that.
+
+**Proposed absolute budget per site** (a proposal, since any threshold is A3): cascade within 2x of Chrome's matched style time on the pinned page at normal priority. That is cnn 127 ms, github 137 ms, wikipedia 82 ms. Today: wikipedia meets it (64), cnn meets it with tree reuse (120.5), github does not (224.5, or 187 with reuse).
+
+### Tools (umbrella repo, branch `atlas/trench-cascade`, where they live)
+
+- Red: 7378c048 (`trench/tools/test_ab_summary.py`, 6 of 7 checks fail). Green: ab30a98f (7 of 7).
+- **ab2.py, ab_flag.py, ab2_summary.py:** a pair whose two loads logged different build counts was dropped. If the change under test is what adds or removes a build, exactly its affected pairs go and it reads as neutral: on the test's log (B takes a third build in 6 of 10 pairs and is 40% slower there) the old summary printed 1.000 from 4 pairs. Now every complete pair counts, the equal-build subset is printed beside it with its own AB/BA split, and unequal pairs are counted by which arm built more, with a ONE-SIDED warning (`ab_pairs.py`). `ab2_summary.py` could not read `ab_flag.py` logs at all (arm names with spaces); it can now.
+- **share_check.py:** arms are `FLAG=0`, `FLAG=1`, `FLAG=verify`, each set explicitly. It takes the flag as an argument, so it checks `RUSTKIT_TREE_REUSE` too, and totals the tree-reuse verify lines.
+- This is my reading of "build-count exclusion"; the plan has no more words on it than that. In today's runs no pair had unequal build counts, so no number here depends on the fix.
+
+### A2 packet: tree reuse on by default
+
+**What it is.** `RUSTKIT_TREE_REUSE` (in develop since #404, off by default). The relayout after images load takes the box tree the previous build made and refreshes image sizes, instead of walking the DOM again. The flip is the closed draft #408, kept as `origin/archive/atlas-cs-tree-reuse-default` (63d24d1, +14 -11 in one file). `git merge-tree` against develop 15d2c3a6 gives a clean tree.
+
+**Speed at tip** (`ab_flag.py pc-rel-dev-15d2c3a RUSTKIT_TREE_REUSE=1 10`, 5 AB + 5 BA, no pair unequal, load 9.1 to 10.9): per-pair on/off median wikipedia **0.787** (9 of 10 below 1), github **0.828** (10 of 10), cnn **0.885** (9 of 10). All of it is the second build: 15.2 -> 0.9 ms, 37.8 -> 0.1 ms, 15.9 -> 0.4 ms. The first build is unchanged (0.997, 0.993, 0.996); the 5% first-build cost #408 reported on wikipedia is not there now.
+
+**Correctness at tip.**
+- Pinned pages, off / on / verify, 2 rounds (`share_check.py ... RUSTKIT_TREE_REUSE`): verify 0 differing boxes of 21,756 in 6 builds. Layout JSON and display list byte-identical across all six loads on github and wikipedia; on cnn five of six: the odd load (a verify load that reported 0 differing boxes) got one origin image at a different natural size, and the offsets below it follow.
+- 20 live sites in verify mode (`verify_sweep.py`): **15 sites verified a tree, 20,345 boxes, 0 differing.** The other five (google, youtube, facebook, reddit, x) never reach a reusable second build.
+- Frames, 20 live sites, off / on / on / off on the parity binary `pc-clickanc-0cb8597` (sha256 24cc59c2...4ee6, develop's tree): **15 of 20 at 0.00% on every pair.** The five movers: google (no load in either arm logged a reuse, so the flag did nothing; a swapped pass put the two frames in both arms); linkedin and shopify (four more passes, arms swapped twice and one pass with reuse off in all four loads: each site's variants, including linkedin's 41% other layout and shopify's 3.00%, appear with the flag off alone); bing (its 0.24% variant, one off frame); netflix (no two frames alike in either arm).
+- 26-case campaign, `RUSTKIT_TREE_REUSE=0` against `=1`: 26/26 both, mean 1.1069, `diffPixels` identical in every case. The campaign builds each page once, so it does not exercise a reuse.
+
+**What it does not buy.** Live pages now run scripts and lay out three or four times per load (github 192, 39, 93 ms; cnn 144, 72, 19, 63). Reuse removes only the images relayout. The builds after script writes are full walks and are now the larger repeated cost; that is not this flag.
+
+**Not done for the packet:** rustkit-engine's headless suite with the default flipped (its tree tests pin their own mode); the real app (the live loop relays out through the same builder, and nothing has looked at it with reuse on); clippy.
+
+**Recommendation: yes.** Reopen the archived branch as a one-commit PR on develop tip with the rows above as its receipt, plus the engine suite. It is worth 11% to 21% of cascade time on the three pages and I found no output difference in 42,000 verified boxes. **Decision for Pete (A2):** yes / no / wait for a quiet re-run. Silence for 24 h is Atlas's recommendation per the plan.
+
+### Profile at tip (symbolized release build of 15d2c3a6, `sample`, 12 loads pooled per site, not quiet)
+
+- **github** (the worst matched ratio), 2,848 samples under `build_layout_from_document`, by direct callee: the box-tree walk is **29%**. The rest is done once per build before any element is styled: `subject_keys` 20.9%, `media_query_list_matches` 12.3%, `Stylesheet::clone` 7.1% plus dropping the copy 5.0%, `selector_specificity` 7.0%, `list_member_specificity` 3.6%, `split_by_comma` 3.2%, `RuleBuckets::file` 3.1%. About 62% of github's build is preparing the sheets.
+- **wikipedia**, 925 samples: the walk is 85%, `subject_keys` 7.8%.
+- So Z2-B1's cut, if it is taken for the worst site, is the per-build sheet preparation (keying, media evaluation and the sheet copy), not the walk. Not started.
+
+### Receipt (`scripts/receipt.py --package B0`, `z-b0/scratch/zb0/receipt-b0.json`)
+
+- base and candidate: develop 15d2c3a6 (no change). Release binary `z-target/bins/pc-rel-dev-15d2c3a` sha256 73542c10...de28; symbolized `pc-prof-dev-15d2c3a` sha256 a2cfa4b0...e55b (`--config profile.release.debug="line-tables-only" --config profile.release.strip=false`).
+- rustc 1.92.0 (ded5c06cf), cargo 1.92.0, aarch64-apple-darwin, sccache on, macOS 26.5.2, host Petes-MacBook-Pro, 12 CPUs. Chromium 143 (Playwright 1.57.0, chromium-1200) for the matched traces.
+- Fixtures: `trench-cascade/trench/cascade/PINS.sha256` sha256 6db5a9ce...1378 (I did not run `shasum -c` over the pages).
+- Raw runs, all under `z-b0/scratch/zb0/` (untracked, this Mac only): `abflag-reuse-0735.txt`, `m1/matched-{1,2-reuse,3}.json`, `treecheck/`, `sweep-verify.txt`, `abf-reuse1.txt` and `abf-reuse-p{2,3,4,5}.txt`, `abf-reuse1-swapped.txt`, `prof/`. Campaign JSONs: `z-i0/scratch/zi0/camp-b0-reuse-{off,on}.json`.
+
+**For Atlas (F0), two fleet items from this session:**
+1. Any job that times anything must not be `ProcessType = Background`. The two paused trench plists are; if either lane is ever resumed, or the real-site trench's old 30 s timeouts are ever cited, that is a 3x factor.
+2. The session's Aleph server indexed z-hub with eight workers for at least 54 minutes. Nothing in z-hub, z-i0, z-i2 or z-b0 has a usable index, so the lane gets no answers for that cost, and no timing in a Z session is quiet while it runs. The 2026-10-02 cascade digest's "load 11 to 35 from something other than cargo" may be the same thing; I did not check.
+
+**My mistakes this session:**
+- I ran the tree-reuse check and the first bench before looking at what was loading the machine, then spent seven minutes waiting for a quiet that could not come.
+- I rewrote the three A/B tools before committing the red test, so the red run was made against the old files restored from git into a scratch directory, not by checking out the red commit.
+
+**State at close:** B0 done on the lane's side (packet above; A2 is Pete's; gate 5 re-run by Prometheus owed, quiet). I0 blocked on R1. Z2-I2 blocked (unchanged). `z-b0` is a new worktree, detached at develop 15d2c3a6, clean apart from `scratch/`. `trench-cascade` is at ab30a98f, pushed; its uncommitted `prof_children.py` edit (glob pooling, from the ended trench) is still uncommitted and I used it as it is.
+
+**Next session:** if R1 has answered on #532 to #536, set I0 open and answer first. If Pete or Atlas says yes to A2, the flip PR (one commit from the archived branch, receipt from this entry plus the engine suite). Otherwise D1 as far as its hold allows, or Z2-D2 by the queue.
