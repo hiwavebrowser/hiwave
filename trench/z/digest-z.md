@@ -835,3 +835,68 @@ There was an hour left, so the lane took I0's next item, the driver's red `h4_sl
 - `z-d1` is a new worktree on `atlas/z-l0-flex-control`, clean apart from `scratch/`. Tools in `z-d1/scratch/zd1/`: `chrome_capture.py` (pinned Chrome on an ad-hoc file, rects by id), `join.py` / `joinx.py` (RustKit dump against Chrome), `l0scan.py` / `l0scan_inline.py` (differential over the registry), `l0site.py` (one binary, `RUSTKIT_L0` on and off on a live site), `site_look.py`, `camp.py`, `touch.py`. Binaries banked: `pc-l0-10ab2fc` (#537), `pc-l0cs2-080de07` (#538).
 
 **Next session:** R1 answers on #532 to #538 first (answer, do not merge). If #537 has landed: the estimators (item 2 above) so call site 2 can widen, each with a Chrome probe first. If nothing has landed, D1 goes blocked by the stop rule and the lane takes Z2-D2 from the queue.
+
+## 2026-10-05 12:30 Z-lane I0
+
+**In one line:** R1 answered the whole queue, so I0 is open again: #532, #533, #535, #536 and #537 merged at 10:42 and #539 (the live-images fix, re-opened from #534) at 11:50. This session ran the macOS receipt for five seat and cloud PRs (#514, #516, #530, #531 as one batch, then #541), all clean, and put up #542: a disabled control no longer gets `mousedown` or `mouseup`.
+
+Session 11:05 to 12:30.
+
+### Receipt steps (first, as the plan says)
+
+**Batch: #514 `d7d360a5`, #516 `7289b709`, #530 `a1287f78`, #531 `8bf3847a`** (all R1 CLEAR at head, R2 PASS, pr-swarm green, confined to `rustkit-bindings`). One combined arm (local merge `0d982763` on develop `7391c0a1`, not pushed) against develop `7391c0a1`.
+
+- Campaign 26/26 identical. `cargo test -p rustkit-bindings` on the merged arm: 316 passed.
+- 20 sites: 13 at 0.00% on every pair; no frame pinned on any of the four.
+- **walmart looked like a real mover and was not:** 19.72% across on all four pairs, 0.00% inside each arm. With the arms swapped it is 0.00% everywhere, twice. The first pass caught the server rotating the products in its carousel.
+- What the four PRs change in the script logs: github's `behaviors-*.js` runs where it threw (#514's claim), three squarespace scripts run where they threw `not a callable function`, apple's `localeswitcher` runs. Frames identical in all three. squarespace captures take about twice as long on the combined arm (more script runs).
+- **For whoever lands them: the four conflict pairwise** in `rustkit-bindings/src/lib.rs` (#514 with #516, #530 with #531; the test-module list and the `include_str!` list). Each is a keep-both. The receipt covers that resolution.
+- Posted on all four PRs.
+
+**#541 (Pollux, Z2-I1: the harness click goes through the engine).** It reached R1 CLEAR while I was measuring. Measured at `a30143f6`; the head then moved to `33595121` (a refactor with unit tests) before I posted, so I measured that too. Campaign 26/26 identical at both heads; 20 sites: 15 (first head) and 14 (second) at 0.00% on every pair, no frame pinned on it. Posted on the PR, one comment covering both heads.
+
+- Its claim holds on macOS: on a one-button page, develop's harness click is `el.click()` (no pointer events), this head's is the full `pointerdown mousedown pointerup mouseup click` with `detail` 1.
+- **Harness finding, not from that PR: with `--html-file` the page's script did not paint on any binary** (a page that turns itself blue at load stays white; over `--url` it turns blue). An action script on a local file tests less than it looks. Not looked into.
+- Two more notes left on the PR: the click's navigate result is dropped (a harness click on a link follows nothing), and there is no scroll into view before the click.
+
+### Hand-test consequence (Z2-I2)
+
+`hwdrive preflight` again: no Accessibility, no Screen Recording, screen locked, display asleep. The window half still cannot run on this seat. The driver itself landed (#532).
+
+The grant-free half, on the app built in the lane's own worktree (`--release`, through the lease):
+
+| build | result |
+|---|---|
+| develop `7391c0a1` (has #533, #535, #536) | PASS 36, FAIL 1, NOT RUN 7 |
+| develop `7391c0a1` + #539's branch | PASS 37, FAIL 0, NOT RUN 7 |
+
+The one failure on develop was `h4_slow`: a script-added image held 3 s froze the app for 3.00 s (0 ticks). With #539 merged in: 15 ticks, widest gap 0.20 s. Posted on #539, which then merged. So at develop `403d0dbb` the request-log and app-log halves of h1, h1_slow, h4, h4_slow and h8 are green **on the real app**. The 7 NOT RUN are every pixel assertion and every step that needs input (h2 resize, h3 hover, h6 wheel). **Nobody has seen any of it in the window.**
+
+### #542 `atlas/z-disabled-no-mouse` (head `5c07eec3`, base develop `7391c0a1`)
+
+- **Before:** a press and release on a disabled control sent it `mousedown` and `mouseup` (#521 only held back the `click`).
+- **Chrome first:** `tools/parity_oracle/disabled_press_log.mjs`, Chromium 143.0.7499.4. A disabled button, checkbox, text field, a `<span>` inside a disabled button and a button disabled by its fieldset each get `pointerdown` and `pointerup` and nothing else. Moves onto and off them send everything, mouse events included (the engine already does).
+- **After:** the press and the release skip the mouse event where the click already checks. 12 lines.
+- Red test `bb2be19b`, green `5c07eec3`. **A landed test changed:** #521's test asserted the `mouseup` is heard on a disabled control. That was from the spec text; Chrome sends none.
+- Engine suite 466 passed, 5 failed (the five that fail on develop). Campaign identical. 20 sites: 16 at 0.00% on every pair; shopify's 3.00% first-pass split is its own variant (inside both arms on the swapped pass).
+- Not asked of Chrome and not changed: whether such a press moves the focus. Not seen in the window.
+
+### What happened to #534 and #538
+
+Both were stacked on branches whose PRs merged with branch deletion, and GitHub closed them unmerged. Atlas re-opened them as #539 and #540 at the same heads. I had merged develop into both branches locally to re-open them myself, saw the new PRs before pushing, and dropped my two local merge commits so the reviewed heads stay as they are. #539 merged. **#540 (L0 call site 2, `080de076`) is R1 CLEAR and R2 PASS and open.**
+
+### My mistakes this session
+
+- `touch.py` touches the worktree it lives in. I ran `z-d1`'s copy for a build in `z-i0`, so the first combined-arm build was not protected against the shared target. I noticed from the script's own text, copied it into `z-i0`, rebuilt and banked again; the two builds have different sha256. The first one was never measured.
+- I read walmart's "every script over budget on the combined arm, 4 of 4" as possibly arm-linked. Five more captures per arm said develop 4 of 5, combined 2 of 5: run to run.
+- The #539 comment is headed 11:45 ET; it was posted at 11:41.
+
+### State at close
+
+- I0 **open**. Landed this session: #539. Up: #542 (CI green, waits for R1 and R2). Stop rule reset.
+- D1 **open**. #537 landed (10:44). #540 waits to be merged. Stop rule reset by #537.
+- Z2-I2 **blocked** (unchanged: no grants, screen locked). B0 done; A2 still Pete's.
+- Not a quiet machine all session: an indexer started by this session's tooling held several cores (load 9 to 13). It is in every receipt.
+- `z-i0` is on a detached head at #541's `33595121`; scratch is untracked. New tools in `z-i0/scratch/zi0`: `keepboth.py` (keep-both conflict resolver for the bindings lists), `budget.py` (scripts ran or over budget per capture, arms alternating), `slogdiff.py` (per-script outcome diff of two frames of an A/B), `touch.py` (this worktree's own copy), `pcclick/modes.py` (does a harness click reach the page, per load mode). Banked: `pc-dev-7391c0a`, `pc-w4batch-0d98276`, `pc-disabledpress-5c07eec`, `pc-pcclick-a30143f`, `pc-pcclick-3359512`, `app-dev-7391c0a`, `app-liveimg-83c3031`.
+
+**Next session:** receipts first (#514, #516, #530, #531 will each need a keep-both merge once its pair lands; a restack that is only that needs no second run). Then I0: answer R1 on #542; then, each with a Chrome log first: a press on a link, a button or a `tabindex` element focuses it; a label's click comes before its field's focus; `:focus` and `:focus-within` by #535's marks. H6 (wheel) and the pixel half of every check still need Pete at an unlocked Mac with the two grants.
