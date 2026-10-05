@@ -777,3 +777,61 @@ There was an hour left, so the lane took I0's next item, the driver's red `h4_sl
 **State at close:** B0 done on the lane's side (packet above; A2 is Pete's; gate 5 re-run by Prometheus owed, quiet). I0 blocked on R1. Z2-I2 blocked (unchanged). `z-b0` is a new worktree, detached at develop 15d2c3a6, clean apart from `scratch/`. `trench-cascade` is at ab30a98f, pushed; its uncommitted `prof_children.py` edit (glob pooling, from the ended trench) is still uncommitted and I used it as it is.
 
 **Next session:** if R1 has answered on #532 to #536, set I0 open and answer first. If Pete or Atlas says yes to A2, the flip PR (one commit from the archived branch, receipt from this entry plus the engine suite). Otherwise D1 as far as its hold allows, or Z2-D2 by the queue.
+
+## 2026-10-05 10:20 Z-lane D1
+
+**In one line:** L0 is up as two PRs. #537 sizes a grid row from a real layout of a nested flex or grid item (fixture 28 -> 16 boxes off Chrome, campaign and 20 sites unchanged, CI green, R2 PASS). #538, stacked, gives a flex item that holds a control its fit-content width; it is narrower than the design because the first version broke facebook's login form. Nothing merged: no R1 on any of the lane's seven open PRs.
+
+**Session start (09:05).** Hand-test consequence first: Z2-I2 is unchanged. `hwdrive preflight` reads accessibility false, screen capture false, screen locked, display asleep, so the window half still cannot run. No R1 answer on #532 to #536 (GitHub and the exchange both checked), so I0 stays blocked. D0 is done, so the lane took D1. Its hold (wait for Shadow DOM slice 2 before tree-build changes) did not bind: L0 lives in `rustkit-layout` `grid.rs`, `flex.rs` and a new `fragment.rs`, and touches no tree build.
+
+### #537 `atlas/z-l0-fragment` (head `10ab2fcb`, base develop `15d2c3a6`): L0 call site 1
+
+- **Before:** a grid row was sized from `estimate_content_height` (one line per text node) and Phase 9.5 repaired it afterwards where it could. Where it could not (a row an item spans), the estimate stayed. Red test at `1d7826f5`: item 75 tall, 43 expected.
+- **After:** `fragment.rs` has `Constraint`, `Fragment`, `LayoutUnit` (1/64 px) and one query, `intrinsic_fragment`. Columns are sized before rows; a single-row item that is a row flex container or a grid container, `height: auto`, holding text or a control, contributes its fragment's block size. The estimate still runs and the differential records estimate, fragment and the Phase 9.5 delta (`RUSTKIT_L0_DIFF=1`; `RUSTKIT_L0=0` is the old path).
+- **Fixture** `parity-tests/repro/l0-nested-flex-grid.html`, Chromium 143.0.7499.4: boxes outside 0.5 px, of 29: develop 28, PR 16. Sections a (chip rows beside a spanning item: 84 -> 46, Chrome 46) and b (wrapping text + button) are exact apart from a 1 px button height. Section c (nested grids) is still 58 for Chrome's 98: the inner grid's own column sizing, present on develop.
+- **Differential:** 9 in-slice items on the fixture and 22 over the 32 registry cases (new_tab 12, about 10). The estimate is off by more than 0.5 px on every one and the Phase 9.5 delta is 0 on every one.
+- **Campaign:** 26/26, mean 1.1069, `diffPixels` identical in every case. **20 sites** (on `f2d8427a`; the last commit is rustfmt of one file and only the campaign was repeated on it): 14 at 0.00% on every pair; google, linkedin, bing, walmart, shopify each have 0.00% cross pairs on a swapped pass and their variant inside one binary's own frames; netflix never has two frames alike.
+- **Rides along, own red test (`76793ad6`) and fix (`f2d8427a`):** a grid item that is itself a grid did not fill its row unless a row repair fired. L0 exposed it, because a row sized right the first time is never repaired.
+- **Out of the slice, stated in the PR:** column flex items (`layout_flex_container` reads a column's main size from the height left in the box), multi-row spans, percentage heights, `aspect-ratio`, plain blocks.
+
+### #538 `atlas/z-l0-flex-control` (head `080de076`, base #537): L0 call site 2
+
+- **Before:** a non-stretching column item holding an unsized control kept the stale container width (`estimators_can_measure` refused it). Red test at `75c61167`: 660, expected 154.39.
+- **After:** `intrinsic_fragment` answers a `FitContent` query from the border-box estimators; no layout, so `FragmentSize.block` became an `AxisSize` and reads `Indefinite`. Inline sizes are written in 1/64 px rounded up.
+- **Fixture** `parity-tests/repro/l0-flex-control-fit-content.html`: x or width outside 0.5 px, of 25: 13 -> 9. `#e-1` 400 -> 140.66 (Chrome 140.67); the centred copy 10 -> 139.67 (Chrome 139.66).
+- **The regression the A/B caught.** The first version (`10fc9d7`) pushed facebook's login form off the right edge: 2.70% on every pair. Cause, read in the pinned Chrome by setting `width: max-content` on each ancestor: a box in the column is `width: calc(-104px + 50vw)`, Chrome's max-content is 536, the estimators said 197.63. They read `width: <px>` and neither `min-width` nor `max-width`, and they have no grid arm (fixture `#e-3`: 67.80 for Chrome's 115.73). So the query now answers **only** where the estimators measure the whole subtree; grids, non-px widths, `min-width` floors, `max-width` caps and unsized images keep the old width.
+- **Campaign** identical (and blind: no registry case has an in-slice item). **20 sites** at `080de076` against #537's binary: 17 at 0.00% on every pair, facebook among them; google and linkedin have 0.00% cross pairs; netflix as always. So it moves no live page, in either direction.
+
+### §6 acceptance for L0, as it stands
+
+| check | state |
+|---|---|
+| Wrapped block size | met (#537) |
+| Control contribution | met for a flex item the estimators can measure (#538); not for grids, non-px widths, min/max-width |
+| Chrome geometry | met for sections a and b; not for nested grids (c) |
+| Differential | met; in-slice Phase 9.5 delta 0 on all 31 items seen |
+| Units | fragment sizes are 1/64 px with the unsnapped value beside them; every block size seen is a whole pixel, so no snap has been seen to act |
+| Policy | met |
+
+### Found and not fixed (each checked as stated)
+
+1. **`minmax(<px>, auto)` rows are fixed tracks.** Checked against Chrome on develop's binary: `grid-auto-rows: minmax(20px, auto)` with two 60 px items gives Chrome rows 60 and 60 (container 120), develop 80 with the second item 20 tall. `GridTrack::new` clamps an `auto` max to the base. Not L0; a real grid defect and a common idiom.
+2. **The width estimators** ignore non-px definite widths, `min-width`, `max-width`, and have no grid arm (both measured, above). This is what stands between #538 and the design's version of call site 2.
+3. **Nested grid `1fr auto`** gives the text column too much width (fixture c: the paragraph wraps to 2 lines for Chrome's 4).
+4. **Control terms:** an author-styled button is 21 tall for Chrome's 22; a text input's intrinsic width is 145.28 for Chrome's 155.
+5. A unit probe suggested a definite-height grid with `align-content: start` stretches its auto rows. **It does not** on the real engine (Chrome and develop agree, rows 20). The probe was wrong, not the engine.
+
+### My mistakes this session
+
+- Two red tests were guesses about where the estimate shows (a definite-height grid, then `minmax` rows). Both failed for reasons that were not L0's. The third (a spanning neighbour) came from reading what Phase 9.5 refuses to shrink, which is where I should have started.
+- Call site 2's first version took the design's premise (the estimators measure controls now, so stop refusing) without checking what else they miss. No test of mine caught the facebook break; the all-site A/B did.
+- #537's all-site A/B ran one commit before its head (a rustfmt-only commit). Said in the PR.
+
+### State at close
+
+- D1 back to **open**. #537 and #538 wait for R1 with receipts in their bodies. **Stop rule:** this was session one on D1 with nothing landed; a second D1 session with nothing landed sets it blocked.
+- I0 **blocked** (unchanged: #532 to #536 wait for R1). Z2-I2 **blocked** (unchanged: no grants, screen locked).
+- Seven lane PRs now wait for R1: #532 to #538. None has merged since #527 (2026-10-04 08:55).
+- `z-d1` is a new worktree on `atlas/z-l0-flex-control`, clean apart from `scratch/`. Tools in `z-d1/scratch/zd1/`: `chrome_capture.py` (pinned Chrome on an ad-hoc file, rects by id), `join.py` / `joinx.py` (RustKit dump against Chrome), `l0scan.py` / `l0scan_inline.py` (differential over the registry), `l0site.py` (one binary, `RUSTKIT_L0` on and off on a live site), `site_look.py`, `camp.py`, `touch.py`. Binaries banked: `pc-l0-10ab2fc` (#537), `pc-l0cs2-080de07` (#538).
+
+**Next session:** R1 answers on #532 to #538 first (answer, do not merge). If #537 has landed: the estimators (item 2 above) so call site 2 can widen, each with a Chrome probe first. If nothing has landed, D1 goes blocked by the stop rule and the lane takes Z2-D2 from the queue.
