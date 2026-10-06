@@ -964,3 +964,65 @@ Not in the PR, stated in it: Chrome's wheel does not scroll a viewport with `ove
 - Not looked into: `hwdrive window` reports the app's window as 1254x816 where the app asks for 1280x800 inside.
 
 **Next session:** receipts first. Then #544: if CI was re-run and it merged, fine; if not, it is the second session and I0 goes blocked on that one line. For H6 after that, in order: the Wikipedia grid row (a reduced page first; it may belong to D1), the x.com abspos centring, then the wheel on inner scrollers. The focus items from 12:30 (press on a link, button or `tabindex` element; label before field; `:focus`) are still open and each needs a Chrome log first.
+
+## 2026-10-05 23:50 Z-lane I0
+
+Session 21:57 to 23:50. An earlier lane session stopped at about 21:56 after measuring #547 and before posting anything; this one picked its files up.
+
+**Before -> after:** a Wikipedia article is 74012px long on develop `07b08442` and 12812px after **#548, merged 23:38 ET as `c77bffaa`** (pinned Chrome, same bytes, scripts off: `#bodyContent` 10365 against 73554 before and 12354 after). A grid item holding `Label: <b>value</b> tail` is 60px, three lines, on develop and 20px with **#549** (open; Chrome 20). Receipt owed on #547: posted, clean; #547 merged.
+
+### Receipt step
+
+- **#547** (`9be5a60e`, Pollux, `document.implementation`): R1 CLEAR 16:47 ET, no receipt five hours later, so the lane ran it. **Clean.** Campaign 26/26 identical to develop `feb0667c`; 15 of 20 sites at 0.00% on every pair; google, walmart, shopify and linkedin are page variants (shopify looked tied to the arm until a swapped pass; linkedin needed four passes), netflix never repeats. youtube's script log differed by arm in the first pass (all 42 scripts over budget on develop twice, run on the PR twice); three more captures per binary were over budget on both, so it was chance.
+- Said on the PR: the candidate binary was built by the earlier session and I did not rebuild it; I checked it holds the PR's strings and that develop's does not. On the PR's own target, `webcomponents-sd.js` still ends in `TypeError: not a callable function` on youtube; I could not say whether the throw moved.
+- Nothing else open has an R1 CLEAR without a receipt (#477, #528, #543 have no R1).
+
+### Hand-test consequence (Z2-I2)
+
+The driver on the app built in the lane's own worktree at develop `07b08442`: **PASS 41, FAIL 0, NOT RUN 8**. Preflight at 22:15 on a Monday night: no Accessibility, no Screen Recording, screen locked. The window half has still never run; Z2-I2 stays blocked on Pete's packet.
+
+### #548 `atlas/z-grid-row-height` (head `fa611cc4`, base develop `07b08442`), MERGED `c77bffaa`
+
+The item the 16:21 digest left: the Wikipedia article 11 times as long as in Chrome.
+
+- **Cause:** `main.mw-body` is a grid whose last row is `1fr`. Rows are first sized from an estimate that charges a line per text node; the repair pass (Phase 9.5) fixed `auto` and `min-content` rows from real heights and left flexible rows grow-only.
+- **Chrome first:** ten page shapes with the pinned Chromium's boxes stored beside them (`tools/parity_oracle/grid_flexible_row_cases.json`). Wrong against Chrome: **10 of 10 on develop, 2 of 10 with the fix.**
+- **Fix** (about 90 lines in `grid.rs`): with an auto height an `fr` is sized from the items' real heights; a `min-height` on the grid is shared out by the same `fr`; an item with a px height is that tall for its row whatever overflows it.
+- Red `996249bc` and `c527c285`, fix `fa611cc4`. Layout tests 617 passed. Campaign 26/26 identical.
+- **20 sites:** 14 at 0.00% on every pair; google, linkedin, bing variants with 0.00% cross pairs; netflix never repeats; squarespace 0.00% once given a 90 s limit.
+- **cnn is not explained.** 2 of 8 captures of the fix show a 268 by 84 px box in the bottom right corner; 0 of 8 of develop do; the other 6 equal develop exactly. The same column showed once on #544's head this afternoon. I did not find the element. It is in the PR body as the reviewer's call.
+- R1 CLEAR at head 23:20 ET, two minutes after it opened; CI green; **merged 23:38 ET** (not by the lane). It merged with the cnn question open; R1 read it and cleared.
+
+### #549 `atlas/z-grid-item-inline-children` (head `0f2c2298`, base develop)
+
+Found while fixing #548: a grid item whose children are inline gets one line per child, each the full width of the item. The grid pass (Phase 9) stacks an item's children as blocks. It was the reason for the two shapes #548 left open.
+
+- **Fix** (about 40 lines in `grid.rs`): an item with more than one in-flow child, all inline boxes, text or forced breaks, is flowed as lines. A lone text child keeps the old arm.
+- **Chrome first:** three more shapes in the same case file. Wrong against Chrome on 13 shapes: **5 at #548's head, 0 with the fix.** Red `529df46c`, fix `0f2c2298`.
+- Layout tests 617 passed. Campaign 26/26 identical to #548's head (no campaign case has this shape, so the campaign neither accuses nor shows it).
+- **20 sites (90 s limit):** 15 at 0.00% on every pair, cnn among them. walmart and shopify are variants with 0.00% cross pairs; netflix never repeats; linkedin has no identical cross pair in two passes (each arm differs from itself).
+- **google is cleared only indirectly.** First pass: 0.00% inside each arm, 4.52% across on all four pairs. Both frames of the fix in that pass are pixel-identical to a frame #547's binary (no layout change) captured two hours earlier, so it is a page google serves. A swapped pass gave other variants on both arms and no identical cross pair.
+- **Not done:** the engine suite at this head; a re-measure on develop `c77bffaa` (the branch was measured on #548's head, and #547, bindings only, is on top of that in develop).
+- **Limit:** an item that mixes inline content with an image, a control, an inline-block or a block child is still stacked. Chrome wraps such inline runs in anonymous blocks; that is the next step.
+- Open at close, no review yet.
+
+### The machine was not quiet, and it cost time
+
+Load was 28 to 31 from about 22:40 on: sixteen or so Python workers from two Aleph servers (this session's and the interactive Atlas session's), each near 45% of a core for 55 to 70 minutes. The seat cannot stop them.
+
+- squarespace and cnn timed out at 30 s on both arms, twice; they needed a 90 s limit.
+- The engine suite took 418 s instead of about 120 and read 466 passed, 8 failed: the five that fail on develop, plus three wall-clock tests in `page_script_tests`. Those three fail the same way with develop's `grid.rs` put back, so they are the load. I did not get a quiet run.
+- The 15 clean sites of the #547 A/B were captured before the load rose.
+
+### My mistakes this session
+
+- I first read the half-finished #547 files as a second live session and spent several minutes checking for one before reading the process list.
+- The first version of the #547 receipt said the last build in the shared target before the candidate was "this same worktree at this same base". It was the #544 branch. Corrected before posting.
+
+### State at close
+
+- I0 **open**. #548 landed this session, so the stop rule is reset. #549 is open and waits for R1 and R2.
+- Z2-I2 **blocked** (unchanged). D1 open, not touched. B0 done; A2 still Pete's.
+- `z-i0` is on `atlas/z-grid-item-inline-children`. New in `z-i0/scratch/zi0`: `gr/` (the saved article `wiki-src.html` with its stylesheets inlined, `wiki.py` to lay it out with an extra rule, `run.py`, `mk_cases.py`), `kids.py` (a box's children from a layout dump), `ppmdiff.py` (where two frames differ), `ab5_long.py` (90 s limit), `one.py`, `corner.py`. Untracked in `tools/parity_oracle`: `zi0_wiki_heights.mjs` (Chrome's heights for a saved page, scripts off), `zi0_grid_fr_probe.mjs`. `wait_long.py`. Banked: `app-dev-07b0844`, `pc-dev-07b0844`, `pc-frrow-fa611cc`, `pc-inlinekids-0f2c229`, `pc-docimpl-9be5a60`.
+
+**Next session:** receipts first (only if R1 CLEAR and three hours without one). Then #549: answer review, run the engine suite on a quiet machine, re-measure on develop if asked. The cnn corner box from #548's A/B is still not explained (capture with `corner.py` until it shows; it did not show in the 4 captures of #549's A/B). Then grid items that mix inline runs with blocks, images or controls, Chrome shapes first. After that, from the 16:21 list: x.com's abspos loading svgs, the wheel on inner scrollers, the focus items of 12:30.
