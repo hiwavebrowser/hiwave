@@ -1026,3 +1026,70 @@ Load was 28 to 31 from about 22:40 on: sixteen or so Python workers from two Ale
 - `z-i0` is on `atlas/z-grid-item-inline-children`. New in `z-i0/scratch/zi0`: `gr/` (the saved article `wiki-src.html` with its stylesheets inlined, `wiki.py` to lay it out with an extra rule, `run.py`, `mk_cases.py`), `kids.py` (a box's children from a layout dump), `ppmdiff.py` (where two frames differ), `ab5_long.py` (90 s limit), `one.py`, `corner.py`. Untracked in `tools/parity_oracle`: `zi0_wiki_heights.mjs` (Chrome's heights for a saved page, scripts off), `zi0_grid_fr_probe.mjs`. `wait_long.py`. Banked: `app-dev-07b0844`, `pc-dev-07b0844`, `pc-frrow-fa611cc`, `pc-inlinekids-0f2c229`, `pc-docimpl-9be5a60`.
 
 **Next session:** receipts first (only if R1 CLEAR and three hours without one). Then #549: answer review, run the engine suite on a quiet machine, re-measure on develop if asked. The cnn corner box from #548's A/B is still not explained (capture with `corner.py` until it shows; it did not show in the 4 captures of #549's A/B). Then grid items that mix inline runs with blocks, images or controls, Chrome shapes first. After that, from the 16:21 list: x.com's abspos loading svgs, the wheel on inner scrollers, the focus items of 12:30.
+
+## 2026-10-06 04:28 Z-lane I0
+
+Session 03:05 to 04:28. No receipt owed: #477, #528 and #543 have no R1; nothing else was open from a seat or the cloud.
+
+**Before -> after.** A grid item `<div style="height:48px">Label: <b>value</b> tail</div>` was 20px tall at #549's first head and is 48 (pinned Chromium: 48): **#549 merged 04:18 ET as `2084cb00`**. A grid item `Go: <button>Press</button> now` was 59px tall and is 20 (Chromium 21); text around a 50px image 90 -> 55 (55); an inline run before a block 60 -> 40 (40): **#550 merged 04:18 ET as `e3b833fc`**. `display:grid; place-items:center` left a one-letter item 300px wide at x 0; it is 10px wide at x 145 with **#551** (open; Chromium the same on that axis).
+
+### #549 `atlas/z-grid-item-inline-children`: R1's hold answered, MERGED `2084cb00`
+
+- R1 (Prometheus, 23:49 ET) held it on one guard: the inline arm writes the line extent over a definite height. He was right, and by more than his one shape.
+- Chrome first: eight more shapes. Red `8e9ef3b4`: 5 of 22 wrong (px height, px height with padding, px height shorter than its lines, `max-height`, percentage height). His second prediction (`align-self:start; min-height`) was not red; Phase 9.5 already floors it. It stays as a guard.
+- Fix `9d3a3882`: the box Phase 8 placed is put back unless the height is `auto`; an auto height is capped by a px `max-height`. 2 of 22 left, both a percentage height in an `auto` row (25 for Chromium's 50); a lone text child on the old arm reads the same 25, so it is not this arm. Listed in the test as a gap.
+- Campaign 26/26 identical. 20 sites: 15 at 0.00% on every pair; google cleared by two swapped passes. Layout 617 passed. Engine suite 469 passed, 5 failed (the five of develop): the run the first version of the PR did not have.
+- R1 CLEAR 03:32 ET, R2 PASS 04:17, merged 04:18 (not by the lane).
+
+### #550 `atlas/z-grid-item-mixed-inline` (head `c30fe9fc`), MERGED `e3b833fc`
+
+The limit #549 listed: an item that mixes text with an image, a control, an inline-block or a block was still stacked one child per line.
+
+- Chrome first: twelve shapes, each with the same content in a grid item and in a plain block beside it. Chromium gives the two the same height in all twelve. The engine had the plain block right (or 1px short) in all twelve and the grid item wrong in eleven. So the block children pass already knew how; the grid pass was not asking it.
+- Fix: the predicate only. An item with more than one in-flow child, at least one inline-level, goes to the block children pass.
+- Wrong against Chromium on 34 shapes: 13 at the red commit `793d5c24`, 7 at `c30fe9fc`. The seven are listed as gaps: four are a 21px control line that reads 20 in a plain block too, two the percentage height, one a lone image.
+- **The site A/B caught a regression in the first version (`1663d386`): bing's search icon shrank to a dot.** It is a lone svg in a label that is a grid item; the label's column is 1.6px wide and 180px tall on develop too. The old arm draws the svg at 24px over it, which looks right by accident. `c30fe9fc` keeps single-child items on the old arm; bing is 0.00% on every pair again.
+- Campaign identical. 20 sites: 15 at 0.00%, nothing pinned on the change. **It moves no pixel on the board or the 20 first screens; what it is known to change is the twelve shapes.** Engine suite 469 passed, 5 failed (develop's five).
+- R1 CLEAR 04:05 ET, R2 PASS 04:13, merged 04:18 (not by the lane).
+
+### #551 `atlas/z-place-shorthands` (head `a20473b8`, base develop `c77bffaa`), OPEN
+
+Found while reducing bing's form: `place-items`, `place-self` and `place-content` were parsed nowhere. The declarations were dropped.
+
+- Chrome first: twelve pages, each written with the shorthand and with its longhands; Chromium gives both the same boxes. Shorthand differs from longhands in the engine: **11 of 12 at the red commit `5868ad24`, 0 at `a20473b8`.**
+- Fix: three arms in the engine's `apply_style_property` (about 40 lines), no layout code.
+- Campaign identical to develop `c77bffaa`. 20 sites: 15 at 0.00%, nothing pinned on the change. Engine suite 470 passed, 5 failed (develop's five).
+- **It moves no pixel anywhere measured**, and the reason is the next finding.
+- CI queued at close; no review yet.
+
+### Found, not fixed: the block axis of grid alignment does nothing
+
+Nine of #551's twelve pages differ from Chromium for shorthand and longhands alike:
+- a grid item with `align-items` / `align-self` of `start`, `center` or `end` in a px row stays at the top of the row and as tall as it (Chromium: 20px at y 0, 40 or 80 of a 100px row);
+- `align-content` does not move the rows of a grid with a px height.
+
+Also from bing's label (`min-width:24px; max-width:24px; max-height:24px`, 1.6 by 180 for Chromium's 24 by 24): a grid item is not bounded by `min-width`, `max-width` or `max-height`. Eleven Chrome shapes for it are on branch `atlas/z-grid-item-min-max` (pushed, red 11 of 11, no PR; `89864047`). Part of the eleven is the same block-axis fault.
+
+### Hand-test consequence (Z2-I2)
+
+Driver on the app built in the lane's worktree at `9d3a3882`: **PASS 41, FAIL 0, NOT RUN 8**. Preflight at 03:27 on a Tuesday night: no Accessibility, no Screen Recording, display asleep, screen locked. The window half has still never run; Z2-I2 stays blocked on Pete's packet. Not rerun at #550's or #551's head.
+
+### Not done
+
+- #549 and #550 were not re-measured on develop after they merged together; develop `e3b833fc` has had no campaign or site run by the lane.
+- The driver at develop tip.
+- The cnn corner box from #548's A/B: it did not show in any of this session's four cnn rows (16 captures, every pair 0.00%); still not explained.
+
+### My mistakes this session
+
+- The first version of #550 would have shipped the bing regression if I had read "campaign identical" as enough. The 20-site A/B is what caught it, on the one site where the difference was 0.01% of the frame.
+- I wrote "03:45 ET" in #549's body from my own sense of time; the clock said 03:28. Corrected in the body a minute later.
+- Twice a compound command was refused as a whole and I read the next output as if its first half had run (a test module not registered, so "0 tests").
+
+### State at close
+
+- I0 **open**. Two PRs landed this session, so the stop rule is reset. #551 open, waits for CI, R1 and R2.
+- Z2-I2 **blocked** (unchanged). D1 open, not touched. B0 done; A2 still Pete's.
+- `z-i0` is on `atlas/z-place-shorthands`. Local and pushed: `atlas/z-grid-item-min-max` (red shapes). New in `z-i0/scratch/zi0`: `boxat.py` (a box, its parent and children from layout dumps), `mk_pr_inlinedef.py`, `mk_pr_mixed.py`, `mk_pr_place.py`, `bing.html` (the page as fetched), `corner-bing-*.layout.json`. Banked: `pc-inlinedef-9d3a388`, `pc-mixed-1663d38`, `pc-mixed-c30fe9f`, `pc-dev-c77bffa`, `pc-place-a20473b`.
+
+**Next session:** receipts first (only if R1 CLEAR and three hours without one). Then #551 through review. Then the block axis of grid alignment, on a fresh branch from develop: item alignment in a row (`apply_align_self` gives an auto-height item the whole cell whatever its alignment), then `align-content`, then `min-width` / `max-width` / `max-height` on an item; the shapes are in `place_shorthand_cases.json` (nine listed as gaps) and on `atlas/z-grid-item-min-max`. Expect real sites to move when it lands: every `place-items:center` grid. When the label's column is right, take the single-child carve-out of #550 back out (the lone-image gap). After that, from the earlier list: the 21px control line, the percentage height in an auto row, x.com's abspos svgs, the wheel on inner scrollers, the focus items.
