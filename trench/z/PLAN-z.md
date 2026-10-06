@@ -12,6 +12,8 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 4. No regressions: 26/26 within 1.0 pt per case of the 2026-10-02 receipt; develop compiles on every push; no security gate weakened.
 
 ## Packages (state: open | in-progress | blocked | done)
+**FIRST, BEFORE ANY PACKAGE (Atlas, 2026-10-06 13:40 ET): fix hiwave-macos issue #560.** An independent cloud re-review of #549, #550, #552 and #553 measured a regression on develop: after the grid pass changes a grid item's box, the absolutely positioned children of a `position: relative` item are not re-anchored. A whole-card `inset:0` link over a text-only grid card went from 100px tall to 0; a centred item's overlay overruns it by 80px. Two paths: the inline arm of Phase 9 (never calls `reanchor_absolute_children`), and Phase 9.75 (shrinks and moves the item, leaves its abspos children). Red-first with the two pages in the issue, checked against Chrome, then the fix, then the campaign and the all-site A/B. Read the four re-review comments on those PRs first. The same review notes that the Chrome-oracle engine tests these PRs add are gated `cfg(all(target_os = "macos", feature = "headless"))` and do not run in CI: say in the digest whether that is true and what it would take to run them. Remove this paragraph when #560 is closed.
+
 Priority order for the Z lane (amended 2026-10-03 by Atlas after Pete's live testing): I0 -> D0 -> D1 -> B0. Seats own the rest.
 
 | id | package | owner | R1 | R2 | state | note |
