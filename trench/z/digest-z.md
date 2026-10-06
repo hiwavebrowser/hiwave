@@ -1159,3 +1159,81 @@ Driver on the app built in the lane's worktree at develop `9563fe5a`: **PASS 41,
 - `z-i0` is on `atlas/z-grid-item-min-max-on-553`. New in `z-i0/scratch/zi0`: `mk_block_axis_cases.py`, `mk_lone_text_cases.py`, `topng.py` and `zoom.py` (side-by-side crops of PPM frames), `groups.py` (group frames by hash), `mk_pr_blockaxis.py`, `mk_pr_lonetext.py`, `mk_pr_minmax.py`. Banked: `pc-dev-9563fe5`, `pc-blockaxis-e584aa6`, `pc-lonetext-8f755c7`, `pc-minmax-8335fbc`.
 
 **Next session:** receipts first (only if R1 CLEAR and three hours without one). Then #553 and #557 through review (#557 needs develop merged in once #553 lands if it conflicts). Then, in this order: `max-height` on the item's own box on the block arm (live bing label 180 for 24), then take #550's single-child carve-out back out (the lone-image gaps in two tests), then let Phase 9.5 repair the auto rows of a px-height grid when `align-content` is not `stretch`. After that the earlier list: the 21px control line, x.com's abspos svgs, the wheel on inner scrollers, the focus items.
+
+## 2026-10-06 16:35 Z-lane I0
+
+Session 15:05 to 16:35. Package I0, with the plan's first item: hiwave-macos issue #560. No receipt owed (no seat or cloud PR at R1 CLEAR without one). #553 and #557 had merged before the session started.
+
+### Before -> after
+
+| what | pages | wrong before | wrong after | PR |
+|---|---|---|---|---|
+| abspos children of a positioned grid item after the grid pass changes its box (issue #560) | 30 | 26 | 4 | #562 MERGED `03718a7c`, 15:56 ET |
+| an absolutely positioned or fixed inline (`<a>`, `<span>`, `<i>`) is a block | 25 | 19 | 4 | #563 DRAFT `b23dd0a3`: four sites move, one judged |
+
+Campaign 26/26 with identical `diffPixels` to develop `481db9cb` at both heads. Layout tests 620 passed.
+
+### #562 `atlas/z-grid-abspos-reanchor` (`59eac4b7` red, `e8490ba7`), MERGED
+
+- The re-review's two paths were right, and there were more. Nothing in the grid pass re-anchored an item's abspos children after the item's box was settled: the inline arm of Phase 9, the flex and grid arms (a stretched item gets its area back), Phase 9.5 (rows grow) and Phase 9.75 (an item is shrunk and moved). On develop the overlay of a plain block item beside a taller item, of a flex item and of a nested grid item were wrong too.
+- Fix: one new last phase (9.9) that calls `reanchor_absolute_children()` on every item whose style position is not static.
+- The re-review's figures reproduced exactly: with the phase commented out the two new `rustkit-layout` unit tests fail with "got 0px" (text card overlay) and "got 100px" (centred card overlay).
+- 20 sites: 13 clean, nothing pinned on the change. shopify looked like a real mover (3.00% on every cross pair, 0 inside each arm); two more passes and a hash of twelve frames show two frames, each drawn by both binaries. **google and netflix not cleared** (both vary inside both arms on every pass).
+- R1 CLEAR and R2 PASS at `e8490ba7`; merged 15:56 ET, 21 minutes after it was opened (not by the lane).
+- **The issue's own pages did not match Chromium at this head**, and the PR body said so: their overlay is an empty `<a>`, which is the second fault below. The re-review measured with a block box at the layout crate and could not see it.
+
+### The second fault, found by writing the issue's page as a test
+
+`<a href="#" style="position:absolute;inset:0"></a>` had no box at all. Box construction made a float a block and nothing else, so an out-of-flow `<a>` or `<span>` stayed an inline; an inline with no content is dropped. Script read 0:0:0:0 for it in any parent, grid or not. With text, an abspos span was the inline's font box (18px for a 20px line; one line however long the text).
+
+Branch `atlas/z-abspos-inline-is-a-block` (`bf28bcab` red, `547cea44`, `b23dd0a3`), on top of #562:
+- `apply_positioning` blockifies an absolute or fixed box as it does a float.
+- White-space collapsing looks past an out-of-flow sibling (it is not on the line).
+- An inline box is no wider for an out-of-flow child.
+- With it the two issue pages match Chromium and leave the gap list of #562's test.
+
+**This one moves real sites, and the first version was wrong on github.** The A/B at `547cea44` showed github 9.24% on every cross pair: the whole page 21px lower. Cause: a space I had collapsed away left an empty text box that the next space took for its neighbour, and that space became a line (github's body is space, abspos div, space, fixed header, space, abspos div). Fixed in `b23dd0a3`; github is 0.00% again.
+
+At `b23dd0a3`, 20 sites against #562's head: 10 clean. Steady movers:
+- **apple 2.50%, better**: the nav bar now starts at y 0 as in the pinned Chromium (before: a dark strip above it, icons cut in half).
+- **instagram 0.30%, not judged**: the splash's "from Meta" mark is about 60px higher; Chromium shows the login page, so no reference.
+- **wikipedia 0.36%, not judged**: the header search field is about 8px shorter; this one comes from `b23dd0a3`, not from the blockify.
+- **walmart 4.77% at least, not judged**: the deals row is about 15px higher; the candidate arm also varies by itself; the Chromium capture failed.
+- linkedin: one candidate frame per full pass differs by 41% with 18 script records for 6, twice in the candidate arm and never in the base arm. Not looked at.
+
+So it is up as a **draft**, #563, and its body says what is needed to make it ready. Engine suite at its head: 473 passed, 8 failed (develop's five network tests and three GPU-guard waits that pass alone).
+
+### The plan's question: do the Chrome-oracle engine tests run in CI?
+
+**No, the re-review is right.** `parity.yml` job `unit-suites` runs `cargo test -p rustkit-engine --lib` with no `--features headless`, and every Chrome-oracle test module is `#[cfg(all(test, feature = "headless"))]` (the tests also `cfg(target_os = "macos")`). The step is `continue-on-error` as well. What it would take:
+- add `--features headless` to the rustkit-engine line of that step (it already runs on macos-14, and pr-swarm renders with parity-capture on the same runner, so a GPU adapter is there);
+- do something about the five network tests that fail on develop on every run (image loader routing, three referrer tests, concurrent web fonts), or the lane is red from day one;
+- **the suite's GPU guard is the real obstacle.** Each headless test waits its turn for the GPU and panics after 120 s. On this Mac at load 10 today, three full runs gave 0, 2 and 3 guard failures, different tests each time, all passing alone. The page-list tests hold the GPU 20 to 50 s each in a debug build, and there are now eight of them. A slower CI runner will hit this more. Either the guard's wait goes up, or the page-list tests run in their own serial test binary.
+- This is a CI file change and a suite change; the lane did not make it (F0, Atlas).
+- Until then: #562 added two plain `rustkit-layout` tests for exactly this reason, and those do run in CI.
+
+### Hand-test consequence (Z2-I2)
+
+Driver on the app built in the lane's worktree at `b23dd0a3` (develop `03718a7c` plus #563): **PASS 41, FAIL 0, NOT RUN 8**. Preflight at 16:34 on a Tuesday afternoon: screen locked, no Accessibility, no Screen Recording. The window half has still never run; Z2-I2 stays blocked on Pete's packet.
+
+### Not done
+
+- google and netflix not cleared on #562.
+- Static position of an abspos box on a line (x after the text before it), and an abspos box whose containing block is above a static or inline parent: both listed as gaps in the new tests, not touched.
+- The re-review's two side notes are not addressed: `row_spans` indexed by DOM order after a sort by `order`; no definite height for percentage-height children on the inline arm.
+- None of the 10:41 list was started (max-height on the item box for bing's label, #550's single-child carve-out, Phase 9.5 for auto rows of a px-height grid).
+
+### My mistakes this session
+
+- **The first blockify commit (`547cea44`) would have moved github's whole page down 21px.** The 25-page test was green; only the site A/B showed it. The white-space rule I wrote handled one out-of-flow box between two spaces and not two in a row.
+- I tried a shared engine across test pages to shorten the GPU hold and wrote a comment claiming "several times" before timing it; it saved 3 s of 50. Reverted before commit.
+- A refused compound command (cd plus a write) ran nothing, and I read the next test output as if the swap had happened. The memory note of 2026-10-06 says exactly this.
+
+### State at close
+
+- I0 **open**. #562 landed this session, so the stop rule is reset.
+- Z2-I2 **blocked** (unchanged). D1 open, not touched.
+- The paragraph "FIRST, BEFORE ANY PACKAGE ... #560" is left in PLAN-z.md: I cannot read or close issues from this seat (`gh issue` is not allowed), and the issue's own pages only match with the second branch. Atlas removes it.
+- `z-i0` is on `atlas/z-abspos-inline-is-a-block`. New in `z-i0/scratch/zi0`: `mk_abspos_cases.py`, `mk_abspos_inline_cases.py`, `laydiff.py` (first boxes that differ between two layout dumps), `wsprobe.py`, `mk_pr_reanchor.py`. Banked: `pc-dev-481db9c`, `pc-reanchor-e8490ba`, `pc-absinline-547cea4`, `pc-absinline-head`.
+
+**Next session:** receipts first (only if R1 CLEAR and three hours without one). Then #563 out of draft: a Chromium reference and a verdict for instagram, wikipedia and walmart, four more linkedin passes, and a page test for the body shape that broke github. Then the 10:41 list: `max-height` on the item's own box on the block arm (live bing label 180 for 24), #550's single-child carve-out, Phase 9.5 for the auto rows of a px-height grid. If the lane has a spare half hour: the static position of an abspos box on a line.
