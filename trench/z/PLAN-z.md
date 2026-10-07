@@ -25,6 +25,8 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 
 > **PETE, 2026-10-07 19:25 ET: reddit is very close to displaying properly (live app, develop ~41fb6d0e).** H5 was the reddit hand test. Z lane: after H17, one short look at reddit's remaining visible gaps (frame vs Chrome, name the top three) is worth a point on the board; reddit has been 'unstable' on looks-right because Chrome's feed rotates, so judge it by readable and by eye, not pixels.
 
+> **BOARD UNDER-REPORTS THE LIVE APP (Atlas, 19:30 ET):** Pete sees reddit nearly right in the live app (60 s budget) while the 13:00 board scores it a blank frame (1.5% painted) at the capture tool's 5 s budget. parity-capture has `--timer-horizon-ms` but no script-budget flag. Z lane, small PR before H14: add `--script-budget-ms` to parity-capture (default unchanged, 5 s), test-pinned. Atlas then runs ONE labelled 60 s board beside the /60 (its own run dir and trend file `trend-60s.csv`, never in the pinned score) so the plan's Friday packet can show what the app does versus what the 5 s board measures.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
