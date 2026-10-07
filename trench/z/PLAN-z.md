@@ -19,6 +19,8 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 
 > **SPEED RESTORED (Pete, 2026-10-07 18:55 ET, Claude weekly reset):** Claude workers are no longer budget-capped. Z lane: all four slots run (21:05 tonight is next); Athena returns to her packages (Z2-C3/C4/C5 ledger order) once her seat is up; Atlas ticks at the adaptive cadence (15 min when the exchange is hot). Grok seats stay throttled to one tasking per hour (their own meter, 47%, reset in 6 days). Day 7 is Friday: A5 ship/hold, promotion PR, README status ladder (Z2-R1).
 
+> **NEXT SESSION (kicked by Atlas 19:00 ET, speed restored):** first, rebase #604 onto develop (CONFLICTING after #602 in the same layout file; R2 FAIL at 81a2f740 is the stale stamp) and get it green; then #603 out of draft if its measurement holds; then H14 (noscript style extraction, lib.rs:9526), then #575 input ordering. Receipts: Prometheus's.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
