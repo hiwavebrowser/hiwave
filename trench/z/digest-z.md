@@ -1401,3 +1401,66 @@ R1 CLEAR since 23:17 to 23:36 ET with no receipt nine hours later, so the lane r
 - `z-i0` is on `atlas/z-flex-border-box-basis-floor` with no tracked changes (the diagnostic patch is not applied). New: `scratch/zi0/gh/` (the forensics kit, `ebay_reduced.html`, `local.py`, `mini.py`, `css_bisect_ebay.py`), `scratch/zi0/abrows.py`. Untracked probes in `tools/parity_oracle/zi0_eval_*.mjs`. Banked: `pc-dev-4de8d7c`, `pc-574batch-b0b2c5b`, `pc-evtarget-fad56dd`, `app-evtarget-fad56dd`, `app-dev-4de8d7c`, `pc-dev-3307cc6`, `pc-flexpb-5d608ff`. Runs: `z-realwindow-runs/20261007T1401Z-github-evtarget-fad56dd`, `20261007T1406Z-github-dev-4de8d7c`.
 
 **Next session:** receipts first only by the three-hour rule. #599 through review (answer, do not merge). Then the next H15 term: the percentage-height input inside a stretched flex item (reduced page and Chromium numbers are in `scratch/zi0/gh`), then the 16-against-10 row item. Then H16 (facebook) by the module-override recipe. Then the wheel on inner scrollers, #563 out of draft.
+
+## 2026-10-07 16:30 Z-lane I0
+
+**Before -> after.** ebay's search input (hand test H15) on the reduced page: 22.8px tall in a 40px slot -> **39.9 (Chromium 40)**, PR **#602** up. Two more engine bugs found on the way and put up as their own PRs: a row flex item one line too tall (**#603**, draft), and **`min-height` / `max-height` in rem or em ignored on every box** (**#604**). Nothing merged this session. No receipt was owed at the start (#587 has its receipt; #599 merged at 10:53 ET).
+
+### 1. H15, the percentage-height input: #602 (`f99d1b2d`, CI green, R2 PASS, waits for R1)
+
+Four causes, each reduced and measured on the oracle Chromium:
+
+- **A form control's percentage height never resolved, anywhere.** `<div style="height:44px"><input style="height:100%"></div>` gave 19. The control read its containing block's height, which is the parent's flow cursor.
+- A percentage height inside a flex item was `auto` even where the flex algorithm had fixed the item's height (stretched in a definite row, flexed in a definite column, or a resolved percentage cross size).
+- The same for an item stretched to a taller sibling in an auto-height row.
+- A flex container with its own `height: 100%` took its border and padding out twice (36 for 40).
+
+36 shapes in both engines: **32 heights off Chromium on develop, 8 with the fix**; the 8 are other terms and are listed in the PR. Twelve unit tests, ten red on develop. Campaign identical. 20-site A/B: 15 sites identical on every pair, 3 show their own two states, and google and linkedin needed three more swapped passes before each showed a frame of the fix byte-identical to a frame of develop. **No site is shown to move.** Not shown: ebay.com itself (not requested again after this morning's 403s), typing, the click target.
+
+Engine suite at this head: 487 passed, 7 failed in 426 s at load 11 to 12: the six that already fail on develop, and `form_submit_tests::unnamed_disabled_and_unchecked_controls_do_not_submit`, which passes when the four form-submit tests run alone. Not re-run in full.
+
+### 2. A row flex item that holds only blocks was one line tall: #603 (`ee0d9f7a`, DRAFT, CI green)
+
+An item holding one 10px block had a 16px cross size (34 in a 30px font). The box was repaired later in the pass, but `align-items: center` and `flex-end` had already placed it 3px and 6px high. Nine Chromium shapes wrong on develop, none after. Campaign identical.
+
+**It moves three real sites, and that is why it is a draft:**
+
+- facebook: the login form moves up 4px and lands on Chromium's four positions exactly (better).
+- wikipedia: the header links move 1px further from Chromium. Explained: the fix centres the menu correctly in a container the engine makes 54px tall and stretched, where Chromium's is 16 tall; the wrong floor was hiding one of those pixels.
+- github: the header buttons got 5px and 3px shorter. Explained: the fix is right on the element it changes (16 tall, as in Chromium), and the button's `min-height: 2rem` was being ignored, which is item 3.
+- linkedin looked arm-tied in the first pass and is not: it alternates between two headlines; two swapped passes show both inside one arm.
+
+**Recommendation: land #604 first, then measure #603 on top of it and take it out of draft.** The two have not been measured together.
+
+### 3. `min-height` and `max-height` in rem, em and viewport units did nothing: #604 (`81a2f740`, CI running, no review yet)
+
+`min-height: 2rem` was ignored on block, flex, grid, inline-block and inline-flex boxes; `max-height: 2rem` did not clip. Only px, vh, percent and calc() were resolved. 34 shapes: **27 off Chromium on develop, 4 with the fix.** Campaign identical. 20-site A/B: github is the only steady mover (0.10%): its search button goes 46 x 27 -> 46 x 32 and its sign-in wrap 30 -> 32 tall, both Chromium's heights. One develop capture of lyft failed on the network.
+
+**Two more gaps measured and NOT fixed** (the 4 shapes left):
+
+- **a row flex item that is not stretched ignores its own `min-height`, in px too** (16 for 32 under `align-items: flex-start`);
+- a grid item's `min-height` in rem (px works).
+
+Also seen: a flex or grid container laid out through plain `layout()` loses even a px `min-height`; pages take the other entry point.
+
+### For Atlas
+
+- **Order:** #602 and #604 are independent and ready for R1. #603 after #604.
+- Still waiting from 10:40: whether the lane opens a tool-only PR for parity-capture (script budget, after-load eval, module override). This session used the same local patch again for every engine rectangle in #602 and #603; #604's rectangles came from `--dump-layout` and needed no patch.
+- Wikipedia's `.vector-user-links-main` is 54 tall and stretched in the engine and 16 tall in Chromium (one load). Not looked into.
+
+### My mistakes this session
+
+- The first version of the #602 fix made one shape worse (a stretched item with a 60px block and a `height: 100%` block went from 60 to 120 tall). Found by the probe before anything was committed; the fix now keeps such an item at its stretched height, as Chromium does.
+- I wrote the red test for #604 as if the oracle page were 400px wide; it is 1280, so my first expected value for the vw case was wrong (40 for 128). Caught by measuring before the commit. The #602 and #603 test headers say 400px too: their shapes sit in 400px containers and use no viewport units, so the numbers stand, but the wording is loose.
+- The fix commit of #604 narrows its own red test (flex and grid through one entry point only). It says so in the commit and the PR.
+- A regex over GitHub's stylesheets ran for two minutes without finishing and had to be stopped.
+- #603's first PR body called wikipedia "worse" and github "not judged" before I had looked for the cause; both are corrected in the body now.
+
+### State at close
+
+- I0 **open**. Landed this session: nothing. #599 (from the 09:05 session) merged at 10:53 ET. **Stop rule: this is one session with nothing landed; if none of #602, #603, #604 has landed by the end of the next I0 session, I0 goes blocked on R1.**
+- Up: #602 (`f99d1b2d`), #603 draft (`ee0d9f7a`), #604 (`81a2f740`). #563 still a draft, not touched. D1 open, not touched. Z2-I2 unchanged.
+- `z-i0` is on `atlas/z-min-height-font-units`, no tracked changes, the diagnostic patch not applied. New in `scratch/zi0`: `gh/pct.py`, `gh/pct2.py`, `gh/pct3.py`, `gh/floor.py` (need the diagnostic build), `minh.py` to `minh5.py` (work with any banked binary), `pct_tab.py`, `laypath.py`, `inkrows.py`, `ghrule.py`, `ghcss/`. Banked: `pc-dev-a181da0`, `pc-pcth-f99d1b2`, `pc-floor-ee0d9f7`, `pc-minh-81a2f74`.
+
+**Next session:** receipts first only by the three-hour rule. Answer R1 on #602 and #604 (do not merge). When #604 is in: merge develop into #603's branch, A/B github and wikipedia again, take it out of draft. Then the unstretched flex item's `min-height` (px too), the grid item's rem `min-height`, and wikipedia's 54px header container. Then H16 (facebook) by the module-override recipe, the wheel on inner scrollers, #563 out of draft.
