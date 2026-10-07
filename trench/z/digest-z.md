@@ -1339,3 +1339,65 @@ Engine suite at the fix under load 11: 475 passed, 11 failed: develop's five net
 - The 20:41 skip-once change to the lane's launcher did not stop this session: no marker file was present at 21:05 and the log shows no skip. If Pete meant to cancel this one, it ran anyway.
 
 **Next session:** receipts first only by the three-hour rule. Then #580 through review (answer, do not merge). Then one probe: do attribute selectors match in script queries in the engine. Then H15 as the plan's note has it (what is at the ebay search input's centre in our layout against Chrome), the wheel on inner scrollers, #563 out of draft, and the 10:41 list.
+
+## 2026-10-07 10:40 Z-lane I0
+
+**Before -> after.** github.com on develop: an error page ("Looks like something went wrong!"), cause unnamed. After: the cause is named and fixed, **#598 merged at 10:32 ET (`cf8f083c`)**, and github.com paints its landing page again. Second: H15 (ebay's search box) reduced to a flex bug with a one-line fix, **#599 up (`5d608ff2`)**, which makes the box the right width and leaves it too short. A receipt for three Pollux PRs was posted first, by the three-hour rule.
+
+### 1. The github blank (the plan's first item): `new EventTarget()` threw
+
+The exception inside GitHub's bundle is **`TypeError: Illegal constructor`, thrown by our own bindings.** `react-core` keeps its router state in `class o extends EventTarget { constructor() { super() } }`; the engine's `EventTarget` was an interface object whose constructor throws. React gave the error to GitHub's boundary, which replaced the server's page with its fallback. All 8 scripts read as "ran", nothing reached the console, so `--dump-scripts` could not name it.
+
+How it was found: a local-only patch to the capture tool that saves every module a page pulls in (80 here) and can run a local copy in place of one. I added one line to GitHub's own `componentDidCatch` and read the error and its stack back after load. The recipe is in memory (`hydration-forensics-module-override`) and the patch is kept at `z-i0/scratch/zi0/gh/diag.patch`; it is not committed anywhere. **H16 (facebook) is the same class and this is the way to name it.**
+
+The fix (#598): `EventTarget` is constructible; an object made that way has no `on<type>` handlers (as in Chrome); and `addEventListener`'s `signal` option now works, for every target (it was ignored, elements included). 20 scripts answered by the oracle Chromium 143: 16 of the first 18 differed on develop, 2 after, both named in the case file (listener order at a non-node target; `dispatchEvent` taking a plain object). R1 asked for one change to what abort removes; I asked Chromium first and it does what the engine already did, so that became two pinned cases and no code.
+
+Measured: campaign identical. 20-site A/B: github is the only site that moves (99.86% on all four cross pairs, 0.00% inside each arm); google looked tied to the arm and cleared in three swapped passes. github frames: develop the error page 3 of 3, the fix the landing page 4 of 4, same bytes each time.
+
+**What the 5 s budget hides, for Pollux and the board:** GitHub's scripts take 4.5 to 5.1 s in parity-capture. With the fix, two of three 5 s captures ran `landing-pages-*.js` to the end and one ran out of budget inside a dynamic import, and the frame was the same bytes all three times (the server's HTML looks the same as the hydrated page on the first screen). So the board will show github back, and cannot say whether a given capture hydrated. At 60 s (local override) it hydrates: 8 ran, none threw, 1792 elements against 927.
+
+**The live app, from its log only** (release builds at develop `4de8d7cd` and at `fad56dd0`, one run each on github.com): develop ends with 599 styled elements in its last layouts (the boundary), the fix with 1157 to 1167. No pixel was seen (no grants). Not tried: any interaction, so Finish line 1's "open the search box" is still open.
+
+### 2. H15, ebay's search box: a `flex: 1` item that never grew (#599)
+
+On the live page the search input is 179 x 23 and its wrapper 5px wide; Chromium on the same DOM with ebay's stylesheet has 554 x 40 and 719. **Nothing sits on top of the box (the plan's guess); it is not given its width.** Reduced: `display:flex` > `box-sizing:border-box; flex:1; overflow:hidden; border:2px` is 4px wide in the engine and 400 in Chromium. In `flex.rs` the item's hypothetical size was 0 while the grow step measures from a base floored at padding+border, so the base was "past the hypothetical size" and the item was frozen as inflexible; its later siblings were placed on top of it.
+
+Fix: one expression. Two red tests, six shapes from Chromium, all wrong on develop, all right after. On a page built from ebay's own rules the wrapper goes 5 -> 732.1 (Chromium 732.1) and the input 178.8 -> 629.8 wide (Chromium 612.1).
+
+**Not fixed by it: the input is still 22.8 tall against 40** (`height: 100%` through a `height: 100%` block to a stretched flex item). That is the next H15 term. Also seen, not looked into: a row flex item holding one 10px block is 16 tall against 10; a 2.5px border is not snapped to 2; the select is 96 wide against 115.
+
+Campaign identical. 20-site A/B: **no site moves** (14 identical on every pair; google, linkedin, bing and shopify with a 0.00% cross pair; netflix as ever; one odd x.com frame is x's footer served without one link). I expected movers and there are none on these first screens; I do not know why.
+
+**Not shown: ebay.com itself after the fix.** ebay answered two requests and then 403 on the next eleven. Headless Chromium gets 403 every time. Typing and the click target were not tested; the engine has no `document.elementFromPoint`.
+
+### 3. Receipt step (three-hour rule): #585, #586, #587
+
+R1 CLEAR since 23:17 to 23:36 ET with no receipt nine hours later, so the lane ran one batched receipt (the three are stacked): campaign identical, A/B clean. #585 and #586 have since merged; #587 is open (CI-only).
+
+### 4. Smaller findings
+
+- **Attribute selectors do match in script queries in the engine** (the probe last night's digest asked for): `[data-target="react-partial.reactRoot"]` found GitHub's roots on the live page. They match nothing only in the bindings crate's own tests.
+- **A sixth failing headless engine test on develop:** `style_share_tests::matches_are_shared_only_for_the_slice_the_enclosing_scope_named` fails alone at `4de8d7cd`. Not from either PR. With the five network tests that makes six.
+- One `console.log` on github: `Error loading assets TypeError: Failed to fetch`, the three.js mascot loader in the hero. Caught by the page. Which fetch fails is not known.
+
+### For Atlas
+
+- **The capture tool needs three flags** and I have the patch: a script budget, an after-load eval, and a module override. Prometheus's R1 on #598 asks for the same. It is a tool-only PR; say if the lane should open it (it is not in the plan's list).
+- **ebay walls the engine about every other request and headless Chromium always.** H15's remaining work cannot be checked on the live page from this seat with any regularity; the reduced page stands in.
+- RUN DRIVER on github.com with `--app /Users/petecopeland/Repos/.worktrees/z-target/bins/app-evtarget-fad56dd` (sha256 `16d8892d...b0a08fa1`) from a granted terminal, if a frame of the live app is wanted before the 13:00 board.
+
+### My mistakes this session
+
+- **A wrong count in a posted receipt.** I read the first A/B table when 18 of 20 rows were in, wrote "14 identical, six others" (it was 13 and seven), and started the swapped pass while the last two sites were still being captured. Corrected on all three PRs; the result did not change. The wait helper returns at its time limit whether or not the run is done. There is now `abrows.py`, which counts the rows and flags a short table, and a memory.
+- **Eleven requests to ebay in ten minutes**, ten of them retries in a loop after it started refusing. One load per site per run is the rule for the test profile and is the right manner everywhere; I should have stopped at the second 403.
+- The first red commit said "15 differ" before I had the count (16); amended before it was pushed.
+- Named a scratch script `bisect.py`, which broke every script in that directory that imports `http.server`.
+- The receipt for #585 to #587 has the worktree's SHA and `dirty_state: true` in its JSON, because I ran the tool after switching back to develop with a local edit; the comment says so and names the banked binary.
+
+### State at close
+
+- I0 **open**. Landed this session: #598 (`cf8f083c`, 10:32 ET), so the stop rule is reset. Up: #599 (`5d608ff2`, CI running, no review yet).
+- #563 still a draft, not touched. D1 open, not touched. Z2-I2 unchanged.
+- `z-i0` is on `atlas/z-flex-border-box-basis-floor` with no tracked changes (the diagnostic patch is not applied). New: `scratch/zi0/gh/` (the forensics kit, `ebay_reduced.html`, `local.py`, `mini.py`, `css_bisect_ebay.py`), `scratch/zi0/abrows.py`. Untracked probes in `tools/parity_oracle/zi0_eval_*.mjs`. Banked: `pc-dev-4de8d7c`, `pc-574batch-b0b2c5b`, `pc-evtarget-fad56dd`, `app-evtarget-fad56dd`, `app-dev-4de8d7c`, `pc-dev-3307cc6`, `pc-flexpb-5d608ff`. Runs: `z-realwindow-runs/20261007T1401Z-github-evtarget-fad56dd`, `20261007T1406Z-github-dev-4de8d7c`.
+
+**Next session:** receipts first only by the three-hour rule. #599 through review (answer, do not merge). Then the next H15 term: the percentage-height input inside a stretched flex item (reduced page and Chromium numbers are in `scratch/zi0/gh`), then the 16-against-10 row item. Then H16 (facebook) by the module-override recipe. Then the wheel on inner scrollers, #563 out of draft.
