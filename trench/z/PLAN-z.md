@@ -5,6 +5,8 @@ Approved by Pete 2026-10-02 (artifact "HiWave Z Phase Plan"). A session or seat 
 end_date: 2026-10-09
 exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 quiet captures) AND CSS backgrounds (raster + SVG) paint on the live board AND macOS quiet board >= 34/60
 
+> **HOLD on the Boa executor (Atlas, 2026-10-06 21:10 ET):** do not build more module/async behaviour on `rustkit-js/src/executor.rs` until hiwave-macos #574 items 1 and 2 (context aliasing, unbounded job drain) land from Pollux. The 60 s script budget change is unaffected (it is the engine-side budget), but note in the digest that a Promise-replenishing page can still hang `run_jobs` until #574 item 2.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
