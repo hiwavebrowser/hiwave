@@ -1279,3 +1279,63 @@ Second finding: **h6_extent was a false FAIL, not a repaint bug.** The plan's pa
 - `z-i0` back on `atlas/z-wheel-to-view`. New in `scratch/zi0/h6fix/`: `h9_edit.py`, parked copies, `hub_close.py`. Banked: `app-wheel-4cf1bcd`, `app-wheel-resize-25ff353`, `pc-wheel-4cf1bcd`, `pc-wheel-resize-25ff353`, `pc-dev-03718a7`, `pc-561-8c66508`. Runs: `z-realwindow-runs/20261006T2325Z-wheel-4cf1bcd`, `20261006T2340Z-wheel-resize-25ff353`.
 
 **Next session:** receipts first only by the three-hour rule. Then #564 through review (answer, do not merge). Then: the wheel on inner scrollers (`overflow: auto` boxes; `PendingScroll` carries the pointer's view-local point, the engine needs a scroller hit test and per-element offsets that paint); #563 out of draft (Chromium references and verdicts for instagram, wikipedia, walmart); then the 10:41 list (max-height on the item's own box for bing's label, #550's single-child carve-out, Phase 9.5 for auto rows of a px-height grid).
+
+## 2026-10-06 22:40 Z-lane I0
+
+Session 21:05 to 22:40 ET. Package I0, in-progress at 21:08, back to **open** at close. One PR landed (#573), one up (#580). No receipt was owed: nothing had R1 CLEAR for three hours without one (the cloud W5 PRs got R1 between 20:27 and 20:47 ET; #554 carries an R1 HOLD). Stop rule: #564 landed before this session (Pete's hand test 5 ran on it), so it was already reset, and #573 landed in this session (merge `5f6a36f2`, 22:31 ET).
+
+### Before -> after
+
+| | before (develop `50e77c83`) | after |
+|---|---|---|
+| script budget in the live app | 5 s | 60 s, #573 LANDED (`5f6a36f2`); the engine default and parity-capture stay 5 s |
+| youtube.com in the app, from its log | load 6.0 s, **0 scripts ran** | load 12.6 s, **41 scripts ran** (1.06 MB), none over budget |
+| a navigation the page's script starts (`link.click()`, `location.href = url`, a submit button's `click()`, `form.submit()`) | never requested: driver `h16_click_nav` PASS 16 FAIL 19 NOT RUN 6 | requested, loaded, laid out, next page's script runs: PASS 35 FAIL 0 NOT RUN 6, #580 (`b2071a81`) |
+| the user's click on a link, and every frame | NOT RUN | NOT RUN (no grants; the screen was locked at 21:23 and unlocked by 22:21) |
+| 26-case campaign | 26/26 | identical diffPixels at `53732197`, `0c3b3cde` and `b2071a81` |
+| driver, the nine older checks | PASS 41 FAIL 0 NOT RUN 8 | the same at `0c3b3cde` |
+
+### 1. The 60 s script budget (#573)
+
+One commit, as the approval asked: `content_engine_builder()` in hiwave-app sets `script_budget_ms(60_000)`; the engine default stays 5 000 and a test pins both, and `timer_horizon_ms` at 5 000. R1 CLEAR and R2 PASS at head, CI green; merged at 22:31 ET as `5f6a36f2` (not by the lane).
+
+Something the PR says and Pete should know: the load still runs on the app's UI thread, so a page that really uses 60 s of script holds input and paint for 60 s.
+
+**YouTube with it** (the reading the plan asked for). I launched each build on a throwaway profile restored on https://www.youtube.com/ and read the app's log. With 5 s no script ran at all: fetching the scripts used the whole budget, so every one was dropped, not only the 10.8 MB module. With 60 s, 41 scripts ran. What I cannot say: whether the page renders. The log shows the same number of styled elements in the last layout in both runs (199 + 28), which suggests the page is still the skeleton, and `kevlar_base_module` is not among the scripts the log shows as run (the eight external ones are polyfills, `scheduler.js`, `spf.js`, `network.js`). The app logs at INFO only, so a throw is not visible there. Naming the next blocker needs parity-capture with a 60 s budget, and it has no flag for that; that is a ten-line change someone should make before anyone guesses.
+
+### 2. `h16_click_nav` and what it found (#580)
+
+The plan's question: after a click-driven navigation, which of request / parse / layout / paint is missing? The check goes from a red page A to a green page B five ways. The user's click needs input, so on this seat it is NOT RUN. Four are started by the page when the server tells it to, and a fifth (added after R1) is a page that calls `location.replace()` from an inline script while it loads; these need nothing.
+
+All five failed at the first stage: **no request for page B.** Nothing the page's own script did could navigate the live app. `location` was a plain object; `link.click()` ran listeners and no activation; `form.submit()` logged a line; a submit from a timer was recorded and dropped. Only the user's own click on a link or a submit button went anywhere.
+
+Whether this is H14 or H16 I do not know. Pete saw a blank page, not a page that stayed, and a dropped navigation leaves the old page up. It may be the cause where a site cancels the click and navigates from script (then our page keeps whatever the handler did to it), but I have not looked at either site. What the fixed run does show for the class theory: a second navigation in a view, through the same `UserEvent::Navigate` the user's click sends, is requested, loaded, laid out, and its script runs. If there is a class, it is in paint or it is per-site.
+
+The fix: the bindings record the request, `Engine::take_script_navigation` hands it out once, the app's live loop asks each turn. The engine never navigates by itself and parity-capture never asks, so captures are unchanged in what they load. Three things do change for script everywhere: `location.href` keeps the document's URL after an assignment; a fragment assignment or a script click on a `#x` link is a real fragment navigation; `window.location = url` no longer turns `location` into a string. The PR lists what is not done (dispatched `MouseEvent` clicks, the other `location` parts, POST, no redirect-loop cap).
+
+All-site A/B, run at `0c3b3cde` and again at head: 13 of 20 pixel-identical each time, 11 in both; nothing differs steadily between the arms. google, linkedin, netflix, github and yahoo vary inside an arm. **bing and shopify showed a second state on the fix arm first**, which looked like the change. bing's odd frame has a different script bundle URL from the server, and bing was identical in the second run. shopify's other state turned up on the base arm in later passes (2 of 12 frames, against 3 of 12 on the fix). **One facebook frame is not explained**: in the second run one fix-arm frame differs by 0.48% in the login form area with the same 48 scripts run; eight more frames were all identical. The PR says all of this.
+
+R1 (CLEAR at `27ccb3a1`, again at `b2071a81`) raised five points; three are in `b2071a81`: the user's click that navigates by itself drops a URL its listener assigned (one owner per click), a button inside a link keeps the click, and the inline-redirect route. The other two are in the PR's not-done list.
+
+Engine suite at the fix under load 11: 475 passed, 11 failed: develop's five network tests and six grid tests that timed out in the GPU test guard. The grid set that fails is different on every run and passes alone; I did not get a clean full run.
+
+### For Atlas
+
+- **RUN DRIVER h16_click_nav** with `--app /Users/petecopeland/Repos/.worktrees/z-target/bins/app-scriptnav-b2071a8` (sha256 `b347ef8a…8d0484`) from a granted terminal at an unlocked Mac. Only that run covers the user's click and the frames.
+- #580's branch does not have #573; the banked app for #580 has the 5 s budget.
+- parity-capture needs a `--script-budget-ms` flag for the one labelled 60 s measurement the approval allows.
+
+### My mistakes this session
+
+- Named two run directories by a guessed UTC time again; renamed from the logs' own timestamps.
+- First version of the `location.href` setter kept the old "reads back the assigned string" behaviour to keep captures still; its own test showed that state breaks `new URL(location.href)`. Changed to the browser's behaviour before commit, at the price of a script-visible change the A/B then had to clear.
+- Used `closest('a[href]')` in the link walk; in the bindings crate's own tests attribute selectors match nothing (`[id]` too), so it found no link. Replaced with a parent walk. I did not check whether attribute selectors work in script queries inside the engine; if they do not, that is a large bug, and it is one probe to find out.
+
+### State at close
+
+- I0 **open**. #573 landed (`5f6a36f2`). #580 (`b2071a81`, measured at head except the engine suite, which ran at `0c3b3cde`): R1 CLEAR at head, CI still queued at close, no R2 stamp yet.
+- Z2-I2 unchanged (blocked on the grants packet). D1 open, not touched. #563 still a draft, not touched.
+- `z-i0` is on `atlas/z-driver-click-nav`. New in `scratch/zi0`: `yt_probe.py` (launch a built app on one live URL, summarise its log), `nav_edit*.py`, `pr_budget.md`, `pr_scriptnav.md`. Banked: `app-budget-5373219`, `pc-budget-5373219`, `pc-dev-50e77c8`, `pc-scriptnav-0c3b3cd`, `app-scriptnav-0c3b3cd`, `pc-scriptnav-b2071a8`, `app-scriptnav-b2071a8`. Runs: `z-realwindow-runs/20261007T0123Z-h16-5373219` (red), `20261007T0142Z-h16-scriptnav-0c3b3cd` (green), `20261007T0224Z-h16-six-routes-5373219` (red, six routes), `20261007T0221Z-h16-scriptnav-b2071a8` (green, six routes), `20261007T0142Z-all-scriptnav-0c3b3cd`, `20261007T0214Z-youtube-budget60-5373219`, `20261007T0215Z-youtube-budget5-0c3b3cd`.
+- The 20:41 skip-once change to the lane's launcher did not stop this session: no marker file was present at 21:05 and the log shows no skip. If Pete meant to cancel this one, it ran anyway.
+
+**Next session:** receipts first only by the three-hour rule. Then #580 through review (answer, do not merge). Then one probe: do attribute selectors match in script queries in the engine. Then H15 as the plan's note has it (what is at the ebay search input's centre in our layout against Chrome), the wheel on inner scrollers, #563 out of draft, and the 10:41 list.
