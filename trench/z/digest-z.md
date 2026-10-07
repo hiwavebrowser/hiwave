@@ -1237,3 +1237,45 @@ Driver on the app built in the lane's worktree at `b23dd0a3` (develop `03718a7c`
 - `z-i0` is on `atlas/z-abspos-inline-is-a-block`. New in `z-i0/scratch/zi0`: `mk_abspos_cases.py`, `mk_abspos_inline_cases.py`, `laydiff.py` (first boxes that differ between two layout dumps), `wsprobe.py`, `mk_pr_reanchor.py`. Banked: `pc-dev-481db9c`, `pc-reanchor-e8490ba`, `pc-absinline-547cea4`, `pc-absinline-head`.
 
 **Next session:** receipts first (only if R1 CLEAR and three hours without one). Then #563 out of draft: a Chromium reference and a verdict for instagram, wikipedia and walmart, four more linkedin passes, and a page test for the body shape that broke github. Then the 10:41 list: `max-height` on the item's own box on the block arm (live bing label 180 for 24), #550's single-child carve-out, Phase 9.5 for the auto rows of a px-height grid. If the lane has a spare half hour: the static position of an abspos box on a line.
+
+## 2026-10-06 20:05 Z-lane I0
+
+Session 19:12 to 20:05 ET. Package I0, in-progress at 19:15, back to **open** at close. One PR up (#564), one receipt posted (#561). Stop rule reset by #562 earlier today; nothing of this session has landed yet.
+
+### Before -> after
+
+| | before (develop `03718a7c`) | after (#564 head `25ff3534`) |
+|---|---|---|
+| wheel over the content view | reaches nothing: 87 trace lines, zero wheel/scroll (Atlas 18:53 run); real-window h6 3 FAIL | `RustKitContentView.scrollWheel:` records it; app drains and scrolls; `macos_wheel_recorded` green (queue was `[]`) |
+| h6_extent "the window shows the last band" | FAIL on `RED == 0` with 53 chrome-red pixels, frame WAS the last band | assertion `RED < 500`; no engine bug |
+| a live resize | one full layout + one `resize` event per `WindowEvent::Resized` | one layout per live turn at the last size; 10 sizes = 1 event (was 10) |
+| 26-case campaign | 26/26, avg 1.1% | identical diffPixels at `4cf1bcdb` and `25ff3534` |
+| driver (grant-free half) | PASS 41 FAIL 0 NOT RUN 8 | PASS 41 FAIL 0 NOT RUN 8 at both heads |
+
+### H6: the wheel (first item, from the plan's 18:55 diagnosis)
+
+Atlas's fix shape was right and is what shipped. The one thing worth adding to it: `macos_wheel_reaches_window` PASSED on develop. It builds a tao window, hands a scroll `NSEvent` to the content view, and the responder chain carries it to tao's `scrollWheel:` in that nesting. The app disagrees. So that test asserted a premise that holds in the test's world only; it is replaced by `macos_wheel_recorded`, which asserts what the view does with the wheel (summed per turn, tao's sign, lines at 40px, horizontal inverted) and that the window loop does NOT also hear it. The view consumes the wheel (no super), so there is no double scroll to dedupe. The `MouseWheel` arm stays, with the "wheel burst started" clock shared.
+
+Second finding: **h6_extent was a false FAIL, not a repaint bug.** The plan's paragraph said "the window still shows the blue band, not the last one"; the page's bands are red, green, blue in that order, so blue IS the last band, and the engine did repaint after the script scroll (`flush_script_dom_writes_once` renders on a scroll with a clean DOM). The assertion wanted zero red pixels and the chrome itself has 53 (Shield icon, close button). Fixed in the driver. No engine change for it.
+
+### H9: resize latency (second item, Pete's hand test 3)
+
+`WindowEvent::Resized` arrives dozens of times a second during a drag; `apply_layout` called `content.set_bounds` -> `Engine::resize_view` on each: viewhost bounds, surface, FULL relayout, `resize` event to script, synchronously, before the next size was read. On a heavy page a layout is 0.1 to 0.4 s, so the content lagged by as many layouts as events queued. Now `Engine::set_view_bounds` does the surface half at once and leaves the layout to `flush_pending_resize`, which `pump_live` runs first every live turn (and `render` runs as a fallback with no runtime). `resize_view` keeps its meaning for Windows, the action harness and the tests. The driver's grant-free h2 ("the page heard resize when the side panel took its width") goes through the new path in the real app and passes. Not measured on a real drag: no grants on this seat. A further step, skipping layouts while sizes arrive faster than one layout takes, waits for a real drag's numbers.
+
+### Receipt step
+
+#561 (window inherits from Window.prototype, R1 CLEAR 15:24 ET, no receipt by 19:45): run. Campaign identical to develop; 15 of 20 sites pixel-identical; google, lyft, linkedin, netflix, shopify differ within an arm (google and netflix not cleared, as every day). Posted on the PR. Develop's parity build at `03718a7c` came out byte-equal to the banked build of #562's head (`086446a5…`), as it should.
+
+### My mistakes this session
+
+- **H9 went onto #564's branch.** I started the second item in the warm worktree without branching from develop, committed and pushed. Never-force-push means #564 is a two-item PR (disjoint files, reviewable commit by commit; the body says so). Memory note written: the first command of a new item is the branch.
+- Named a run directory by a guessed UTC time (2350Z at 23:25Z); renamed.
+- Three refused compound commands (cd + git, a `$VAR` in a path); each re-run flat. No output was misread.
+
+### State at close
+
+- I0 **open**, in-progress 19:15 to 20:05. #564 up, CI green, no review yet. Z2-I2 unchanged (blocked on the grants packet; screen was UNLOCKED this evening but the seat has no grant).
+- For Atlas: **RUN DRIVER h6,h6_extent,h2** on `z-target/bins/app-wheel-resize-25ff353` (sha256 `61ed01eb…e52894`) from a granted terminal. That run is the proof for both items; the lane cannot produce it.
+- `z-i0` back on `atlas/z-wheel-to-view`. New in `scratch/zi0/h6fix/`: `h9_edit.py`, parked copies, `hub_close.py`. Banked: `app-wheel-4cf1bcd`, `app-wheel-resize-25ff353`, `pc-wheel-4cf1bcd`, `pc-wheel-resize-25ff353`, `pc-dev-03718a7`, `pc-561-8c66508`. Runs: `z-realwindow-runs/20261006T2325Z-wheel-4cf1bcd`, `20261006T2340Z-wheel-resize-25ff353`.
+
+**Next session:** receipts first only by the three-hour rule. Then #564 through review (answer, do not merge). Then: the wheel on inner scrollers (`overflow: auto` boxes; `PendingScroll` carries the pointer's view-local point, the engine needs a scroller hit test and per-element offsets that paint); #563 out of draft (Chromium references and verdicts for instagram, wikipedia, walmart); then the 10:41 list (max-height on the item's own box for bing's label, #550's single-child carve-out, Phase 9.5 for auto rows of a px-height grid).
