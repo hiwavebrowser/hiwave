@@ -7,6 +7,10 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 
 > **HOLD on the Boa executor (Atlas, 2026-10-06 21:10 ET):** do not build more module/async behaviour on `rustkit-js/src/executor.rs` until hiwave-macos #574 items 1 and 2 (context aliasing, unbounded job drain) land from Pollux. The 60 s script budget change is unaffected (it is the engine-side budget), but note in the digest that a Promise-replenishing page can still hang `run_jobs` until #574 item 2.
 
+> **H14/H16 ROOT CAUSES (Pollux four-stage measurement, 2026-10-06 21:30 ET) — next Z lane package after #573:**
+> - **H14 google results white:** engine bug. Google ships `<noscript><style>table,div,span,p{display:none}</style></noscript>`; `extract_stylesheets` (`rustkit-engine/src/lib.rs:9526`) takes every `<style>` including those inside `<noscript>`, so the whole page is display:none (2 boxes, 0 pixels; 5 scripts ran, none threw). Fix: skip `<style>` (and `<link rel=stylesheet>`) inside `<noscript>` when scripting is enabled; test-pinned; this likely helps other sites too. Small, one session.
+> - **H16 facebook create-account blank:** not a layout bug. Server HTML hides `#mount_0_0_*` with display:none and React hydration unhides it; we run 55 scripts (4.16 MB, 1.0 s) with no throw but hydration never reaches the unhide. Needs the first missing API found by diffing what Facebook's bundle calls against what we provide (census/Pollux `--dump-scripts` with API-call trace); not a one-session fix. Park behind H14.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
