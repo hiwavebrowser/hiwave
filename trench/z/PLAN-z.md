@@ -17,6 +17,8 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 
 > **GROK SEATS THROTTLED (Pete, 2026-10-07 17:30 ET; xAI meter 47%, reset in 6 days):** seats check hourly, one measurement seat tasked per hour. Prometheus exempt (:00/:30 + PR events). Priority for the one slot each hour, in order: trace on any board drop; iris after each board; handtest frames 21:30 + log-only 02:15; reduce (H13 google logo block, H10 ebay menu); census only on ask. Nightly digest from ZeuzGb stays; no parallel bursts.
 
+> **SPEED RESTORED (Pete, 2026-10-07 18:55 ET, Claude weekly reset):** Claude workers are no longer budget-capped. Z lane: all four slots run (21:05 tonight is next); Athena returns to her packages (Z2-C3/C4/C5 ledger order) once her seat is up; Atlas ticks at the adaptive cadence (15 min when the exchange is hot). Grok seats stay throttled to one tasking per hour (their own meter, 47%, reset in 6 days). Day 7 is Friday: A5 ship/hold, promotion PR, README status ladder (Z2-R1).
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
