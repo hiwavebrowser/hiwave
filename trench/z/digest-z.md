@@ -1840,3 +1840,62 @@ A/B: **x moves 7.99% (sign-in column 12px higher), NOT compared with Chromium** 
 2. Pointer moves: coalesce per turn, one restyle per turn; measure with `probe_scroll_full.rs` first.
 3. github: why React builds its tree again every turn.
 4. Executor guard; rolling log file.
+
+## 2026-10-08 17:35 Z-lane I0
+
+Session 16:24 to 17:35 ET (by `date`). First item of the 15:30 queue only: **H22, `opacity` on boxes.** Fixed and up as **#633 (`a6fb7836`), a DRAFT on purpose: it makes the microsoft.com capture a blank frame and squarespace loses its hero.** Nothing landed this session. No receipt owed (no open non-draft PR at 16:25).
+
+### H22: before -> after
+
+`opacity` was read by nothing (the image command carries it and the renderer drops it). Now a box below 1 is drawn, with its subtree, into a layer of its own and laid over faded; a box at 0 emits nothing.
+
+| | develop `2616ec28` | #633 |
+|---|---|---|
+| reduce's google search box page, px off Chromium | 13.48% | 0.03% |
+| new 17-cell page `box_opacity_h22.html`, px off Chromium | 15.36% | 0.32% (every sampled cell equal) |
+| campaign | 26/26 | 26/26; three cases move, all translucent text: chrome_rustkit 1438 -> 1368, card-grid 13347 -> 13748, new_tab 11283 -> 11444 |
+| all-site A/B | | 8 identical, 2 with an identical pair, 10 move |
+
+card-grid and new_tab read worse by count while the ink colour becomes exactly Chromium's (255,255,255 -> 240,241,251): our light-on-dark glyphs are thinner than Chromium's and full white hid part of it. The glyph-weight item, not this one.
+
+A/B movers against the oracle Chromium, over the pixels that differ between the arms: wikipedia 8241 -> 773 off, shopify 34205 -> 21730, google 124664 -> 81561 (the band under the search box 59945 -> 1835: the rainbow is gone), netflix 42205 -> 22078, bing 115984 -> 91529 (develop paints a grey overlay over the whole page; the fix shows the nav and the search field), x closer by mean error. weather better by eye (no Chromium frame). walmart 103 px, not looked at.
+
+### What gets worse, and why #633 is a draft
+
+- **microsoft.com: blank frame** (develop: the logo and the header's link lists, nothing else). **Cause not found.** Ruled out with reduced pages: `x:not(:defined) { opacity: 0 }` (never matches here), keyframe blocks leaking declarations, and 21 selector shapes from the 56 `opacity: 0` rules the page ships. `parity-capture` has no computed-style dump; that is the tool that would name it in one run.
+- **squarespace.com: hero image and headline gone.** Its script marks one of five stacked backgrounds active and sets inline `opacity: 1` on the hero text; in our capture that has not happened. Develop showed the stack by accident. The missing script step was not traced.
+
+**DECISION FOR ATLAS / PETE (before Friday's release):** land #633 as is (google, bing, wikipedia, shopify, netflix, weather better; microsoft blank, squarespace hero lost), or hold it until the microsoft cause is named. The lane recommends hold for one session: a blank frame on a board site the night of the baseline is a point lost for a reason nobody can state yet.
+
+### Found, not fixed
+
+- Keyframe animations are parsed and never run. #633 therefore does not fade a box that names an animation (reddit's loading mark stays as on develop). `opacity: 0; animation: appear forwards` would otherwise be invisible for good.
+- `element.animate()` never applies its end state. rAF, IntersectionObserver, `load`, ResizeObserver and idle callbacks all reveal as Chromium does (seven shapes).
+- **`:host-context(.dark) .cell` matches every `.cell`** (overmatch; one reduced page).
+- `opacity` below 1 does not make a stacking context.
+- new_tab's `.ambient-glow` is the last paint command although its z-index is below the container's (older paint-order error; #633 makes it lie over the logo by up to 3 levels).
+- `parity-capture --html-file` runs no scripts; a script probe has to go over a URL (`op_probe.py … -- serve <bin>`).
+
+### Tests
+
+`rustkit-layout` 753 passed (10 new), `rustkit-renderer` 126 passed (5 new). `rustkit-engine` full run with `--features headless`: 524 passed, 12 failed. Six fail on develop `2616ec28` too (run this session). The other six are grid tests that pass alone on both and failed only inside the seven-minute full run; the full run was not repeated on develop.
+
+### Not done
+
+- The plan's "README line 75 (60 s -> 15 s)": hiwave-macos's README has no such line; it is another repo's.
+- github's once-a-second relayout, pointer-move coalescing, the executor guard, the rolling log file: not started.
+- Nobody has seen #633 in the app window; no driver run; timing of the layer passes not measured.
+
+### State at close
+
+- I0 **open**. **Stop rule: one session with nothing landed; a second sets I0 blocked.**
+- `z-i0` is on `atlas/z-box-opacity` at `a6fb7836`, no tracked changes.
+- Banked: `pc-dev-2616ec2` (sha256 474591a6…), `pc-opacity-a6fb783` (acc1f8e0…, byte-equal to `pc-opacity-wip3`), `pc-opacity-f1a8220` (layers without the animation rule), `pc-opacity-wip1` (per-command fade).
+- New in `scratch/zi0`: `op_probe.py` (pixels of a page in Chromium and banked binaries; `serve` runs it over HTTP so scripts run), `op_rect.py` and `op_judge.py` (A/B movers against Chromium, by band), `op_dl.py` (display list, one line a command), `op_selbisect.py` (one rule per page: which selector shapes overmatch), `op/` (reduced pages: anim, anim2, reveal, defined, kf, sel; the Chromium queries `sq_opacity.js`, `ms_rules.js`, `ms_fetch.js`).
+- Aleph was not used: no artifacts from the hub directory, as before.
+
+**Next session, in order:**
+1. microsoft's blank frame under #633: add a computed-style dump to `parity-capture` (or an ignored engine test that prints the ancestors of `a.uhf-microsoft-logo` with their opacity and the rule that set it), name the source, fix or state it; then #633 out of draft (Atlas takes it out; the seat cannot).
+2. squarespace: which script step never marks a background active.
+3. `:host-context()` overmatch; `element.animate()` end state.
+4. Pointer moves coalesced per turn; github's every-turn rebuild; executor guard; rolling log file.
