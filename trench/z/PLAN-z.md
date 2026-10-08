@@ -58,6 +58,8 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 > - **ebay in a fresh profile serves its 'SORRY, something went wrong' error page** (bot-wall body), so my run could not reproduce Pete's hang, which needs his cookies/profile; the fix must be verified in Pete's profile or by the session's own reproduction. On that error page an image is painted over the text column (H10/H11 class).
 > - github landing page paints well (hero, nav, buttons); the email field shows label and placeholder on top of each other.
 
+> **PETE'S RUN AT 18d12588 (#616 in), 09:45-09:54 ET, log live-20261008T0943.log:** 12 navigations in 9 minutes, no hang, clean close. **#616 was NOT exercised:** ebay answered `403 Forbidden` (1981-byte error body) this time, so the long module never ran; 0 budget/stop lines in the whole log. Still unverified on the real ebay page: the session should replay yesterday's and today's saved ebay bundles through the fix rather than wait for Akamai to let us in. Relayout counts after load, with no user input: wikipedia article 27 in ~25 s (25 of them right after `Navigation finished`), about.google 38, reddit 11, google 10, ebay error page 8: the repeated-relayout item, with numbers. One `Glyph atlas full, clearing cache` on about.google (3625 draw commands). reddit ran its own `js_challenge` redirect (the site's script, not ours) and loaded.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
