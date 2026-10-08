@@ -1521,3 +1521,50 @@ H17 icon sizing, the reddit look, #554's CLEAR checklist. They are the next sess
 - New in `scratch/zi0`: `h14.py`, `h14_scripts.py`, `noscript_in.py`, `minh6.py`, `budget_flag.py`, `gh_cta.js`, `lyft_rects.js`.
 
 **Next session:** receipts only by the three-hour rule. Answer review on #608, #609, #610. Then H17 (icon sizing: measure the three repro shapes against Chromium first), the reddit look, #554's checklist, the grid item's rem `min-height`, #575 input ordering.
+
+## 2026-10-07 22:37 Z-lane I0
+
+**Before -> after.** Session of 21:05 to 22:37 ET, all of it H17 (Pete's hand test 6: icons paint but are sized wrong, and alignment is off around them). **Landed: #611 (`51ad7d4f`, icon-font glyphs were shown as `\f007` text). Also landed, from the last session: #608 (`05956fda`), #609 (`51bea242`), #610 (`4ec32c0d`).** Stop rule reset. Up at close: #612 (R1 CLEAR, R2 PASS, green) and #613 (R1 CLEAR, green, no R2 stamp yet). No receipt was owed.
+
+One probe of 98 icon and row shapes against the oracle Chromium (`scratch/zi0/icon.py`): **56 off on develop, 17 off with the three PRs stacked.** The three causes are separate and each has its own PR.
+
+### 1. `content: "\f007"` was shown as five characters: #611, LANDED (`51ad7d4f`)
+
+The `content` value was taken as the text between its first and last quote, as written. Every icon font names its glyph by escape, so an icon was the literal text `\f007` in the fallback font, 62.7px wide where a 24px icon goes. walmart.com's header shows `\f207` and `\f146` on develop and icons with the fix (the one real site mover, 0.21%; by eye, not against Chromium). 18 `content` values against Chromium: 17 wrong before, 1 after (a value that mixes strings with `attr()`). Limit: `attr()`, `counter()`, `url()` inside `content` still generate nothing.
+
+### 2. An svg or img sized in anything but px or % ignored the size: #612 (`a0c19b67`, R1 CLEAR, R2 PASS, green)
+
+`svg { width: 1em; height: 1em }` was the viewBox size (24 x 24 for 14 x 14). `1rem` icons were 24 for 16. `max-width: 1em` let an unsized svg fill its container. `min-width` / `min-height` on an svg or img were not read at all. 55 svg, mask and unit shapes: 26 off before, 10 after. Campaign identical. Two small site movers, **neither judged against Chromium**: weather 0.09% (icons keep their size and shift 2 to 8px inside rows that item 3 fixes) and yahoo 0.01% (three arrows by one pixel).
+
+### 3. A flex container with a height in rem did not align its items at all: #613 (`4e5d6d99`, R1 CLEAR, green, no R2 stamp yet)
+
+Found while judging item 2's weather mover. The flex pass took a definite height from px only. With `height: 3rem` (Tailwind `h-12`: nav rows, buttons, headers) `align-items: center` left the item at the top, `stretch` left an auto item 0 tall, a column did not justify or grow. The same for em, vh, calc(), min(). 35 shapes: 25 off before, 3 after. Campaign identical. Three steady site movers:
+
+- **facebook 1.72%, onto Chromium**: the hero text block is at y 276 on develop, y 416 with the fix, y 416 in Chromium (same x and size).
+- **weather 0.38%, by eye and by the reduced page only** (Chromium gets 429 from weather.com): nav icons and labels centred in their rows, "Sign in" centred in its pill.
+- **reddit 3.02%, not compared**: the capture is reddit's loading mark alone; it moves from the top of the frame to the middle.
+
+The stack of the three against develop `8b6dd2b4` (20 rows): facebook, weather and reddit at the same percentages as #613 alone; walmart at item 1's 0.21% on two of the four pairs (one stack frame of walmart is an odd one, 5% away); shopify read steady-by-arm and is the site (see mistakes). Nothing new from the combination. Campaign identical.
+
+### What is still off in the probe (17 shapes), for the next session
+
+- An svg whose one axis comes from stretch or a percentage does not carry the other across its ratio (5 shapes; includes `width: 100%; height: auto` on an svg with size attributes, the responsive-logo pattern).
+- A row flex container's cross size from `min-height` / `max-height` in rem (2).
+- An icon-font glyph's inline box is 27.5 tall for 24 (3), and a `<button>` holding one is 40 x 22.8 for 16 x 16 (1).
+- `width="1em"` as an svg attribute is 1280 wide (1); an svg in an inline-flex button is 3.7 wide for 13.3 (1); four small ones.
+
+### My mistakes this session
+
+- **Wrong base on #613's first A/B.** `origin/develop` moved from `dd99c1be` to `8b6dd2b4` during the session and the third branch was cut from the new head, while the A arm was still the old develop binary. The table showed lyft 0.97% and github 0.05%, which are #608's movers. Caught from those two numbers before the PR was opened; re-run against the right base (10 minutes). The wrong table is not in any receipt.
+- **#611's shopify line was written three times.** First "not this change" on one extra capture; then "probably this change" from counting by memory; then all 22 shopify frames hashed: the site has two frames, and binaries with and without the fix draw both (3 and 2; 13 and 4). Two tables read steady-by-arm in opposite directions. The body now has the counted version; both rewrites were made after the PR had merged (22:26 ET), so R1 read the first one. Hash the frames before writing a sentence about an alternating site.
+- #612's binary was built from the fix before it was committed; the commit differs from that tree only in the test file's formatting. Said in its receipt note.
+
+### State at close
+
+- I0 **open**. #603 is still a draft: #608, which it waited for, has landed; Atlas takes it out of draft (the seat cannot), and it should be re-measured on develop with #613 first, since both change where flex items sit.
+- NOT STARTED: the reddit look, #554's checklist, #575, the grid item's rem `min-height`.
+- `z-i0` is on `atlas/z-flex-container-font-relative-height`, no tracked changes. Local-only `zscratch/h17-stack` is the measured stack (delete freely).
+- Banked: `pc-dev-dd99c1b`, `pc-dev-8b6dd2b`, `pc-iconunits-a0c19b6`, `pc-content-c834f46`, `pc-flexh-4e5d6d9`, `pc-h17stack-f195909`. No parity binary of develop `51ad7d4f` yet.
+- New in `scratch/zi0`: `icon.py` (the 98 shapes), `icon_all.py`, `rows_for.py`, `content.py`, `lay2.py`, `cap2.py`, `tree.py`, `textat.py`, `boxfields.py`, `evalurl.py`, `mk_body.py` (receipt + body; `BASE` env names the base SHA).
+
+**Next session:** receipts only by the three-hour rule. Review answers on #612 and #613. Then the svg ratio terms (stretch and percentage axes, `height: auto` over a size attribute), `min-height` / `max-height` in rem as a row's cross size, the reddit look, #554's checklist, #575.
