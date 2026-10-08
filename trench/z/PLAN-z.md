@@ -74,6 +74,14 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 
 > **H20 HTML PARSER: WHITESPACE BETWEEN TABLE ROWS (issue #621, found by Prometheus during R1 of #619; reproduced by Atlas 11:15 ET with `parity-capture --dump-layout` on develop 6f6496cd):** `<table><tbody>\n<tr>..</tr>\n<tr>..</tr>\n</tbody></table>\n<p>after</p>` parses to `body(table(tbody(tr), tbody(tr), p))`; without the newlines it is correct. Each row gets its own tbody AND the table is never closed, so **everything after a real-world table becomes a child of the table.** This is what Pete has been describing as 'tables'; it probably outranks H19 in reach (every Wikipedia article with an infobox, every page with a data or layout table). **Cloud W6-B launched 11:24 ET: `trig_012pwF6NP1d5tmiatnEJasyn`, branch `cloud/w6-b-table-tree-construction`, crates/rustkit-html only, connectors cleared.** Z lane: do NOT start it. Consequence for H19: #619's float fix will not be visible on real infoboxes until this lands (the paragraphs are inside the table); reduce's shape (b) page has the same problem. Land order does not matter; verify both together on the live Wikipedia page.
 
+> **SESSION KICKED 11:40 ET. ORDER (H19 and H20 are with cloud sessions; do not start them):**
+> 1. **Prove the ebay stop in the real app** (see '#616 DID NOT STOP THE EBAY FREEZE'): log a line when a script is stopped (elapsed ms, source), reproduce with a second load in the same profile or the saved bundle, and report how long the window is frozen. If the stop only fires at the 60 s app budget, say so plainly: Pete has a decision pending on cutting the budget to ~15 s.
+> 2. **The app executes the whole display list on every wake of its event loop** (`view.render()` in `MainEventsCleared`, unconditional; your own finding at 11:30). Render only when something changed (a dirty flag set by layout, scroll, resize, animation). This is the CPU spin after load on the portal and likely on github.
+> 3. **Scrolling rebuilds the layout tree** (38 of 52 full relayouts on simonwillison followed `wheel burst started`): scroll = offset + repaint, no re-cascade.
+> 4. **github: one full relayout a second, forever** after load (measured, not fixed last session): find the trigger.
+> 5. Executor guard fix (Prometheus's soundness read). 6. Rolling app log file under ~/Library/Logs/hiwave/.
+> #620 (sprite sheets) needs R1; answer the two regressions you listed in it before it lands.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
