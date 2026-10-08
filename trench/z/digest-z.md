@@ -1464,3 +1464,60 @@ Also seen: a flex or grid container laid out through plain `layout()` loses even
 - `z-i0` is on `atlas/z-min-height-font-units`, no tracked changes, the diagnostic patch not applied. New in `scratch/zi0`: `gh/pct.py`, `gh/pct2.py`, `gh/pct3.py`, `gh/floor.py` (need the diagnostic build), `minh.py` to `minh5.py` (work with any banked binary), `pct_tab.py`, `laypath.py`, `inkrows.py`, `ghrule.py`, `ghcss/`. Banked: `pc-dev-a181da0`, `pc-pcth-f99d1b2`, `pc-floor-ee0d9f7`, `pc-minh-81a2f74`.
 
 **Next session:** receipts first only by the three-hour rule. Answer R1 on #602 and #604 (do not merge). When #604 is in: merge develop into #603's branch, A/B github and wikipedia again, take it out of draft. Then the unstretched flex item's `min-height` (px too), the grid item's rem `min-height`, and wikipedia's 54px header container. Then H16 (facebook) by the module-override recipe, the wheel on inner scrollers, #563 out of draft.
+
+## 2026-10-07 20:35 Z-lane I0
+
+**Before -> after.** Session of 19:00 to 20:35 ET. **Landed: #604 (`f998244c`, min-height in rem) and #605 (`2585d8ef`, H14).** #602 had landed before the session (`41fb6d0e`), so the stop rule is reset. Google's results page: 0 pixels and 2 boxes on develop -> a page that paints. It is still not search results (below). Up at close: #608, #609, #610, and #603 (still a draft, with a reason). No receipt was owed.
+
+### 1. #604 brought up to date and landed
+
+It conflicted with #602 in one place (two `mod ..._tests;` lines). Merged develop in (`64a6c6b9`, no force-push), then measured the two fixes together for the first time: 658 layout tests pass, campaign identical, 20 sites: github the only steady mover (0.10%, the header buttons, as before). netflix not cleared. **The A/B at the merged head is in the PR body** (the land comment says the body's A/B is from before #602; the update was added at 19:15 ET).
+
+### 2. H14, google results white: #605 landed, and what is left is not ours to fix in layout
+
+- Cause as Pollux measured: `<noscript><style>table,div,span,p{display:none}</style>`. The two stylesheet collectors now skip anything under `<noscript>` when scripting is on. Seven tests, five red on develop. A `<link rel=stylesheet>` inside `<noscript>` was also being fetched; it no longer is.
+- Capture of `google.com/search?q=test`: develop 0.00% non-white, 2 boxes; with the fix 0.42%, 10 boxes: one line, "If you're having trouble accessing Google Search, please click here, or send feedback." (Pete's "error text" on reload is either this line or the 429 page below; not checked which.)
+- **The live app goes further, by its log** (release build of the fix, throwaway profile, nothing seen in a window): Google's script navigates twice (`&sei=...`, then `&sg_ss=...`), and the third request is answered **429 Too Many Requests with Google's reCAPTCHA page**. So script redirects work; results do not arrive. One run. I do not know whether the 429 is this Mac's traffic today or how Google judges the client, and I did not repeat it against a 429. The develop app was not run on this URL.
+- Not fixed, written in the PR: the parser still builds elements inside `<noscript>` (script can see them; whether an `<img>` there is fetched was not checked: that would be a tracking request Chromium does not make); no `<meta http-equiv=refresh>` anywhere.
+- Campaign identical. 20 sites: none shown to move. bing read arm-tied (0.24%, the "Copilot" item) and is the site flipping by itself (develop against itself shows it).
+- Engine suite at the fix: 491 passed, 10 failed in 417 s: the six known, and four Chromium-oracle grid tests that pass when run alone right after.
+
+### 3. An unstretched row flex item ignored its `min-height`: #608 (`6e5343d0`, R1 CLEAR, CI running)
+
+The gap measured in #604 and left open there. The flex pass floored the item's cross size, the children's layout wrote the flow height over the box, and only stretched items were written back. 15 shapes: **12 off Chromium before, 0 after.** Campaign identical. 20 sites: two steady movers, **both onto Chromium**: lyft's promo bar 25 -> 48 tall with its text at y 108 (Chromium 48, 108.5), github's "Sign up" button 30 -> 32 (Chromium 32). linkedin and netflix not cleared (both alternate by themselves). Measured against #604's head, without #605.
+
+### 4. #603 (flex item cross floor): still a draft, and now for one reason only
+
+Merged develop in (`39eb169d`, 661 layout tests pass). Measured on two local stacks:
+
+- on develop + #604: the same three movers as before and no fourth (facebook 1.40% better, wikipedia 0.10% the explained 1px, github 0.05%). But github's "Sign up" button goes 30 -> **27** (Chromium 32): the gap of item 3.
+- on #608 + #603: that button stays 32, the search icon box becomes Chromium's 16 x 16, lyft identical.
+
+**Order: #608 first, then #603 is ready.** The title says so. The seat did not try `gh pr ready` (not in its allowed commands); Atlas takes it out of draft after #608.
+
+### 5. `parity-capture --script-budget-ms`: #609 (`6c465f94`, R1 CLEAR, CI queued)
+
+Atlas's 19:30 ask. Default unchanged (5 s, pinned by a test); campaign identical. youtube, one load each: default 0 scripts ran / 42 over budget; `--script-budget-ms 60000` 40 ran, 1 threw, 1 skipped. **The frame is the same 0.26% non-white at 60 s: youtube does not render in a capture at the app's budget either.** For the 60 s board: `--timeout-ms` must be raised too (30 s default for the whole capture), and the script budget counts fetching the scripts.
+
+### 6. The driver's one FAIL on develop (`h6: the app got the wheel`): #610 (`a498a553`, CI queued)
+
+The plan calls the assertion stale. **It is not: the app never logs the first wheel burst after launch.** The burst clock started at the first wheel event, so that event saw a gap of zero. All 17 app logs of Atlas's 19:50 run have zero "wheel burst started" lines. One-function fix in hiwave-app, red test first. The driver is unchanged. **ATLAS: RUN DRIVER h6 with `--app /Users/petecopeland/Repos/.worktrees/z-target/bins/app-wheellog-a498a55`** from a granted terminal; on the seat it is NOT RUN (locked, no grants).
+
+### Not started (new in the plan during the session)
+
+H17 icon sizing, the reddit look, #554's CLEAR checklist. They are the next session's, in the plan's order.
+
+### My mistakes this session
+
+- Twice I sent a commit and a build (or an edit and a test run) in one step, which run at the same time. I re-ran the build to confirm it was fresh both times; nothing measured came from a stale binary.
+- The first #605 body draft said google's home page has no noscript sheet. I had not checked; the sentence was removed before the PR was opened.
+- I wrote off item 6 as not fitting the time, then found by `date` that 30 minutes were left. The session clock again runs slower than it feels.
+
+### State at close
+
+- I0 **open**. Landed this session: #604, #605. Up: #608 (R1 CLEAR), #609 (R1 CLEAR), #610, #603 draft. #563 still a draft, not touched. D1 open, not touched.
+- `z-i0` is on `atlas/z-first-wheel-burst-logged`, no tracked changes. Local-only branches `zscratch/floor-on-minh` and `zscratch/floor-on-all` are the two measured stacks (not pushed; delete freely).
+- Banked: `pc-minh-64a6c6b`, `pc-noscript-f3a453d`, `pc-floorminh-f87d052`, `pc-itemminh-6e5343d`, `pc-floorall-1a389ba`, `pc-budget-6c465f9`, `app-noscript-f3a453d`, `app-wheellog-a498a55`. **No parity binary of develop `dd99c1be` exists yet**: build one first next session.
+- New in `scratch/zi0`: `h14.py`, `h14_scripts.py`, `noscript_in.py`, `minh6.py`, `budget_flag.py`, `gh_cta.js`, `lyft_rects.js`.
+
+**Next session:** receipts only by the three-hour rule. Answer review on #608, #609, #610. Then H17 (icon sizing: measure the three repro shapes against Chromium first), the reddit look, #554's checklist, the grid item's rem `min-height`, #575 input ordering.
