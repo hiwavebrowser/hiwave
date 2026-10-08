@@ -41,6 +41,8 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 > - **Z2-M5 recorded-resource captures** (Pollux, design this week): parity-capture replays a site from pinned bytes (HTML, CSS, JS, images recorded once) so regressions are judged on identical input; live sites stay a separate compatibility layer. Cuts the Netflix/Google/bot-wall noise that eats receipt time.
 > - Rejected as stated: 'sticky scrolling integration' is ledgered off by design (lib.rs:4947), not a missed call. Noted: the Google measurement that ended at 429/reCAPTCHA is the bot wall (handshake decision, W5-F), not the noscript fix.
 
+> **H18 WIKIPEDIA (Pete, 2026-10-07 23:00 ET, live app at develop ~51ad7d4f+): 'gross abnormalities' remain on en.wikipedia.org after the icon package (icons a little different).** Pollux: four-stage measurement on https://en.wikipedia.org/wiki/Web_browser (the board URL) — what Chrome shows vs ours in the first viewport, named by region (header/search, left nav, infobox, article columns, tables, images), with the top three defects and their likely engine cause. Z lane: next hand-test package after #554. Board history: wikipedia has been readable 74-81% and looks-right ~15-17% all week, so the board has been calling it borderline while a human calls it gross: another case for the user-task board over pixels.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
