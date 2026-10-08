@@ -82,6 +82,8 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 > 5. Executor guard fix (Prometheus's soundness read). 6. Rolling app log file under ~/Library/Logs/hiwave/.
 > #620 (sprite sheets) needs R1; answer the two regressions you listed in it before it lands.
 
+> **H21 THERE IS NO TABLE LAYOUT (issue #626, found by Prometheus; confirmed by Atlas 12:05 ET with `--dump-layout`):** a 2x2 `<table>` is four full-width blocks stacked at x=0. `Display` (rustkit-css) has no table values; rustkit-layout has no table code. Every table on the web is drawn as stacked blocks. With H20 (parser swallows what follows a table) and H19 (no float wrap), this is the whole of what Pete has been calling the table problem. **Cloud W6-C launched 12:09 ET: `trig_0152ggRbdfV2TuQvjc6AKsdK`, branch `cloud/w6-c-table-layout`, first slice of CSS 2.1 ch.17 (scope on the issue), new file `rustkit-layout/src/table.rs` with one dispatch point so it rebases onto #619; connectors cleared.** It may deliver a draft if rustkit-engine does not build on Linux; then a Mac seat finishes the engine wiring. Landing order: #624 parser -> #619 float wrap -> tables. Z lane: do NOT start any of H19/H20/H21. **Also: #625 (your script-stop log PR) is on R1 HOLD for a flaky `late >= 30ms` assert (17/20 failures on the Mac, overruns 29.3-29.9 ms): fix the test's tolerance, do not weaken what it proves.**
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
