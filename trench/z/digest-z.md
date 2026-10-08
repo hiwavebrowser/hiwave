@@ -1630,3 +1630,67 @@ Engine unit suite at #614 (`--features headless`): 500 passed, 8 failed. Six are
 - New in `scratch/zi0`: `h18_probe.js`, `h18_ours.py`, `h18_find.py` (Chromium rects beside our boxes), `h18_rules.js`, `h18_conds.js`, `h18_sup.js` (which rules and at-rule conditions Chromium holds true), `h18_sel.html`, `h18_at.html`, `capx.py`, `judge3.py` (develop | fix | Chromium side by side with pixel differences), `passes.py`, `armframes.py` (frames grouped by arm over several passes), `camp_verify.py`, `reuse_check.py`.
 
 **Next session:** review answers on #614 and #615 first (apple and squarespace are the questions a reviewer will ask: trace each loss to its rule). Then the rest of H18 in this order: the header's left group (a flex item shrunk under its content), text beside a float, the 28px. Then H17's leftovers, reddit, #575.
+
+## 2026-10-08 09:45 Z-lane I0
+
+Session 08:19 to 09:50 ET. Order followed: the ebay hang first (plan note of 08:20), then #614's R1 HOLD. The executor guard (item 2 of the 09:05 order) and H18 were **not started**.
+
+### 1. The ebay hang: #616 LANDED (`18d12588`, R1 CLEAR, R2 PASS; branch commits red `6b906c29`, fix `73d2a2bd`, driver check `9ac05529`)
+
+**Not a merge. ebay shipped a new script bundle** between 2026-10-07 10:10 ET and this morning (yesterday's snapshot names eight `discoveryplatformweb` modules, today's entry module imports seven, two names in common; the new graph is 2.6 MB in nine modules). No bisect of #583 / #584 / #598 was possible or needed for that finding: see "not shown".
+
+**Reproduced headless** on develop `d4d82abe`: `parity-capture --url https://www.ebay.com/ --script-budget-ms 60000` stops logging at `Running module script ... d-CyFNfR3b.js bytes=595`, the same last line as both of Pete's logs, and runs to its 140 s limit. A symbolicated `sample` at 45 s: `poll_module` -> `SourceTextModule::evaluate` -> `Array.prototype.forEach` -> `forEach` -> `reduce` -> a getter -> script. The engine is inside Boa running the page's own code. It is not `run_jobs`, not the executor, not a lock.
+
+**Why nothing stopped it:** the script budget is read between scripts; the loop limit counts loop statements and `forEach` is not one; the too-large rule looks at the 595-byte entry module, not its graph.
+
+**The fix:** past the script budget every host function fails before it runs with a Boa error script cannot catch, so the stack unwinds. One wrapper is the only route into the host. `EngineConfig::interrupt_scripts_at_budget`, off by default (the board unchanged), on in the app; `parity-capture --interrupt-scripts`.
+
+| level | before | after |
+|---|---|---|
+| engine test, classic script spinning in nested forEach, 200 ms budget | ran 37 s | stopped, OverBudget |
+| engine test, same in a module | ran 23 s | stopped, OverBudget |
+| built app, driver `h19_spin` | load not finished at 90 s (banked app at `4de8d7cd`, not today's head) | finished at 60 s |
+| 26-case campaign, flag off | | identical |
+| 20 sites A/B, flag off | | 15 identical; linkedin, yahoo, shopify alternate; google and netflix vary inside each arm |
+
+**NOT SHOWN: ebay.com itself with the fix.** After seven captures in five minutes ebay answered this machine "Pardon Our Interruption", then 403 (still 403 at 09:42). The claim for ebay rests on the sample: 7 of 1768 samples in 3 s were inside a host function, so the page calls the host several times a second. **Pete's reload of ebay on develop `18d12588` is the test: expect the window frozen for up to 60 s, then the page.**
+
+**Limits, all in the PR:** script that never calls the host is not stopped (ebay's graph on an empty page ran 8.0 s past a 3.5 s budget before its first host call); the window is still frozen until the budget is spent; only the load path has a deadline (a live turn has none); why ebay's graph runs this long in Boa is not known (needs the page's bytes).
+
+**Atlas's 09:25 note (silent spin on the wikipedia portal and github) is a different thing** (relayout loops), not covered by #616 and not looked at this session.
+
+**For Atlas or Pete to decide:** stopping pure script needs a check inside Boa's VM (its per-call limit check is the place), which means carrying a patched `boa_engine` (6.4 MB of source). The lane did not do it: it overlaps Z2-C5. Prometheus's two doc nits on #616 (a guard on the "one route" claim; the fetch-timeout path sets the deadline to now) are not done.
+
+**Side finding:** `third_party/boa_gc` and `third_party/boa_parser` (0.20.0 patches) are out of the crate graph since the Boa 0.22 bump; cargo warns on every build. Dead code to remove (F0 or the warnings audit).
+
+### 2. #614, the R1 HOLD answered: pushed `e4695a20` (red) + `65c98231` (fix), comment posted, no review yet at the new head
+
+Prometheus was right: with `<html>` in every ancestor chain, `html[dir=rtl] .x`, `html[lang=fr] .x` and `html:not(.p1) .x` matched on every page. The root's entry now carries its attributes; an ancestor compound keeps its `[..]` parts and `:not()` members and tests them against an entry that carries attributes; `:root` as an ancestor is the html element; a `:not()` member the matcher cannot decide excludes nothing.
+
+23 rows against the oracle Chromium: 23 shown before, Chromium's 11 after.
+
+| site | #614 at `0b52ccb3` | at `65c98231` |
+|---|---|---|
+| apple | 12.36%, hero lost | **identical to develop**: the lost hero and the changed buttons were both the overmatch |
+| squarespace | 7.31% | 3.21%; the "14M+ / $36B+" figures still not drawn, header buttons further right; **not traced, not compared with Chromium (timed out)** |
+| wikipedia | 12.88% | 12.90%, the Contents column kept |
+| walmart | 54.28% | 53.5% to 56.7%, the header kept |
+| google | about 4% | not shown to move |
+
+Campaign identical. 12 sites identical; netflix varies inside each arm.
+
+**Not done:** only the root carries attributes, so `[dir=rtl] .c` still matches through `body` and `div` as on develop. Every ancestor carrying its attributes is the right end state and moves many sites: a separate PR. The branch is still based on `ce163d8e`; the A/B is against that base, not today's develop. PR state at close: OPEN, merge state UNSTABLE (CI running on the new head).
+
+### State at close
+
+- I0 **open**. Stop rule reset by #616.
+- `z-i0` is on `atlas/z-html-element-ancestor` at `65c98231`, no tracked changes.
+- Banked: `pc-dev-d4d82ab`, `pc-interrupt-73d2a2b`, `app-interrupt-73d2a2b`, `pc-rootattr-65c9823`, `pc-ebdiag-wip` (develop + the scratch diagnostic patch; never measure with it).
+- New in `scratch/zi0`: `run.py` (run a binary with a limit, `sample` it on timeout), `eb_par.py`, `eb_local.py` (serve `eb/graph` locally, arms with extra flags), `eb_graph.py` (download a module graph), `eb_sample.py` (host frames and Boa builtins in a sample), `eb_petelog.py` (timeline of a live log), `ct.py` / `ctlog.py` / `cterr.py` (cargo through the lease, results only), `eb/diag2.patch` (ZI0_HTML_SAVE, ZI0_HTML_IN, ZI0_SAVE, ZI0_OVERRIDE: save or replace the document and module sources; not for commit), `eb/graph/` (ebay's nine modules as of 08:22), `h18_rootattr.html` + `.js` (the 23 rows and the Chromium question).
+- The driver's new check is numbered `h19_spin` by the lane; renumber if H19 is taken.
+
+**Next session, in order:**
+1. Review answers on #614 at `65c98231` (squarespace is the open question: trace the figures to their rule).
+2. ebay, once it serves this machine again: ONE capture with `pc-ebdiag-wip` and `ZI0_HTML_SAVE` to pin the document on the first request, then replay it with `ZI0_HTML_IN` and find why the graph runs for minutes (slow, or an engine answer that makes it loop). Do not capture ebay more than twice in a session.
+3. The executor guard (09:05 order, item 2). Read of the code, not started: `ContextResetGuard::drop` leaves the caller's pointer installed when a dormant future holds the borrow (it panics before the reset, or returns silently while unwinding). Shape: give the guard the executor, drop the running futures when the borrow is held, then reset, with a raw write as the last resort; poll from a `mem::take`n Vec and put the survivors back, so a future that panicked is dropped with the Vec and a nested `run_jobs` does not double-borrow. Tests need `NativeAsyncJob` futures (none exist in the crate's tests yet). It touches scripts: campaign and A/B.
+4. Atlas's 09:25 list: the wikipedia portal's giant SVG icons, the relayout loops on the portal and github.
