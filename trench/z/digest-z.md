@@ -1568,3 +1568,65 @@ The stack of the three against develop `8b6dd2b4` (20 rows): facebook, weather a
 - New in `scratch/zi0`: `icon.py` (the 98 shapes), `icon_all.py`, `rows_for.py`, `content.py`, `lay2.py`, `cap2.py`, `tree.py`, `textat.py`, `boxfields.py`, `evalurl.py`, `mk_body.py` (receipt + body; `BASE` env names the base SHA).
 
 **Next session:** receipts only by the three-hour rule. Review answers on #612 and #613. Then the svg ratio terms (stretch and percentage axes, `height: auto` over a size attribute), `min-height` / `max-height` in rem as a row's cross size, the reddit look, #554's checklist, #575.
+
+## 2026-10-08 04:30 Z-lane I0
+
+**Before -> after.** Session of 03:05 to 04:30 ET. Two items: #554's checklist, then H18 (Pete's hand test: wikipedia). **Landed: #554 (`7eb35d97`, tree reuse on by default), and from the last session #612 (`82a5a950`) and #613 (`ce163d8e`).** Stop rule reset. Up at close: **#614** (`0b52ccb3`, CI green) and **#615** (`5d47c4c8`). No receipt was owed.
+
+### 1. #554, tree reuse on by default: checklist posted at head `913c5037`, merged 04:08 ET
+
+develop `ce163d8e` was merged into the branch (no conflict, no force-push). At that head:
+
+- `RUSTKIT_TREE_REUSE=verify` on the 20 live sites: **16 sites verified a tree, 23,613 boxes, 0 differing.** youtube, facebook, reddit and x kept no tree to compare.
+- All-site A/B against develop: 14 of 20 identical on every pair. google, linkedin, yahoo, walmart, shopify vary by themselves and both arms draw the common frames (walmart and yahoo counted over six passes, 24 frames each). netflix differs on every load on both arms; one frame of 12 was drawn by both.
+- The name `RUSTKIT_TREE_REUSE` is in the engine source only; no script, workflow, cascade tool or launchd job turns it off with a word that now means on.
+- **The 26-case campaign is identical but says nothing about this flag:** none of the 32 registry cases reuses a tree (a page loaded from a file never gets the second build). So the "verify over the campaign" the review asked for is 0 boxes of 0. Said first in the PR comment.
+- No timing was taken (load 10). Gate 5 quiet re-run is still Prometheus's.
+
+### 2. H18 wikipedia: the cause of the missing Contents column and the wide article: #614 (`0b52ccb3`, CI green, no review yet)
+
+Pollux's measurement had not arrived (exchange checked at 03:33), so the lane measured en.wikipedia.org/wiki/Web_browser against the oracle Chromium itself.
+
+**Cause: `<html>` was nobody's ancestor in the cascade.** The box tree starts at body and body was built with an empty ancestor list, so `.client-js .x`, `html.dark .x`, `#top .x`, `html > body .x` matched nothing. Wikipedia shows its Contents column by a rule under a class on `<html>`. On a page of 24 such rules Chromium shows 21 and develop showed 4. The fix is 16 lines at one site.
+
+| wikipedia region | Chromium | develop | #614 |
+|---|---|---|---|
+| Contents column | 32, 136, 208 x 361 | no box | 32, 164, 208 x 360 |
+| article width | 752 | 852 | 752 |
+| Appearance column | x 1040, 196 wide | x 1116, 120 wide | x 1040, 196 wide |
+| boxes in the page | | 7267 | 3655 |
+
+**It moves four of the 20 sites, and not all for the better.** Campaign identical; 11 sites identical.
+
+- **wikipedia 12.88%**: closer to Chromium (table).
+- **walmart 54.28%**: NOT compared (Chromium timed out). By eye the unstyled column becomes walmart's blue header, search field, account, Departments row; a large empty grey banner is new.
+- **apple 12.36%**: MIXED. The two buttons become the pills Chromium has; the hero image that develop draws is not drawn with the fix. Pixel difference from Chromium 46.35% -> 41.51%.
+- **squarespace 7.31%**: NOT compared (Chromium timed out). The header buttons and the "14M+ / $36B+" figures are no longer drawn.
+- **google about 4%**: the two Chromium buttons replace four chips; pixel difference flat.
+
+The lane's reading of the two losses (not traced to a rule): a rule that hides something under a class on `<html>` until a script shows it now applies here as it does in Chromium, and the script side does not finish.
+
+**Still wrong on wikipedia after #614, measured, not fixed:** everything below the header sits 28px low; the header's left group is 23px wide for 180, so the search field covers the logo; article text does not wrap around the floated figure; three checkboxes Chromium hides are drawn; the page is 9642px long for 7463.
+
+### 3. A side finding: `calc()` in a media query: #615 (`5d47c4c8`)
+
+`@media (min-width: calc(639px))` never matched, at any width, and neither did `(max-width: calc(...))`. Wikipedia writes 9 rules under the first form and 33 under the second. 40 unit rows, 37 of them Chromium's own answers. **It does not move wikipedia's first screen at 1280 wide (same bytes)**, and no site of the 20 is shown to move; it decides narrow windows, which were not captured. linkedin read steady-by-arm in the first pass; nine passes (36 frames) show three frames drawn by both arms, with one count left open in the PR body (the "scripts ran" frame fell on the fix arm six times and never on develop in those passes; develop drew the same bytes earlier in the session).
+
+### After #554 merged
+
+#614 and #615 were measured against `ce163d8e`. A local stack on develop `7eb35d97` with both (`zscratch/h18-stack`, `1c1b7160`, not pushed): verify sweep 16 sites, 23,026 boxes, 0 differing; campaign identical; the wikipedia frame is #614's own. The all-site A/B was not repeated on the new base.
+
+### Engine tests
+
+Engine unit suite at #614 (`--features headless`): 500 passed, 8 failed. Six are the recorded develop failures. Two more (`grid_item_abspos_tests::abspos_children_of_a_grid_item_are_as_in_chrome`, `form_typing_tests::viewport_relative_font_sizes_resolve_against_the_views_viewport`) pass alone before and after the fix and failed in the full run; the full suite was not run on develop, so it is not known whether they fail there too.
+
+### State at close
+
+- I0 **open**.
+- #603 is still a draft and has not been re-measured on develop with #613.
+- NOT STARTED: the rest of H18 (list above), H17's 17 leftover shapes, the reddit look, #575.
+- `z-i0` is on `atlas/z-html-element-ancestor`, no tracked changes. Local-only `zscratch/h18-stack` (delete freely).
+- Banked: `pc-dev-ce163d8`, `pc-reuse-913c503`, `pc-mqcalc-5d47c4c`, `pc-htmlanc-0b52ccb`, `pc-h18stack-on-7eb35d9`. No parity binary of plain develop `7eb35d97`.
+- New in `scratch/zi0`: `h18_probe.js`, `h18_ours.py`, `h18_find.py` (Chromium rects beside our boxes), `h18_rules.js`, `h18_conds.js`, `h18_sup.js` (which rules and at-rule conditions Chromium holds true), `h18_sel.html`, `h18_at.html`, `capx.py`, `judge3.py` (develop | fix | Chromium side by side with pixel differences), `passes.py`, `armframes.py` (frames grouped by arm over several passes), `camp_verify.py`, `reuse_check.py`.
+
+**Next session:** review answers on #614 and #615 first (apple and squarespace are the questions a reviewer will ask: trace each loss to its rule). Then the rest of H18 in this order: the header's left group (a flex item shrunk under its content), text beside a float, the 28px. Then H17's leftovers, reddit, #575.
