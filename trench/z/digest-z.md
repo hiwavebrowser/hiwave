@@ -1694,3 +1694,65 @@ Campaign identical. 12 sites identical; netflix varies inside each arm.
 2. ebay, once it serves this machine again: ONE capture with `pc-ebdiag-wip` and `ZI0_HTML_SAVE` to pin the document on the first request, then replay it with `ZI0_HTML_IN` and find why the graph runs for minutes (slow, or an engine answer that makes it loop). Do not capture ebay more than twice in a session.
 3. The executor guard (09:05 order, item 2). Read of the code, not started: `ContextResetGuard::drop` leaves the caller's pointer installed when a dormant future holds the borrow (it panics before the reset, or returns silently while unwinding). Shape: give the guard the executor, drop the running futures when the borrow is held, then reset, with a raw write as the last resort; poll from a `mem::take`n Vec and put the survivors back, so a future that panicked is dropped with the Vec and a nested `run_jobs` does not double-borrow. Tests need `NativeAsyncJob` futures (none exist in the crate's tests yet). It touches scripts: campaign and A/B.
 4. Atlas's 09:25 list: the wikipedia portal's giant SVG icons, the relayout loops on the portal and github.
+
+## 2026-10-08 11:30 Z-lane I0
+
+Session 10:05 to 11:30 ET (by `date`). Order of 10:05: (1) relayout loop, (2) portal icons, (3) #616 on saved ebay bundles, (4) executor guard, (5) rolling log. **Done: 2, and the portal half of 1. Measured, not fixed: the github half of 1. Not started: 3, 4, 5, and the two items Atlas added during the session (make the ebay stop observable; scrolling rebuilds the layout tree).** Nothing landed this session. No receipt owed (no seat or cloud PR was waiting).
+
+### 1. The portal's "silent spin" was not a relayout loop. It is the same bug as its giant icons: #620 (`d306a3fc`, OPEN, CI 11 of 12 green at close, no review yet)
+
+Headless, the portal's live loop is idle: 2 turns in 20 s, 0 relayouts, no timer. What the app was doing: **the page's display list was 2,264,175 commands for 1,426 boxes, and the app executes the display list on every wake of its event loop** (`view.render()` in `MainEventsCleared`, unconditional).
+
+Four defects met on the portal's SVG sprite sheet (23 nested `<svg>`, used as a CSS background by 21 icon boxes):
+
+| defect | before | after |
+|---|---|---|
+| `<g>` and nested `<svg>` dropped by the SVG parser (flat: no group transform, no inherited fill, no nested viewport). **Every SVG, not only this one.** | a 47px icon drawn 612px across | containers; a nested `<svg>` is a viewport and clips |
+| a vector background not clipped to its box (the renderer clips quads, not polygons, circles or strokes) | each box painted the whole sheet | commands cut to the box where they are made |
+| so each box carried the whole sheet | 2,264,175 commands | 81,216 |
+| one `background-position` / `no-repeat` over two background images reached the top image only | sprite at `0 0`, tiled | the list repeats over the layers (CSS Backgrounds 3) |
+
+Five red-then-fix pairs. Campaign identical. 20 sites: 12 identical; wikipedia and weather move 0.01% each; walmart's 0.56% was the site (swapped arms: four identical frames).
+
+Portal first screen by eye: globe, wordmark, tagline, language links, no stray shape. **No Chromium capture of the portal was taken and nothing below the first 800px was looked at.**
+
+In the built app (process CPU and log lines; no window seen): navigation 7.2 s -> 3.0 s; a relayout 1.17 s -> 0.48 s; full-core time after launch about 25 to 35 s -> about 15 to 20 s. **The spin is shorter, not gone: about 10 to 15 s of CPU after the last log line is still not explained** (release sample has no symbols; example.com is idle from 5 s).
+
+**Two things get worse with #620, both in the PR:**
+- wikipedia article: the language icon is cut in half. Its box is 10px wide in our layout (Chromium 20); develop showed it whole only because nothing clipped. Fix is #622.
+- the same article's display list goes 64,965 -> 212,474 commands: the tagline SVG is now drawn (a gain on screen) as 147,147 polygons for a 139 x 9 px image. The path filler emits one strip per vertex row. The wordmark was already 58,082 on develop.
+
+### 2. #622 (`e844326e`, DRAFT): a width in rem, em, vw or calc() counts in the intrinsic width
+
+`own_min_content_width` / `own_max_content_width` read a box's own width only in px, so an `inline-flex` row around a `1.25rem` icon was sized without it and the icon was squeezed. Reduced page: Chromium 20, 20, 20, 20, 20; develop 15, 20, 20, 15, 15; fix 20 x 5, same row positions as Chromium. Campaign identical. `rustkit-layout` 675 passed. Engine suite not run at this head.
+
+**Draft because wikipedia is mixed (17.58%):** header left group 23 -> 183 wide (Chromium 180), logo whole, search input x 109 -> 269 (Chromium 266): two of the open H18 items. But the header is 84 tall (develop 70, Chromium 66), so the page below is about 42px low (was 28). Cause: a white-space text node between the logo's two images gets an 18px line once the logo has a width. Not in this change, not fixed. yahoo 0.12%, weather 0.30%, squarespace 0.08% move, none compared with Chromium. netflix not cleared.
+
+### 3. github's relayout "once a second forever": measured, not fixed
+
+`parity-capture --live-ms 20000` (new, on a pushed branch): 7 turns in 23 s, 7 relayouts, 13.2 s inside turns. **Each turn React builds its whole tree again:** 2,846 DOM writes to detached nodes and 42 to the document, the same counts and the same operations every turn (14 `rect` style writes, 9 `div` inserts, 2 `video` src). A turn is about 1.5 s: 1.0 to 1.3 s script, 0.27 s layout, 0.14 s display list (393,130 commands). So it is a page that re-renders every frame, in an engine where a frame costs 1.5 s. Why React re-renders (a real animation, or an answer of ours that makes it retry) was not looked at.
+
+Also true and not acted on: a write to a node that is not in the document marks the page dirty (github: 11,436 of 11,633 dirtying writes during the load were to detached nodes). It would not stop github (each turn also writes to the document) but it is wasted relayouts elsewhere.
+
+### For Atlas
+
+1. **`view.render()` runs on every event-loop wake whether or not anything changed.** With lists of 80k to 400k commands that is the cost of every mouse move and IPC message. A "nothing changed since the last present" skip is the direct fix for the spin class; the lane did not do it at 11:20 with no way to see the window. Say whether the lane takes it next (it needs a real-window run).
+2. #622 out of draft: either accept the 14px with the header fixed, or wait for the white-space line fix.
+3. `atlas/z-live-loop-probe` (`4bbd9803`, pushed, **no PR**): `--live-ms` and the dirty-write trace, one pin test. Say whether it becomes a tool PR.
+4. The path filler's strips (147k polygons for a 139 x 9 image) need an owner.
+
+### State at close
+
+- I0 **open**. Stop rule: one session with nothing landed; a second sets I0 blocked on review.
+- `z-i0` is on `atlas/z-svg-sprite-sheets` at `d306a3fc`, no tracked changes.
+- Banked: `pc-dev-6f6496c`, `pc-svgsprite-d306a3f`, `pc-estwidth-e844326`, `app-svgsprite-d306a3f`.
+- New in `scratch/zi0`: `rl_live.py` (live loop + what dirtied the page; needs the probe branch's binary), `rl_turns.py`, `rl_times.py`, `rl_app.py` (launch the app on a URL in a fresh profile, CPU per 5 s, sample; no grants needed), `rl_applog.py`, `rl_dl.py` / `rl_dl3.py` / `rl_dl5.py` / `rl_dl6.py` (display list: counts, clips, largest polygon runs), `rl_abdiff.py` (where two A/B frames differ, side-by-side crop), `rl_laycmp.py` (layout boxes of two binaries on one URL), `rl_bluebox.py`, `rl/flexcalc/a.html`.
+- The six failing engine tests at #620's head are the six names recorded as failing on develop; the suite was not re-run on develop this session.
+
+**Next session, in order:**
+1. Review answers on #620 and #622.
+2. Atlas's first item: a log line when a script is stopped (with elapsed ms), proven on ebay's second load in one profile; a number for how long the window is frozen.
+3. Scrolling rebuilds the layout tree: `scroll_view` only relays out when the scroll listeners' writes dirty the page, or the hovered element under a still pointer changes. Run the probe branch's trace on simonwillison.net with a scroll to see which, before changing anything.
+4. The remaining 10 to 15 s on the portal: an app build with symbols (profile parity) and one sample.
+5. The white-space line in wikipedia's logo (clears #622).
+6. Executor guard; rolling log file.
