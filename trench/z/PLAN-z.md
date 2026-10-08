@@ -107,6 +107,12 @@ exit_metric: github.com starts end-to-end (modules + fetch + one interaction, 3 
 > - Relayout counts in this run, with little or no input: ebay 158, google 119, pornhub home 66, youtube 38, about.google 26. The scroll-rebuilds-layout and post-load relayout items stand.
 > - NOTE on the build (corrected): `2616ec28 probe` IS develop's head. It is PR #629 (percentage flex basis) squash-merged through GitHub at 15:39 ET with the commit message 'probe', the first non-`--merge` landing this week. Pete's binary (15:44) was built from it, so hand test 7 is of current develop including #629. Atlas is checking who landed it and whether R1 was at head.
 
+> **PETE'S HAND TEST 8 (2026-10-08 ~16:30 ET, develop 2616ec28):**
+> - **H23 'static' CONFIRMED ORDER-DEPENDENT:** Wikipedia 'Web browser' opened FIRST in a fresh run is clean. So the artifact comes from state carried over from earlier pages; the glyph-atlas reset (`Glyph atlas full, clearing cache` on netflix/ebay) remains the lead. This is H27 (state surviving navigation) with a live example; fix both together: after an atlas clear every retained display list / frame must be rebuilt, and a navigation must start from a clean atlas and caches unless proven safe to keep.
+> - **Wikipedia References section: erroneous spacing** (H28): around the `^` back-links (`.mw-cite-backlink`, `<sup>`) and/or around hyperlinks in list items. Reduce one reference `<li>` from the article against Chrome.
+> - **Wikipedia portal: much better, overlapping icons gone (#620 confirmed live), page almost correct.** Remaining: **the search input and the Wikipedia logo are not placed correctly** (H29).
+> - **Google rainbow (H22): Pete remembers it being fixed before.** Checked: a capture tool built at YESTERDAY afternoon's commit (a181da05, when google scored 3/3 with an 8.9% diff) and run TODAY paints the same rainbow block (frame google-at-yesterdays-a181da05-run-today.png beside the board frames). So our code did not regress; Google's page gained the layer (with the World Space Week doodle), and we have never handled it. Cause stands: `opacity` ignored on non-image boxes (reduce, #632). First engine item for the next Z session.
+
 ## Finish line (Day 7, quiet board)
 1. github.com starts up end to end: module scripts load and run, API calls go through fetch under FetchPolicy, real content renders, one interaction (open the search box) works. Three quiet captures.
 2. CSS background images paint on the live board, raster and SVG, at the right size and position.
