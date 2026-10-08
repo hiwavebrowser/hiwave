@@ -1756,3 +1756,87 @@ Also true and not acted on: a write to a node that is not in the document marks 
 4. The remaining 10 to 15 s on the portal: an app build with symbols (profile parity) and one sample.
 5. The white-space line in wikipedia's logo (clears #622).
 6. Executor guard; rolling log file.
+
+## 2026-10-08 12:50 Z-lane I0
+
+Session 11:33 to 12:50 ET (by `date`). Order of 11:40: (1) prove the ebay stop, (2) render only when changed, (3) scroll without relayout, (4) github loop, (5) executor guard, (6) rolling log. **Done: 1 as far as the seat can (the line exists and is shown in the app on the fixture; ebay itself not shown), 2 (not seen in the window). 3 turned into a different bug, fixed. Not started: 4, 5, 6.** No receipt owed. Landed during the session: #620 (`a0f07ba5`, 11:38 ET), so the stop rule is reset. Three PRs up, none reviewed by R1 at close.
+
+### 1. The ebay stop is now readable: #625 (`7ca8f641`, OPEN, CI green, R2 PASS; R1 HOLD answered)
+
+Two WARN lines, nothing else changed: `Script budget spent: host calls are refused until the script has unwound late_ms=N` (written at the first refused host call) and `Script stopped at the script budget source=... elapsed_ms=N late_ms=N` (once per stopped script).
+
+| where | before | after |
+|---|---|---|
+| driver `h19_spin`, app with #616 | PASS 6, FAIL 1 (no line in the log) | PASS 7, FAIL 0: `source=inline#1 elapsed_ms=60002 late_ms=2` |
+| ebay's saved module graph, empty page, 3.5 s budget, headless | stopped, nothing logged | stopped at 5.1 s, 1.6 s late (release); 4.4 s, 0.9 s late (parity) |
+
+**The answer for Pete: the stop fires only when the app's 60 s budget is spent, and the window is frozen for all of that time.** That is #616 as designed. Cutting the budget is the only lever on the freeze until scripts leave the window thread.
+
+**NOT shown on ebay.com.** One attempt in the built app: `403 Forbidden`. The saved graph on an empty page ends by itself in 5.4 s in the release app, so it cannot reach a 60 s budget; the long run needs ebay's real document, which only Pete's profile gets. His 10:05 log ends 14 s after the module started, which is before the budget on either reading. With a build that has #625, his log decides it: the line appears about 60 s after `Running module script ... d-CyFNfR3b.js`, or it does not.
+
+Side reading: the 403 page's own 529 KB script held the window thread for 10.0 s.
+
+R1 HOLD (Atlas's 12:05 note): the new test's `late >= 30ms` failed in CI at 29.54 ms. `Date.now()` counts whole milliseconds. Bound is now 20 ms at `7ca8f641`; the test still requires a reported overrun from a 30 ms spin. Also noted on the PR: R2 stamped PASS "checks green" at the head where `js-suites` was red.
+
+Campaign identical. All-site A/B not run (the board runs with the switch off; said so in the PR).
+
+### 2. The app draws only when the frame would differ: #628 (`6f3238d0`, OPEN, CI green, R2 PASS, no R1 yet)
+
+`Engine::render_changed_views()`: a view is drawn when its display list, scroll offset or surface size changed, a resize is waiting, an image arrived that the frame lacked, or the frame is over one second old. The one-second floor is deliberate: a frame input this list misses costs a second of staleness at the next wake, not a stuck window. `HIWAVE_RENDER_EVERY_WAKE=1` is the old behaviour.
+
+CPU seconds per 5 s of wall time, one release binary, the switch as the only difference, fresh profile, no input:
+
+| page | every wake | only when changed |
+|---|---|---|
+| www.wikipedia.org (base without #620: 2.26M commands) | 3.9 to 5.6, **never settles in 45 s** | 0.2 from about 25 s |
+| github.com | 5.0 to 5.2 | 5.0 to 5.1, **no change** |
+
+github is item 4 (React builds a new tree every turn, so every turn has a new frame); not this bug.
+
+Driver, full set: PASS 82, FAIL 0, NOT RUN 15 (frames and synthetic input). Campaign identical. Engine suite 506 passed, 7 failed: six fail on develop `f08b881a` too (run there this session); `grid_item_lone_text_tests::a_lone_text_child_of_a_grid_item_wraps` failed once in the full run at machine load 15 and passes alone on the branch and on develop.
+
+**NOBODY HAS SEEN THE WINDOW WITH THIS.** ATLAS: RUN the real-window set and a hand pass (scroll, hover a menu, type, resize, switch tabs) with `--app /Users/petecopeland/Repos/.worktrees/z-target/bins/app-roc-6f3238d` before it lands.
+
+### 3. "Scrolling rebuilds the layout tree" is not what happened. The page could not scroll at all: #629 (`43fa718a`, OPEN, no review yet)
+
+On simonwillison.net/tags/browser-challenge (the page of Pete's 10:21 log) the window's scroll extent was 0. The engine's scroll path lays out only when a scroll listener wrote to the page; here the wheel moved nothing.
+
+Cause: the "sticky footer" shape, `body { min-height: 100vh; display: flex; flex-direction: column }` with `#wrapper { flex: 1; overflow: hidden }`. `flex: 1` leaves the basis out, which is `0%`, and a percentage basis in an auto-height column is `content`. We parsed it as `0px`, so 4388px of posts sat in a 183px box that clips.
+
+| | Chromium 143 | develop | #629 |
+|---|---|---|---|
+| reduced page, `flex:1; overflow:hidden` item holding 1000px | 1000 | 150 | 1000 |
+| `flex:1 1 0` and `flex:1 1 0px` (a real zero) | 150 | 150 | 150 |
+| the site: `#wrapper` height | 4799 | 183 | 4418 |
+| the site: scroll extent at 1280 x 300 | 4636 | 0 | 4235 |
+
+Ten Chromium rows in the PR. `rustkit-layout` 674 passed. Campaign identical. Engine suite not run at this head.
+
+A/B: **x moves 7.99% (sign-in column 12px higher), NOT compared with Chromium** (the oracle's headless page did not render the form). **facebook 1.43%, closer** (Log in button top: Chromium 353, develop 357, fix 355). google not cleared (varies inside the candidate arm, closest cross pair 1.31%). shopify not shown to move. Eleven sites identical, measured against `6f6496cd` only.
+
+**My mistake, caught before the PR:** the branch base was develop `3363c677` (with #620), and the first A/B used the `6f6496cd` binary as arm A; wikipedia and weather read 0.01%, which was #620. The six movers were run again against the right base. Same trap as the memory note on branch bases; the check is the merge base before the first A/B.
+
+**Second trap:** my first reduced pages had no doctype. Chromium in quirks mode gives 150 on every row. Only the oracle run on the real page showed the reduction was wrong.
+
+**What the relayouts in Pete's log are:** `:hover` restyles. A pointer sweep over that page relays out on 65 of 1530 moves, a full cascade and layout each. Pairs with alternating style-share counts in the log are a link entered and left. A run of 27 relayouts in 1.2 s with unchanged counts (17.1 to 18.3 s into the page) is **not explained**. Not fixed.
+
+### For Atlas
+
+1. #628 needs eyes on the window (binary named above).
+2. #629: x needs a Chromium frame from a real-window Chrome, or Pete's eye; it is the largest mover.
+3. Item 3 of the order should be reworded: the cost is hover restyles, not the wheel. Two cheap steps, neither started: deliver only the last of a run of queued pointer moves per turn; restyle once per turn instead of once per move.
+4. Pete's decision on the 60 s budget is unchanged by this session: the freeze is the whole budget.
+
+### State at close
+
+- I0 **open**. Stop rule reset by #620.
+- `z-i0` is on `atlas/z-flex-percent-basis-indefinite` at `43fa718a`, no tracked changes.
+- Banked: `pc-dev-3363c67` (byte-equal to `pc-svgsprite-d306a3f`), `pc-stoplog-6fa0eba`, `pcrel-stoplog-a000eea`, `app-stoplog-a000eea`, `pc-roc-6f3238d`, `app-roc-6f3238d`, `pc-flexpct-43fa718`.
+- New in `scratch/zi0`: `eb_app.py` (the app on the saved ebay graph), `rl_app_env.py` (`rl_app.py` with environment variables), `fpb/` + `fpb_make.py` + `fpb_oracle.py` (reduced sticky-footer pages and the Chromium question), `fpb_rows.py` (ink rows of a band in A/B frames), `probe_scroll_full.rs` and `probe_real_scroll.rs` (ignored engine tests to paste into a test module: relayouts per scroll and per pointer move on a live URL), `tools/parity_oracle/zi0_eval_page_vp.mjs` and `_wait.mjs` (untracked: viewport argument, 6 s wait).
+- Aleph was not used: it reported no artifacts from the hub directory, and the seat may not `cd` into the worktree before a git command.
+
+**Next session, in order:**
+1. Review answers on #625, #628, #629.
+2. Pointer moves: coalesce per turn, one restyle per turn; measure with `probe_scroll_full.rs` first.
+3. github: why React builds its tree again every turn.
+4. Executor guard; rolling log file.
