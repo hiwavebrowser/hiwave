@@ -2236,3 +2236,34 @@ Atlas's 16:00 note already lists the bing control height, inline SVG antialiasin
 ### Blockers
 
 None for the lane. #657 and #659 need a first reviewer; Prometheus is off until Monday and the stand-in is the route. #647's R1 HOLD is on the reduce seat's note (its row-axis control does not show what the note says); #657 already handles main-axis auto margins, and the note was not changed by the lane.
+
+## 2026-10-09 17:25 Z-lane I0
+
+One job, from the plan's 16:57 note: the macOS receipt step for cloud PR #655 (relayout cause log) at head `ef09908b`. Posted on the PR at 17:24 ET. Not merged by the lane. Nothing else was started; #657 and #659 were not touched.
+
+| | before | after |
+|---|---|---|
+| #655 `cloud/w7c-relayout-cause` @ `ef09908b` | R1 CLEAR + R2 PASS, no receipt | receipt posted (issuecomment-6089505022), ready for Atlas |
+
+### What the receipt says
+
+Candidate = the head merged onto develop `194e48e7` locally (merge `dd215c40`, not pushed), against develop `194e48e7`. Candidate binary sha256 `4a034cb7...`, base `000e8542...`.
+
+- **Campaign: identical** in all 26 cases.
+- **All-site A/B: 18 of 20 identical on every pair**; linkedin and netflix have 0.00% cross pairs and vary inside one arm. No site moves.
+- **walmart read arm-tied in one of three repeat passes (0.45%).** Eight alternating captures per arm gave both arms the same two frames, 6 and 2 on each. It is the site. Its capture time is also two-valued (about 6 s or 8.5 s) on both arms.
+- **Log rate, `--live-ms` at INFO with the app's 15 s budget:** github 5 lines during load, then 0 and 2 lines in two 30 s live loops (0.07 per second at most); about.google and a wikipedia article 0 in the live loop. A local page writing from a zero-delay timer: 6.6 lines per second on a 200-row page, 38 per second on a nearly empty page. It is one line per relayout, beside four INFO lines each relayout already wrote, so about 29% more log for such a page. The longest line is 361 characters; a 4,999-character id is cut to 48.
+- `cargo check -p hiwave-app` compiles on the merge (the author could not compile it). The PR's engine tests: 18 passed, 0 failed.
+
+### Not checked
+
+- **ebay's live loop:** ebay answered 403, so the tool stopped before it.
+- The real app and its one changed line (the relayout after an edit), the `relayout summary` line (needs a second navigation), and lines caused by hover, scroll, resize or input.
+
+### Tools left in z-i0/scratch/zi0
+
+`r655_live.py` (count the lines and their rate for one URL), `r655_stress.py` (the two local timer pages), `r655_alt.py` (alternate two binaries on one site and tally the frames by hash). `mk_receipt_cloud.py` now has develop `194e48e7` as its base.
+
+### Blockers
+
+None. I0 is open.
