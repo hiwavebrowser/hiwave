@@ -2116,3 +2116,72 @@ github's landing page calls `document.createElement("canvas").getContext("webgl"
 - Aleph not used (no index for the engine worktree, as last session).
 
 **Next session, in order:** review answers on #638, #639, #640, #645 and #633; executor guard; rolling log file; github's 15 s of load script (sample it); the headline offset.
+
+## 2026-10-09 13:33 Z-lane I0
+
+**Three of the four named causes are up as PRs, red first, each measured against Chromium: #657 (H25), #658 (H24), #659 (H26 c). Nothing landed in the session.** #657 and #658 each got an R1 HOLD from the stand-in reviewer within the hour; both findings were real and both are answered at new heads. Tables (#651's causes), H26 (b) and (a), and #622 were not started.
+
+Base for all three: develop `2c0d63ca` (binary `pc-dev-2c0d63c`, sha256 beeec0bb..., byte-identical to this morning's four-PR stack build).
+
+| item | PR | head | state |
+|---|---|---|---|
+| H25 simonwillison gutter | #657 | `db6480c7` | R1 HOLD at `5122f286` answered; needs re-review |
+| H24 ebay oversized icons | #658 | `b6b66655` | R1 HOLD at `cca45d92` answered; needs re-review |
+| H26 (c) reddit wordmark | #659 | `9f7fc896` | no review yet |
+
+### #657: auto margins on flex items (H25)
+
+`flex.rs` resolved `auto` margins to 0 on both axes. So not only simonwillison's wrapper (`margin: 0 auto` in a column body): `margin-left: auto` in a row pushed nothing, `margin-top: auto` did not push a footer down, `margin: auto` did not centre.
+
+- Fix: free space goes to the auto margins before `justify-content` (main axis) and before `align-self` (cross axis); an item with an auto cross margin is not stretched.
+- **Review finding, real:** when item sizes are only known after their children are laid out, the second sizing pass read the first pass's shares as content. A `min-height: 200px` column with a `margin-top: auto` footer was 234 tall; a definite column shrank its items. My first tests gave every item a height, so that pass never ran. Fixed in `db6480c7` with the reviewer's inputs as tests (two fail at the first head with the reviewer's numbers).
+- Shapes against Chromium, 27: develop 24 off, first head 3 off, this head 0.
+- Live page: `#wrapper` x 0 to 170 (Chromium 170), measured with the first head's binary.
+- Campaign identical at `db6480c7`. A/B at this head: 15 identical; **yahoo** arm-tied 0.14% (an "Advertisement" label is now centred); **shopify** 0.24% when it serves its two-button hero: the block with `sm:ms-auto` moves to the right edge of its row, which is what that class asks for. Neither compared with Chromium on the live page.
+- Layout suite 755/0. Engine suite at the first head only: 532/12, six of the twelve passed on a rerun (load), the other six fail the same on develop.
+
+### #658: a CSS-sized `<svg><use>` paints at its box size (H24)
+
+The `<use>` instances are built when the markup is parsed, before layout, for the size attributes or 300x150. A root with no viewBox should use the box it is drawn in. ebay's 24px icons painted 150x150.
+
+- Fix (`rustkit-svg` only): such a document keeps its markup and is read again when drawn at another size.
+- **Review finding, real:** for an svg used as a tiled background that meant one parse of the whole file per tile (up to 2500). Now the document read for the last size is kept (`b6b66655`).
+- Painted boxes against Chromium, 14 shapes: develop 9 off, this PR 0.
+- ebay `/n/all-categories`: the 150px magnifier, camera, bell and ticks over the header are gone; icons sit in their places at icon size. The ebay home page gave this seat no frame on either binary.
+- Campaign identical. A/B at the first head: no site moves with the arm (ebay is not on the list). Repeated at `b6b66655`: the same; linkedin read arm-tied at 2.64% and is the site (both frames are ones develop produced today).
+
+### #659: a replaced box with a height and a ratio (H26 c)
+
+reddit's wordmark is an svg with a viewBox and `height: 22px` inside a flex link inside the header row. Chromium: 75.89 wide. RustKit: 514 as a row item, 16 inside the link, 0 in an inline-flex one. Two holes: the flex base size read the natural width alone, and the min/max-content estimators had no arm for a replaced box, so **a plain `<img>` contributed 0 to a flex or grid parent's content width.**
+
+- Fix: one helper (height across the ratio, else natural width), read by the flex base size and both estimators; `max-width` caps it and a percentage `max-width` makes the minimum 0.
+- Shapes against Chromium, 20: develop 14 off, this PR 3 (stretched viewBox-only svg; column main axis; grid image height). Listed in the PR.
+- Campaign identical. A/B: **yahoo's wordmark appears** (0.45%); reddit's challenge-page logo changes shape (0.41%, not compared with Chromium); shopify reads arm-tied and is the site (develop produced both of its frames today); google differs in a colour shade only.
+- reddit past the challenge was not captured.
+
+### Seen on the way
+
+- No campaign case has an auto margin on a flex item, a CSS-sized `<use>` icon, or a ratio-only replaced flex item: the campaign was blind to all three.
+- google still paints the rainbow block (that is #633, not landed).
+- `row-reverse` on develop puts a two-item row at the left (R5 in #657's table reads 0 where Chromium has 480, without the auto margin being the cause there). Not looked at.
+
+### For Atlas
+
+- **#657 and #658 need the reviewer again at their new heads.** #659 needs a first review.
+- #659 changes how every `<img>` contributes to a flex or grid parent's width. The A/B moved two sites; say whether it lands on release day.
+- Nobody has looked at any of the three in the app window.
+
+### Not done
+
+- Tables (`caption-side: bottom`, UA `p` margin 1em), H26 (b) grid inside a flex container, H26 (a) grid `order`.
+- #622: develop not merged into it, header measurement not repeated.
+- Engine suite at any new head. Executor guard, rolling log file.
+
+### State at close
+
+- I0 **open**.
+- `z-i0` is on `atlas/z-svg-use-css-viewport` at `b6b66655`, no tracked changes.
+- Banked: `pc-dev-2c0d63c`, `pc-flexauto-5122f28`, `pc-flexauto-r1` (db6480c7), `pc-svgvp-cca45d9`, `pc-svgvp-b6b6665`, `pc-transferred-c1` (9f7fc896).
+- New in `scratch/zi0`: `am.py` (flex auto-margin shapes against Chromium), `svgvp.py` (painted box of a `<use>`), `shapes.py` + `h26c.json` (any shape list against Chromium), `selbox.py`, `pairimg.py` (crop where two A/B frames differ), `setstate.py`.
+
+**Next session, in order:** review answers on #657, #658, #659; tables (#651); H26 (b); #622.
