@@ -2185,3 +2185,54 @@ reddit's wordmark is an svg with a viewBox and `height: 22px` inside a flex link
 - New in `scratch/zi0`: `am.py` (flex auto-margin shapes against Chromium), `svgvp.py` (painted box of a `<use>`), `shapes.py` + `h26c.json` (any shape list against Chromium), `selbox.py`, `pairimg.py` (crop where two A/B frames differ), `setstate.py`.
 
 **Next session, in order:** review answers on #657, #658, #659; tables (#651); H26 (b); #622.
+
+## 2026-10-09 16:35 Z-lane I0
+
+**The 14:50 order is done. Receipts posted for #653 and #650 and both landed on them (15:48 ET). The second R1 HOLD on #657 and the R1 HOLD on #659 are answered at new heads, red first; both wait for re-review. #658 landed during the session.** Develop went `c330c43e` -> `194e48e7`.
+
+| item | PR | before | after |
+|---|---|---|---|
+| macOS receipt step | #653 | R1 CLEAR + R2 PASS, no receipt | receipt posted 15:40, merged `9d95aabf` |
+| macOS receipt step | #650 | R1 CLEAR + R2 PASS, no receipt | receipt posted 15:40, merged `194e48e7` |
+| H25 flex auto margins | #657 | R1 HOLD at `db6480c7` | `0ccb0229`, needs re-review, mergeable, CI green at check time |
+| H26 (c) replaced width | #659 | R1 HOLD at `9f7fc896` | `b18054c5` (develop merged in after a conflict with #653), needs re-review |
+| H24 svg use | #658 | R1 CLEAR | merged `c63b57bd`, not touched |
+
+One departure from the standing prompt: it says the lane runs a receipt only after 3 hours without one. The two PRs had been clear for 1 h and 1.5 h. I ran them because the 14:50 order in the plan says to and Prometheus had stopped for the day.
+
+### Receipts (#653, #650)
+
+Both heads were based on `f54103d9`, behind #633 (paint). So each candidate was the head merged onto develop `c330c43e` locally, against develop `c330c43e`.
+
+- **#653:** campaign identical. A/B: 13 identical; **bing is the one real mover (1.11%) and it moves toward Chromium**: `#sb_form_go` goes from 48 x 239 to 0 x 239 (Chromium 0 x 0). The height is wrong on both arms. google, netflix and cnn are the sites.
+- **google was nearly misread.** Its first pass looked arm-tied (chips row on develop, two buttons on the candidate, 2.29%, both passes). A repeat and 12 more alternating captures showed the site serves three variants to either arm. The receipt says the buttons variant was not compared like for like.
+- **#650:** campaign identical (weak: little curved SVG in it). A/B: 16 identical, no site moves. Icon page (8 icons at 12 to 24px, 4 large shapes) in develop, candidate and Chromium: 20 of 32 cells identical; **two 12px icons change for the worse** by a few pixels (outline heart loses its notch, spinner gains a gap); 16px and up no change of shape; large shapes within 0.05% ink.
+- **Not checked in #650's receipt: the 2x display.** The capture tool is 1x and the stand-in under `transform: scale(2)` fails for another reason (below). The reviewer's 2x concerns are still open; the PR landed with that stated.
+- The receipts and both PR bodies first went up with host paths in the `receipt.py` block (the hub's 16:00 note, item e). They are edited to basenames now; GitHub's edit history keeps the first versions. `scratch/zi0/strip_paths.py` does it.
+
+### #657 (second hold)
+
+- Finding, real: step 11's block arm decided "stretched" from `align-self` alone, so an auto-cross-margin item with a percentage-height child was laid out as tall as the row (0,0,60,200 for 0,90,60,20).
+- Fix: both arms of step 11 ask `FlexItem::stretches()`. Red test `8640a2ae`, fix `0ccb0229`. Layout suite 758/0.
+- Campaign identical against `c63b57bd`. A/B: 14 identical; yahoo 0.14% as before; **linkedin 0.22% is a move by this PR that earlier receipts filed as the site** (the header menu with `ml-auto` moves right, beside the sign-in buttons). Chromium answers 403 on linkedin, so it is read from the class.
+- simonwillison `#wrapper` x: 0 -> 170 at this head (Chromium 170).
+- Measured against `c63b57bd`, not against `194e48e7` (#653 and #650 landed after). It still merges cleanly.
+
+### #659 (hold)
+
+- Finding, real: the helper read `height` alone. A picture sized by `max-height` or a percentage height answered its natural width, which this PR had made its flex minimum, so it overflowed its row (514 wide in a 300 row; develop 300, Chromium 75.9).
+- Fix: the used height crosses the ratio (`height` or natural height, bounded by `max-height` then `min-height`); the flex pass passes the row's definite height for percentages; with no known base a percentage no longer raises the minimum. Red tests `9a6fec14` (8 red, 2 pins), fix `2de33cfb`, develop merge `b18054c5`. Layout suite 845/0 at the merged head.
+- 17 shapes against Chromium: develop 15 off, reviewed head 12 off, this head 2 off. The two: a `width: 250px` sibling does not shrink (develop too), and a viewBox-only svg with `max-height`.
+- The reviewer's "undisclosed broad change" is confirmed right by Chromium and is now stated and pinned: a natural-sized picture in a flex row does not shrink (1000 x 500 in a 300 row).
+- Campaign identical and A/B (14 identical; yahoo 0.45% and reddit 0.41% arm-tied as at every head) at both `2de33cfb` and the merged head.
+
+### Found on the way, none started
+
+Atlas's 16:00 note already lists the bing control height, inline SVG antialiasing, inline SVG paths under a transform, the missing scale option and the receipt paths. Two more:
+
+- **A flex item with a pixel width does not shrink below it** (R2s in #659: sibling 250 for Chromium's 224.1). The automatic minimum takes the pixel width as the content minimum.
+- **An inline svg's drawing is not clipped to its box** (a stroke drawn above the viewBox paints over the element above; Chromium clips). Seen on the #650 icon page, both arms.
+
+### Blockers
+
+None for the lane. #657 and #659 need a first reviewer; Prometheus is off until Monday and the stand-in is the route. #647's R1 HOLD is on the reduce seat's note (its row-axis control does not show what the note says); #657 already handles main-axis auto margins, and the note was not changed by the lane.
