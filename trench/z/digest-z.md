@@ -1985,3 +1985,66 @@ Full headless engine suite at `2c3c32f5`: 530 passed, 7 failed: the six that fai
 3. #633 on top of #636: merge develop, repeat the A/B, hand to Atlas for the draft flag.
 4. A frame larger than the atlas.
 5. github's every-turn rebuild; pointer moves coalesced per turn; executor guard; rolling log file.
+
+## 2026-10-09 04:25 Z-lane I0
+
+Session 03:05 to 04:25 ET (by `date`). The 03:05 order. **Nothing landed this session** (two PRs up, none reviewed; #635, #636, #637 still wait for R1 and were not touched). Stop rule: the last session landed #634, so this is the first session without a landing; a second sets I0 blocked on review. No receipt was owed.
+
+### The order, item by item
+
+| item | result |
+|---|---|
+| 1. #633 on top of #636 | not started: #636 has no review and has not landed |
+| 2. `view.render()` nothing-changed skip | already on develop: it is #628 (13:08 ET yesterday), and the Thursday baseline's driver run (127/127 at `65e1e2f4`) was on a build that holds it. Nothing more done |
+| 3. the white-space line that holds #622 | **found and fixed: #638 (`cb1a634a`)** |
+| 4. github's every-turn rebuild, "name the cause first" | **NOT NAMED.** One real defect found on the way and fixed: **#639 (`65e6354f`)**. The loop still runs with it |
+
+### #638: white space beside a block-level image or control
+
+The engine's white-space strip asked each neighbour of a text box whether it is inline-level, and every image and form control said yes whatever its `display`. The space between two `display: block` images (Wikipedia's logo), inputs, buttons, a select and a textarea kept an 18px line. On develop Wikipedia hides it by accident (the logo container is 2px wide); #622 gives the container its width and the line appears.
+
+- Red first (`a3b3674f`): two of three tests fail on develop (58 for Chromium's 40). Eleven shapes against Chromium: 8 off on develop, 2 after (those two are a different defect: a shrink-to-fit box around two inline images with a space between is measured without the space).
+- Campaign identical. A/B: 14 sites identical. wikipedia 0.38%, closer: search form and button 42 tall on develop, 32 with the fix, Chromium 32.
+- **Stacked on #622 locally: Wikipedia's header is 70 (84 under #622 alone, develop 70, Chromium 66), logo 140 x 38 (Chromium the same), `#firstHeading` y 123.2 (137.2 under #622 alone, Chromium 90).** The 14px is gone and #622's gains stay. ATLAS: #622 can leave draft once #638 lands (its A/B should be repeated on that base).
+- **walmart cost half an hour and is the thing to read in the PR.** The first run was arm-tied at 42% (develop the hero tiles, the fix a deals row). It did not repeat: walmart went to its skeleton page for both binaries, came back on another build of its scripts, and on that build the fix's frame is pixel-equal to develop's in both orders. Not explained: the odd page came up only on the fix (five captures over the session, none of nine on develop). I read it as the site; it is not proven.
+- Engine suite 533 passed, 9 failed: the six of develop and three that pass alone.
+
+### #639: IntersectionObserver's first entry
+
+`observe()` reported from a 0 ms timer, on whatever geometry was published. An element script had just inserted has no box, reads as an empty rectangle at the origin and was reported "in view, ratio 1": on github.com all 13 observed sections, including one 13,659px down. Now the timer leaves the report to the engine while the DOM is dirty (the engine reports after every flush). With the fix the same 13 read their real rectangles and 11 are not in view.
+
+- Red first (`9e81f27a`): `n:true:1:0` on develop. Bindings suite 331/0. Campaign identical. A/B: 16 identical; netflix not cleared (varies inside an arm all session).
+- **It does not stop github's loop and no board frame moves.** Nobody has seen it in the window.
+- Engine suite 525 passed, 14 failed: the six of develop and eight grid tests that panic in the GPU test guard (waited 120 s behind a Chromium-oracle test, load 10); a second run failed a different eight the same way.
+
+### github's rebuild, what is known (for the next session)
+
+Method: a local-only build that puts a prefix on every module (counts timers, observers, element creation, and the stack that schedules React). Files in `z-i0/scratch/zi0/gh`: `diag2_apply.py` (apply on a branch that has `--live-ms`, never commit), `loop_prefix.js`, `loop_eval.js`, `loop_run.py`, `cols.py`.
+
+- Every turn React creates the landing page again (about 400 `createElement` a turn from the scheduler's message task), swaps one `div`, and its effects make 13 new observers; one observed `SECTION` is reported disconnected each turn. The sections are mounted again, not updated.
+- The two `setState` calls traced per turn (the in-view hook, the hero carousel's 200 ms fade) are effects of a mount, not its cause.
+- **`requestAnimationFrame` is not paced**: the 3D scene's loop (`a3-*.js`, four `.glb` models) ran 825 callbacks in 9 s, 150 to 190 back to back in one turn. Its own defect, and a likely large part of the CPU.
+- No ResizeObserver callback ran (14 created, 10 by `rwd-*.js`, the breakpoint hook the sections read).
+- Next probe: the stack at React's root scheduling for the update that is neither of the two above; whether the breakpoint hook's value changes between turns; then pace rAF to one callback round per turn.
+
+### For Atlas
+
+- #638 and #639 need R1 (reviewer is off). Neither is risky by its tests, but #638 moves Wikipedia's search box and walmart's first run is on record: say whether it lands today or Monday.
+- #622 after #638. #633 after #636, unchanged.
+- The order's item 2 can come off the list.
+
+### Not done
+
+- github's cause; rAF pacing; pointer-move coalescing; the executor guard; the rolling log file.
+- apple under #636, google on recorded bytes, a timing read for #636; a frame larger than the atlas.
+- No app build and no driver run this session.
+
+### State at close
+
+- I0 **open**. First session with nothing landed since #634.
+- `z-i0` is on `atlas/z-io-first-entry-after-layout` at `65e6354f`, no tracked changes. Local-only branches: `scratch/z-ws-plus-estwidth` (#638 + #622), `scratch/z-io-plus-liveprobe` (#639 + #637), `scratch/z-gh-loop-diag` (#637 only; the diagnostic edits are not committed anywhere).
+- Banked: `pc-wsblock-cb1a634` (sha256 c74d2162...), `pc-ws-estwidth-stack` (097f7afc...), `pc-iofirst-65e6354` (f060afed...), `pc-iofirst-liveprobe-stack` (f070d901...). Base for both A/Bs: `pc-navreset-075f7f3` (tree-equal to develop `65e1e2f4`).
+- New in `scratch/zi0`: `wsl.py` (eleven white-space shapes, engine and Chromium), `sub.py` (a layout subtree by selector), `wsnext.py`, `op/wiki_logo.js`, `op/wiki_search.js`, `mk_pr_two.py`.
+- Aleph: "no .aleph artifacts" from the engine worktree as well; not used.
+
+**Next session, in order:** review answers on #635 to #639; #633 on #636 if it has landed; github's remount cause by the probe above; rAF pacing; executor guard; rolling log file.
