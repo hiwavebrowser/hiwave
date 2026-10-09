@@ -14,3 +14,4 @@
 {"op": "search", "target": "pump_live", "ts": "2026-10-08T14:04:26.967949+00:00", "agent_id": "default"}
 {"op": "search", "target": "interrupt_scripts_at_budget", "ts": "2026-10-08T15:34:14.696530+00:00", "agent_id": "default"}
 {"op": "search", "target": "opacity", "ts": "2026-10-08T20:25:01.977773+00:00", "agent_id": "default"}
+{"op": "search", "target": "whitespace text between block siblings collapse", "ts": "2026-10-09T07:07:35.901655+00:00", "agent_id": "default"}
