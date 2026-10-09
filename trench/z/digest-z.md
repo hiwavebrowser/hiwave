@@ -1899,3 +1899,89 @@ A/B movers against the oracle Chromium, over the pixels that differ between the 
 2. squarespace: which script step never marks a background active.
 3. `:host-context()` overmatch; `element.animate()` end state.
 4. Pointer moves coalesced per turn; github's every-turn rebuild; executor guard; rolling log file.
+
+## 2026-10-08 22:36 Z-lane I0
+
+Session 21:05 to 22:36 ET (by `date`). The 21:05 order, all three items, plus Pete's decision 3. **One PR landed (#634, H27), so the stop rule is reset.** Three more are up. No receipt was owed at the start (no open non-draft PR).
+
+### Before -> after
+
+| item | develop `2616ec28` | now |
+|---|---|---|
+| H27, page B after page A in one view | page B laid out twice, the first time under page A's external sheet; `load_html` kept the last page's image record | one reset for a new document, before its first layout. **LANDED: #634, `65e1e2f4`, 22:20 ET** |
+| H23, "static" after heavy pages | a frame that fills the glyph atlas: 9219 bytes of a 400x100 line wrong; every later frame 171 bytes wrong | 0 and 0. **#635 (`fae31513`)**, R2 PASS at the earlier head, waits for R1 |
+| microsoft.com blank under #633 | cause not known | **named and fixed: #636 (`2c3c32f5`)**, CI green, no review yet |
+| live-loop probe | a pushed branch, no PR | **#637 (`e7d920b8`)**, tool PR, CI running |
+
+### H27 (#634, merged)
+
+The end frame was already right on develop: page B after page A (with an external sheet) has the same display list as page B loaded fresh, and that test passes before the fix. What was carried: `external_stylesheets` until the new page's own had been fetched (so a page that links none was cascaded under the last page's rules, then again), and `images_attempted` through `load_html`. Both load paths now call one `ViewState::reset_for_new_document`. Campaign identical; 20 sites not moved. **It does not explain what Pete saw; H23 does.**
+
+### H23 (#635)
+
+The plan's claim holds, and the part it listed as unconfirmed holds too:
+
+1. The atlas (one 2048 x 2048 texture for the whole engine) resets in the middle of a frame; quads already batched point at places the next glyphs are written over.
+2. The texture was never emptied, and glyphs are sampled one texel past their edge, so every frame after a reset carried specks of the old round.
+
+Fix: the renderer builds the frame again when the reset count moved during it, and a reset zeroes the texture. I did not "flush the batch before the reset" as the plan worded it: the reset happens inside the glyph lookup, which has no render target, and three execute paths flush their own way.
+
+Campaign identical. 20-site A/B: nothing moves beyond the site's own variation (linkedin and netflix had no equal pair in the first run; repeats, a swapped run and develop against develop show both vary by themselves). **A capture is one page in a new process, so the board cannot show this fix.** NOT FIXED: one frame whose glyphs do not fit in the atlas at all (now logged). NOT SEEN in the app window by anyone: **Pete's sequence (netflix or ebay, then the Wikipedia article) on a build with #635 is the check.**
+
+#635 conflicted with develop once #634 landed (both add a test module on the same line); develop is merged in, both kept, tests pass at `fae31513`; campaign and A/B are at `bfe162d7` and were not repeated (said on the PR).
+
+### microsoft.com blank under #633 (#636)
+
+A probe on the #633 build named it in one capture: the only box skipped at opacity 0 is `body > div.root.responsivegrid`, the page container, 1280 x 36125. The rule is microsoft's own:
+
+`[animation-intersection]:not([animation-view=disabled])[animation-enter=effect-1] > * { opacity: 0 }`
+
+Our matcher tested attribute selectors and `:not()` only against the root element (#614); for every other ancestor they passed, so `[x] > *` matched every element with a parent. Chromium computes that container at opacity 1. This is a cascade defect on develop today, so #636 is against develop, not a commit on #633.
+
+Fix: every ancestor entry carries the attributes that some ancestor compound in the sheets reads, and the match-share chain id holds them (without that, 19 of 38 test rows are wrong through sharing). Test: 38 rows, Chromium shows 17, develop all 38, the fix the same 17.
+
+**With #636 stacked on #633 locally, microsoft.com is no longer blank** (develop 1.0% painted, #633 0.0%, the stack 1.0% and develop's picture: logo and header links). microsoft still shows only its header on all three; that is another matter.
+
+Campaign identical. A/B movers:
+
+- **cnn 59.28%, steady: by eye a large gain.** Develop draws cnn near-black with dark text; the fix draws the white page with headlines. No Chromium frame (the oracle's cnn capture failed).
+- **linkedin about 7 to 9%**: develop stacks several hero illustrations, the fix draws one; 66426 -> 60735 px off Chromium over the moved pixels.
+- **apple 0.26%, NOT JUDGED**: three text lines of one tile sit about 8px higher; against Chromium two bands read worse, one better; rule not found.
+- **google NOT SETTLED**: google serves two home pages and a rotating promo line. One run showed both pages on both arms; two runs came out arm-tied (develop the chips page, the fix the buttons page that Chromium shows). #637's A/B, which changes no cascade code, showed both pages inside one arm, so the site alternating is the likelier reading; not shown directly.
+- netflix varies by itself; not judged.
+
+Full headless engine suite at `2c3c32f5`: 530 passed, 7 failed: the six that fail on develop, and one grid test that passes alone. NOT TIMED: the cascade budget (A3) should be read on wikipedia, github and cnn. Script queries (`querySelector`, `matches`) and sibling compounds still pass every attribute.
+
+### #637 (tool)
+
+`parity-capture --live-ms N` (turn the app's live loop after a load and report turns, timers, requests, relayouts) and a trace line for the DOM write that dirtied the page. Off unless asked. Campaign identical; 16 sites identical, the rest are the three sites that vary by themselves and one equal pair.
+
+### For Atlas
+
+- **#633 can leave draft once #636 has landed**: microsoft is explained. Merge develop into `atlas/z-box-opacity` first and repeat its A/B (the seat cannot take a PR out of draft). squarespace's lost hero is still the script gap.
+- **Thursday baseline**: #634 is in develop `65e1e2f4`. If #635 and #636 land tonight, the baseline should say which of them it holds: #636 moves cnn by 59% of the frame.
+- Pete's decision 1 (draw only when something changed) is what #628 landed at 13:08 ET; nothing further was done under it.
+- The plan's "README line 75" is still not in hiwave-macos.
+
+### Not done
+
+- apple's 8px under #636; google on the same page bytes through both binaries; a timing read for #636.
+- A frame larger than the atlas (count glyphs on the Wikipedia article and a long multi-script page; skip glyphs outside the frame).
+- squarespace under #633; `:host-context()` overmatch; `element.animate()` end state.
+- github's every-turn rebuild, pointer-move coalescing, the executor guard, the rolling log file: not started.
+- No driver run, no app build this session; nothing was seen in the window.
+
+### State at close
+
+- I0 **open**. Stop rule reset by #634.
+- `z-i0` is on `atlas/z-glyph-atlas-reset` at `fae31513`, no tracked changes. A local-only branch `scratch/z-opacity-plus-ancattr` (fceb3550) holds the #633 + #636 stack.
+- Banked: `pc-navreset-075f7f3` (sha256 c6da20f4..., tree-equal to develop `65e1e2f4`), `pc-atlas-bfe162d` (123aa52b...), `pc-ancattr-2c3c32f` (61811699...), `pc-opacity-ancattr-stack` (e120da9a...), `pc-liveprobe-e7d920b` (ff661ce0...).
+- New in `scratch/zi0`: `atlas_log.py`, `ms_probe.py` (ZPROBE lines of a capture, largest box first), `op/ms_root.js` and `op/g_promo.js` (Chromium: an element's computed value, its ancestors and the rules that match), `shown_navs.js`, `laysel.py` (two layout dumps by selector), `side.py` (A/B frames side by side), `h23_fix.py` (patches `glyph.rs` as bytes: the file has mixed line endings).
+- Aleph was not used: no artifacts for the engine worktree from the hub directory, as before.
+
+**Next session, in order:**
+1. Review answers on #635, #636, #637.
+2. #636: apple's moved tile against Chromium; google on recorded bytes; a timing read; then the script query path.
+3. #633 on top of #636: merge develop, repeat the A/B, hand to Atlas for the draft flag.
+4. A frame larger than the atlas.
+5. github's every-turn rebuild; pointer moves coalesced per turn; executor guard; rolling log file.
