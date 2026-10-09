@@ -2048,3 +2048,71 @@ Method: a local-only build that puts a prefix on every module (counts timers, ob
 - Aleph: "no .aleph artifacts" from the engine worktree as well; not used.
 
 **Next session, in order:** review answers on #635 to #639; #633 on #636 if it has landed; github's remount cause by the probe above; rAF pacing; executor guard; rolling log file.
+
+## 2026-10-09 10:35 Z-lane I0
+
+Session 09:05 to 10:35 ET (by `date`). The 09:05 order. **Landed during the session, by Prometheus with his R1 and receipts: #635 (`639220fe`), #636 (`b5fcd677`), #637 (`f54103d9`).** Develop is `f54103d9`. The stop rule is met; I0 stays open. No receipt was owed by the lane.
+
+**github's every-turn rebuild is named and has a fix up (#645). Two PRs opened (#640, #645), #633 merged with develop and re-measured. Nothing of this session is reviewed yet.**
+
+### The order, item by item
+
+| item | result |
+|---|---|
+| 1. #633 on top of #636 | **done.** Develop merged into #633 (head `525321bf`, no conflict). **microsoft is no longer blank: identical to develop on every pair.** squarespace unchanged at 49.60% (still worse to look at). Comment with the table is on the PR. **ATLAS: the draft flag is yours** |
+| 2. `view.render()` skip | already on develop (#628); off the list |
+| 3. white-space line | #638, up since 04:25, R2 PASS, no R1 yet |
+| 4. github's rebuild, "name the cause first" | **NAMED and fixed: #645 (`114bee5f`)** |
+
+### #645: github remounted its page because two methods did not exist
+
+github's landing page calls `document.createElement("canvas").getContext("webgl")` (may it show the 3D scene?) and `video.load()` on its hero video, both in effects. Neither method existed, each threw `TypeError: not a callable function`, a React error boundary caught it and mounted the page again, and the new page threw the same. In four turns: 30 caught errors, all at those two sites; each turn the root `DIV` under `<react-app>` (883 descendants) replaced by a new one (857).
+
+- Fix: `getContext` returns null for every kind; HTMLMediaElement gets `load`, `pause`, `canPlayType` (""), `play` (rejects `NotSupportedError`), the `HAVE_*` constants and an idle element's state. Checked against Chromium on a canvas and an empty video. One difference on purpose: Chromium's rejection there is `NotAllowedError`. **This is not media support.**
+- Red first (`bab2f8ea`), fails with the page's own error. Bindings suite 330/0. Campaign identical to develop `f54103d9`.
+- **Live loop, loads that hydrated, 10 s: develop 5 relayouts, 6.0 to 7.6 s inside turns, never idle; with the fix 2 relayouts, 0.93 s, idle.**
+- **The frame changes.** The hero loses the purple glow and has no 3D scene. That is github's page for a browser without WebGL: Chromium with WebGL off draws the same. Develop's frame (a purple panel over the form) was the half-mounted page. Still wrong after it: our headline is about 63px higher than Chromium's (173 against 236).
+- A/B: 14 identical, github among them (the capture runs no live loop). linkedin read arm-tied at 2.64% once; three repeats, one with the binaries swapped, show the site serving two pages.
+- Nobody has seen it in the window.
+
+### #640: one round of animation frames per live turn
+
+`requestAnimationFrame` was a 16 ms timer on the live clock, so a turn that took 3 s ran 187 callbacks back to back. Chromium across a 600 ms task: none during it, then 9 and 8 per 100 ms (7 to 10 at rest). Now a turn runs its timers and then the due frame callbacks once, at the turn's time. The load's virtual clock is unchanged (a test pins it).
+
+- Red first (`b175e29c`): 37 for 1. Green `1d129433`. Bindings 331/0; engine timer and live tests 23/0. Campaign identical to develop `65e1e2f4`. A/B: 16 identical, 4 vary inside an arm, none arm-tied.
+- **It did not make github cheaper**: callbacks about 667 to 39 per 10 s, time inside turns the same. The cost was the remount (#645).
+- Not changed: `setInterval` still catches up after a long turn.
+
+### Seen on the way
+
+- **About half of github's loads run past the 15 s script budget on both binaries and #616 stops them** (develop 3 of 10, #640 7 of 13 this morning). Those pages never hydrate and the loop sits idle. So "github spins" and "github is quiet" were two outcomes of the same load. It shows as `threw: 1`, source `network`, `RuntimeLimitError`.
+- One develop capture of github did not return in 120 s. Not explained; once.
+- microsoft on develop is still the logo and the header's link lists (1.0% of the frame painted), with or without #633.
+
+### The four open lane PRs together
+
+#638 + #639 + #640 + #645 merged on develop locally (`scratch/z-stack-1030`, `5633bd77`; one automatic merge in `dom.rs`): bindings 334/0, campaign identical to develop, github's hydrated loads settle (2 relayouts, 0.95 to 1.2 s inside turns in 10 s, idle; 3 of 4 runs hydrated). No site A/B on the stack.
+
+### For Atlas
+
+- **#633: microsoft is explained and gone; decide the draft flag.** squarespace is the one site that looks worse.
+- **#645 changes what github.com looks like** (no glow). It is the honest page and it stops the spin; say whether it lands today.
+- #638, #639, #640, #645 need R1. #622 can leave draft once #638 lands.
+- The Thursday baseline's "github still spinning (5.1 CPU-s per 5 s)" should read near idle on a build with #645, when the load is not stopped at the budget.
+
+### Not done
+
+- Executor guard; rolling log file; pointer-move coalescing; `setInterval` catch-up.
+- Why github's load takes about 15 s of script, and the 63px headline offset.
+- Engine suite at either new head; any app build or driver run.
+- google, netflix, shopify under #633 at the merge head (each varied inside an arm, no identical cross pair this run).
+
+### State at close
+
+- I0 **open**.
+- `z-i0` is on `atlas/z-canvas-getcontext-media-load` at `114bee5f`, no tracked changes. Local-only branches added: `scratch/z-raf-plus-liveprobe`, `scratch/z-stack-1030`.
+- Banked: `pc-dev-f54103d` (0c90cb75..., develop), `pc-rafround-1d12943` (7a3f6f98...), `pc-mediaload-114bee5` (232459d2...), `pc-opacity-525321b` (5ed26b09...), `pc-stack4-5633bd7` (beeec0bb...).
+- New in `scratch/zi0`: `prs.py` (PR state), `raf/live.py` (live-loop stats, binaries alternating), `gh/mk_probe3.py` + `gh/show3.py` (what React caught, who scheduled, which subtree was swapped), `tools/parity_oracle/zi0_capture_nowebgl.mjs` (untracked: Chromium with WebGL off).
+- Aleph not used (no index for the engine worktree, as last session).
+
+**Next session, in order:** review answers on #638, #639, #640, #645 and #633; executor guard; rolling log file; github's 15 s of load script (sample it); the headline offset.
