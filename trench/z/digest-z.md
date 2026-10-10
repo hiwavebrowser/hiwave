@@ -2267,3 +2267,52 @@ Candidate = the head merged onto develop `194e48e7` locally (merge `dd215c40`, n
 ### Blockers
 
 None. I0 is open.
+
+## 2026-10-09 22:16 Z-lane I0
+
+The plan's 19:35 order for the last session of the week, three items in order. Develop was frozen, so nothing was landed: three PRs are open, none merged by the lane. Base for all three: develop `81ef8b34` (the release head `16f97285` plus three docs merges; no crate, script or tool differs).
+
+| | before | after |
+|---|---|---|
+| 1. `scripts/receipt.py` host paths | every receipt printed the machine's paths | **#661** `db8cc20a`, ready, CI green |
+| 2. H24 remainder: ebay's icons stay put while the page scrolls | cause not known | cause named and fixed: **#662** `02802721`, ready, CI green. Not run in the real window (screen locked) |
+| 3. H26 (b): a grid inside a flex container | 46px wide, items stacked | **#663** `7558046c`, **DRAFT**: the reduced pages are right and walmart gains, but google and bing move in a way that looks wrong |
+
+### 1. receipt.py (#661)
+
+- A file inside the repository prints repo-relative, any other file as its basename; absolute paths typed into `--note` are stripped the same way; `--host-paths` keeps them for local use.
+- Red `1a5e7e7f` (8 of 8 fail on develop), fix `db8cc20a` (10 of 10). The test is in `scripts/tests/`, so the `script-guards` lane runs it.
+- **Still printed: the machine's name** (`host`). The plan's receipt fields ask for the host, so it stays unless someone says otherwise.
+
+### 2. H24: it is a scroll-paint bug (#662)
+
+- The app scrolls by putting one translate around the whole display list. In the renderer, rectangles, text and circles go through the transform stack; **filled polygons and lines did not**. An inline svg path is filled as polygons, so every svg path icon and stroke was drawn at its document position whatever the scroll offset. Not fixed-position content, not stale tiles.
+- The same omission is item (c) of the 16:00 note (svg paths ignore an ancestor's `transform`).
+- Red `6aacdaf2` (3 of 4 fail), fix `c33214a4`, and a page test `02802721` added after the fix (the engine's own list for a page with an svg path, inside the app's translate; it fails with the fix reversed).
+- Campaign identical. A/B: four sites move, each steady in both arms: github 0.01% (the six navigation chevrons point down, they pointed right), bing 0.05%, x 0.04%, wikipedia 0.01% (the magnifier moves into the search box and now overlaps the placeholder text). **None of the four was compared with Chromium.**
+- **Not shown in the window.** The screen was locked. The capture tool cannot scroll, so the evidence for the scroll half is the page test, which goes through the same renderer but not the window path.
+- Engine headless suite: 560 pass, 7 fail in one full run. Five fail the same way with the fix reversed (the known five). Two grid tests failed only in that run and passed when run again; why is not known.
+
+### 3. H26 (b): four causes, and two sites that look wrong (#663, draft)
+
+- Causes: (1) flex step 11 laid a grid item's children out as blocks and never ran the grid pass, for every grid that is a flex item; (2) the content-width estimators had no grid arm; (3) tracks grew toward their limits in proportion to their room, where the spec shares equally (this is H26d); (4) a grid item with an `auto` start and a `span N` end did not span, in a block parent too.
+- Cause 4 was found because fixing cause 1 alone collapsed github's hero to a narrow column (6.85% of the frame). Cause 1 had been hiding it. github is identical to develop at the head.
+- 13 reduced shapes with the pinned Chromium's boxes: 1 matched on develop, 12 match at the head. The thirteenth is listed as a gap (the first implicit row ignores `grid-auto-rows: 40px`).
+- Campaign identical, and blind to this: no case has a grid inside a flex container.
+- A/B at the head, 20 rows, 13 identical. walmart 12.74%: the deals row shows six products where develop shows one. **google: the doodle block's width and x now match Chromium (500 at 390) but its height doubles to 460 and the share button lands 220px low. bing: the search input goes from 60 tall to 0** (Chromium's is 42). Chromium was served a different variant of both pages, so these are references, not like-for-like rows. shopify 1.64% steady, not looked at; it differed from itself by the same figure in another run tonight.
+- **reddit served the capture tool a one-script page in 0.6 s, so the site this was for is not in the A/B.**
+- The full engine suite was not run at the head (rustkit-layout 860 pass, 0 fail).
+
+### For Monday
+
+- #663: find why google's block doubles in height and why bing's input loses its height before taking it out of draft. `h26b_boxes.py` lists the boxes that differ between two binaries on a URL; the layout dump has no display type, which is the first thing needed.
+- #662: scroll ebay in the real window when the screen is unlocked; compare the four movers with Chromium.
+- Found on the way, none started: `grid-auto-rows` is not applied to the first implicit row (the gap above); the renderer still does not clip polygons or lines.
+
+### Tools left in z-i0/scratch/zi0
+
+`h26b_cases.py` (writes the case file), `h26b_test.py` (runs the engine test and prints the shapes that differ), `h26b_span.py` (span forms by parent, per binary), `h26b_boxes.py` (boxes that differ on a URL between two binaries), `h26b_chain.py` (ancestor chain of a text), `h26b_side.py` (two A/B frames side by side with the bands that differ), `h26b_ab.py` (A/B by banked binary name). Banked: `pc-dev-81ef8b3`, `pc-polyxf-c33214a`, `pc-gridflex-r2`.
+
+### Blockers
+
+None for the lane. All three PRs need a first review; Prometheus is off until Monday. I0 is open.
