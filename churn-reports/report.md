@@ -1,6 +1,6 @@
 # Code Churn Analysis Report
 
-**Generated:** 2026-10-04 04:53:31
+**Generated:** 2026-10-11 04:42:33
 
 ## Overview
 
@@ -91,9 +91,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 12 | 135 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 43 | 148 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 12 | 135 |
 
 ### `crates/rustkit-engine/src/lib.rs`
 
@@ -101,9 +101,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 51 | 136 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 19 | 26 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 51 | 136 |
 
 ### `baselines/chrome-120/builtins/settings/layout-rects.json`
 
@@ -111,9 +111,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 4 | 91 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 1 | 1 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 4 | 91 |
 
 ### `baselines/chrome-148/builtins/settings/layout-rects.json`
 
@@ -121,8 +121,8 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 3 | 91 |
 | hiwave-windows | 1 | 1 |
+| hiwave-macos | 3 | 91 |
 
 ### `crates/rustkit-layout/src/lib.rs`
 
@@ -130,9 +130,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 42 | 86 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 11 | 18 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 42 | 86 |
 
 ### `baselines/chrome-120/micro/pseudo-classes/computed-styles.json`
 
@@ -140,9 +140,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 3 | 75 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 1 | 1 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 3 | 75 |
 
 ### `crates/rustkit-renderer/src/lib.rs`
 
@@ -150,9 +150,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 30 | 66 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 2 | 6 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 30 | 66 |
 
 ### `crates/hiwave-app/src/main.rs`
 
@@ -160,9 +160,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 12 | 40 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 14 | 44 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 12 | 40 |
 
 ### `crates/rustkit-layout/src/grid.rs`
 
@@ -170,9 +170,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 26 | 53 |
-| hiwave-linux | 1 | 1 |
 | hiwave-windows | 1 | 1 |
+| hiwave-linux | 1 | 1 |
+| hiwave-macos | 26 | 53 |
 
 ### `baselines/chrome-148/micro/combinators/computed-styles.json`
 
@@ -180,8 +180,8 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
-| hiwave-macos | 2 | 44 |
 | hiwave-windows | 1 | 1 |
+| hiwave-macos | 2 | 44 |
 
 ## Recommendations
 
@@ -193,7 +193,7 @@ Based on the churn analysis, consider reviewing the following areas:
 
 2. **Line Range Hotspots**
    - Specific line ranges in these files are being modified repeatedly. This may indicate ongoing bug fixes or feature adjustments in localized areas.
-   - Files: `parity-baseline/captures/css-selectors.ppm`, `parity-baseline/captures/sticky-scroll.ppm`, `parity-baseline/baseline_report.json`, `parity-baseline/captures/form-elements.ppm`
+   - Files: `parity-baseline/captures/sticky-scroll.ppm`, `parity-baseline/captures/css-selectors.ppm`, `parity-baseline/captures/form-elements.ppm`, `parity-baseline/baseline_report.json`
 
 3. **Cross-Platform Synchronization**
    - These files are modified across all repositories. Consider creating a shared module or ensuring changes are consistently applied.
