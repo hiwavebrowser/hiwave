@@ -2379,3 +2379,67 @@ Session 09:05 to 10:15. Develop `5feb459a` throughout. Nothing landed. Four PRs 
 ### Blockers
 
 None for the lane. Waiting on others: Pete's word on the 5 s limit (#666) and on a patched Boa (M1); first reviews of #666 and #667; an unlocked screen for everything under OWED. I0 is open.
+
+## 2026-10-12 12:03 Z-lane I0
+
+Session 10:36 to 12:05, the plan's 10:45 order. **Landed while it ran: #667 (develop `d6b449f6`) and #661 (develop `696f9921`), both merged by Atlas.** #666 answered and now R1 CLEAR; #663 (order item 2) has google and bing explained and their height defects fixed, still draft. Order item 3 (I0(a) M3b, cooperative load cancel) was not started. **Real-window driver: NOT RUN (locked)** for every input assertion and frame: the screen was locked and the display asleep on each of four driver runs; the stall-log and request-log halves ran.
+
+| | before | after |
+|---|---|---|
+| #666 blocking defect: a network answer that arrives in a turn stopped at the budget | lost for good: no `load`, no `error` (reviewer's page: `none alive rs=4`) | delivered on the next turn (`hello hello rs=4`); red `cd67a803` (5 of 8 fail), fix `a22ff437` (8 of 8) |
+| The same in the built app (`i0a_script`, stall-log half, one run per build) | `c273d9a8` app: asked 1, onload 0 | `a22ff437` and `0b8c43b8` apps: asked 1, onload 1 |
+| `input` and `resize` listeners that do not end | ran about 100 s each in the red tests (no limit) | stopped at the budget |
+| A stopped turn in the script log | two records, one reading as the loop limit | one record, and a `console.warn` line on the page |
+| #666 review state | R1 HOLD @ `8e4e5c22` | **R1 CLEAR @ `0b8c43b8`** (11:49 ET), merge state CLEAN. No R2 stamp at that head when I looked. Still waits for Pete's word on the 5 s figure |
+| bing `#sb_form_q` on #663 | 0 tall (develop 60) | 22 tall in a 36px row |
+| google logo block on #663 | both items 184 tall, twice their height (460 on the doodle page of 10-09) | 272 by 92 at x 504, as in Chromium; **y 60 where Chromium has 208, not fixed** |
+| `grid_in_flex_cases.json` | 13 pages, 12 match Chromium | 24 pages, 18 match; the six others are listed in the test with reasons |
+
+### #666 `0b8c43b8` (I0a step M0)
+
+- Commits: red `cd67a803`, fix `a22ff437`, `56e88bc9` (the real-window assertion, comments, README), merge of develop `0b8c43b8` (#667 landed mid-session and conflicted in two files; both sides kept in every hunk).
+- The fix checks the clock, not "a script was stopped": an answer is handed to the page only while the turn has budget left; what is held goes back to the front of the queue in order; modules wait for the next turn; a turn that ran out returns `next_timer_ms = Some(0)`.
+- Gates at the merged head: `live_turn_budget` 8 of 8, #667's four tests pass, the app's four `content_views_*` tests pass, 26-case campaign identical to develop `d6b449f6`. Real window, seven checks: 71 pass, 4 fail, 19 not run; the four failures are the 200 ms rule (three checks) and `i0a_nav`'s 1 s rule, as before. `i0a_nav` pages now stay 1.7 to 1.8 s (that is #667).
+- **Not run at the merged head: the full engine suite.** At `a22ff437` it was 565 pass, 10 fail: the usual five, and five grid tests that died in the GPU test guard's 120 s wait on a loaded machine (load 11 to 16 all session, this session's own Aleph indexers among the load). The 24 `grid_` tests pass run one at a time.
+- From the R1 CLEAR, non-blocking, for a follow-up PR (not pushed: a push would move a cleared head):
+  1. An innocent response handler handed over with a few ms of budget left can still be cut, and its request never finishes. Reviewer's proposal: hand over only while at least half the budget is left.
+  2. The console line is written with `evaluate`, which also runs the page's pending promise jobs on its 50 ms budget. From reading only.
+  3. Answers held under an every-turn overrun are bounded only by the fetch policy (500 requests of up to 10 MiB).
+  4. Give the tests' `SPIN` a 3 s end, so a regression fails in seconds and does not starve the GPU guard.
+
+### #663 `cf5cbcc7` (D1, grid in flex), still draft
+
+- bing: `grid-area: content` names an area nothing declares. The engine auto-placed such an item; Chromium takes the name as the first implicit line after the explicit grid, so the textarea and the `::after` that sizes it share a cell. Fix `0cd82aa2` (red `c059fac2`).
+- An existing engine test (`an_unknown_area_name_auto_places`) asked for the old behaviour with no browser reference. Its page went through the pinned Chromium: third column, second row. Test renamed and re-pinned; the layout unit test beside it too.
+- google: on the page the engine is served, the logo block is a grid with two items in one cell and a `calc()` percentage height. Flex step 11 handed the grid pass the items' block-stacked height and the grid took it as its own. Fix `cf5cbcc7` (red `d71b5473`): the pass gets the height flex resolved. Same commit: a grid item's explicit height keeps its `max-height` and `min-height`.
+- **Three commit messages miscount the matching pages** (13 of 17, 19 of 23, 20 of 24; right: 12, 17, 18). The PR body has the right table and says so.
+- Gates at `cf5cbcc7` against the branch's base `81ef8b34`: rustkit-layout 860 pass; engine `grid_` and `flex_` tests 50 of 50 one at a time; campaign identical in 26 cases; all-site A/B 20 rows, 13 identical; movers google (1.31%, explained), bing (0.19%, explained), walmart (21.63% steady, not looked at today), shopify (one B run differs from the other by 1.29%, not explained); linkedin, yahoo, netflix vary inside an arm. reddit again served a one-script page.
+- Why it stays draft: google's y (needs `margin-top: auto` on a grid item, and a `calc()` percentage height of a column flex item resolved against a definite column); the thirteenth page (`grid-auto-rows` with a row span); reddit itself not exercised; no real window; full engine suite not run at the head; the branch is not merged with current develop (it merges cleanly).
+
+### OWED to the real window (one batch when the screen is unlocked)
+
+1. Unchanged from 10:15: the 15 pixel checks on the release build, and H22, H23, H27, H25 by hand-driver.
+2. #662: ebay-like content with inline svg icons scrolls with the page. Still no check written.
+3. #666: Cmd+T, a resize and Cmd+W within 200 ms in the four `i0a_*` checks, and their frames. This input code has still never run once. New today and also not run: typing into a field whose `input` listener spins; a resize while a `resize` listener spins.
+4. #667 (landed without it): the frames of `i0a_nav` and `h16_click_nav`, and the user's own click on a link.
+5. #663: reddit in the app; bing's search box and google's logo in the window.
+6. Not written at all: stop, tab switch, scrolling another tab, `position: fixed` under scroll.
+
+### For the next session
+
+- #666: if R2 passes and Pete gives the 5 s figure it can land; then open the follow-up with the four notes above.
+- #663: `margin-top: auto` on a grid item (nothing in `grid.rs` reads block-axis auto margins), then the `calc()` height of a column item, then the thirteenth page. Each has its red page in the case file already.
+- I0(a) M3b (cooperative load cancel) is the next I0 step and was not touched.
+- Plan item (d), the two grid tests that "failed once in a full run and passed alone": today's five grid failures were the GPU test guard's 120 s wait behind a slow test on a loaded machine, not shared state. Not shown to be the cause of the earlier two.
+- Stop rule: #667 and #661 landed during this session, so I0 is not in a second empty session.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-grid-in-flex-width` at `cf5cbcc7`, clean.
+- z-i0/scratch/zi0, new: `gridtrace.py` (one case file page with the layout trace), `urltrace.py` (the same for a live URL), `boxes_file.py` (boxes that differ between two builds on a saved page), `css_rules.py`, `fetch_page.py`, `h26b_oracle.py` (regenerates the case file with Chromium's boxes), `goog_logo.js`, saved pages `pages-bing/`, `pages-google/` (the page urllib is served, not the engine's). One-off patch scripts: `m0_hold_patch.py`, `merge_667.py`, `named_line_fix.py`, `named_line_tests.py`, `grid_item_height_fix.py`, `grid_item_maxh_fix.py`.
+- Binaries: `bank/hiwave-m0-a22ff43`, `bank/hiwave-m0-0b8c43b`, `pc-m0-merged`; z-target/bins `pc-gridflex-named` (`0cd82aa2`), `pc-gridflex-0cd-h` (`cf5cbcc7`). Runs: `z-realwindow-runs/20261012T1518Z-i0a-m0-hold-0b8c43b8/`. A/B table `ab-gridflex3.txt`.
+- Aleph: not used. No index in z-i0, as on every session since 10-05.
+
+### Blockers
+
+None for the lane. Waiting on others: Pete's word on the 5 s limit (#666) and on a patched Boa (M1); an R2 stamp for #666 at `0b8c43b8`; an unlocked screen for everything under OWED. I0 is open.
