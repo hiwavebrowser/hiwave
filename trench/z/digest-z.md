@@ -2538,3 +2538,59 @@ Session 15:05 to 16:55 ET. Package D1, in-progress at the start, open at the clo
 ### Blockers
 
 For the real window: the grants (the decision line at the top). Otherwise none. Waiting on others: Pete's word on the 5 s limit (#666); R1 for #678 and #680; Atlas's word on #663's draft state.
+
+## 2026-10-12 18:10 Z-lane I0 (the 17:05 order: receipts, the #666 real-input question, the fixed bar)
+
+Session 17:04 to 18:15 ET. All three numbered items of the 17:05 order are done as far as this seat can take them; item 4 (the owed window runs) cannot be run from here and is Atlas's by the 17:55 note.
+
+**One thing to know first: I launched the app once at 17:46, after Atlas's 17:32 note that Pete is hand-testing on this Mac.** I had not pulled the hub since 17:05. It was one driver run of four scroll checks on a release build of #681 (about a minute, four windows, no input posted: the seat cannot post any). The note allows launches until the end of this session, so it is inside the letter of it, but Pete may have seen windows open and close. No launch after I read the note at 17:50.
+
+### Before -> after
+
+| | before | after |
+|---|---|---|
+| #671 Shadow DOM flat tree, macOS receipt | R1 CLEAR, none | posted at `09ecbdd5` (17:22): campaign identical, A/B 20 rows with 14 identical and nothing tied to an arm. **Landed by Atlas 17:55 (develop `3f4f8c37`)** |
+| #670 + #672 + #673 on #669, macOS receipt | R1 CLEAR, none | one combined run posted on all three (17:40): four clean local merges in the order #669, #670, #672, #673; matrix test passes at every step, so no branch needs develop merged in for the ledger; campaign identical; A/B 20 rows |
+| Which of the three moves a site | not known | **#672 (fit-content) alone**: bing 2.85% on every cross pair (search box no longer runs off the right edge), linkedin about 1% (topic chips are pills, not a pile of overlapping circles). Bisected with each step's own binary. #670 and #673 move nothing |
+| #666: "the page does not come back under real input" | open, blocking; two readings | **the check, not the engine.** The app has ONE content view: Cmd+T loads the new tab's start page into it and the page under test is gone (the 16:37 run's own log: `create_tab`, `New tab - navigating to start page`, `Loading HTML content id=EngineViewId(1)`, then the spin page's relayout summary). The other reading is pinned by a headless test that passes on #666's engine code |
+| The I0(a) checks | Cmd+T sent in all four, destroying the page each time | #678 `e318f792`: only a new check `i0a_newtab` sends it; `i0a_close` now closes the busy tab, not a new one. Not run with input |
+| `position: fixed` under scroll | the bar leaves with the first screen (window, 16:35) | **#681** `393bb6ac`: fixed boxes are held; red commit 3 of 4 fail, fix 7 of 7; campaign identical; A/B 15 of 20 identical, nothing tied to an arm. Window: owed |
+
+### PRs
+
+- **#681** `393bb6ac`, open, new: `fix: a position: fixed box stays put while the page scrolls`. Red `37ba4189`, fix `393bb6ac`. The display list marks each outermost fixed box's run; the window's scroll wrap (now `scrolled_commands`) draws the run inside the opposite translate. rustkit-layout 860 pass, rustkit-renderer 126, engine full suite 568 pass and 10 fail at load 12 (the five develop failures, five `grid_*` in the GPU guard that pass one at a time). Based on `696f9921`; a local merge with develop `3f4f8c37` is clean and its 16 scroll and shadow tests pass. Receipt in the body.
+- **#678** `e318f792` (was `1059e8ce`), open. **I pushed onto a PR that had R1 CLEAR at `1059e8ce`, so that CLEAR no longer covers the head.** One commit: the check change above and the engine test `input_after_a_stopped_turn_leaves_timers_and_answers_running`. It should have been its own branch stacked on #666. Comment on the PR says what the reviewer has to look at again.
+- **#666** `0b8c43b8`, not pushed to. Comment posted with the log lines. What still stands from the real-input run and is NOT answered: the window is held the full 5 s (4972 ms) and a resize sent during the hold took 1.8 s. The 5 s figure is still Pete's.
+- Receipt comments on #671, #670, #672, #673 (cloud PRs, not mine).
+
+### Found and not fixed
+
+- **A fixed header can be seen after a scroll but not clicked where it is seen** (#681 "Not covered"). Hit testing adds the scroll to every point, and it only looks inside a box whose own border box holds the point, which already misses a fixed or absolute box lying outside its parent (unscrolled too). Next PR after #681; Chromium's event log first.
+- **A fixed box inside a fixed box is laid out too high** by the distance its parent moved (300 in the test page, no scroll needed): `apply_position_offsets` places the child against the viewport, then the parent's own move carries its subtree, child included (`translate_subtree`). A fixed child with explicit offsets must not be carried; one with auto offsets must. Same class wherever a container is translated after its children are placed (flex).
+- **`parity-capture --html-file` runs no scripts.** Any case that builds its page from script reads as "unchanged" there. I nearly reported #671 as painting nothing new. Use `--url` with a local server (`scratch/zi0/shadow_eye.py`).
+- reddit in the 20-site A/B is its one-script interstitial (a red disc): that row says nothing about any PR. microsoft's sections are still blank after #671.
+- linkedin serves at least three pages; a row with no 0.00% cross pair there needs the alternating tally (`r655_alt.py`, frames named by hash) before it is called noise or a mover. Today it was a real mover once (#672) and noise once (#681).
+
+### OWED to the real window (Atlas's seat; none of it run today by the lane)
+
+1. `fixed_scroll` on #681's build: `scratch/zi0/bank/hiwave-fixed-393bb6a` (release, sha256 `afff1d55...`), driver export in `scratch/zi0/rw-batch` (it has the check). Expect the magenta bar's area ratio near 1.0 after the scroll; it is 0.00 on develop.
+2. The five I0(a) checks with real input on #666's build using #678's driver at `e318f792`: `i0a_script, i0a_layout, i0a_nav, i0a_close, i0a_newtab`. `rw-batch` still holds the driver at `1059e8ce`: export again first (`export_rw.py`).
+3. #671's shadow acceptance page in the window (now on develop).
+4. Carried: the 15 pixel checks on the V1.3.0 build; reddit, bing and google for #663; H22, H23, H27, H25 by hand-driver; the user's own click for #667.
+
+### Not done
+
+- #663 is still draft at `3c8b07f9`; no work on it this session (the 17:05 order said no new D1 work). #672 overlaps its ground: bing's box is one of #663's movers too, so #663's A/B needs taking again once #672 lands.
+- I0(a) M3b (cooperative load cancel) and the #666 follow-up PR: not started.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-fixed-under-scroll` at `393bb6ac`, clean apart from `scratch/` and the untracked `tools/parity_oracle/zi0_*.mjs`. Local-only merge commits (not pushed, reachable only by hash): `aeea159e` (the D1 batch), `43672920` (develop into #681).
+- New in z-i0/scratch/zi0: `batch_info.py` (heads, bases, reviews of a PR batch), `mk_receipt_cloud3.py` (receipt comment against `696f9921`; env CAND, BLABEL, OUT), `mk671.py`, `mkd1batch.py`, `shadow_eye.py`, `shadow_probe.py`, `lay_file.py`, `cropdiff.py`, `mk_pr_fixed.py`.
+- Binaries in z-target/bins: `pc-671-09ecbdd`, `pc-d1batch-aeea159`, `pc-d1-s670-1e8dd3c`, `pc-d1-s672-2c3ce11`, `pc-fixed-393bb6a`. Tables `ab-671.txt`, `ab-671-r2.txt`, `ab-d1batch.txt`, `ab-d1batch-r2.txt`, `ab-d1-s670.txt`, `ab-d1-s672.txt`, `ab-fixed.txt`, `ab-fixed-r2.txt`; campaigns `camp-671.json`, `camp-d1batch.json`, `camp-fixed.json`; suites `suite-fixed.log`, `suite-fixed-grid.log`.
+- Runs under z-realwindow-runs: `20261012T2124Z-lane-newtab-m0-0b8c43b` (18 pass, 1 fail, 5 not run), `20261012T2146Z-lane-fixed-393bb6a` (12 pass, 4 not run).
+- Aleph: not used (no index in z-i0; the plan says not to start one). Load 11 to 15 all session; every A/B figure was taken under it, with no failed capture.
+
+### Blockers
+
+None for the lane. Waiting on others: R1 for #681 and again for #678; R2 for #670, #672, #673; Pete's word on the 5 s figure (#666); Atlas's word on #663's draft state; the window runs above.
