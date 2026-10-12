@@ -2316,3 +2316,66 @@ The plan's 19:35 order for the last session of the week, three items in order. D
 ### Blockers
 
 None for the lane. All three PRs need a first review; Prometheus is off until Monday. I0 is open.
+
+## 2026-10-12 10:15 Z-lane I0
+
+Session 09:05 to 10:15. Develop `5feb459a` throughout. Nothing landed. Four PRs touched: #661 answered twice, #666 and #667 opened. **Real-window driver: NOT RUN (locked).** The screen was locked, the display asleep, and the seat has no grants; request-log and app-log assertions ran, no frame and no input ran.
+
+| | before | after |
+|---|---|---|
+| #661 `scripts/receipt.py`, first HOLD @ `db8cc20a` | rustflags, `RUSTKIT_*` values, a local or credentialed origin, the machine name and four path spellings printed as they came | red `4e70730c` (7 of 16 fail), fix `84a98e4b` (16 of 16); answered on the PR |
+| #661, second HOLD @ `84a98e4b` (arrived mid-session) | a home directory printed as the account name; `-isystem/abs` not stripped; a path on stderr on Python 3.12+ | red `5b8d3363` (4 of 21 fail), fix `224cc7db` (21 of 21); answered on the PR. **The stderr fix is not shown red or green here: this seat's Python is 3.11** |
+| I0(a): how long the window's thread is held | no measure without the screen | `HIWAVE_STALL_LOG=1` in the app (#666): a ping to the event loop every 100 ms, holds of 200 ms or more logged |
+| I0(a): the four responsiveness checks | none | `i0a_script`, `i0a_layout`, `i0a_nav`, `i0a_close` in the driver (#666), all red on the 200 ms rule |
+| A script that does not end, started after the load | held the window for good (still held at 10.5 s when the check stopped looking) | #666: stopped at 5 s; held 4.8 s, then the page ticks again |
+| A page that asks to leave while loading | stayed 4.9 s | #667: stays 1.8 s |
+
+### #666 `8e4e5c22`: stall log, four checks, a limit on script after the load (design step M0)
+
+- The fix: `EngineConfig::live_turn_budget_ms`, armed in `pump_live`, `fire_mouse` and `fire_key` when `interrupt_scripts_at_budget` is on (the app). Red `50a0fcc9` (2 of 3 fail), fix `c273d9a8` (3 of 3).
+- **Decision for Pete: the 5 s figure** (`LIVE_TURN_BUDGET_MS`, the design's open question 2). A page doing more than 5 s of work in one timer callback or one click handler is now cut off, where before it finished with the window frozen. The plan's 10:15 note already says not to land without it.
+- This bounds the freeze. It does not meet the 200 ms rule: all four checks are still red on it.
+- Not covered: an interval that spins on every tick holds the window 5 s out of every 5 s. Script with no host calls is not stopped (design M1, which needs Pete's answer on carrying a patched Boa). `execute_script` has no deadline.
+- Gates: engine headless suite 565 pass, 5 fail (referrer 3, image loader routing 1, remote font 1; the same five fail on #667's branch; develop itself was not rerun). Campaign at `c273d9a8` identical to develop's in all 26 cases. No A/B: the capture tool leaves the switch off.
+
+### #667 `4ba03f17`: a page that asked to leave does not wait for images its scripts added
+
+- `EngineConfig::follows_script_navigation` (app on, capture off). Only a URL navigation counts; a form submitted by script keeps its images, because the app follows only GET forms.
+- Red `59d8aa1b` (1 of 3 fail), fix `3d1f57cb`, narrowed in `4ba03f17` (4 of 4).
+- In the built app, `i0a_nav`: each page stayed 4.9 s, now 1.7 to 1.8 s. Still red on the check's 1 s. `h16_click_nav`, `h1`, `h4` pass everything that needs no screen.
+- The before figure is from the #666 build, not a develop build.
+- Gates: engine suite 566 pass, the same 5 fail. Campaign at `4ba03f17` identical. No A/B, same reason.
+
+### What the checks found (none fixed unless listed above)
+
+- **The whole load is on the window's thread, network waits included.** `i0a_nav`: a script the server holds 1.5 s holds the window 1.5 s. Every script is fetched before any runs, so an inline `location.href =` at the top of the page waits for the slowest external script.
+- **The app takes a page's navigation only when its load has ended.** That is the rest of the 1.8 s.
+- **Layout cost grows faster than the item count.** 3000 wrapping flex items: one hold of 1.6 to 2.4 s. 8000: about 15 s per layout. Not looked into (D1 cost).
+- **Timers a page sets during its load are run by the load.** A "spin after load" page spun inside the load until the 15 s budget. `i0a_spin.html` waits for the driver's word instead.
+- **An image already fetched is not waited for.** The first `i0a_nav` hid this; each visit now has its own image address.
+
+### OWED to the real window (run in one batch when the screen is unlocked)
+
+1. The 15 pixel checks that did not run on the release build, and the hand-driver look at H22 opacity, H23 static, H27 navigation reset, H25 gutter (plan, 09:05 order item 1).
+2. #662: ebay-like content with inline svg icons scrolls with the page. No check is written for it yet.
+3. #666: Cmd+T, a resize and Cmd+W answered within 200 ms in `i0a_script`, `i0a_layout`, `i0a_nav`, `i0a_close`, and their frames. **This input code has never run once; expect to fix it on first run.** `i0a_close` asserts nothing until then.
+4. #667: the frames of `i0a_nav` and `h16_click_nav`, and the user's own click on a link.
+5. Not written at all: stop, tab switch, scrolling another tab (the app has one content view), `position: fixed` under scroll.
+
+### For the next session
+
+- #661: if a third review comes, answer it first. The reviewer's Python 3.13 has to show item 2.
+- #666 and #667 need a first review. #663 (grid in flex: google doodle height, bing input height) was not touched today and is next in the plan's order after I0(a).
+- I0(a) next steps, in the design's order: M1 (VM interrupt; needs Pete on open question 1), M2 (ordered input queue, #575), M3b (cooperative load cancel: the place to end a load whose script asked to leave, `run_page_scripts_with` and the lines after `run_page_scripts` in `load_url`).
+- Stop rule: this is the first I0 session since #662 landed with nothing landed. If the next one also lands nothing, I0 goes to blocked.
+
+### Tools and banked files
+
+- z-i0/scratch/zi0: `i0a_log.py` (app-log lines of one check, ANSI stripped), `export_rw.py` (drive a branch with another branch's driver), `bank_rw.py`, `receipt_661.py` (the #661 version of receipt.py, used for today's receipts), `mk_body.py` (puts a receipt into a PR body and refuses host paths), `r661_probe.py`. Patch scripts `m0_patch*.py`, `nav_patch_*.py` are one-off.
+- **`mk_body.py` overwrote a file of that name that was already in scratch**; I did not read the old one first and it is not in git.
+- Binaries: `bank/hiwave-stall-wip` (`7d5a9ac3`), `bank/hiwave-m0` (`c273d9a8`), `bank/hiwave-navskip-4ba03f1`; `pc-m0-c273d9a`, `pc-navskip-4ba03f1`. Runs: `z-realwindow-runs/20261012T1350Z-i0a-m0-c273d9a8/`.
+- Aleph: no index in z-i0 (`no .aleph/ artifacts`), so it was not used after the first call.
+
+### Blockers
+
+None for the lane. Waiting on others: Pete's word on the 5 s limit (#666) and on a patched Boa (M1); first reviews of #666 and #667; an unlocked screen for everything under OWED. I0 is open.
