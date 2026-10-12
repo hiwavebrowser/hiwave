@@ -2451,3 +2451,90 @@ None for the lane. Waiting on others: Pete's word on the 5 s limit (#666) and on
 - Gates at `7e9b2b34`: rustkit-layout 860 pass; engine `grid_` and `flex_` tests 50 of 50 one at a time; campaign identical in 26 cases; all-site A/B rerun in two calls of ten, 14 identical. google 1.31% and 1.36%, bing 0.19% steady. **walmart: the B arm differed from itself by 30.79% on this run (A did not); an hour earlier it was steady at 21.63%. Not explained: the site serves more than one page, and I did not look.** shopify identical this time.
 - The PR body is at this head, with the new receipt. Still draft. The full engine suite was not run at this head either.
 - z-i0 is on `atlas/z-grid-in-flex-width` at `7e9b2b34`, clean. New binary `pc-gridflex-automargin`, table `ab-gridflex4.txt`.
+
+## 2026-10-12 16:55 Z-lane D1 (#663), with the OWED batch prepared and one receipt
+
+Session 15:05 to 16:55 ET. Package D1, in-progress at the start, open at the close.
+
+### Real window: THE LANE'S BATCH RAN AT 16:42 ET AND SAW NOTHING IN THE WINDOW (THIS SEAT HAS NO GRANTS); ATLAS'S RUNS AT 16:34 AND 16:37 DID
+
+**Decision for Pete or Atlas (one line): the lane's launchd seat has no Accessibility and no Screen Recording grant even with the screen unlocked, so it can never post input or capture a frame; either run `python3 scratch/zi0/owed_batch.py` from the z-i0 worktree in the program that has the grants (the full runs of 10-07 to 10-09 had all three), or grant them to the lane's launcher (`hwdrive request`, run by hand at the Mac, shows the prompts).**
+
+- Preflight at 16:42: `screen_locked: false, display_asleep: false, accessibility: false, post_events: false, screen_capture: false`. Every NOT RUN below says "no Accessibility grant" or "no Screen Recording grant", none says locked.
+- Run `z-realwindow-runs/20261012T2042Z-owed-batch/`. What ran is the request-log and app-log half:
+
+| step | app | PASS | FAIL | NOT RUN |
+|---|---|---|---|---|
+| 1 i0a checks | #666 `0b8c43b8` | 19 | 5 | 11 (Cmd+T, resize, Cmd+W; frames) |
+| 2 new checks (#678) | develop `696f9921` | 6 | 0 | 2 (both frame assertions) |
+| 3 eleven h checks | develop `696f9921` | 84 | 0 | 15 (the same 15 pixel and input assertions as on the release build) |
+| 4 new + h checks | #663 `dda5e249` | 90 | 0 | 17 |
+| 5 live pages | develop `696f9921` | google, bing, reddit, ebay, simon, squarespace, microsoft, wikipedia: each loaded, navigation finished, app alive | | every frame; the wheel |
+| 6 live pages | #663 `dda5e249` | google, bing, reddit: each loaded, navigation finished, app alive | | every frame; the wheel |
+
+- Step 1's five failures: the four known ones (200 ms rule in `i0a_script`, `i0a_layout`, `i0a_nav`; `i0a_nav` pages stay 1.7 to 1.8 s against the 1 s rule) and one new: `i0a_script` "before the script starts" saw one 239 ms hold. A cargo test compile was running beside the first minute of the batch (my command put them on one line), so that one is not evidence.
+- **The window results of the day are Atlas's, not this batch's** (plan note "REAL WINDOW RAN", runs `20261012T2034Z-unlocked-dev-696f992` and `20261012T2037Z-unlocked-m0-0b8c43b`, from a seat that has the grants, with the driver of #678 and this session's banked builds): `h24_svg_scroll` 8 of 8 pass, so #662 is seen in the window; `fixed_scroll` fails as written (the bar is gone after the scroll); and on #666's build `i0a_script` does not come back after real Cmd+T and a resize, which blocks #666. I read that note at 16:50, after my batch; I did not see those runs' files.
+- **My batch overlapped nothing I can see but ran close:** Atlas's second run started 16:37 and mine 16:42. From 16:46 to 16:49 my live half opened eleven app windows and called `hwdrive activate` on each (it does that whether or not the seat can post input). If any Atlas frame taken after 16:42 looks wrong, check it against that before reading it as a defect.
+- **Still OWED after both:** the 15 pixel checks on the V1.3.0 release build; H22, H23, H27, H25 by eye; reddit, bing and google in the app for #663 (my steps 5 and 6 loaded them, app alive, no frame); the user's own click for #667. A NOT RUN is not a pass.
+
+
+- Driver tried at 15:10, 15:15, 15:43, 15:52, 16:03, 16:30, 16:42: locked and display asleep through 16:30; unlocked at 16:42 (Pete, as he said).
+- **The batch is one command, from the z-i0 worktree:** `python3 scratch/zi0/owed_batch.py`. It exits at once with "NOT RUN (locked)" when the screen is locked. Everything it needs is built and banked. Order, into `z-realwindow-runs/<UTC>-owed-batch/`:
+  1. #666 app (`bank/hiwave-m0-0b8c43b`): `i0a_script, i0a_layout, i0a_nav, i0a_close`. The input half (Cmd+T, a resize, Cmd+W within 200 ms) has never run once.
+  2. develop app (`bank/hiwave-dev-696f992`, sha256 `bbce3a27...`): the two new checks `h24_svg_scroll, fixed_scroll` (#678).
+  3. develop app: the eleven `h*` checks (the 15 pixel checks that did not run on the release build; #667's `h16_click_nav` frames).
+  4. #663 app (`bank/hiwave-gridflex-dda5e24`, sha256 `6df88507...`): the two new checks and the eleven `h*` checks.
+  5. Live pages in the window on develop, a frame after the load and one after eight wheel steps: google, bing, reddit, ebay (H24), simon (H25), squarespace and microsoft (H22), wikipedia.
+  6. The same for google, bing, reddit on the #663 app.
+- The driver it uses is the export of `1059e8ce` (all checks) in `scratch/zi0/rw-batch`. The live half was run once with the screen locked on wikipedia (loads, frames false) so it does not break on first use; **the frames and the wheel have not run**.
+- Not in the batch, still not written: stop, tab switch, scrolling another tab; H23 static and H27 navigation reset by hand-driver (no check exists for either).
+
+### Before -> after
+
+| | before | after |
+|---|---|---|
+| Real-window checks for scrolled inline svg (#662) and `position: fixed` under scroll | none | **#678** `1059e8ce` (stacked on #666): pages scroll themselves (scrollY 1500, 1700), every frame assertion NOT RUN |
+| A flex column whose height is a percentage (`height: 100%` under a definite parent) | indefinite to the flex pass on develop: `flex: 1` item 20 tall (Chromium 780), `height: 25%` item 20 (200), `justify-content: center` at the top | as Chromium on five reduced pages; #663 `faa0376c` |
+| google's logo block on #663 | 150 tall (its `min-height`), logo y 60 | 240 tall as in Chromium's reduced page, footer at the bottom of the viewport, logo y 134. **Chromium's own page has 208; the engine is served a different page and that page was not put through Chromium** |
+| The thirteenth page (`grid-auto-rows` with a row span) | first row 20 | 40 as in Chromium: the first implicit row and column were always `auto`; #663 `dda5e249` |
+| `grid_in_flex_cases.json` | 24 pages, 19 match | 31 pages, 26 match; five gaps listed with reasons |
+| #663 against develop | base `81ef8b34`, not merged | merged with develop `696f9921`, head `3c8b07f9` |
+| walmart on #663 | "21.63% moved, not looked at" | looked at: develop shows one product in the Flash Deals row, #663 shows six as Chromium does; the two B runs differ because the site served different deals. **Still wrong:** the product images are about 290px where their tiles are about 182, so they overlap and push price and button off the first screen |
+| shopify on #663 | "one B run differs by 1.29%, not explained" | not a mover: on two more runs the develop arm differs from itself by 1.64% and B is steady |
+| "Grid tests die in the GPU test guard in a full run" | read as shared state, then as a slow test | the guard's 120 s was the waiter's whole time in the queue, and the panic names whoever holds the GPU then. **#680** `91c913e5`: the limit is per holder. Full suite at load 12: 568 pass, 5 fail (the five that fail on develop), no guard failure |
+| #669 (cloud, nested layout matrix) | R1 CLEAR, no macOS receipt | receipt posted at `b951622b` merged onto develop: matrix test passes with and without `headless`, rustkit-layout 860 pass |
+
+### PRs
+
+- **#663** `3c8b07f9` (was `7e9b2b34`), still draft. Commits: merge of develop `09e7828c`, red `815043ae`, fix `faa0376c`, fix `dda5e249`, test split `3c8b07f9`. Gates: rustkit-layout 860 pass; 26-case campaign identical to develop `696f9921`; all-site A/B against develop, 20 rows, 14 identical, movers google 4.6 to 4.7% (explained), bing 0.19% (explained), walmart (explained, with the image defect), shopify/linkedin/netflix vary inside an arm; a second A/B isolating the column fix: google the only mover. Receipt in the body. Full engine suite, three runs at load 11 to 14: 561 pass 11 fail before the split, 565 pass 10 fail at the head (five develop failures plus five in the GPU guard; those pass one at a time), and with #680 merged in locally **571 pass, 6 fail, none in the guard** (the five develop failures and one wall-clock test that passes alone).
+- **Why #663 stays draft:** the plan says out of draft only with its list done. Not done: google's logo y is not shown right for the page the engine is served; no full suite run was on a quiet machine (with #680 merged in it has no failure develop does not have, bar one timing test); reddit in the app and the window are owed. **Atlas: if the reduced page is enough for google, #663 is ready on your word.**
+- **#678** `1059e8ce`, open, test files only, stacked on #666 (its diff shows #666's commits until that lands).
+- **#680** `91c913e5`, open, `#[cfg(test)]` code only. Red `c190e577`.
+- **#669** receipt comment posted (cloud PR, not mine).
+- `3c8b07f9`'s commit message says the split cures the guard failures. It does not (the second full run showed it); the PR body says so. The split is harmless and is left in.
+
+### Not done from the 15:05 order
+
+- (2) I0(a) M3b, cooperative load cancel: not started.
+- (3) the #666 follow-up PR (four non-blocking notes): not started; #666 has not landed.
+- From the 15:55 note: #670 and #672 receipts wait for #669 to land (they share its ledger file).
+
+### For the next session
+
+- **First, the plan's "REAL WINDOW RAN" note:** separate the two explanations for `i0a_script` not recovering under real input on #666 (the new tab covering the page, or an input event after a stopped turn leaving the pump dead), headless if possible; then the `position: fixed` counter-translate, whose red check (`fixed_scroll`, #678) is now seen red in the window.
+- `python3 scratch/zi0/owed_batch.py` is only worth running from a seat with the grants; from the lane it repeats today's request-log half.
+- walmart's oversized product images in the deals row (an image in a grid item inside a flex row is not held to its tile): reduce it and ask Chromium.
+- The two gaps found today: a `height: 200px` item does not shrink in an 80px percentage-height column; a `height: 50%` item of a percentage-height **row** is 110 where Chromium has 200.
+- D1 next causes from docs/layout/NESTED_LAYOUT_MATRIX_2026-10.md on #669, largest first, once #663 is out of the way.
+- Each oracle page costs about 1.4 s in `grid_in_flex_tests` (31 pages, 43 s); one engine for all pages did not change that. Not looked into.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-grid-in-flex-width` at `3c8b07f9`, clean apart from `scratch/` and the untracked `tools/parity_oracle/zi0_*.mjs`.
+- New in z-i0/scratch/zi0: `owed_batch.py`, `rw-batch/` (driver export), `layout_node.py`, `layout_find.py`, `ppm2png.py`, `crop_png.py`, `guard_patch.py`, `gaps_red.py`, `add_column_cases.py`, `first_track_fix.py`, `split_test.py`, `mk_pr663_body3.py`.
+- Binaries: `bank/hiwave-dev-696f992`, `bank/hiwave-gridflex-dda5e24`; z-target/bins `pc-dev-696f992`, `pc-gridflex-09e7828` (merge only), `pc-gridflex-pctcol` (`faa0376c`), `pc-gridflex-0f-head` (`dda5e249`). Tables `ab-pctcol.txt`, `ab-gridflex5.txt`, `ab-gridflex5-sh.txt`, `ab-pctcol-nf.txt`; campaigns `camp-dev-696f992.json`, `camp-gridflex-dda5e24.json`; suites `suite-dda5e24.log`, `suite-head2.log`, `suite-guard.log`, `suite-663-guard.log`.
+- Aleph: not used. This session's own `aleph.cli serve .` (started with the session in the hub) ran eight indexer workers at 100% from 15:05 on, load 11 to 15 all session. `kill` is not permitted to the seat. Every A/B and suite figure above was taken under that load.
+
+### Blockers
+
+For the real window: the grants (the decision line at the top). Otherwise none. Waiting on others: Pete's word on the 5 s limit (#666); R1 for #678 and #680; Atlas's word on #663's draft state.
