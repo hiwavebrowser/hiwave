@@ -2443,3 +2443,11 @@ Session 10:36 to 12:05, the plan's 10:45 order. **Landed while it ran: #667 (dev
 ### Blockers
 
 None for the lane. Waiting on others: Pete's word on the 5 s limit (#666) and on a patched Boa (M1); an R2 stamp for #666 at `0b8c43b8`; an unlocked screen for everything under OWED. I0 is open.
+
+### Addendum 12:23 (same session, after the entry above was pushed)
+
+- #663 is at **`7e9b2b34`**, not `cf5cbcc7`: one more fix. A block-axis `auto` margin of a grid item with an explicit height takes its row's free space (`margin-top: auto` puts it at the bottom). The red page was already in the case file; 19 of 24 pages match Chromium now, five listed as gaps.
+- **On google itself nothing moved with it:** the logo's y is still 60 (Chromium 208). The grid there is exactly as tall as the logo, because its `calc(100% - 560px)` height is still not resolved, so there is no free space for the margin. That `calc()` height of a column flex item is the one cause left for google.
+- Gates at `7e9b2b34`: rustkit-layout 860 pass; engine `grid_` and `flex_` tests 50 of 50 one at a time; campaign identical in 26 cases; all-site A/B rerun in two calls of ten, 14 identical. google 1.31% and 1.36%, bing 0.19% steady. **walmart: the B arm differed from itself by 30.79% on this run (A did not); an hour earlier it was steady at 21.63%. Not explained: the site serves more than one page, and I did not look.** shopify identical this time.
+- The PR body is at this head, with the new receipt. Still draft. The full engine suite was not run at this head either.
+- z-i0 is on `atlas/z-grid-in-flex-width` at `7e9b2b34`, clean. New binary `pc-gridflex-automargin`, table `ab-gridflex4.txt`.
