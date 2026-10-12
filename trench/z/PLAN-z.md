@@ -102,6 +102,7 @@ Opacity layer pool cap (D1). Abs-pos control height from top+bottom (I0c). Inlin
 ## Land law and reviewers
 - Land when: R1 CLEAR and R2 PASS at the same head, checks green, merge state CLEAN. Atlas merges one PR per command with `--match-head-commit`. Never force-push. Master only on Pete's word.
 - R2 stamps come from Cursor as comments OR reviews; check both.
+- **`no-check` label (Pete, 2026-10-12):** a PR carrying the GitHub label `no-check` is a standing or parked PR (first: #570, the Trace board ledger). Nobody reviews it, stamps it, runs a receipt on it or merges it, and it is left out of status lists and review requests. Removing the label puts it back in the queue. Atlas applies and removes the label; a seat that wants one parked asks.
 - Stand-in first reviewer (Pete, 2026-10-09): a fresh Claude cloud session with no author context may give the first review when Prometheus has not answered within two hours; its body starts `R1 CLEAR @ <sha8>` or `R1 HOLD @ <sha8>`. This week it is used first for #661-#663.
 - hiwave-macos is public: no host paths, ports, security details or live-site screenshots in PRs or issues. Frames go to hiwave-renders-private.
 ## Closure gates (B0, C0, C1, C2, D0-SVG, D1-L0), on top of the land law
