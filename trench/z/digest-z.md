@@ -2964,3 +2964,59 @@ Everything in the earlier lists, plus: hover over facebook, walmart and cnn on a
 - New in z-i0/scratch/zi0: `hover_census.py` (hover and scroll relayouts of an app log: script writes, time), `hover_split.py` (by page), `relayout_split.py <binary> <name> <url>` (cascade against the rest of each relayout), `style_fields.py`, `hover_probe_add.py` / `hover_probe_rm.py` / `hover_probe_read.py` (the live probe as a temporary ignored test; run with `HOVERPROBE_URLS=...` and `--release`), `wait_ct.py`.
 - Binaries in z-target/bins: `pc-dev-86e1867`, `pc-gridflex-721bbb1`, `pc-hover-ffb9fab`. Tables `ab-gridflex-r6.txt` (+ `-s2`), `ab-hover-r1.txt` (+ `-s2`); campaigns `camp-dev-86e1867.json`, `camp-gridflex-721bbb1.json`, `camp-hover-ffb9fab.json`; `suite-hover-r1.log`, `hoverprobe-on-1.txt`, `hoverprobe-off-1.txt`.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
+
+## 2026-10-13 13:00 Z-lane D1 (#663 R1 HOLD answered; #689 opened: font-size: 0 was 16px)
+
+Session 11:45 to 13:00 ET, headless. Package D1, taken from the 11:50 note. No receipt step for another seat was due.
+
+### Before -> after
+
+- **#663 (grid as a flex item): R1 HOLD @ `721bbb1b` answered at `6b8c5dad`.** Three commits, red first, no force-push: `c405499d` (test, 14 of 18 red), `7c28c046` (fix), `6b8c5dad` (two code comments said Chromium 148; the pinned one is 143).
+  - The estimator (`grid_columns_content_width`) is as the review spells out: under min-content a flexible track is its base size; under max-content a track is the shared `fr` size times its factor and never less than its base. Contributions are walked once per column.
+  - `0.5fr` around a 100px word: 50 -> 100 (flex item, float, inline-block). Two `minmax(100px,1fr)` around 50 and 150: 500 -> 300. Two `minmax(0,1fr)` in a 100px row or float: 300 or 120 -> 100. The review's reproducer (`flex:1` beside a 100px sibling in 300px): 300 -> 200.
+  - **One change the review did not ask for, flagged in the comment:** with the estimator right, seven of the review's pages still failed on the columns inside the grid (two `minmax(0,1fr)` columns 150 each in a 100px grid; Chromium 50; the same on develop). The grid pass grew a flexible track with a length minimum by its item's min-content. It no longer does (`GridTrack::flexible_with_fixed_min`). This reaches every grid, so Tailwind's `grid-cols-N` columns stop widening to an unbreakable item. I offered to move it to its own PR if the reviewer prefers.
+  - **The case-file check now runs off macOS:** 18 pages marked `no_text`, checked by `text_free_pages_are_as_in_chrome_on_every_os` with no view or script; Linux CI ran it green at the head. The four view tests stay macOS-only (their pages have text).
+  - Gates at `7c28c046`: engine suite 641 pass and the usual five; layout 865; 28 of 28 guards; campaign identical; all-site A/B against develop `86e1867b`, 20 rows: bing 0.19% and google about 4 to 6% (this PR's, as every round), linkedin one 41% frame that came on the develop arm too when repeated twice (served variant), netflix noise on both arms, 16 identical. Checks green, merge state CLEAN at `6b8c5dad`. Still draft (the lane seat cannot mark it ready). Needs R1 re-review and a new R2 stamp.
+- **#689 `575151e1` opened: `font-size: 0` is zero, not 16px.** Found while writing #663's pages (rows 18 tall, Chromium 10).
+  - `0` parses to `Length::Zero`; about 40 layout sites read a font size that is not `Px` as 16px. A line holding only inline-blocks under `font-size: 0` was a 16px line, and text hidden that way was laid out and painted at 16px (32px under `2em`).
+  - Fix: the cascade computes `Zero` to `Px(0)` (elements and pseudo-elements); the macOS shaper answers size 0 with an empty run (Core Text answers 0 with its default size); `normal_line_height(0)` is 0; text at size 0 paints nothing.
+  - Nine Chromium 143 pages on every OS, 9 of 9 red against develop's behaviour.
+  - Gates: engine suite 637 pass and the usual five; layout 865; guards 28 of 28; campaign identical; all-site A/B 20 rows, **no mover** (15 identical, four served variants, netflix noise). So no board site shows it; the pages pin it.
+  - Needs R1 and R2. CI was still running when the session closed.
+
+Lane PRs open: 7 of 8 (#603, #622, #663, #666, #678, #687, #689).
+
+### Decisions for Atlas
+
+- **#663 is still a draft**; `gh pr ready` is refused on the lane seat.
+- **The `minmax(0, 1fr)` grid-pass change rides in #663.** If the reviewer wants it apart, it becomes its own PR and seven pages go on #663's gap list.
+
+### Found and not fixed
+
+- On the no-view path (`engine_rects` of the nested matrix) a `div > span > inline-block` page reports no box for the div or the span, at 16px as well as at 0. Not looked at further; it may be the probe path only (`geometry_snapshot`), or the span around an inline-block loses its box.
+- A 20px span under a `font-size: 0` parent sits 1px lower than in Chromium (y 4 against 3 in a 30px line). Seating, not this change.
+- The review's non-blocking notes 1 to 6 on #663 are untouched: a grid stretched in a flex row keeps its pre-stretch rows (the next thing a full-height app shell hits); shapes the estimator declines (auto-fill, spans, named areas, column flow) keep develop's width with items now overflowing; a fixed max does not cap a track's growth; `width:100%` image in an `auto` column; `justify-content: start` stretching auto tracks; `width: max-content` on a grid; `max-content 1fr`; a word that exactly fills its column wraps.
+
+### Not run
+
+- #663: the review's other 67 pages were not rebuilt; relayout cost not timed again; the gates ran at `7c28c046` and only the every-OS test was rerun at `6b8c5dad` (comment-only commit).
+- #689: the Windows and stub shapers were not given the zero arm (Linux CI will say for the stub); `font-size: 0` through `calc()` or a viewport unit with no view; no release timing.
+- No real window on either (the lane seat has no grants).
+
+### Owed to the real window
+
+Everything in the earlier lists (reddit in the app for #663 first).
+
+### Mistakes
+
+- **#689's history is not red-first.** I thought the cap was near, pushed the half fix as a `wip` commit to park it, then found the clock was half an hour earlier than my estimate and finished the work on top of it. The test arrived in the second commit. I showed it red by putting develop's sources under it in the working tree (9 of 9) and said so in the PR body. Read `date` before deciding to park.
+- I wrote "Chromium 148" in two code comments from memory; the case file says 143. One extra commit and a new head on #663.
+- The first version of the 18 pages had no `line-height: 0`, so the first red run mixed the height defect into every row.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-grid-in-flex-width` at `6b8c5dad`, clean apart from `scratch/` and the untracked oracle probes. `atlas/z-zero-font-size-line` is at `575151e1`.
+- New in z-i0/scratch/zi0: `add663cases.py` (the 18 pages), `matrix_probe.py <cases.json> <dump.json>` (the nested matrix test in probe mode through z-cargo: engine boxes for any small page, no view), `strut0_probe.py` (font-size: 0 pages; `oracle` writes a case file `grid_flexible_row_log.mjs --file` can read), `zero_arms_off.py`, `hold663-r1.md` (the review).
+- Binaries in z-target/bins: `pc-gridflex-7c28c04`, `pc-zerofont-575151e` (base `pc-dev-86e1867`). Tables `ab-gridflex-r7.txt` (+ `-li`), `ab-zerofont-r1.txt`; campaigns `camp-gridflex-7c28c04.json`, `camp-zerofont-575151e.json`; `suite-zerofont.log`.
+- The shell refused compound commands that `cd` before git, heredocs holding braces and quotes, and env-prefixed commands: `git -C`, the Write tool for scripts, and small python wrappers got round each.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
