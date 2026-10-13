@@ -2707,3 +2707,63 @@ Everything in the 18:10 and 21:00 lists, plus: a real click on a fixed bar after
 - New in z-i0/scratch/zi0: `fix681_hit.py`, `mk_pr681_r2.py`, `g663_fetch.py`, `g663_run.py`, `g663_live.py`, `g663_reduce.py`, `g663_add_cases.py`, `g663_ledger.py`, `mk_pr663_r4.py`, the four `cnn_*.py`; pages in `g663p/` (the product-UA google page, `static.html`), `g663r/`, `cnnfold/`.
 - Binaries in z-target/bins: `pc-fixed-4711564`, `pc-gridflex-automargin` (built at `c3df3924`). Tables `ab-gridflex-r4.txt`; campaigns `camp-fixed-4711564.json`, `camp-gridflex-c3df392.json`; suite log `suite-663-automargin.log`.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
+
+## 2026-10-13 00:25 Z-lane I0 then D1 (#681 second hold answered; cnn blank region: two causes found, #684 and #685 opened)
+
+Session 23:05 to 00:25 ET. Headless only: no app launch, no window run, no ebay load. Load 6 to 14 throughout (the session's own indexer among it); every figure below was taken under it.
+
+**Package note.** I0's job was #681's second hold; answered by 23:40. Item 2 of the 23:10 order (cnn) is D1's, so I set I0 back to open and worked it under D1, as the 22:30 session did. The lane was at `max_open_prs` (8) at the start; **#680 and #683 landed at 23:51**, which freed two slots, and both went to the cnn fixes. The lane is at 8 again.
+
+### Before -> after
+
+| | before | after |
+|---|---|---|
+| #681, second R1 HOLD @ `6d7f6b32` | a fixed box with `pointer-events: none` (toast container, full-screen decoration) took every click at every scroll position | answered at **`d50b7a4b`** (3 commits, no force-push). `pointer-events` (auto / none, inherited) is on the computed style, parsed at every site `visibility` is; a box that is `pointer-events: none` or not shown is no hit target, its children still are. Red `20064c1a` (4 of 4 new tests fail: the reviewer's two pages, the same rule in the page, hidden boxes), fix `ab508da9` (19 of 19 in the file + a parse test). Chromium 143 agrees on every new assertion (`fixed_scroll_click_log.mjs`, 6 new lines) |
+| the reviewer's cost note (10x slower hit tests on a page with no fixed box) | every pointer move walked the whole tree | taken in the same PR: the layout says once, when stored, whether it has a fixed box the scroll leaves in place; with none a hit test is the pruned page walk alone. A test pins the flag. **Not timed** (the machine was not quiet) |
+| the same change, on pages with no fixed box | a hidden box over a link took the click; a `pointer-events: none` box too | neither does (more than the reviewer asked: flagged on the PR for them to accept or refuse) |
+| #681 gates | | layout 860 pass; css 74 pass; engine suite 580 pass, 11 fail (five usual + six GPU-guard waits, `grid_` 24 of 24 one at a time); campaign identical; all-site A/B vs the head before, 20 rows, no failed capture, no site tied to an arm; receipt in the body |
+| #681 CI | | `script-guards` FAILED at `ab508da9` and R2 stamped FAIL: the declaration census pins 13 gaps / 29 interactive declarations and `pointer-events` is no longer a gap. `d50b7a4b` corrects the two numbers (12 / 26); `script-guards`, `unit-suites`, `js-suites`, `audit` and `selector-key` pass there; `pr-swarm` and `f1-test-compile` were still queued at the close |
+| cnn "content below the first screen is blank" (23:10 order, item 2) | "zone 2's grid is 3041 tall and its content ends 1855 into it; not compared with Chromium" | **compared, like for like (the page cnn serves the product User-Agent, scripts removed, same file in Chromium 143 and the engine): two causes, both fixed, both PRs open.** With both on the static page the first zone is exactly as tall as its content (develop: 2964 tall, 1849 of content); on the live page the 500px bands at 2500 and 3000 have boxes and paint (0 and 0 on develop) |
+| cause 1: `box-sizing: inherit` | `html{box-sizing:border-box} *,:before,:after{box-sizing:inherit}` left every box content-box (`inherit_property` had no arm): cnn's wrapper 1344 wide in a 1280 window | **#684** `0db2986c`: one arm. Red `291ecbf4` (3 of 4), green 4 of 4. Campaign identical. **A/B: four sites move with the arm: cnn 10.92% (the page now fits the window: Subscribe button and right column no longer cut off), lyft 1.74% (the top navigation, missing before, is on screen), squarespace 0.37%, walmart 0.31% (header rows)** |
+| cause 2: `repeat(auto-fit, minmax(25%, 1fr))` | a percentage track counted as no size when repetitions were counted: one column. cnn's three-story rows were stacked full width (wrapper 1322 tall; 232 in Chromium) | **#685** `ee2ac4bf`: a percentage is a share of the container; tracks beside the repeat are subtracted before counting (a second defect the tenth page showed). Red `7d45ccf5` (9 of 10 Chromium pages wrong), green 10 of 10. Layout 864 pass; matrix test passes, ledger unchanged; campaign identical; A/B: no site moves (the grid is below the first screen; google looked arm-tied in the first pass, two repeats show the same frame in both arms) |
+| engine suite for #684 and #685 | | **run once, on a local merge of the two branches, not on each head**: 570 pass, 15 fail = five usual + ten GPU-guard waits (base is from before #680); `grid_` 25 of 25 and `glyph_atlas` 1 of 1 one at a time. Said so in both bodies and both receipts |
+
+### PRs
+
+- **#681** `d50b7a4b` (was `6d7f6b32`): second hold answered, body updated, two comments (the answer; the census counts). **Needs R1 re-review and a new R2 stamp** (the R2 at `ab508da9` is FAIL for the guard that `d50b7a4b` fixes).
+- **#684** `0db2986c`, new: `box-sizing: inherit`. Needs R1 and R2. At the close `script-guards`, `audit` and `selector-key` had passed and the rest were queued (the same for #685).
+- **#685** `ee2ac4bf`, new: percentage tracks in auto-repeat. Needs R1 and R2. Independent of #684 (different files); cnn needs both.
+- Not touched: #663 (still draft; its remaining items are a full suite, now possible without guard noise once develop with #680 is merged in, and reddit in the app), #666, #678, #677 (R1 HOLD at `3f1ff2b7`, so no receipt was due), #603, #622.
+- R2 note asked for by the 23:10 order: Cursor stamped #681 at `6d7f6b32` (PASS, 23:06) and at `ab508da9` (FAIL, the guard). Stamps are arriving again.
+
+### Blockers
+
+- **PR cap: 8 of 8 again** (#681, #684, #685, #678, #666, #663, #622, #603). The next cnn item below has no slot.
+- #666: Pete's word on the 5 s figure. #663: Atlas's word on draft; the window.
+
+### Found and not fixed
+
+- **cnn, after both fixes:** the side columns of the first zone are shorter than Chromium's (static page: card wrappers 257 and 205 tall, 366 and 340 in Chromium), so about 850 px of the left column is empty beside the centre one on the live page. One step taken: on the static page the first card's media link (`a.container__link`) is 0 tall with no child box here, and in Chromium it holds `div.container__item-media-wrapper`, 284 x 160. Why the wrapper has no box is not found (the page has 1040 `display:none` rules; the next step is that element's computed style, by `--diagnose` once #674 is in or a style dump). The live page does draw card images, so this may be a static-page difference only: not established. The third column is 300 wide, 284 in Chromium (a `min-width` that should not apply, or a flex basis; not looked into).
+- **cnn lazy placeholders** (childless inline boxes about 1.095 x their width, 1330 px for a full-width one): still not compared with Chromium's size. The static page is 18376 tall in Chromium and 22769 here with #684.
+- `inherit_property` has an arm per property: `display`, `width`, `height`, `margin`, `padding`, `position`, `overflow`, `opacity` with `inherit` have none (read from the list, not tested).
+- Auto-repeat rows against a definite height: no page yet.
+- The engine, served a page from 127.0.0.1 with `<base href>` to the site, asked 127.0.0.1 for the page's root-relative `url(/fonts/...)` (404s in the local server log). Either `<base>` is not applied to `url()` in inline style sheets or it is my page; not looked into.
+- #681's remaining limits (nested fixed outside its fixed parent; page z-index over a fixed box; `pointer-events` values other than auto/none read as auto) are in its body.
+
+### Owed to the real window
+
+Everything in the earlier lists, plus: a real click through a see-through fixed overlay and on a fixed bar after a scroll (#681; no check exists); cnn and lyft in the app with #684; cnn scrolled to about 2400 px with #684 and #685.
+
+### Mistakes
+
+- **I pushed `ab508da9` to #681 without running the script guards**; a new property arm moves the declaration census and the required check failed. One more commit. Written to memory.
+- **I wrote `scratch/zi0/side.py` over an existing untracked `side.py` without reading it.** Whatever it did is gone; the new one makes an A|B half-size PNG from an `x-<tag>` directory.
+- The first version of `cnn_like.py` matched 22 "zones" in the engine to Chromium's 10 (a regex written with doubled backslashes); `cnn_tree.py` is the corrected tool and the one to use.
+- My first draft of the #681 answer table stated results at the old head that my tests never reached (they stop at the first assertion); corrected before posting to say which figure is mine and which is the reviewer's.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-fixed-under-scroll` at `d50b7a4b`, clean apart from `scratch/` and the untracked oracle probes. A local-only branch `zi0-local-cnn-both` (the two cnn fixes merged, for the suite and the cnn check) is not pushed.
+- New in z-i0/scratch/zi0: `cnn_like.py`, `cnn_tree.py`, `cnn_rules.py`, `cnn_decl.py`, `rects_both.py`, `census_now.py`, `side.py`, `pe681_fix.py`, `pe681_append.py`, `mk_pr681_r3.py`, `mk_pr_cnn.py`; pages in `cnnlike/` (served and static cnn, trees for develop, #684 and both) and `autofit/`.
+- Binaries in z-target/bins: `pc-fixed-ab508da`, `pc-dev-f622466`, `pc-boxinherit` (`0db2986c`), `pc-autorepeat` (`ee2ac4bf`), `pc-cnn-both` (the local merge). Tables `ab-fixed-pe.txt`, `ab-boxinherit.txt`, `ab-autorepeat.txt` (+ `-g2`, `-g3`); campaigns `camp-fixed-ab508da.json`, `camp-dev-f622466.json`, `camp-boxinherit.json`, `camp-autorepeat.json`; suite logs `suite-681-pe.log`, `suite-cnn-both.log`.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
