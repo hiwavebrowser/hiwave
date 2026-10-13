@@ -3077,3 +3077,62 @@ Everything in the earlier lists; first reddit in the app for #663, and hover on 
 - New in z-i0/scratch/zi0: `add663cases2.py` (the 34 pages), `suite.py <log> [filter]` (full engine suite through z-cargo; run it in the background), `guards.py` (the 28 script guards as CI runs them), `abcrop.py <tag> <site>` (where two A/B frames differ, with a side-by-side PNG), `timing687.py <rounds>` (the hover timing test, both arms interleaved), `splice687*.py` (how the rework was applied), `fill663r8.py`, `fill687r2.py`, `body687.py`.
 - Binaries in z-target/bins: `pc-gridflex-b208b46`, `pc-hover-7c9ea5d` (base `pc-dev-86e1867`). Tables `ab-gridflex-r8.txt` (+ `-s2`), `ab-hover-r2.txt` (+ `-s2`), `timing-687-r2.txt`; campaigns `camp-gridflex-b208b46.json`, `camp-hover-7c9ea5d.json`; `suite-663-r3.log`, `suite-687-r2.log`; receipts `receipt-663-r8.json`, `receipt-687-r2.json`.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
+
+## 2026-10-13 16:50 Z-lane D1 (#663 narrowed by shape at 6f0cd3f7; #689 R1 HOLD answered at ba05a0a1; #687 not started)
+
+Session 15:05 to 16:55 ET, headless. Package D1, taken from the 14:55 note and then the 15:50 note's order (#663 narrowing, #689, #687). No receipt step for another seat was run.
+
+### Before -> after
+
+- **#663 (grid as a flex item): third R1 HOLD @ `b208b460` answered at `6f0cd3f7`, narrowed by shape as the 14:55 note decided.** Two commits, red first, no force-push: `8a240b78` (33 pages with the pinned Chromium 143's boxes, 19 red), `6f0cd3f7` (the narrowing).
+  - `grid_columns_content_width` returns `None` (develop's walk) for a grid with a `fit-content()` column or a flexible column with a factor below 1.
+  - The fixed-minimum filter in `distribute_span_contributions` applies to span-1 items only. The reviewer's header over `auto minmax(0,1fr)`: columns 150 and 450 -> 40 and 560, as Chromium; seven header shapes match.
+  - 21 pages are named gaps; 17 of them have the walk's answer pinned in the case file (`engine_boxes`), and both tests fail if a pinned gap drifts or starts to match.
+  - **Sweep at small scale (420 seeded pages, pinned Chromium, develop / `b208b460` / `6f0cd3f7`): pages whose grid width is further from Chromium than develop's 15 -> 0.** Pages whose grid width equals Chromium's: develop 209, `b208b460` 368, `6f0cd3f7` 294.
+  - Gates at `6f0cd3f7`: engine suite 643 pass and the usual five; layout 865; 28 of 28 guards; campaign identical; all-site A/B 20 rows: bing and google (this PR's, as every round), **walmart 23% arm-tied, and `b208b460` against `6f0cd3f7` on walmart is 0.00%** (the PR's product-row change on the page walmart served this hour, not this round), linkedin / shopify / netflix one odd capture each, 14 identical. Receipt and tables in the comment on the PR. Still draft. Needs R1 re-review and R2.
+- **#689 (`font-size: 0`): R1 HOLD @ `575151e1` answered at `ba05a0a1`.** Five commits, each red test before its fix.
+  - An inline box reports the atomic inlines inside it (inline-block, image, control; any depth of inline boxes) to the line, and they sit on the baseline. The reviewer's page (`<a><img 40x30></a>` then a block): block height 0 -> 30, next block's top 0 -> 30, as Chromium (develop 16).
+  - **Second cause, in the tree build: an inline box holding only an inline-block was dropped, and a block holding nothing else with it** (`has_content_children`). `<span>` around a 100x10 inline-block: no box -> 10 tall, as Chromium.
+  - 16 new pages (15 text-free on every OS, one named gap among them: an inline box does not break across lines) and a macOS test with text.
+  - **A regression of my own, caught by the A/B and fixed before the push:** cnn's lead headline (`<a><h2 inline-block>`, two lines) was 54px too tall at `4e8eaec5`. Reduced (114 for Chromium's 76), red test, fixed at `ba05a0a1`; cnn is 0.00% again.
+  - Gates at `ba05a0a1`: engine suite 638 pass and the usual five; layout 865; campaign identical; all-site A/B 20 rows: **yahoo's logo moves 2px up to where Chrome has it** (ink rows 20 to 43 in Chrome's board frame and here, 22 to 45 on develop), lyft's logo 19px up (toward Chrome's frame, not shown equal), a wikipedia lock icon 3px up (direction not established), cnn none, the rest noise or identical. Needs R1 re-review and R2 (its R2 stamp was at the old head).
+- **#687 (hover): second R1 HOLD @ `7c9ea5d9` not started** (third in the 15:50 note's order; no time left).
+
+Lane PRs open: 7 of 8 (#603, #622, #663, #666, #678, #687, #689).
+
+### Decisions for Atlas
+
+- **The narrowing of #663 costs 74 of 420 sweep pages** that `b208b460` had at Chromium's grid width (368 -> 294; develop 209), among them two pages earlier rounds fixed (`0.5fr 0.25fr` in a row, `0.1fr 0.1fr`). The reviewer's own three-rule patch, measured by the reviewer and not built here, took worse-than-develop to 0 without that loss. If you would rather have that on #663 than a follow-up, say so; otherwise the follow-up below wins the pages back.
+- **The follow-up issue for the three classes is NOT filed: `gh issue create` is refused on the lane seat.** The text is ready in `z-i0/scratch/zi0/issue663followup.md` (title: "Grid sizing follow-up to #663: fit-content() and sub-1 fr columns in a shrink-to-fit grid, spans over minmax(0,1fr) and a content track"). File it, or the next session opens the follow-up PR directly.
+- **#663 is still a draft**; `gh pr ready` is refused on the lane seat.
+- **#689 now reaches every link or span around an image or inline-block, at any font size, not only `font-size: 0`.** That is what the hold asked for, and it is why yahoo and lyft move. If you want it split (the tree-build change apart from the line change), the split is clean: `has_content_children` is one hunk in `rustkit-engine/src/lib.rs`.
+
+### Found and not fixed
+
+- An inline box lays its children out in one row and never breaks across lines (`layout_inline`): two 100px inline-blocks in a span in a 150px block are one line. Named gap on #689.
+- `inline_wrapped_tail` counts wrapped text inside an inline-block descendant as the inline child's own lines. It gives the right height for cnn's headline by accident of shape; an inline box holding both wrapped text and a tall atomic inline is not right.
+- #663's sweep: ten pages still worse than develop in the boxes inside the grid (none in its width): spans in a flex item or table cell, `min-content` / `max-content` columns around `overflow: hidden` items, and the columns inside the shapes left to the walk.
+
+### Not run
+
+- #663: the reviewer's 3,000-page sweep; develop was not built to fill `engine_boxes` (they are this head's walk; four agree with the reviewer's develop numbers); the every-OS test without the `headless` feature; no timing.
+- #689: the reviewer's "Hi" page (text at 16px) and 44 probe pages; no view test of the new pages; the A/B ran beside the engine suite and the load was not read.
+- No real window on either (the lane seat has no grants).
+
+### Owed to the real window
+
+Everything in the earlier lists; first reddit in the app for #663; for #689 a page with linked logo images (yahoo, lyft).
+
+### Mistakes
+
+- **I shipped a regression into my own A/B before any test saw it** (#689 `4e8eaec5`, cnn 54px). I added the atomic floor in the block loops without reading the wrapped-text branch three lines below it. The A/B caught it; nothing was pushed until it was fixed.
+- The fix commit `6f0cd3f7` on #663 says twenty pages are pinned; 17 are (21 gaps). Corrected in the PR comment; the commit message stands (no force-push).
+- My first sweep table compared the grid's whole box and reported one page worse on width; it was height. The table on the PR compares width alone.
+- Three compound shell commands were refused and ran none of their parts (a `cd` before git, a pipe into `grep -v`, a brace-and-quote heredoc). Each cost a round trip.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-zero-font-size-line` at `ba05a0a1`, clean apart from `scratch/` and untracked oracle files (`tools/parity_oracle/zi0_sweep663.json`, `zi0_zero689*.json`). `atlas/z-grid-in-flex-width` is at `6f0cd3f7`.
+- New in z-i0/scratch/zi0: `add663cases3.py`, `pin663.py`, `sweep663_gen.py <pages> <seed>`, `sweep663_cmp.py matrix | table <arm>=<dump> ...`, `sweep663_show.py <page> ...`, `t663.py <test filter> [cargo args]` (one engine lib test through z-cargo), `zero689_cases*.py`, `inkrows689.py` and `bands689.py` (a window's ink against the board's Chrome frame), `side689.py`, `gap689.py <layout A> <layout B> <x> <y0> <y1>` (which box grew between two layout dumps), `edit689b.py`, `edit689c.py`, `fill689r2.py`, `issue663followup.md`.
+- Binaries in z-target/bins: `pc-gridflex-6f0cd3f`, `pc-zerofont-4e8eaec`, `pc-zerofont-ba05a0a` (base `pc-dev-86e1867`). Tables `ab-gridflex-r9.txt` (+ `-s2`, `-old`), `sweep663-table.txt`, `ab-zerofont-r2.txt`, `ab-zerofont-r3.txt`; campaigns `camp-gridflex-6f0cd3f.json`, `camp-zerofont-4e8eaec.json`, `camp-zerofont-ba05a0a.json`; `suite-663-r4.log`, `suite-689-r2.log` to `-r4.log`; receipts `receipt-663-r9.json`, `receipt-689-r2.json`.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
