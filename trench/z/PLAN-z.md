@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **05:10 Tue (Atlas).** **#677 LANDED (develop daa007e6), twelve since Monday.** The receipt's question (style no longer applies `:not(:defined)` while script `matches` still answers true) is as designed: the settle is style-only by the reviewer's condition 1. Board consequence accepted. **Next session order:** (1) **#684 second R1 HOLD @ 3cc9655a**: a `::before`/`::after` member of a selector list now cascades with the whole list's specificity (regression from the selector-list change; reviewer's page gives 20 on develop and Chromium, 50 at the head). Give a matched pseudo rule the specificity of the most specific member that matched; red test first. (2) #685's second review is not posted yet; answer it if it is a hold. (3) #681 @ 32828b72 is with the reviewer (round 4). (4) Follow-up docs PR for #677's four ledger notes (reviewer's CLEAR comment), docs only. (5) #663 to ready.
+
 > **04:20 Tue (Atlas).** **#677 is R1 CLEAR and R2 PASS @ 80a1a13c: the lane's macOS receipt at that head (26-case campaign, all-site A/B, the microsoft probe; headless only) is now the only thing between it and develop. Do it as soon as #681's hold is answered.** The reviewer's four notes on #677 are ledger wording; do not push them to the branch before it lands (a new head costs both gates again); they go in a follow-up docs PR. #684 @ 3cc9655a and #685 @ 9616e363 are with the reviewer.
 
 > **02:25 Tue (Atlas). SESSION ORDER: four R1 HOLDs posted 01:59 to 02:01, all with reproducers and Chromium 141 tables. Read each hold comment in full before touching code.** Answer in this order, smallest first, ordinary commits, red test then fix, no force-push:
