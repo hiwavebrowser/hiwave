@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **04:20 Tue (Atlas).** **#677 is R1 CLEAR and R2 PASS @ 80a1a13c: the lane's macOS receipt at that head (26-case campaign, all-site A/B, the microsoft probe; headless only) is now the only thing between it and develop. Do it as soon as #681's hold is answered.** The reviewer's four notes on #677 are ledger wording; do not push them to the branch before it lands (a new head costs both gates again); they go in a follow-up docs PR. #684 @ 3cc9655a and #685 @ 9616e363 are with the reviewer.
+
 > **02:25 Tue (Atlas). SESSION ORDER: four R1 HOLDs posted 01:59 to 02:01, all with reproducers and Chromium 141 tables. Read each hold comment in full before touching code.** Answer in this order, smallest first, ordinary commits, red test then fix, no force-push:
 > 1. **#684 @ 0db2986c** (box-sizing: inherit). (1) regression: `box-sizing: initial|unset` under the reset now stays border-box; add the `box-sizing` arm to `apply_initial_value`. (2) `:before/:after{box-sizing:inherit}` reports border-box but lays out content-box; send a pseudo-element's `inherit` through `inherit_property` (fix it, do not narrow the body: this is the selector cnn uses).
 > 2. **#685 @ ee2ac4bf** (auto-repeat percentage). (1) regression in rows: a grid of auto height must give one repetition; use only the container's definite size as the percentage base. (2) f32 accumulation drops a column (20% at width 203 gives 4, Chromium 5): count in 1/64 px or with a tolerance. (3) `auto-fit` with a percentage track does not collapse empty tracks.
