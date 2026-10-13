@@ -3039,7 +3039,7 @@ Session 13:19 to 14:55 ET, headless. Package D1, taken from the 13:25 note in it
   - **On the review's page (5,704 boxes, release, this Mac at load 12, arms interleaved): the two builds with compare and patch are 1.7 ms** (the review measured 37 + 31.8). Paint-only move 190 ms against 221 laid out; a miss 222 against 221; an ordinary relayout the same in both arms (it is develop's code again).
   - **What is left of a paint-only hover is not build or layout: render 143 ms, geometry snapshot 35, display list 6.5.** Those are the next cost items.
   - Ten tests (five new on a 40-card page with positional selectors, each against a full relayout, with the count of nodes built). Suite 646 pass and the usual five; campaign identical; A/B no mover (five sites one odd capture of four with a 0.00% cross pair; squarespace timed out three captures, clean when repeated).
-  - PR body headed with a note that the mechanism changed. Needs R1 re-review and R2; CI was running at close.
+  - PR body headed with a note that the mechanism changed. Needs R1 re-review and R2. Checks at 15:01: every job green (the four swarm shards, unit suites, test compile, guards); `pr-aggregate` still pending.
 
 Lane PRs open: 7 of 8 (#603, #622, #663, #666, #678, #687, #689). #689 untouched (first review running).
 
