@@ -3020,3 +3020,60 @@ Everything in the earlier lists (reddit in the app for #663 first).
 - Binaries in z-target/bins: `pc-gridflex-7c28c04`, `pc-zerofont-575151e` (base `pc-dev-86e1867`). Tables `ab-gridflex-r7.txt` (+ `-li`), `ab-zerofont-r1.txt`; campaigns `camp-gridflex-7c28c04.json`, `camp-zerofont-575151e.json`; `suite-zerofont.log`.
 - The shell refused compound commands that `cd` before git, heredocs holding braces and quotes, and env-prefixed commands: `git -C`, the Write tool for scripts, and small python wrappers got round each.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
+
+## 2026-10-13 14:50 Z-lane D1 (#663 second R1 HOLD answered; #687 R1 HOLD answered: hover builds only what changed)
+
+Session 13:19 to 14:55 ET, headless. Package D1, taken from the 13:25 note in its order. No receipt step for another seat was run.
+
+### Before -> after
+
+- **#663 (grid as a flex item): second R1 HOLD @ `6b8c5dad` answered at `b208b460`.** Two commits, red first, no force-push: `bcbe12d2` (34 text-free pages with the pinned Chromium 143's boxes, 32 red), `b208b460` (fix).
+  - **Blocking 1, minimum contribution.** Under a min-content constraint a column with an `auto` minimum (`auto`, `minmax(auto, ..)`, `<n>fr`) is sized from its items' minimum contribution: a `min-width` length, padding and border alone for a scroll container, min-content otherwise. The reviewer's page (two `1fr` columns of 150px words in `overflow: hidden` items, `flex: 1 1 0` beside 100px in 300): 300 -> 200, as develop and Chromium.
+  - **Blocking 2, a factor below 1.** `0.25fr 1fr`: 180 -> 120. `0.1fr 0.1fr`: 72 -> 70. The track's own base term stays (two pages pin `minmax(200px, 1fr) 1fr` = 400).
+  - **One more grid-pass change, flagged for the reviewer:** with the estimator right, 18 pages still failed on the columns inside the grid. An item that spans only flexible columns now contributes its `min-width` length and not its content (two `1fr` columns of `min-width: 0` items are 50 each in 100, were 150). This reaches every grid. Offered as its own PR if the reviewer prefers.
+  - **Six of the 34 pages are named gaps** (grid width right, columns not): `auto` columns with `min-width` items (the grid pass has one contribution per item; an `auto` column needs two), and a `0fr` column (0 wide, Chromium 60). The every-OS test reads the gap list now. View tests are six parts for 91 pages.
+  - Gates at `b208b460`: engine suite 643 pass and the usual five; layout 865; 28 of 28 guards; campaign identical; all-site A/B 20 rows: bing 0.19% and google (this PR's, as every round), linkedin a served headline text, shopify served variants on both arms, lyft one timed-out capture then clean, netflix noise, 14 identical. Checks green, CLEAN. Still draft. Needs R1 re-review and R2.
+  - Correction posted: my last answer said Linux CI ran the every-OS test. There is no Linux `cargo test` job; it runs in the macOS unit suite.
+- **#687 (hover cost): R1 HOLD @ `ffb9fabd` answered at `7c9ea5d9`**, one commit, reworked as the 13:25 note asked.
+  - No tree is kept and no clone runs on a full relayout. A pointer restyle builds only the elements that gained or lost `:hover`/`:active` and a compound can match, with what is under them, twice (old chains, new chains); siblings on the way down count as siblings and get no box. Paint-only: copied onto the laid-out boxes. A sibling combinator in a hover selector, an unplaced pseudo-class, or a change on body takes the full path.
+  - **On the review's page (5,704 boxes, release, this Mac at load 12, arms interleaved): the two builds with compare and patch are 1.7 ms** (the review measured 37 + 31.8). Paint-only move 190 ms against 221 laid out; a miss 222 against 221; an ordinary relayout the same in both arms (it is develop's code again).
+  - **What is left of a paint-only hover is not build or layout: render 143 ms, geometry snapshot 35, display list 6.5.** Those are the next cost items.
+  - Ten tests (five new on a 40-card page with positional selectors, each against a full relayout, with the count of nodes built). Suite 646 pass and the usual five; campaign identical; A/B no mover (five sites one odd capture of four with a 0.00% cross pair; squarespace timed out three captures, clean when repeated).
+  - PR body headed with a note that the mechanism changed. Needs R1 re-review and R2; CI was running at close.
+
+Lane PRs open: 7 of 8 (#603, #622, #663, #666, #678, #687, #689). #689 untouched (first review running).
+
+### Decisions for Atlas
+
+- **#663 is still a draft**; `gh pr ready` is refused on the lane seat.
+- **#663 now carries two grid-pass changes beside the estimator** (`minmax(0,1fr)` from the last round, flexible columns with `min-width` items from this one). Each is offered as a separate PR in its comment. If you want #663 back to the flex-item case alone, the split is: estimator + flex pass stay; the two grid-pass changes and 21 pages move.
+- **Hover is still about 190 ms per move on a 5,700-box page after #687.** The time is render and the geometry snapshot, which a paint-only restyle repeats for the whole page. That is the next D1 cost item (damage-limited repaint; snapshot only the changed boxes), if you want it before the cnn/ebay window check.
+
+### Found and not fixed
+
+- `.card:active{outline:2px solid navy}` changed nothing in the display list in a test (the restyle ran, short path taken). Either outline is not painted for that box or the shorthand is not read. Not looked at; the reviewer's probe found hover outlines matching Chromium, so check before believing either.
+- The grid pass has one width contribution per item, used as both the minimum and the content size of a column. `auto` columns with `min-width: 0` items cannot be right until it has two.
+- A `0fr` column is 0 wide (Chromium: its item's min-content). Not touched: `grid-template-rows: 0fr` with a clipped child is the accordion pattern, and a quick fix would make that row min-content tall.
+
+### Not run
+
+- #663: the reviewer's other pages were not rebuilt; relayout cost not timed; no release timing.
+- #687: no live-site hover probe at the new head; no develop-binary third arm (the off switch runs develop's relayout); shadow-tree and `display: contents` roots have no test (they fall to the full path by the box lookup).
+- No real window on either (the lane seat has no grants).
+
+### Owed to the real window
+
+Everything in the earlier lists; first reddit in the app for #663, and hover on cnn, facebook and ebay search for #687 (ebay by hand only).
+
+### Mistakes
+
+- **I misread the clock twice and nearly parked #687 with an hour left.** I estimated elapsed time from the amount of work; `date` said 14:02 when I thought 14:30. I had already written "not starting code I can't verify". Read `date` before any decision about time (the 13:00 session made the same mistake the other way).
+- The first run of the full suite was started in the foreground: the 10-minute limit moved it to the background, where it would have been stopped 10 minutes later. It finished in time by luck. Start it in the background and wait on its log.
+- Two of my five new hover tests failed on their own pages, not on the engine (a "nowhere" point that was over card 14; a pressed style the display list does not show).
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-hover-restyle-no-layout` at `7c9ea5d9`, clean apart from `scratch/` and the untracked oracle probes. `atlas/z-grid-in-flex-width` is at `b208b460`.
+- New in z-i0/scratch/zi0: `add663cases2.py` (the 34 pages), `suite.py <log> [filter]` (full engine suite through z-cargo; run it in the background), `guards.py` (the 28 script guards as CI runs them), `abcrop.py <tag> <site>` (where two A/B frames differ, with a side-by-side PNG), `timing687.py <rounds>` (the hover timing test, both arms interleaved), `splice687*.py` (how the rework was applied), `fill663r8.py`, `fill687r2.py`, `body687.py`.
+- Binaries in z-target/bins: `pc-gridflex-b208b46`, `pc-hover-7c9ea5d` (base `pc-dev-86e1867`). Tables `ab-gridflex-r8.txt` (+ `-s2`), `ab-hover-r2.txt` (+ `-s2`), `timing-687-r2.txt`; campaigns `camp-gridflex-b208b46.json`, `camp-hover-7c9ea5d.json`; `suite-663-r3.log`, `suite-687-r2.log`; receipts `receipt-663-r8.json`, `receipt-687-r2.json`.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
