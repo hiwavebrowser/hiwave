@@ -2837,3 +2837,71 @@ Everything in the earlier lists, plus: bing's top scrim and cnn / lyft with #684
 - New in z-i0/scratch/zi0: `r_receipt.py` (receipt.py wrapper that refuses host paths), `r_post.py` (comment + pointer in the lane's own PR body), `r_comment_only.py` (comment on another seat's PR), `r_guards.py` (all script guards), `r684_pseudo_list.py`, `r684_bing_rules.py`, `r685_fix.py`, `r681_fix.py`, `r677_probe_add.py` (temporary engine test for a live probe; `git checkout` the file after), `autofit/mk_cases.py` (23 pages).
 - Binaries in z-target/bins: `pc-dev-bbd9296`, `pc-boxinherit-3cc9655`, `pc-autorepeat-9616e36`, `pc-fixed-32828b7`, `pc-677-80a1a13`. Tables `ab-boxinherit-r2.txt`, `ab-autorepeat-r2.txt` (+ `-s2`, `-s3`), `ab-677-r3.txt` (+ `-w2`, `-w3`); campaigns `camp-dev-bbd9296.json` and one per binary; suites `suite-684-r2.log`, `suite-685-r2.log`, `suite-681-r4.log`; timings `timing-681-before.log`, `timing-681-after.log`; `msprobe-677.log`.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
+
+## 2026-10-13 07:35 Z-lane D1 (second R1 holds answered: #684, #685; #686 opened for the #677 ledger notes; #663 merged with develop and measured)
+
+Session 05:55 to 07:35 ET. Headless only: no app launch, no window run, no ebay load. Load 6 to 20 throughout (mostly from outside the session). Work followed the 06:00 order (#684 hold, #685 hold, the #677 ledger docs PR, #663); nothing pushed to #684 or #685 after the 06:55 note. The prompt's hand-test CONSEQUENCE line does not exist in this week's plan, and the lane has no screen grants, so no driver work was attempted.
+
+### Before -> after
+
+| | before | after |
+|---|---|---|
+| #684 second R1 HOLD @ `3cc9655a`: a `::before` / `::after` list member cascades with the whole list's specificity | `.c::before, #zz .c::before {width:50px}` beats a later `.d::before {width:20px}`: 50 (Chromium and develop 20) | fixed at **`63d3a6fe`**: a pseudo rule cascades with the most specific member that matches and names the pseudo-element (`pseudo_list_base` gives per-member specificities, both paths use `matched_specificity`). 20. The older case the review noted (`#zz::before, .c::before`, 50 on develop) is 20 too |
+| #684, found by the fix's own test: one-colon `:before` / `:after` scored as a pseudo-class | `:before {…}` (0,1,0) beat `span::before {…}` (0,0,2) | scored as a pseudo-element, (0,0,1) |
+| #684 gates | | red first (`7cf382a4`); 16 test pages give the same widths in the oracle's pinned Chromium; develop `44d3c671` merged in (one conflict, both arms kept); engine suite 634 pass, 6 fail (five usual + develop's own `:defined` pin, below); 28 script guards; campaign identical; A/B vs develop: the same movers as last round (cnn 9.03%, bing 5.83%, lyft 1.74%, squarespace 0.37%); previous head against this head on cnn, bing, linkedin: nothing moves. **R1 CLEAR and R2 PASS at `63d3a6fe`, checks green, merge CLEAN (seen 07:30)** |
+| #685 second R1 HOLD @ `9616e363`: `auto-fit` loses the gutter after collapsed tracks | `#i2` at 120 (Chromium and develop 140) | fixed at **`89a9ccb8`**: `GridTrack::collapsed` flag; `position_tracks` adds a gutter before every open track after the first open one; `total_gutters` counts open tracks. 140, the sidebar page 760, rows 100, the pixel form 140 (was wrong on develop too) |
+| #685, the review's related note: a `0px` track loses its gutters | `100px 0px 100px`, gap 20: 0, 100, 100 (Chromium 0, 120, 140) | fixed by the same flag, in positions, auto height, `min-height` free space and content alignment. **Wider than the hold: every empty auto row or column keeps its gutters too** |
+| #685 on a live site | lyft's hero flush at x 0 | **x 24, as Chromium** (lyft's page wrapper is a grid `0px 1232px 0px` with a 24px gap; read from the live page in the oracle's Chromium). The A/B's only mover: lyft 23.52% |
+| #685 gates | | red first (`8b6efa68`, 12 of 36 pages wrong); 35 of 36 match Chromium, one in `GAPS` (an empty auto column still takes the free space under `justify-content: start`); layout 865 pass; engine suite 627 pass, 6 fail (the same six); 28 script guards; campaign identical; A/B: lyft only. **R1 CLEAR and R2 PASS at `89a9ccb8`, checks green, merge CLEAN (seen 07:30)** |
+| #677's four ledger notes (05:10 note, item 4) | owed | **#686** `11b97c6e` opened: three sentences in the `:defined` settle row of `docs/LIMITS_LEDGER.md`, one test comment. **R1 CLEAR and R2 PASS at head, checks green (seen 07:30)** |
+| develop's macOS engine suite | six failures since #677 landed, not five: `rule_prefilter_tests::every_element_is_defined_until_custom_elements_can_upgrade` fails on develop `44d3c671` (macOS-only pin of the rule #677 replaced; the Linux reviews and CI do not run it) | re-pinned and renamed in #686, as its own commit |
+| #663 (draft) at `57dd5240`, behind develop | no full suite at a merged head | **`a6e36970`**: develop `44d3c671` merged in (no conflict); engine suite 630 pass, 6 fail (the same six; no grid, flex, matrix or GPU-guard failure); layout 864 pass; campaign identical; A/B vs develop: google 6.33% and bing 0.19% (this PR's, as before), nothing else tied to the arm; receipt posted. Still draft |
+
+### PRs
+
+- **#684** `63d3a6fe` (was `3cc9655a`): hold answered, receipt posted. R1 CLEAR + R2 PASS at head. **Ready for Atlas to land.**
+- **#685** `89a9ccb8` (was `9616e363`): hold answered, receipt posted. R1 CLEAR + R2 PASS at head. **Ready for Atlas to land.** It and #684 both touch `docs/` or shared files only lightly; neither was tested merged with the other this round.
+- **#686** `11b97c6e` (new): R1 CLEAR + R2 PASS at head. Ready for Atlas to land. It should go in before the next engine-suite run is read: it takes develop's Mac failures back to five.
+- **#663** `a6e36970` (was `57dd5240`), draft: merge only, receipt posted, checks green. Needs a new R2 stamp and Atlas's word on draft.
+- Not touched: #666, #678, #603, #622.
+
+### Blockers
+
+- None for the lane. PR cap: 8 of 8 (#684, #685, #686, #663, #666, #678, #622, #603) until one lands.
+- #663: reddit in the app (window). #666: Pete's word on the 5 s figure.
+
+### For Atlas to decide
+
+- **#685's widening.** Empty auto rows and columns now keep their gutters, as Chromium does. It is the right rule and lyft confirms it, but only 13 pages and one site stand behind it; a grid with an empty track and a gap on a site outside the 20 will move.
+- **#686 carries a test commit**, though the order said docs only: the stale `:defined` pin. It is its own commit (`11b97c6e`) and can be dropped.
+- **#663 out of draft:** the suite, campaign and A/B at a merged head are now there; reddit in the window is the only item left on the list.
+
+### Found and not fixed
+
+- Grid: under `justify-content: start` an empty `auto` column still takes the free space (360 wide, 0 in Chromium). In #685's `GAPS`.
+- `getComputedStyle(el, '::before')` answers with the element's style; upper-case `::BEFORE` does not match; a border-box flex item with `height: 10px` and padding is 10 tall (Chromium 30). From the #684 review, not taken.
+- netflix differs about 2% in every pair of every A/B this session, inside the arms too: a small mover there cannot be seen with this tool.
+
+### Not run (said on each PR)
+
+- #684: the 15 sites other than cnn, bing and linkedin were not compared previous head against new head.
+- #685: no live-site search for grids with an empty track and a gap beyond the 20-site A/B; lyft compared with Chromium only by the hero's left edge.
+- #686: no campaign, A/B or full suite (ledger row, a comment, one test's expectations).
+- #663: the machine was not quiet for the suite (load 12 to 18).
+
+### Owed to the real window
+
+Everything in the earlier lists, plus: lyft's hero with #685 (24px side gutters); bing's top scrim and cnn / lyft with #684; reddit with #663.
+
+### Mistakes
+
+- I started `test -p rustkit-layout` while the #663 engine suite held the build lease; it queued for ten minutes and the campaign chained after it with it.
+- I read the #663 A/B as cut off at 18 rows and started cnn and weather again; the first run was still going, so the two overlapped and the table has both sites twice. Said on the PR; the first pass's rows are the clean ones.
+- The #685 comment draft named the fix commit by a hash I had not read from git; caught before posting (`19fd1ad3`).
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-grid-in-flex-width` at `a6e36970`, clean apart from `scratch/` and the untracked oracle probes.
+- New in z-i0/scratch/zi0: `r684_spec_fix.py`, `r684_spec_pages.py` + `r684_spec_chromium.py` (the 16 test pages through the pinned Chromium, in `spec684/`), `r685_gutter_fix.py`, `r685_lyft_probe.js` (an element's ancestors with Chromium's computed grid columns; run with `zi0_eval_url.mjs`), `r677_ledger_notes.py`; `autofit/mk_cases.py` now writes 36 pages.
+- Binaries in z-target/bins: `pc-dev-44d3c67`, `pc-boxinherit-63d3a6f`, `pc-autorepeat-89a9ccb`, `pc-gridflex-a6e3697`. Tables `ab-boxinherit-r3.txt` (+ `-heads`), `ab-autorepeat-r3.txt`, `ab-gridflex-r5.txt` (+ `-s2`); campaigns `camp-dev-44d3c67.json` and one per binary; suites `suite-684-r3.log`, `suite-685-r3.log`, `suite-663-r5.log`.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
