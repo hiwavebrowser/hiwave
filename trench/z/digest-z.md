@@ -2860,7 +2860,7 @@ Session 05:55 to 07:35 ET. Headless only: no app launch, no window run, no ebay 
 ### PRs
 
 - **#684** `63d3a6fe` (was `3cc9655a`): hold answered, receipt posted. R1 CLEAR + R2 PASS at head. **Ready for Atlas to land.**
-- **#685** `89a9ccb8` (was `9616e363`): hold answered, receipt posted. R1 CLEAR + R2 PASS at head. **Ready for Atlas to land.** It and #684 both touch `docs/` or shared files only lightly; neither was tested merged with the other this round.
+- **#685** `89a9ccb8` (was `9616e363`): hold answered, receipt posted. R1 CLEAR + R2 PASS at head. **Ready for Atlas to land.** #684 and #685 were not tested merged with each other this round, and I did not check which files they share.
 - **#686** `11b97c6e` (new): R1 CLEAR + R2 PASS at head. Ready for Atlas to land. It should go in before the next engine-suite run is read: it takes develop's Mac failures back to five.
 - **#663** `a6e36970` (was `57dd5240`), draft: merge only, receipt posted, checks green. Needs a new R2 stamp and Atlas's word on draft.
 - Not touched: #666, #678, #603, #622.
