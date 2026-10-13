@@ -2767,3 +2767,73 @@ Everything in the earlier lists, plus: a real click through a see-through fixed 
 - New in z-i0/scratch/zi0: `cnn_like.py`, `cnn_tree.py`, `cnn_rules.py`, `cnn_decl.py`, `rects_both.py`, `census_now.py`, `side.py`, `pe681_fix.py`, `pe681_append.py`, `mk_pr681_r3.py`, `mk_pr_cnn.py`; pages in `cnnlike/` (served and static cnn, trees for develop, #684 and both) and `autofit/`.
 - Binaries in z-target/bins: `pc-fixed-ab508da`, `pc-dev-f622466`, `pc-boxinherit` (`0db2986c`), `pc-autorepeat` (`ee2ac4bf`), `pc-cnn-both` (the local merge). Tables `ab-fixed-pe.txt`, `ab-boxinherit.txt`, `ab-autorepeat.txt` (+ `-g2`, `-g3`); campaigns `camp-fixed-ab508da.json`, `camp-dev-f622466.json`, `camp-boxinherit.json`, `camp-autorepeat.json`; suite logs `suite-681-pe.log`, `suite-cnn-both.log`.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
+
+## 2026-10-13 04:55 Z-lane D1 then I0 (three R1 holds answered: #684, #685, #681; #677 receipt posted)
+
+Session 03:05 to 04:55 ET. Headless only: no app launch, no window run, no ebay load. Load 6 to 16 throughout. Work followed the 02:25 order (smallest first), then the 04:20 note (#677 receipt after #681).
+
+### Before -> after
+
+| | before | after |
+|---|---|---|
+| #684 R1 HOLD @ `0db2986c` (1): `box-sizing: initial / unset` under the reset stays border-box | 200 wide, border-box (Chromium 230, content-box) | fixed at **`3cc9655a`**: `apply_initial_value` has the arm; both keywords 230 and content-box |
+| #684 (2): `:before, :after { box-sizing: inherit }` lays out content-box | 130 wide (Chromium 100) | fixed, **with a second cause under the one the review named**: a pseudo-element's `inherit` now goes through `inherit_property`, AND a `::before` / `::after` member is matched anywhere in a selector list. The list was taken whole, so only its last member could name the pseudo-element: `*, :before, :after` never styled a `::before`. A bare `::before { content }` now matches every element too (it matched none). 100 wide for both pseudo-elements |
+| #684 gates | | 7 of 7 in the file (red 2 of 6, then 3 of 7); engine suite alone on the branch with develop merged in: 585 pass, 6 fail = five usual + one pin recounted in `3cc9655a` (4 boxes to 8, bare `::before`); no GPU-guard failure; 28 script guards pass; campaign identical; A/B vs develop `bbd92964`: cnn 11.25%, lyft 1.74%, squarespace 0.37%, walmart 0.31% as before, **bing 5.83% new** (top 48 px: the page's scrim gradient is a three-member `::before` list and only its last member matched before), netflix a served variant |
+| #685 R1 HOLD @ `ee2ac4bf` (1): auto-repeat rows of an auto-height grid, four rows where Chromium makes one | regression | fixed at **`9616e363`**: a percentage row track counts only against the container's definite height |
+| #685 (2): f32 count drops a column (20% at 203px gives 4) | 4, Chromium 5 | fixed by resolving a percentage track to 1/64 px rounded down, as Chromium does (its own answers: `33.34%` in 100px is three columns, `33.4%` two), when counting and when sizing |
+| #685 (3): auto-fit with a percentage keeps empty tracks | 142 and 142, Chromium 284 and 284 | fixed (not ledgered): a collapsed track drops its percentage |
+| #685 gates | | 13 pages added with the pinned Chromium's boxes, 23 of 23 (red 11 of 23); layout 864 pass; engine suite alone on the branch: 580 pass, 5 usual fail; campaign identical; A/B: no site moves (shopify read arm-tied in one pass, two repeats show both frames in both arms) |
+| #681 third R1 HOLD @ `d50b7a4b` (1): a point where no box is a target fires no event | nothing fired (Chromium: `mousedown:HTML click:HTML`) | fixed at **`32828b72`**: the root element is the target. The walk was returning the layout's node-less root box, not `None`; both cases now end on `<html>` |
+| #681 (2): a hit test on a page with a fixed box walks the whole tree | 196 to 217 us per call on the Mac (28 with no fixed box) | **28 to 32 us**: the held fixed boxes are collected once per layout as child-index paths. Release build, the review's page, three runs each, load 14 to 16 in both |
+| #681 gates | | 22 of 22 in the file; layout 864 pass; engine suite: 602 pass, 5 usual fail; 28 script guards pass; campaign identical. **No all-site A/B this round** (hit testing only; said on the PR) |
+| #677 macOS receipt @ `80a1a13c` (04:20 note) | owed | posted: campaign identical; **no site moves; microsoft is the same frame as develop** (was blank at `a43800ed`); walmart's 15% in the first pass was a served variant (two repeats 0.00%). Probe: `customElements.get('uhf-header')` is `undefined`, `matches(':not(:defined)')` is `true`, header 2160 px |
+
+### PRs
+
+- **#684** `3cc9655a` (was `0db2986c`): hold answered, comment and receipt posted, checks green. **Needs R1 re-review and a new R2 stamp.** Wider than the hold: `inherit` on a pseudo-element for every property with an arm, and the selector-list matching. Flagged for the reviewer to accept or refuse.
+- **#685** `9616e363` (was `ee2ac4bf`): hold answered, comment and receipt posted, checks green. Needs R1 re-review and R2. Wider than the hold: percentage tracks are rounded to 1/64 px where they are sized, not only counted.
+- **#681** `32828b72` (was `d50b7a4b`): third hold answered, develop merged in, comment and receipt posted, checks green. Needs R1 re-review and R2.
+- **#677** `80a1a13c` (cloud): `## macOS receipt step` posted. Nothing in it holds the PR.
+- Not touched: #663 (draft), #666, #678, #603, #622.
+
+### Blockers
+
+- None for the three answers; they wait on review.
+- PR cap: 8 of 8 (#681, #684, #685, #678, #666, #663, #622, #603).
+- #666: Pete's word on the 5 s figure. #663: Atlas's word on draft; the window.
+
+### For Atlas to decide
+
+- **#677, the probe:** the style side treats `uhf-header` as defined (header 2160 px, frame equal to develop's) while `matches(':not(:defined)')` from script answers `true`. If the ledgered divergence is for styling only this is as designed. I did not read the code to say which.
+- **#684 widening:** the selector-list fix moves bing and will make more `::before` / `::after` boxes on any site whose rules list several pseudo-element selectors. Correct by the selectors spec; not compared with Chromium frame by frame.
+
+### Found and not fixed
+
+- A list rule's specificity for a pseudo-element is the list's maximum, not the matched member's (as on develop).
+- `initial` on a pseudo-element's declaration: only the properties `apply_initial_value` has arms for.
+- Grid: a percentage or `calc()` height on the grid gives auto-repeat rows one repetition (no page); gaps and item sizes are not rounded to 1/64 px; the review's notes on `calc()` tracks, `fit-content(25%)` and invalid templates.
+- #681: the root fallback has no lower-edge check (the view's height is not known in `hit_at`).
+- `parity-capture` has no action that evaluates a script after a load; a receipt probe needs a temporary engine test.
+
+### Not run (said on each PR)
+
+- #684: the selector-list test's expectations were not run in Chromium (the hold's two pages carry the review's Chromium 141 values); bing not compared with Chromium's frame; the full suite not re-run after the test-only pin commit.
+- #681: no all-site A/B at the new head; develop itself not timed.
+- #677: the probe at the app's 60 s budget; the cascade timing on wikipedia and github.
+
+### Owed to the real window
+
+Everything in the earlier lists, plus: bing's top scrim and cnn / lyft with #684; a real click outside an open menu (`body { pointer-events: none }`) with #681.
+
+### Mistakes
+
+- Two wrong expectations in my own selector-list test (a `#p` member sizes the element itself; padding does not widen a border-box pseudo-element). The red commit `84f457e8` carries them; the fix commit corrects them and says so.
+- I first wrote the root fallback for a `None` hit only and it did nothing; the hit was the node-less root box. Found by the red test staying red.
+- The prompt's standing rule says receipts are Prometheus's; the 04:20 plan note gives #677's receipt to the lane. I followed the plan.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-fixed-under-scroll` at `32828b72`, clean apart from `scratch/` and the untracked oracle probes.
+- New in z-i0/scratch/zi0: `r_receipt.py` (receipt.py wrapper that refuses host paths), `r_post.py` (comment + pointer in the lane's own PR body), `r_comment_only.py` (comment on another seat's PR), `r_guards.py` (all script guards), `r684_pseudo_list.py`, `r684_bing_rules.py`, `r685_fix.py`, `r681_fix.py`, `r677_probe_add.py` (temporary engine test for a live probe; `git checkout` the file after), `autofit/mk_cases.py` (23 pages).
+- Binaries in z-target/bins: `pc-dev-bbd9296`, `pc-boxinherit-3cc9655`, `pc-autorepeat-9616e36`, `pc-fixed-32828b7`, `pc-677-80a1a13`. Tables `ab-boxinherit-r2.txt`, `ab-autorepeat-r2.txt` (+ `-s2`, `-s3`), `ab-677-r3.txt` (+ `-w2`, `-w3`); campaigns `camp-dev-bbd9296.json` and one per binary; suites `suite-684-r2.log`, `suite-685-r2.log`, `suite-681-r4.log`; timings `timing-681-before.log`, `timing-681-after.log`; `msprobe-677.log`.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
