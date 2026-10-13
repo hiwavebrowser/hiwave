@@ -2648,3 +2648,62 @@ I posted "regression" on #677 before reading the script log of the frame I was d
 - New in z-i0/scratch/zi0: `r677_alt.py` (alternate two banked binaries on a url, tally frame variants), `r677_cascade.py` (alternated cascade timing; snapshots are in `trench-cascade/trench/cascade/snapshots`), `r677_dl.py`, `r677_laydiff.py`, `r677_onscreen.py`, `r677_budget.py`, `r677_rules_probe.js`, `r677_undefined.html` (the reduced page), `mk_receipt_cloud4.py` (receipt comment against `2b75e93b`), `mk_pr_brotli.py`, `mk_pr663_r3.py`.
 - Binaries in z-target/bins: `pc-dev-2b75e93`, `pc-677-331eb14`, `pcrel-dev-2b75e93`, `pcrel-677-331eb14`, `pc-brotli-08bea89`, `pc-gridflex-6351a32`. Tables `ab-677.txt`, `ab-677-r2.txt`, `ab-brotli.txt`, `ab-gridflex-r3.txt`, `ab-gridflex-r3b.txt`; campaigns `camp-dev-2b75e93.json`, `camp-677.json`, `camp-brotli.json`, `camp-gridflex-6351a32.json`.
 - Aleph: not used (no index in z-i0).
+
+## 2026-10-12 22:30 Z-lane I0 then D1 (#681 hold answered; #663 google logo settled like-for-like; cnn blank region located)
+
+Session 21:05 to 22:30 ET. Headless only: no app launch, no window run (Pete's hand test note stands). Load 7 to 17, the session's own indexer among it; every figure below was taken under it.
+
+**Package note.** I0's first job was #681's hold; done by 21:36. After it the lane had nothing it could open under I0: the lane is at `max_open_prs` (8), #666 waits for Pete's word and M3b stacks on it. I set I0 back to open and took D1 (#663), next in the plan's order and named by the 21:15 hand-test note as first in the landing queue. **Decision for Atlas, one line: the lane cannot open a PR for the cnn finding below, for hover/scroll-without-relayout, or for M3b until one of the eight lands or closes (#603 and #622 are week-1 drafts; closing or landing either frees a slot).**
+
+### Before -> after
+
+| | before | after |
+|---|---|---|
+| #681 fixed under scroll, R1 HOLD @ `393bb6ac` | after a scroll a click on the drawn fixed bar went to the link under it | answered at **`6d7f6b32`** (4 commits, no force-push). `LayoutBox::hit_test_scrolled`: fixed boxes the scroll does not move are tested with the viewport point, anywhere in the tree, and left out of the document walk; all seven pointer paths go through one helper. Red `07e14c5d` + `602106ee` (5 of 6 fail), fix `47115641` (14 of 14). Chromium 143 agrees with every assertion (`tools/parity_oracle/fixed_scroll_click_log.mjs`, committed). Layout 860 pass; full engine suite 574 pass, 11 fail (the usual five + six GPU-guard waits, `grid_` 24 of 24 one at a time); campaign identical. A/B not retaken (nothing in the commits paints, fetches or runs at load), said so on the PR |
+| the same change, with no scroll | a fixed box outside its parent's border box was not clickable at all; a hidden fixed box over the page swallowed the click | both fixed, both tested; flagged on the PR as two things the reviewer did not ask for |
+| #663 google logo y | "134 here, 208 in Chromium's own page, the engine's page never put through Chromium" (open three sessions) | **208 here, 208 in Chromium, on the same bytes.** The page google serves the product's User-Agent, scripts removed, in both engines: develop x 96 y 60 (1088 wide), #663 before y 134, **#663 at `57dd5240` x 504 y 208, 272 x 92 = Chromium** |
+| why 134 | not known | `height: 100%; max-height: 92px; margin-top: auto` in a grid with `align-items: center`: the auto margin was honoured, then Phase 9.75 re-placed the item by `align-self`. The earlier red page had no `align-items: center`. Fix `c3df3924` (one pass in `grid.rs`): auto block margins take the free space first; a stretched item with one is not stretched; an item taller than its area stays at the start. Red `99c37cad`: eight Chromium pages, six fail before |
+| nested-layout matrix on #663 | not run on the branch since the merge; **its test failed there** (48 listed cases match now) | ledger corrected at `57dd5240`: **449 of 609 pages match Chromium on #663** (develop's ledger implies 401); 28 `grid-item-of-flex-laid-out-as-block`, 17 `grid-max-content-width-no-grid-arm`, 3 `grid-auto-rows-skips-first-row` removed; none newly differs |
+| #663 gates | A/B of `6351a327` against develop | campaign identical to `6351a327`; A/B `6351a327` vs `c3df3924`, 20 rows, no failed capture, 15 identical; google moves as meant (logo lower in both frames); walmart 16.60% on all four cross pairs is the site (same boxes, other promotions; four more alternations: both builds draw v1 and v2 the same); linkedin, shopify, netflix vary by themselves. Layout 864 pass; engine suite 569 pass, 13 fail (five usual, seven GPU-guard waits, the ledger); `grid_` 28 of 28 one at a time; matrix test passes alone |
+| cnn "blank area after about 2400 px" (Atlas, 22:00 note, item a) | not known: lazy images? content-visibility? observers? | **It is layout, not paint, and not the lazy loader.** See below |
+
+### cnn below the fold (one capture of develop `2b75e93b`, one probe load; no fix started)
+
+- **Nothing between y 2341 and y 3528 has a box that is not painted. There are no boxes there.** By 500 px band, bands 2500 and 3000 have 0 layout boxes and 0 paint commands across the full width.
+- **Zone 2's three-column grid (`div.zone__items.layout--wide-center`) is 3041 px tall and its tallest column's content ends 1855 px into it** (grid y 486 to 3527; content of the three columns reaches y 1040, 2341 and 976). So about 700 px at the bottom of the grid are empty in every column, and the two side columns are empty from about y 1000. A grid row taller than every item in it reads like a row sized from an over-estimate and not re-sized (Phase 9.5's territory), or a side column whose content is missing. **Not compared with Chromium yet: the next step is the like-for-like recipe from the google item** (page fetched with the product User-Agent, scripts removed, the three columns' boxes in both engines).
+- **The lazy loader works under scroll.** A headless probe (one load, eight wheel steps of 800 px through `scroll_view` with live turns between): 30 `lazy-load__item--loading` placeholders at load, still 30 at scroll 4800, 29 at 5600, 28 at 6400, and the page gets shorter as each resolves (27865 to 25773). The first placeholder is at y 7564, so nothing lazy is involved at 2400. IntersectionObserver is present and fires on scroll.
+- Further down, each unresolved placeholder is a childless inline box about 1.095 times as tall as wide (1280 x 1400, 884 x 967, 410 x 449): 24 of them over 400 px tall in the unscrolled layout, about 20,000 px of the 28,135 px page. They are meant to be empty until scrolled near; I did not compare their sizes with Chromium's.
+- Tools: `scratch/zi0/cnn_fold.py` (bands), `cnn_gaps.py` (tall empty stretches, innermost box), `cnn_who.py`, `cnn_zone.py`; dumps in `scratch/zi0/cnnfold/`.
+
+### PRs
+
+- **#681** `6d7f6b32` (was `393bb6ac`): hold answered, body updated, comment posted. **Needs re-review; its R2 PASS was at the old head.**
+- **#663** `57dd5240` (was `6351a327`), still draft: three commits, comment with the like-for-like table, the A/B and the receipt. Left before ready, as the plan lists it: a full suite on a quiet machine (not done, the machine was not quiet), reddit in the app (window). Develop has moved to `f622466d` since its last merge; not merged again. **It now edits the matrix ledger: it and any other PR that does will conflict there, second one merges develop in.**
+- Not touched: #666, #678, #680, #683, #603, #622.
+
+### Blockers
+
+- **PR cap** (decision line above).
+- #666: Pete's word on the 5 s figure. #663: Atlas's word on draft; the window for reddit.
+
+### Found and not fixed
+
+- A form control that is itself `position: fixed` (`<button style="position:fixed">`) is laid out in the flow. Seen while writing #681's pointer test; not looked into.
+- #681's limits, listed on the PR: a fixed box inside a fixed box outside the outer one's border box is not found; a page box with a higher `z-index` than a fixed box at the same point loses to it; no `pointer-events`; the page's own `visibility: hidden` boxes are still hit.
+- cnn zone 2 grid 700 px taller than its content (above). cnn's side columns in zone 2 end near y 1000: not compared with Chromium.
+
+### Owed to the real window
+
+Everything in the 18:10 and 21:00 lists, plus: a real click on a fixed bar after a scroll (#681; there is no check for it yet, `fixed_scroll` in #678 asserts pixels only, and I did not push to #678 because that would void its CLEAR); google's logo in the app (#663).
+
+### Mistakes
+
+- I fetched google twice with the wrong User-Agent (rustkit-http's default, by urllib and then by a scratch rustkit-net test) before reading that `parity-capture --url` sends the product's Safari-style string. Twenty minutes. Written to memory (`live-page-like-for-like-through-chromium`).
+- My first pointer test for #681 used a `position: fixed` button, which the engine lays out in the flow; I changed the page between the two red commits and ran it red again, and said so in the commit and on the PR.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-grid-in-flex-width` at `57dd5240`, clean apart from `scratch/` and the untracked oracle probes. Two scratch test files (a rustkit-net document fetch, an engine cnn scroll probe) were created untracked and deleted; nothing of them is committed.
+- New in z-i0/scratch/zi0: `fix681_hit.py`, `mk_pr681_r2.py`, `g663_fetch.py`, `g663_run.py`, `g663_live.py`, `g663_reduce.py`, `g663_add_cases.py`, `g663_ledger.py`, `mk_pr663_r4.py`, the four `cnn_*.py`; pages in `g663p/` (the product-UA google page, `static.html`), `g663r/`, `cnnfold/`.
+- Binaries in z-target/bins: `pc-fixed-4711564`, `pc-gridflex-automargin` (built at `c3df3924`). Tables `ab-gridflex-r4.txt`; campaigns `camp-fixed-4711564.json`, `camp-gridflex-c3df392.json`; suite log `suite-663-automargin.log`.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
