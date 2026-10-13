@@ -2905,3 +2905,62 @@ Everything in the earlier lists, plus: lyft's hero with #685 (24px side gutters)
 - New in z-i0/scratch/zi0: `r684_spec_fix.py`, `r684_spec_pages.py` + `r684_spec_chromium.py` (the 16 test pages through the pinned Chromium, in `spec684/`), `r685_gutter_fix.py`, `r685_lyft_probe.js` (an element's ancestors with Chromium's computed grid columns; run with `zi0_eval_url.mjs`), `r677_ledger_notes.py`; `autofit/mk_cases.py` now writes 36 pages.
 - Binaries in z-target/bins: `pc-dev-44d3c67`, `pc-boxinherit-63d3a6f`, `pc-autorepeat-89a9ccb`, `pc-gridflex-a6e3697`. Tables `ab-boxinherit-r3.txt` (+ `-heads`), `ab-autorepeat-r3.txt`, `ab-gridflex-r5.txt` (+ `-s2`); campaigns `camp-dev-44d3c67.json` and one per binary; suites `suite-684-r3.log`, `suite-685-r3.log`, `suite-663-r5.log`.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
+
+## 2026-10-13 10:45 Z-lane D1
+
+Session 09:05 to 10:45 ET, headless. Package D1. Order followed: the 08:50 note (#663), then the first D1 cost item from the hand-test logs (hover relayouts). The task prompt's "PETE'S HAND TEST ... CONSEQUENCE line" does not exist in the week-2 plan; nothing was done from it.
+
+### Before -> after
+
+| item | before | after |
+|---|---|---|
+| #663 (grid in flex), conflict with develop after #684/#685 | `a6e36970`, DIRTY, R2 FAIL | **`721bbb1b`**: develop `86e1867b` merged in (one conflict, the test module list in `rustkit-engine/src/lib.rs`, both kept). Engine suite 640 pass, 5 fail (the usual five; the `:defined` pin is fixed on develop by #686); layout 865 pass; 28 guards; campaign identical; A/B: bing 0.19% and google (this PR's, as before), nothing else. Receipt posted. **Checks green, merge CLEAN, R2 PASS at `721bbb1b` (seen 10:43). Still draft: `gh pr ready` is refused on this seat.** |
+| Hover relayouts (hand tests of 10-12: 265 `hover_or_focus` relayouts, 23.0 s and 6.5 s of window time) | every `:hover` restyle is a full build, layout and paint | **#687 `ffb9fabd` opened.** Read from the two logs: all 265 carry no script write, so they are the engine's own `:hover` restyle. Now, when the rebuilt tree differs from the laid-out one only in paint properties (colours, border colours, text decoration, box shadow, transitions), the properties are copied onto the laid-out boxes and the page is painted with no layout pass. Red first (`32d0d37f`, 4 of 5 failing); each test compares the display list and the whole laid-out tree with a full relayout's. |
+| The same, on live pages (probe, pointer swept over a 16 x 10 grid, release build, load about 14, one pass per arm) | facebook 197.6 ms per restyle, walmart 99.3, cnn 266.7, github 261.9 | facebook **37.4**, walmart **29.6**, cnn **176.0**, github **188.3**; youtube and bing unchanged (small pages); **wikipedia search results and apple never take the short path** ("layout moved boxes") |
+| Scroll relayouts on ebay search (36 at 514 ms) | not read | read from the log only: all 36 carry script `style` writes (48 in all): a scroll listener sets an inline style. Not the engine's scroll. Nothing changed; ebay cannot be loaded from this machine by a tool. |
+
+### PRs
+
+- **#663** `721bbb1b` (was `a6e36970`), draft: merge and receipt. R2 PASS at head, checks green, CLEAN. No R1 at any head yet (it has been draft throughout).
+- **#687** `ffb9fabd` (new), `atlas/z-hover-restyle-no-layout`: two commits (red tests, fix). Suite 641 pass, 5 fail (usual five); css 74, layout 865; 28 guards; campaign identical; A/B no mover; checks queued when I stopped. Needs R1 and R2.
+- Not touched: #666, #678, #603, #622. Lane PRs open: 6 of 8.
+
+### Blockers
+
+- None for the lane.
+- #663: reddit in the window (owed); out of draft is Atlas's to do.
+
+### For Atlas to decide
+
+- **#663 out of draft.** The 08:50 note says the lane marks it ready; `gh pr ready 663` needs an approval this seat cannot give. Everything the note asked for is done and R2 has passed at the head.
+- **#687 changes the log format**: `relayout cause=` lines end with `layout_skipped=true|false`, the summary line with `layouts_skipped=N`. Anything that parses those lines to the end of the line needs a look.
+- **#687's paint list is short on purpose.** `opacity`, `transform`, `visibility`, `display` and background images still lay out, so hover menus are not helped. Adding `opacity` and `transform` is the next step and needs the stacking-context and scroll-extent cases thought through.
+
+### Found and not fixed
+
+- **wikipedia search results and apple: the laid-out tree does not have the shape of the tree it was built from** (62 of 64 misses), so #687's short path cannot match styles to boxes there. Which layout step adds, drops or reorders boxes is not found.
+- **cnn and github restyles are still 176 and 188 ms with layout skipped**: the build parses the page's `<style>` sheets again on every relayout (34 ms on cnn) and runs the whole cascade (93 ms). Next cost item: keep parsed sheets between builds; restyle only the changed chain and its descendants.
+- **A sort comparator panics** ("user-provided comparison function does not correctly implement a total order", `smallsort.rs`) while walmart or apple loads in the probe; seen with #687's path off and on, the load carries on. Not located (a `sort_by` with `partial_cmp` on a NaN is the likely shape).
+- `restyle_needs_layout`'s reason for two wikipedia misses read "style: r" before I fixed the naming; the property behind them was not read again.
+
+### Not run (said on each PR)
+
+- #663: the earlier rounds' Chromium pages were not put through Chromium again. Only the result lines of the engine suite were kept, not its full log (the next cargo call overwrote it).
+- #687: no real window; no timing on a quiet machine at Standard priority; no `:active` test; memory of the kept tree not measured; the live probe is one pass per arm.
+
+### Owed to the real window
+
+Everything in the earlier lists, plus: hover over facebook, walmart and cnn on a build with #687 and read `layout_skipped=` and `took_ms` from the app log.
+
+### Mistakes
+
+- The first version of #687's short path compared whole styles and flattened both custom property sets for every box: 4.2 s per restyle on cnn. The tests passed; only the live probe showed it. Fixed before the PR, said in its body.
+- I ran `test -p rustkit-layout` straight after the #663 suite through the same wrapper, which overwrote the suite's log.
+- A refused compound at the start ran nothing, and I checked before going on only because the hub showed clean.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-hover-restyle-no-layout` at `ffb9fabd`, clean apart from `scratch/` and the untracked oracle probes.
+- New in z-i0/scratch/zi0: `hover_census.py` (hover and scroll relayouts of an app log: script writes, time), `hover_split.py` (by page), `relayout_split.py <binary> <name> <url>` (cascade against the rest of each relayout), `style_fields.py`, `hover_probe_add.py` / `hover_probe_rm.py` / `hover_probe_read.py` (the live probe as a temporary ignored test; run with `HOVERPROBE_URLS=...` and `--release`), `wait_ct.py`.
+- Binaries in z-target/bins: `pc-dev-86e1867`, `pc-gridflex-721bbb1`, `pc-hover-ffb9fab`. Tables `ab-gridflex-r6.txt` (+ `-s2`), `ab-hover-r1.txt` (+ `-s2`); campaigns `camp-dev-86e1867.json`, `camp-gridflex-721bbb1.json`, `camp-hover-ffb9fab.json`; `suite-hover-r1.log`, `hoverprobe-on-1.txt`, `hoverprobe-off-1.txt`.
+- Aleph: not used (no index in z-i0; the plan says not to start one).
