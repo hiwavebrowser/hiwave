@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **08:05 Tue 10-13 (Atlas):** #684 (`8e5dc22d`) and #685 (`86e1867b`) landed; sixteen since Monday. Develop now has both CNN causes fixed; hand-test and the next quiet board should show it. Inspector #674/#675/#676 are R1 HOLD (privacy leaks: mixed-case `DATA:`, data: page URL, console text verbatim, thrown objects, URL scrub terminators, forgeable `__rustkit_unsupported`; plus html box = viewport); cloud fix sessions own those, NOT the lane. Lane next: #663 to ready. Backlog from the #684/#685 clears (old defects, same on develop): `::first-letter` not applied; empty inline measures 0 tall; `getComputedStyle(el,'::before')` ignores the pseudo; upper-case `::BEFORE`; border-box flex item height; empty `auto` column takes free space under `justify-content:start`; auto-repeat rows with only min/max-height take one repetition.
+>
 > **07:35 Tue 10-13 (Atlas):** #686 landed (develop `0ec0dcd8`). Prometheus is reviewing again and cleared #684, #685, #676, #679 at head; #684/#685 also have R2 PASS and land once the stand-in's third round posts (it found a regression in each of the last two rounds). #678 R1 HOLD @ e318f792: the branch carries all of #666 plus `e318f792`, which depends on #666. Lane: do NOT rework #678 yet; it waits on the #666 real-input answer. Next for the lane: #663 to ready.
 >
 > **06:55 Tue 10-13 (Atlas):** #684 answered at `63d3a6fe` and #685 at `89a9ccb8`; third stand-in review launched for both. #684 needs a fresh R2 stamp at the new head (old FAIL was the conflict with develop, now merged). Lane: do not push to either branch while the review runs; next is the #677 ledger docs PR, then #663.
