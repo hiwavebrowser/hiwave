@@ -2594,3 +2594,57 @@ Session 17:04 to 18:15 ET. All three numbered items of the 17:05 order are done 
 ### Blockers
 
 None for the lane. Waiting on others: R1 for #681 and again for #678; R2 for #670, #672, #673; Pete's word on the 5 s figure (#666); Atlas's word on #663's draft state; the window runs above.
+
+## 2026-10-12 21:00 Z-lane I0 (the 19:45 order: #677 receipt, then its reduction; brotli; #663 A/B retaken; #680 hold answered)
+
+Session 19:32 to 21:05 ET. Headless only: no app launch, no window run (Pete's hand test). Load 12 to 17 all session (the session's own Aleph indexer again); every figure below was taken under it.
+
+**Read this first: my #677 receipt called microsoft a regression, Atlas held the PR on it at 20:10, and the reduction I then did says the PR is right.** The page hides its own header parts with `:not(:defined)`; in the board capture none of microsoft's 272 scripts runs (all `over_budget`), so nothing is defined; #677 is the first build that applies the rule. On a reduced no-script page the candidate matches Chromium and develop does not. Both comments are on #677. The hold is Atlas's to lift or keep; the board consequence (a site that guards with `:not(:defined)` and misses the 5 s budget reads blanker) is real and is his decision.
+
+### Before -> after
+
+| | before | after |
+|---|---|---|
+| #677 Shadow DOM slice 2, macOS receipt | R1 carried to `a43800ed`, R2 PASS, no receipt | posted 20:04 at `a43800ed` (candidate = head merged onto develop `2b75e93b`): campaign identical; A/B 20 rows, 15 identical, google/linkedin/netflix/shopify vary by themselves (google checked with 12 alternated captures); **microsoft tied to the PR, 0.96% ink to 0**; engine shadow tests 24 of 24 on the Mac |
+| Does slice 2 bring microsoft's sections in | asked by Atlas | **No.** Header wrapper 2160 -> 54 px (Chromium: 54), its children laid out and not painted, display list 2682 -> 261 commands, the 35100 px body paints nothing on either arm |
+| Cascade time, pages with no shadow roots | asked by Atlas | release builds, 4 alternated rounds x 5 runs: wikipedia 66.0 -> 67.7 ms median (1.026, slower in all four rounds by 1 to 5 ms), github 225.9 -> 221.2 (0.979, noise). Not numbers of record at this load |
+| Why microsoft goes blank | not known; I guessed a leaking `:host` rule | **the page's own `uhf-*:not(:defined)` rules + no script runs at 5 s.** Reduced page: Chromium 54 px header, parts hidden; candidate the same; develop paints them (wrong). At `--script-budget-ms 60000` both arms run 271 scripts and draw nearly the same, nearly empty frame (ink 5.80 / 5.79%, 4 display commands): microsoft's real blocker comes after the scripts (D0) |
+| `Content-Encoding: br` (hand-test log item 4) | body handed on encoded, warning | **#683** `08bea893`: decoded, same size cap as gzip; `Accept-Encoding` unchanged. Red `face1ee2`, fix `08bea893`; rustkit-http 27 of 27; campaign identical; A/B 17 of 20 identical, nothing tied to the arm |
+| #663 A/B after #672 landed | owed (D1 note) | taken at `6351a327` (develop merged in, pushed, still draft): campaign identical; 14 of 20 identical; **bing 0.19%** (input now inside its pill), **google** still this PR's (logo block), **walmart no longer moved by this PR** on the two pages both arms were served (12 alternated captures) |
+| #680 GPU test guard, R1 HOLD @ `91c913e5` (20:40) | `on_helper_engine` still gave up at 150 s while its helper only queued | answered at `e4b64d67`: red `8f769d35` (1 of 4 fails), fix = wait with no limit of its own; full engine suite at load 12.8: 570 pass, 5 fail (the five develop failures), none in the guard |
+
+### PRs
+
+- **#683** `08bea893`, open, new: `fix: a brotli response is decoded even though we did not ask for it`. **It adds a dependency (`brotli-decompressor` 6.1.0, with `alloc-no-stdlib` and `alloc-stdlib`); the body says so first and offers to close if a new crate in the network path is not wanted.** We never advertised `br`; the four responses in Pete's log were web fonts from one CDN that sends it anyway. Receipt in the body. Window owed.
+- **#677** (cloud, not mine): two comments, the receipt and the reduction.
+- **#663** `6351a327` (was `3c8b07f9`), draft: merge of develop `2b75e93b` plus two comments. Still owed before ready: google's logo y against Chromium, the full engine suite on a quiet machine, reddit in the app.
+- **#680** `e4b64d67` (was `91c913e5`): two commits answering the hold, two comments (the second corrects the first, where I said there was no time for the full suite without looking at the clock; there was, and it ran). Needs re-review.
+- **#681** `393bb6ac`: **R1 HOLD, not answered. First item next session:** after a scroll a click on the visible fixed bar goes to the link under it (`link_at_point`, `focus_point` and the other pointer paths add the scroll to every point). Red-first with the reviewer's page; test the outermost fixed boxes with the viewport point before the document walk. I did not start it with 30 minutes left: several pointer paths, a red commit and a 9-minute suite would have ended mid-work.
+- Not touched: #666 (5 s figure is Pete's), #678 (stacked on #666; Atlas: do not land before it).
+
+### Blockers
+
+- **The lane is at `max_open_prs` (8 `atlas/z-` PRs open: #603, #622, #663, #666, #678, #680, #681, #683).** No new PR can be opened until one lands or closes. #680 waits for re-review, #681 for the lane's answer, #666 for Pete's word, #678 for #666.
+- #666: the 5 s figure is still Pete's. #663: Atlas's word on draft state.
+
+### Found and not fixed
+
+- **microsoft at the app's budget is nearly empty on both arms** (271 scripts ran, 6 threw, 4 display commands). I did not trace which throw matters. D0 classification, first blocker for microsoft.
+- **microsoft runs no script at all inside the board's 5 s budget** (272 records, 0 ms each). I did not look at where the 5 s goes (fetching 272 scripts, or one early script).
+- `cargo clippy -p rustkit-http --all-targets -- -D warnings` fails on a line in `h2_request_headers` (`explicit_auto_deref`) that #683 does not touch.
+- Stacked encodings (`gzip, br`) and `zstd` still pass through undecoded.
+
+### Owed to the real window
+
+Everything in the 18:10 list still stands, plus: the hand-test page for #683 (four warnings gone, fonts draw); the shadow acceptance page for #677.
+
+### Mistake
+
+I posted "regression" on #677 before reading the script log of the frame I was describing. The log (all `over_budget`) and one Chromium rule query took ten minutes and reversed the reading; they should have come before the receipt, not after the hold. Written to memory (`blank-frame-check-script-outcomes-and-defined-guards`).
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-fixed-under-scroll` at `393bb6ac`, clean apart from `scratch/` and the untracked oracle probes. Local-only merge commit `331eb14b` (#677 head onto develop), not pushed.
+- New in z-i0/scratch/zi0: `r677_alt.py` (alternate two banked binaries on a url, tally frame variants), `r677_cascade.py` (alternated cascade timing; snapshots are in `trench-cascade/trench/cascade/snapshots`), `r677_dl.py`, `r677_laydiff.py`, `r677_onscreen.py`, `r677_budget.py`, `r677_rules_probe.js`, `r677_undefined.html` (the reduced page), `mk_receipt_cloud4.py` (receipt comment against `2b75e93b`), `mk_pr_brotli.py`, `mk_pr663_r3.py`.
+- Binaries in z-target/bins: `pc-dev-2b75e93`, `pc-677-331eb14`, `pcrel-dev-2b75e93`, `pcrel-677-331eb14`, `pc-brotli-08bea89`, `pc-gridflex-6351a32`. Tables `ab-677.txt`, `ab-677-r2.txt`, `ab-brotli.txt`, `ab-gridflex-r3.txt`, `ab-gridflex-r3b.txt`; campaigns `camp-dev-2b75e93.json`, `camp-677.json`, `camp-brotli.json`, `camp-gridflex-6351a32.json`.
+- Aleph: not used (no index in z-i0).
