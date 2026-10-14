@@ -3179,3 +3179,43 @@ Session 21:05 to 22:10 ET, headless. Package D1 (left in-progress by the 17:35 s
 - New in z-i0/scratch/zi0: `fill674.py`, `fill687.py`, `fill689.py` (placeholder fills, no host paths), `edit689r3.py` (the layout patch), `test689r3.rs`, `test666t0.rs`, `edit666body.py`, `bbox689.py <dir> <site>` (pairwise diff bbox of the four A/B frames and their script outcomes), `pr687_comment_r3.md`, `pr689_comment_r5.md`, `posted-674-receipt.md`, `posted-687-r3.md`, `posted-689-r5.md`, `posted-666-t0.md`, `hold687-r2.md`, `hold689-r2.md`, `layout689.rs` / `engine689.rs` / `zft689.rs` (branch extracts), `body-666.md` / `body-666-new.md`.
 - Binaries in z-target/bins: `pc-hover-dd652de` (sha256 `5d4e794b…`), `pc-zerofont-2754912` (`e14be792…`), base `pc-dev-86e1867`. Campaigns `camp-hover-dd652de.json`, `camp-zerofont-2754912.json`; A/B tables `ab-hover-r3.txt`, `ab-zerofont-r5.txt`, `ab-zerofont-r5b.txt` (squarespace and x rerun); suites `suite-687-r3.log`, `suite-689-r5.log`; receipts `receipt-hover-r3.json`, `receipt-zerofont-r5.json`; test logs `t687-red/green.log`, `t689-red/green/gap/stalled.log`, `t666-t0*.log`.
 - Aleph: not used (no index in z-i0). Null: not written this session (see the close).
+
+## 2026-10-14 03:55 Z-lane I0 (T2 scroll paints first: PR #692; M2 ordered input queue: PR #693)
+
+Session 03:05 to about 04:00 ET, headless. Package I0 (open at start; T2 then M2 are the threads plan's next lane items per the 21:50 note: all three holds, #663 `f2a18ae6`, #687 `dd652dea`, #689 `27549129`, are answered with R2 PASS at head and wait on R1; #666 `6648193d` the same). Lane PRs open: 6 of 8 (#663, #666, #687, #689, #692, #693).
+
+### Before -> after
+
+- **#692 `22604d8d` opened: a user scroll presents the moved frame before the page hears it (threads plan §5 T2).** Red first (`1a43e9ab`, 3 of 4 failing: the frame on record stayed at (0, 0) after `scroll_view`, one present where two are expected), fix at `6c8838f2`, one neighbouring test updated at `22604d8d`. `scroll_view` applies the offset and presents the last display list at it, then tells the page and flushes the relayout its listeners cause; the app's content-view wheel drain sums the deltas of one wake and scrolls once; `ViewState::frames_presented` added as the per-view frame count. Four headless tests (a 300 ms listener: presented at least 200 ms before the call returned, same generation, one present; a style-writing listener: two presents, the relayout's frame on record; a listener that calls `scrollTo(0,0)`: the page's offset stays; a scroll against the edge: nothing drawn, no event). Gates: neighbours 29 pass; app check clean; suite 673 pass and the usual five; campaign identical to the #674 head's (= develop's engine); all-site A/B 20 rows, no mover (google, x, shopify one odd capture each; linkedin, walmart, netflix noisy in both arms), posted as a comment. CI all green. Needs R1 and R2. The fragment-navigation path keeps its old order on purpose; flagged in the body.
+- **#693 `96c2af3a` opened: one ordered, view-tagged input queue replaces the three statics (threads plan §5 M2, #575).** Red first (`e55d34d4`: a platform-independent `input_queue` module whose first drain grouped the kinds as the app's three loops did, 3 of 7 unit tests failing), fix at `ff6e6c2c` (drain in `seq` order; the macOS content view carries its `ViewId` in an ivar and records every input through `push_input`; adjacent-only coalescing of moves and wheels within a view; `destroy_view` retires the view's queued input; the app drains once per turn and matches on the kind), and a real-NSEvent test at `96c2af3a` (two content views in a tao window: wheel burst, click, wheel, wheel on the other view drain in order with their view tags; a destroyed view's wheel is dropped). That test found that the macOS `ViewHost::create_view` with callers is the one in lib.rs, not the macos.rs twin, so the ivar is set there too. Gates: 27 unit and 6 AppKit event tests pass; app check clean; the engine's `macos_live_click` test compiles. No engine code touched, so no suite, campaign or A/B (said in the body). Needs R1 and R2.
+- Not started: M3a (the pure move of PageEngine + Presenter). The digest's next item.
+
+### Decisions for Atlas
+
+- **#692 and #693 conflict in `main.rs`** (both touch the content-view wheel drain: #692 sums deltas per drain, #693's queue coalesces adjacent wheels and the app loop becomes one `match`). Resolution is to keep #693's single loop; whichever lands second merges develop in. Say if you would rather I stack one on the other.
+- **#692's A/B** was run after all (no mover), so the body's "not run" line is superseded by the comment.
+- **#693 ships without engine gates** (viewhost and the app's loop only). Say if the gate wants the suite or campaign anyway.
+
+### Owed to the real window
+
+#692: a wheel flick on a page with a 500 ms `scroll` listener moves on the first frame; `fixed_scroll` and `h24_svg_scroll` rerun on the build. #693: `h6` scroll then a click right after a flick lands where the user clicked; type then click; a tab switch mid-flick does not move the new tab. Plus everything in the earlier lists.
+
+### Found and not fixed
+
+- `MacOSViewHost::create_view_from_window` in macos.rs is a twin of `ViewHost::create_view` with no callers (the code comment at lib.rs says so); #693 sets the ivar in both. A later cleanup can delete the twin.
+- `navigate_to_fragment` still tells the page and relays out before it draws the new offset (left as is in #692).
+
+### Not run
+
+- The real window (no grants on the lane seat). Linux and Windows. `cargo test -p hiwave-app`. For #693 the engine suite, campaign and A/B.
+
+### Mistakes
+
+- The first version of #693 set the view id ivar only in the macos.rs twin that has no callers; the AppKit event tests passed because none of them checks the view tag. The new real-event ordering test caught it before the push of the PR.
+- `grep -c`, a `for` loop over PR numbers and a Monitor command with `exit 0` were refused on the seat; each cost a round trip. Logs are now read with `t2log.py` and waited on with `t2wait.py`.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-input-queue` at `96c2af3a`, clean apart from `scratch/` and the untracked oracle files; `atlas/z-scroll-paints-first` is at `22604d8d`. New in z-i0/scratch/zi0: `t2log.py <log> [tail]` (ok/failed counts, result line and tail of a cargo log), `t2wait.py <log> <marker> [poll]` (a Monitor source for a long suite), `fillt2.py`, `pr-t2-body.md` (+ `.filled.md`), `pr692-ab.md`, `pr-m2-body.md`, `digest-t2.md`, logs `t2-*.log`, `suite-t2-22604d8.log`, `m2-*.log`, `ab-scroll1st-r1.log`; table `ab-scroll1st-r1.txt`, frames `x-scroll1st-r1/`; campaign `camp-scroll1st-22604d8.json`.
+- Binary in z-target/bins: `pc-scroll1st-22604d8` (sha256 `039907d2…`), base `pc-ins674-6f50ed8`.
+- Aleph: not used (no index in z-i0). Null: not written.
