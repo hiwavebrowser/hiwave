@@ -3137,3 +3137,45 @@ Everything in the earlier lists; first reddit in the app for #663; for #689 a pa
 - Binaries in z-target/bins: `pc-gridflex-6f0cd3f`, `pc-zerofont-4e8eaec`, `pc-zerofont-ba05a0a` (base `pc-dev-86e1867`). Tables `ab-gridflex-r9.txt` (+ `-s2`, `-old`), `sweep663-table.txt`, `ab-zerofont-r2.txt`, `ab-zerofont-r3.txt`; campaigns `camp-gridflex-6f0cd3f.json`, `camp-zerofont-4e8eaec.json`, `camp-zerofont-ba05a0a.json`; `suite-663-r4.log`, `suite-689-r2.log` to `-r4.log`; receipts `receipt-663-r9.json`, `receipt-689-r2.json`.
 - Aleph: not used (no index in z-i0; the plan says not to start one).
 - Checks at 16:50: #663 `6f0cd3f7` every job green (the four swarm shards, unit suites, test compile, guards, `pr-aggregate`). #689 `ba05a0a1` pushed at 16:49: `audit` and `selector-key` green, the rest running; not waited for.
+
+## 2026-10-13 22:05 Z-lane D1 (#674 receipt posted; #687 and #689 second holds answered; T0 tests on #666)
+
+Session 21:05 to 22:10 ET, headless. Package D1 (left in-progress by the 17:35 session, which ended before posting its #674 receipt or a digest). Order taken from the 18:05 note, then the 21:10 and 21:45 notes: #674 receipt, #687 focus hold, #689 nested-inline hold, T0's two tests on #666. Lane PRs open: 4 of 8 (#663, #666, #687, #689; #603 and #622 closed by Atlas at 21:45).
+
+### Before -> after
+
+- **#674 macOS receipt posted at `6f50ed80`** (R1 CLEAR 13:12, R2 PASS 18:07, no receipt until 21:17). The 17:35 session ran it (build 18:08, campaign 18:09, suite to 18:21, `--dump-diagnostics` on #675's fixture) and left `receipt-674.md` with two placeholders. I checked the PR had no receipt comment, that develop's only move since was #675 (tools only), filled the suite result from the log and posted it unchanged otherwise, saying so. Campaign identical to develop `86e1867b`; suite 669 pass and the usual five; 33 `diagnostics_tests` pass. #675 was already merged with its 18:11 receipt.
+- **#687 (hover without layout): second R1 HOLD @ `7c9ea5d9` answered at `dd652dea`.** Two commits, red first. Five tests (`0722a082`): the hold's three pages and two more (`:focus` family, label-to-textarea), each asserting the painted state equals a full relayout's with the caret present or gone; 5 of 5 red at the old head. Fix (`dd652dea`): `LaidWith` records the focused node the page was last painted with; `repaint_restyled` takes the full path (`miss("focus moved")`) when the view's focus differs. Gates: `hover_restyle_tests` 15 pass; suite 651 pass and the usual five; campaign identical; all-site A/B 20 rows, no mover (four rows with one odd capture matched by the other arm). Comment posted. Checks at 22:03: `pr-aggregate` pending, the rest green. Needs R1 re-review and R2.
+- **#689 (`font-size: 0`): second R1 HOLD @ `ba05a0a1` answered at `27549129`.** Three commits, red first. Test (`d67f404c`, macOS, heights only): five pages of text restored inside a nested inline box under `font-size: 0` (bold in a span, the nav-link shape, three deep, 40px/50px, beside an inline-block); all five 0 tall before. Fix (`28fa0b49`): the Inline arm of `line_member_baseline_extents` folds in the inline boxes nested inside it, each with its own text extents, through any depth (the reviewer's suggested fix). The reviewer's second item (empty span with a line-height beside an inline-block, 10 for Chromium's 40) pinned as a named gap (`27549129`). Gates: 3 of 3 in the module; suite 638 pass, the usual five plus one wall-clock test that failed beside the A/B and passes alone; campaign identical; A/B: this PR's three small movers from round 3 unchanged (wikipedia 0.02, lyft 0.15, yahoo 0.05), no new mover; x's odd capture is a served variant (whole-page, one of two B captures, the other byte-identical to both A's, twice). Comment posted. Checks: four swarm shards pending at 22:03. Needs R1 re-review and R2.
+- **#666: T0's two tests added at `6648193d`** (the 21:45 note), tests only: one press and release whose `mousedown`, `mouseup` and `click` handlers each spin is stopped three times, three budgets long; an interval that overruns every time is stopped on every turn and a timeout due beside it still runs. Body: the "Decision needed" paragraph says the 5 s figure is decided; the two "Not covered" items name their tests. Comment posted. Needs R1 at the new head (R2 was at `0b8c43b8`).
+- #663: untouched this session (answered at `f2a18ae6` by the 17:35 session; R2 PASS; fifth review waits for the reset).
+
+### Decisions for Atlas
+
+- **#666's "first line" correction:** I changed the decision paragraph (the 5 s figure is now decided), not the first sentence, which still reads true. If you meant another line, say which.
+- **#689's test uses explicit line-heights** (`16px/20px`, `14px/16px`, `40px/50px`) so the heights do not depend on a Mac face's metrics; two of the five Chromium values are the reviewer's measurements, three follow from the declaration. The reviewer's `normal` pages (18 / 16) are not in the test. Say if you want them measured on Chromium 143 and added.
+- **The tank gate is refused on this seat** (`tank_go` needs a permission the lane job does not grant), so "keep to the tank gate" could not be followed as a tool call; the session kept to the plan's items and no cloud sessions.
+
+### Found and not fixed
+
+- `click_at_point` is the release only (`pointerup`, `mouseup`, `click`); the press is `mouse_down_at_point`. A test or driver that only clicks sees two event budgets, not three, and no `mousedown`/`pointerdown` listener at all.
+- The engine matches no `:focus`, `:focus-visible` or `:focus-within` rule (rustkit-css has no arm; the same on develop). The #687 test with those rules checks only that the short path equals a full relayout.
+- A press or click that moves the focus still notes no relayout cause of its own (develop too): the caret appears at the next relayout, not at the click.
+- #689: the empty inline box with a line-height has no box in the tree (named gap); the vertical-align, span-rect, abspos, `img{display:block}` and `line-height:0` notes from the review stay for a follow-up.
+
+### Not run
+
+- The real window for any of the three (the lane seat has no grants): a click into a field then a hover (#687), a `font-size: 0` nav row (#689), a click with spinning handlers (#666) are owed.
+- `cargo test -p rustkit-layout` at #689's head; the full suite at #666's head (tests only); the reviewers' probe sets; Linux and Windows.
+
+### Mistakes
+
+- The first draft of the #674 receipt fill said the suite run "was cut by the 10-minute foreground limit"; the log was complete (the `error: test failed` tail is cargo's for the known failures). Caught before posting by reading the result line.
+- The first #666 click test put a spinner on `pointerdown` and called `click_at_point` alone: no press was ever delivered, so two of three handlers "were not stopped". Two reruns to find that the API splits press and release.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-i0a-responsive-checks` at `6648193d`, clean apart from `scratch/` and three untracked oracle files. `atlas/z-hover-restyle-no-layout` is at `dd652dea`, `atlas/z-zero-font-size-line` at `27549129`.
+- New in z-i0/scratch/zi0: `fill674.py`, `fill687.py`, `fill689.py` (placeholder fills, no host paths), `edit689r3.py` (the layout patch), `test689r3.rs`, `test666t0.rs`, `edit666body.py`, `bbox689.py <dir> <site>` (pairwise diff bbox of the four A/B frames and their script outcomes), `pr687_comment_r3.md`, `pr689_comment_r5.md`, `posted-674-receipt.md`, `posted-687-r3.md`, `posted-689-r5.md`, `posted-666-t0.md`, `hold687-r2.md`, `hold689-r2.md`, `layout689.rs` / `engine689.rs` / `zft689.rs` (branch extracts), `body-666.md` / `body-666-new.md`.
+- Binaries in z-target/bins: `pc-hover-dd652de` (sha256 `5d4e794b…`), `pc-zerofont-2754912` (`e14be792…`), base `pc-dev-86e1867`. Campaigns `camp-hover-dd652de.json`, `camp-zerofont-2754912.json`; A/B tables `ab-hover-r3.txt`, `ab-zerofont-r5.txt`, `ab-zerofont-r5b.txt` (squarespace and x rerun); suites `suite-687-r3.log`, `suite-689-r5.log`; receipts `receipt-hover-r3.json`, `receipt-zerofont-r5.json`; test logs `t687-red/green.log`, `t689-red/green/gap/stalled.log`, `t666-t0*.log`.
+- Aleph: not used (no index in z-i0). Null: not written this session (see the close).
