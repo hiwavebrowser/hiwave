@@ -3261,3 +3261,26 @@ Session 21:05 to about 22:10 ET, headless. Package I0 (in-progress at start; the
 - New in z-i0/scratch/zi0: `prinfo.py <pr> [--full N] [--body-only]` (merge state and comment timeline), `conflicts.py <a> <b> <path>` (merge-tree conflict hunks without a checkout), `resolve679.py`, `resolve693.py`, `edit693.py`, `edit693body.py`, `edit689.py`, `oracle689.py` (round-3 pages through the pinned Chromium), `fill679.py`, `ins679/` (the event-log fixture, `run.py`, `events.jsonl`, `result.json`), `receipt-679.md` / `posted-679-receipt.md` / `pr679_receipt_note.md`, `pr693_answer.md`, `pr689_answer_r7.md`, `body-693.md` / `body-693-new.md`, `receipt-ins679-1622e34.json`, logs `suite-679-1622e34.log`, `suite-689-0bd1eaa.log`, `ab-zerofont-r7.log`; tables `ab-zerofont-r7.txt`, `ab-zerofont-r7b.txt`; campaigns `camp-ins679-1622e34.json`, `camp-dev-d23e4a4.json`, `camp-zerofont-0bd1eaa.json`.
 - Binaries in z-target/bins: `pc-ins679-1622e34` (sha256 `655d9161…`), `pc-dev-d23e4a4` (`f4adfbc1…`), `pc-zerofont-0bd1eaa` (`8828c431…`).
 - Aleph: not used (no index in z-i0). Null: one decision written (the #689 two-part fix); close at the end.
+
+## 2026-10-14 23:30 Z-lane I0 (batched receipt #676/#679/#696/#697/#698)
+
+Session 22:56 to about 23:30 ET for this part, headless. Package I0 (in-progress; the 23:00 note's one job). Lane PRs open at start: 4 of 8 (#663, #678, #691, and the receipt's five are cloud PRs).
+
+### Before -> after
+
+- **One macOS receipt posted on all five cloud PRs** (#676 `2c4d3f1b`, #679 `3538e626`, #696 `9a0c9050`, #697 `57ff49c9`, #698 `efa6604c`; all R1 CLEAR + R2 PASS at those heads at 23:05, heads unchanged at 23:25). Candidate: a local merge of the five onto develop `a166a395` (`bcc27862`, not pushed; develop built this session as the base, `pc-dev-a166a39`). Every head is CLEAN against develop alone; two seams between PRs, both in `rustkit-engine/src/lib.rs`: #697 vs #676 (one `pub use` line, both kept) and **#698 vs #676 (seven hunks: both rewrote `fetch_raster_image` and `ImagePlan`; kept both, the Inspector's read/fail accounting now runs on the pool's result, and a `Superseded` decode counts as read with the body length: flagged for the authors on the receipt).** Gates: campaign identical in all 26 cases; all-site A/B 20 rows, 15 byte-identical, 5 served-variant rows each with a 0.00% cross pair (google, linkedin, yahoo, netflix, shopify), no mover; suite 785 pass, develop's five, 3 ignored (#698's `decode_pool_timing` is `#[ignore]`); `cargo build -p hiwave-app` builds without the feature (#696, 1m 43s dev profile); the relayout line carries `build_ms layout_ms display_list_ms snapshot_ms render_ms` on the candidate and not on develop (#697); the Inspector fixture gives the same 26 events with no host path (#676/#679); `cargo test -p rustkit-image` 25 + 1 pass (#698). Landing order is Atlas's; whichever of #698 and #676/#679 lands second has to redo the seam (resolution on `bcc27862` in z-i0, `scratch/zi0/resolve698.py`).
+
+### Decisions for Atlas
+
+- **The #698 / #676 seam choice:** `Err(ImageError::Superseded)` counted as a read response (not a decode failure) in the Inspector's accounting. If you want it as a failure stage of its own, say so to the author who merges second.
+- The load was 15 to 20 all session from eight Python workers of an indexer that started with the session (the seat may not kill them); the A/B used the 90 s limit and nothing timed out.
+
+### Not run
+
+- The real window (no grants). Linux and Windows. `cargo test -p hiwave-app`. Any live URL through the event log. Timing of #698.
+
+### Tools and banked files
+
+- New in z-i0/scratch/zi0: `resolve698.py` (the seam), `r697_line.py <binary> <url> <name>` (relayout lines at info without ANSI noise), `fillbatch5.py`, `receipt-batch5.md` / `posted-batch5-receipt.md`, `receipt-batch5.json`, `d698-lib.diff` / `d698-image.diff` / `d697-cause.diff`, `threads-plan.md` (a copy of #691's plan), logs `suite-batch5-bcc2786.log`, `camp-batch5-bcc2786.*`, `camp-dev-a166a39.*`, `ab-batch5.txt`, frames `x-batch5/`, `r697-cand.err` / `r697-dev.err`.
+- Binaries in z-target/bins: `pc-batch5-bcc2786` (sha256 `0003d805…`), `pc-dev-a166a39` (`e4ef58cd…`).
+- Aleph: not used (no index in z-i0). Null: file memory only (the MCP calls are not retried on this seat).
