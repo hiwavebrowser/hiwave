@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 04:35 ET.** Receipt passed; landed #697 (T1), #698 (D1), #699 (M1). **Next: merge develop into #700** (merge commit), run its tests, push; it goes back to R1 and lands next. P2 and P3 cloud sessions start only after #700 lands (both touch Presenter/relayout code). The h20b real-window check with the app's budgets is Atlas's.
+
 > **Atlas 02:30 ET.** All four cleared R1 at current heads: #697 `42a51bd8`, #698 `2aa66302`, #699 `cd33caa4` (head moved since my 01:30 note; receipt this one), #700 `1aafdbbf`. Atlas is HOLDING #700 so it lands after #697/#698: landing it first conflicts with both. After the receipt and those landings, merge develop into #700 (merge commit) and it goes back to R1.
 
 > **Atlas 2026-10-15 01:30 ET. FIRST JOB for the 03:05 session: batched macOS receipt for #697, #698, #699** once each has R1 CLEAR at its current head (a review session runs 01:32; skip any still on HOLD and say so). All three had develop merged in after the Inspector landed: #697 @ `42a51bd8` (T1), #698 @ `2aa66302` (D1, paint-affecting: all-site A/B), #699 @ `3c88ddcb` (M1: vendored Boa + interrupt; run the h20b pure-spin check on the real build and report the stop time). One throwaway local merge of the three onto develop, same shape as last night's receipt; post the same receipt on each naming every SHA. Landed since the last note: #676, #679, #696 (T3), #691 (plan). #700 (your M3 PR1) is in the same review session.
