@@ -3220,3 +3220,44 @@ Session 03:05 to about 04:00 ET, headless. Package I0 (open at start; T2 then M2
 - z-i0 is left on `atlas/z-input-queue` at `96c2af3a`, clean apart from `scratch/` and the untracked oracle files; `atlas/z-scroll-paints-first` is at `22604d8d`. New in z-i0/scratch/zi0: `t2log.py <log> [tail]` (ok/failed counts, result line and tail of a cargo log), `t2wait.py <log> <marker> [poll]` (a Monitor source for a long suite), `fillt2.py`, `pr-t2-body.md` (+ `.filled.md`), `pr692-ab.md`, `pr-m2-body.md`, `digest-t2.md`, logs `t2-*.log`, `suite-t2-22604d8.log`, `m2-*.log`, `ab-scroll1st-r1.log`; table `ab-scroll1st-r1.txt`, frames `x-scroll1st-r1/`; campaign `camp-scroll1st-22604d8.json`.
 - Binary in z-target/bins: `pc-scroll1st-22604d8` (sha256 `039907d2…`), base `pc-ins674-6f50ed8`.
 - Aleph: not used (no index in z-i0). Null: not written.
+
+## 2026-10-14 22:05 Z-lane I0 (receipts #676/#679; #693 hold; #689 hold)
+
+Session 21:05 to about 22:10 ET, headless. Package I0 (in-progress at start; the 20:15 note's order: receipts for #676/#679, then the #693 hold, then the #689 hold; all three done). The 09:10 M3a session left no digest and an uncommitted test file in z-i0; parked as a local WIP commit `066870e8` on `atlas/z-engine-split-move` (the branch is at `8f7b528e` on origin: `presenter.rs` 624 lines moved out of lib.rs, no PR; `send_bounds_tests.rs` 38 lines was never run). Lane PRs open: 5 of 8 (#663, #678, #689, #691, #693).
+
+### Before -> after
+
+- **#676 `122ef04d` / #679 `fa87611c`: macOS receipt posted on both (one candidate, since #679 carries #676).** Both heads had gone DIRTY at 21:05 (#666, #687, #692 landed after their develop merge): seven `lib.rs` hunks where #666's live-turn budget and the Inspector glue rewrote the same script-error paths. Resolved on a local merge `1622e34f` (budget logic kept whole, `threw` carries `ScriptOutcome`, glue calls where the heads put them). Gates: campaign identical to develop `d23e4a49` (develop built this session, `pc-dev-d23e4a4`); suite 769 pass, the usual five, 2 ignored; 40 + 15 + 15 inspector tests by name; the event-log flags on a loopback fixture (26 events, five console levels, 3 script errors, 1 unhandled rejection, six requests each with exactly one response, no host path or page text in the log). Seventeen seconds after the receipt a cloud session answered that it had already pushed its own develop merge (`2c4d3f1b`, `3538e626`): the trees differ from the lane's candidate by the order of two independent statements only, so the receipt was carried to the new heads in a second comment. Both heads are now CLEAN and need R2 at head; the land call is Atlas's.
+- **#693 hold answered at `c77d02b7`** (red `80427077`, fix `a8723223`, merge of develop `c77d02b7`): a move and a wheel of one view commute when coalescing (`coalesces_into` looks back past that view's moves and wheels only), so `W M W M W M` drains as one wheel and one move; a press, release, leave, key or another view's event still keeps the sides apart. The develop conflict (main.rs wheel drain, #692) resolved by keeping the queue's single loop. Gates: viewhost 29 unit tests, the six AppKit tests with output, app check clean, `macos_live_click` compiles. Body corrected (coalescing wording; the "tab switch mid-flick" check is M7's, as the reviewer said). Needs R1 re-review and R2 (the `r2-fail` label is the old head's).
+- **#689 hold (round 3) answered at `0bd1eaa4`** (red `55744470`, fix `0bd1eaa4`). The reviewer's one-arm fix (`has_content_children` ignoring out-of-flow atomics) alone made the positioned box vanish with the dropped span (develop's "no box"); the fix adds a hoist at the tree-build drop site: a dropped inline wrapper's `Absolute | Fixed` children go into the parent in its place. Five pages added, every box verified in the pinned Chromium this evening (the lane's oracle, `oracle689.py`), the positioned box's own id pinned. Gates: suite 639 pass and the usual five; campaign identical to develop `d23e4a49` and to the previous head; all-site A/B no new mover (the same three small rows as round 5; google and shopify arm-tied once, rerun alone, served variants). Needs R1 re-review; R2 PASS label is at the old head.
+
+### Decisions for Atlas
+
+- #676/#679: the land call. Both are CLEAN with the cloud session's merge; the lane's receipt stands for them (two-line order difference, said on the PRs). R1 CLEAR was at the pre-merge heads.
+- The M3a branch `atlas/z-engine-split-move` (`8f7b528e`): a pure move of 624 lines with no PR and an unrun test file. Say whether the lane resumes it next session or it is re-cut once #693 lands (the presenter touches the same `present` path as `frames_presented`).
+
+### Owed to the real window
+
+#693: a wheel flick with hand drift on a page with a 500 ms `scroll` listener costs one scroll and one hover per drain; `h6`. #689: a `font-size: 0` nav row with a positioned badge in a link. #676/#679: the app's file sink and a live URL. Plus everything in the earlier lists.
+
+### Found and not fixed
+
+- Inspector event log (#676/#679, told to the authors on the receipt): a `ReferenceError` from a bare call on line 2 of a script is placed at the previous call's position (1:14; Chromium 2:1), which reads as Boa's frame position being the last call's; `encoded_size`/`decoded_size` are `null` on opposite sides for fetch and 404 image responses.
+- #689: beside an in-flow sibling the engine seats an absolute inline-block 1px low (`0:1:20:20`, Chromium `0:0:20:20`): the static position's seating in a non-empty line, pre-existing; said in the table's comment, not pinned.
+- The reviewer's two non-blocking #689 notes (empty unsized inline-block in a span; flex-item span around an absolute inline-block) stay for the follow-up.
+
+### Not run
+
+- The real window (no grants on the lane seat). Linux and Windows (CI). `cargo test -p rustkit-layout` at #689's head. The #693 engine suite (no engine code). The `--event-log-keep-query` / `-console-text` / `-error-text` flags.
+
+### Mistakes
+
+- `edit689.py --fix-only` re-ran the page insertion and asserted on its own anchor; the fix was not applied on the first run and the test still failed for the old reason. One extra run to see it. Fixed the script.
+- The first version of the round-3 table pinned the positioned box only on one page, and two of the five pages carried heights the lane had reasoned out rather than measured. Both were caught before the commit: the oracle run confirmed every value, and the one-page probe is what showed the reviewer's fix loses the box.
+
+### Tools and banked files
+
+- z-i0 is left on `atlas/z-zero-font-size-line` at `0bd1eaa4`, clean apart from `scratch/` and three untracked oracle files; `atlas/z-input-queue` at `c77d02b7`; `atlas/z-engine-split-move` at `066870e8` local (`8f7b528e` + WIP). The receipt candidate `1622e34f` is a detached commit (reachable from the reflog only).
+- New in z-i0/scratch/zi0: `prinfo.py <pr> [--full N] [--body-only]` (merge state and comment timeline), `conflicts.py <a> <b> <path>` (merge-tree conflict hunks without a checkout), `resolve679.py`, `resolve693.py`, `edit693.py`, `edit693body.py`, `edit689.py`, `oracle689.py` (round-3 pages through the pinned Chromium), `fill679.py`, `ins679/` (the event-log fixture, `run.py`, `events.jsonl`, `result.json`), `receipt-679.md` / `posted-679-receipt.md` / `pr679_receipt_note.md`, `pr693_answer.md`, `pr689_answer_r7.md`, `body-693.md` / `body-693-new.md`, `receipt-ins679-1622e34.json`, logs `suite-679-1622e34.log`, `suite-689-0bd1eaa.log`, `ab-zerofont-r7.log`; tables `ab-zerofont-r7.txt`, `ab-zerofont-r7b.txt`; campaigns `camp-ins679-1622e34.json`, `camp-dev-d23e4a4.json`, `camp-zerofont-0bd1eaa.json`.
+- Binaries in z-target/bins: `pc-ins679-1622e34` (sha256 `655d9161…`), `pc-dev-d23e4a4` (`f4adfbc1…`), `pc-zerofont-0bd1eaa` (`8828c431…`).
+- Aleph: not used (no index in z-i0). Null: one decision written (the #689 two-part fix); close at the end.
