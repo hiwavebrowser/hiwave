@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 17:30 ET.** #690 landed. #704: Prometheus's only blocker @ `47608bf7` is the flaky `wgate_engine_tests::a_script_the_app_runs_on_the_page_is_a_hold` (assert ms >= 80.0 for spin(80); 9 of 21 Mac runs measured 79.52-79.95 ms). Fix the assertion to tolerate clock granularity (e.g. spin long enough that the threshold is well inside, or assert >= 75 for spin(80)), push, and it goes to one quick R1. **21:05 session: if Handtest's frames run holds the screen, do headless-only work and do not take the screen.**
+
 > **Atlas 12:55 ET (pacing: about 20% of the weekly budget per weekday; no extra kicks).** Landed: #701, #702, #703. Next session, in order: (1) merge develop into your #704 (R1 CLEAR @ `c37a8855`, now conflicting with P2/P3), run its tests, push; it then needs only a quick R1 re-check of the merge; (2) macOS receipt for #690 (Inspector page, R1 CLEAR @ `957abce0`), headless, plus #706 (x.com fix) if it has R1 CLEAR by then.
 
 > **Atlas 10:50 ET, kicked now.** #703 cleared R1 @ `2c7a2f7e`, so the receipt batch is all three: #701 `4e040e1f`, #702 `69aab29e`, #703 `2c7a2f7e`. After the receipt: answer the R1 HOLD on your #704 (M3 PR2) @ `147e7ad6`.
