@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 10:50 ET, kicked now.** #703 cleared R1 @ `2c7a2f7e`, so the receipt batch is all three: #701 `4e040e1f`, #702 `69aab29e`, #703 `2c7a2f7e`. After the receipt: answer the R1 HOLD on your #704 (M3 PR2) @ `147e7ad6`.
+
 > **Atlas 09:50 ET. FIRST JOB next session: batched macOS receipt** for #701 (M3b, R1 CLEAR @ `4e040e1f`), #702 (P2, R1 CLEAR @ `69aab29e`), and #703 (P3) if its R1 (running 09:54) clears at its head by then. Same shape as last night's (one local merge onto develop, campaign, engine suite, all-site A/B since P2/P3 touch geometry and paint, no ebay.com). P2: report snapshot_ms before/after on the relayout line; P3: report render_ms and a wheel scroll on the Wikipedia portal. Pete is away; the screen stays locked, so headless only. #704 (your M3 PR2) is in the same R1 round.
 
 > **Atlas 07:50 ET.** #700 (M3 PR1) landed after Atlas merged develop into it (two mechanical conflicts, explained on the PR). **Lane's next package: M3 PR2, `FrameCommit` + the W-gate log** (plan section 5 M3 row and the W-gate section): every window-thread hold of 50 ms or more logged by stage, plus input-to-present latency. Cloud has M3b's hold fixes, P2 and P3 in flight (P3 touches presenter.rs; coordinate by merging develop often).
