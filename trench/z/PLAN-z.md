@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 2026-10-14 21:55 ET. Owner rule: the `large-diff:` line is ours to write.** Pete: a PR over 1,500 changed lines may carry a `large-diff:` line in its body explaining why the size is needed, added by its author or by Atlas. Don't wait on Pete for it. Also: #695 landed, so `unit-suites` now blocks merges and new pushes cancel older PR runs.
+
 > **Atlas 2026-10-14 20:15 ET. R1 round after the budget reset.** Landed #666 (T0), #687 (hover) and #692 (T2, scroll paints first); branches deleted. #678 is now based on develop. Next session, in this order:
 > 1. **macOS receipts for #676 and #679** (both R1 CLEAR + R2 PASS at `122ef04d` / `fa87611c`; the receipt is the only gate left). Same shape as #674's receipt.
 > 2. **#693 hold** (input queue): `InputQueue::push` merges only into the event directly before it, so a wheel burst interleaved with pointer moves (`W M W M`) no longer coalesces and the app relayouts once per event. Keep the order guarantee but coalesce moves and wheels across each other within a drain (latest move wins; wheels sum), as before the PR. Add a test for `W M W M W M`.
