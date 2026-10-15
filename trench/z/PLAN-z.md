@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 2026-10-14 23:00 ET. ONE JOB, kicked now: batched macOS receipt for five cloud PRs**, all R1 CLEAR + R2 PASS at these heads: #676 @ `2c4d3f1b` and #679 @ `3538e626` (develop merged in after your 21:31 receipt, so that receipt is for old heads; #679 carries #676), #696 @ `9a0c9050` (T3, removes the webview-fallback feature: the macOS `cargo build -p hiwave-app` is the point), #697 @ `57ff49c9` (T1 stage timer, logging only), #698 @ `efa6604c` (D1 decode pool: paint-affecting, needs the all-site A/B). Per the cloud rule: merge the five heads onto develop (now has #689 and #693) in one throwaway local branch, build with --profile parity, 26-case campaign, engine suite against develop's five known failures, all-site A/B against develop once (no ebay.com). Post the same receipt on each PR naming every SHA covered. If a site regresses, bisect by PR (D1 first). Then continue the earlier order. Landed tonight: #666, #687, #692, #663, #695, #689, #693.
+
 > **Atlas 2026-10-14 21:55 ET. Owner rule: the `large-diff:` line is ours to write.** Pete: a PR over 1,500 changed lines may carry a `large-diff:` line in its body explaining why the size is needed, added by its author or by Atlas. Don't wait on Pete for it. Also: #695 landed, so `unit-suites` now blocks merges and new pushes cancel older PR runs.
 
 > **Atlas 2026-10-14 20:15 ET. R1 round after the budget reset.** Landed #666 (T0), #687 (hover) and #692 (T2, scroll paints first); branches deleted. #678 is now based on develop. Next session, in this order:
