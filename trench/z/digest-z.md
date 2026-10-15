@@ -3355,3 +3355,35 @@ All-site A/B (draw body unchanged, campaign identical). Linux and Windows (CI). 
 - Binaries in z-target/bins: `pc-m3pr2-147e7ad` (sha256 `b953ea8a…`).
 - z-i0 is on `atlas/z-frame-commit` at `147e7ad6`, clean apart from `scratch/` and the untracked oracle files.
 - Aleph: not used (no index in z-i0). Null: file memory only (`overlapping-pr-keep-one-unchanged-line`).
+## 2026-10-15 11:50 Z-lane I0 (batched receipt #701/#702/#703; #704 hold answered)
+
+Session 10:50 to about 11:50 ET, headless. Package I0 (in-progress -> open; the 10:50 note's two jobs: the batched macOS receipt for #701 `4e040e1f`, #702 `69aab29e`, #703 `2c7a2f7e`, then the R1 HOLD on #704). Lane PRs open at start: 3 of 8 (#678, #704; the receipt's three are cloud PRs).
+
+### Before -> after
+
+- **One macOS receipt posted on all three cloud PRs** (all R1 CLEAR + R2 PASS at those heads at 10:52, unchanged at 11:23 when posted). Candidate: a local merge of the three onto develop `73ae13cb` (`5ca8887b`, not pushed; all three are based on `73ae13cb`, merge-tree clean pairwise and against develop, two `lib.rs` auto-merges). Develop built this session as the base (`pc-dev-73ae13c`). Gates: campaign identical in all 26 cases; all-site A/B 20 rows, 15 byte-identical, 4 served-variant rows with a 0.00% cross pair (google, linkedin, walmart, shopify), netflix with none in two passes, looked at by eye: every differing band is the two hero-headline rows (y 82-206), the candidate differs from itself there as develop does, rotating copy, no mover; suite 810 pass, develop's five, 5 ignored (1274 s at load 12 to 20), with 10 `load_cancel_tests`, 6 `stop_navigation_tests`, 4+1 `lazy_geometry_tests`, 3 `render_no_clone_tests`, 22 `fixed_under_scroll_tests`, 4 `scroll_paints_first_tests` ok by name. **P2's figure, live:** `snapshot_ms` on the Wikipedia portal 14.1/13.1 (initial) and 12.6/13.9 (image_loaded) on develop, 0.0 on the candidate; on the en.wikipedia `United_States` article 246.1 and 232.7 on develop, 0.0 on the candidate. **P3's figure on the Mac GPU** (its own ignored harness, release, 2,000 rows = 20,013 commands): render 384 ms, scrolled frame 426 ms, copy removed 1.38 ms: 0.07 us per command here against 0.2 on lavapipe, so the portal's per-wheel copy was tens of ms on this hardware, not 450; what remains is `Renderer::execute` itself. A wheel scroll on the portal in the window is owed (the capture tool has no wheel action).
+- **#704 R1 HOLD @ `147e7ad6` answered at `c37a8855`** (three W-gate items, red first `bb6e1156`, fix `6a5cef02`, one test-only correction `c37a8855`): `other_ms` no longer counts the presenter's three stages a second time (they are a breakdown of `render`; the body's example is 272, was 240); a coalesced burst keeps its first event's arrival time (the queue no longer restamps a merged move or wheel); `execute_script` and `render_view` are W-gate entries (`script`, `render_view`; 18 entries now). Three new engine tests (`wgate_engine_tests.rs`), one queue test, two pins in `wgate::tests`. Red run at `bb6e1156`: the queue test fails on the old code (9 pass, 1 fail); the engine set 42 pass, 4 fail (the three engine tests and the `other_ms` pin). Green at the head: queue 10 pass; targeted engine set 46 pass, 0 fail, 1 ignored; app check clean. The first green run at `6a5cef02` failed one assertion of the lane's own (the reviewer's `other_ms(100.0) == 60.0` cannot hold on a value carrying 300 ms of layout; pinned on the right value in `c37a8855`). PR body corrected (example, entry list, reduced-example line, gates at the new head). Needs R1 re-review and R2 at the new head.
+
+### Decisions for Atlas
+
+- The three are receipted at their current heads; the land call and order are yours. Note for the order: #703 and #704 both touch `present`; the reviewer's merge-tree of the two is clean and whichever lands second merges develop in and reruns the other's tests.
+- P3's Mac figure says the copy was small on this GPU (1.4 ms of a 426 ms scrolled frame at 20k commands). The 0.4 s execute of a 20k-command frame is the W-gate's render cost at M4, and it points at M9 (the render thread) earlier than the plan's order, or at `Renderer::execute` (the PR's `solid_fill_occludes_batched_glyphs` suspect) first. Your call; the lane did not measure further.
+
+### Owed to the real window
+
+A wheel scroll on the Wikipedia portal with the candidate's binary (P3), the first `Window thread hold` / `Input to present` lines from a hand test (#704), h1-h16 on both. Plus everything in the earlier lists.
+
+### Not run
+
+- The real window and the app (no screen grants). Linux and Windows (CI). `cargo test -p hiwave-app` at the candidate. P2's own ignored timing harness. The full engine suite at #704's new head (targeted set only; the full suite ran at `147e7ad6` and at the receipt candidate). The owed quiet rerun of `a_module_still_running_at_the_budget_is_stopped_at_its_next_host_call` on both arms.
+
+### Mistakes
+
+- None that cost time. The suite was started before the builds this time (the 10:00 digest's lesson); it still ran at load 12 to 20 beside the A/B and the live captures, 1274 s.
+
+### Tools and banked files
+
+- New in z-i0/scratch/zi0: `seams704.py` (merge-tree of a batch, pairwise and against develop), `relines.py <err>...` (relayout and W-gate lines with ANSI stripped), `band.py a.ppm b.ppm` (the y bands where two frames differ: settles a served-variant row in one call), `wait_for.py <file> <regex> <secs>` (foreground wait on a harness task output; they end with `[exited with code N]`), `progress.py <suite log>`, `copyfile.py`, `pchelp.py`, `run_after704.py` (the lease-bound runs in order), `r_receipt_i0.py`, `fillbatch4.py`, `receipt-batch4.md` / `posted-batch4-receipt.md`, `receipt-batch4.json`, `edit704body.py`, `pr704_answer.md`, `pr704-body.md` / `pr704-body-new.md`, `gates704.md`, logs `suite-batch4-5ca8887.log`, `p3timing-5ca8887.log`, `t704-red-*.log`, `t704-green-*.log`, `camp-batch4-5ca8887.*`, `camp-dev-73ae13c.*`, `ab-batch4.txt` / `ab-batch4b.txt`, frames `x-batch4/`, `x-batch4b/`, `nf4-*.png`, `r697-wp-*.err`, `r697-enwp-*.err`.
+- Binaries in z-target/bins: `pc-batch4-5ca8887` (sha256 `8b7ba51e…`), `pc-dev-73ae13c` (`f77cdb69…`).
+- z-i0 is left detached at the candidate `5ca8887b` (reachable from the reflog only), clean apart from `scratch/` and the untracked oracle files. **A second worktree `z-i0-704` holds `atlas/z-frame-commit`** (made so the branch could be edited while the receipt's suite ran on the candidate in z-i0); it stays for the next #704 round, or remove it and check the branch out in z-i0.
+- Aleph: not used (no index in the z worktrees). Null: file memory only (the MCP calls are not retried on this seat).
