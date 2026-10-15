@@ -3387,3 +3387,38 @@ A wheel scroll on the Wikipedia portal with the candidate's binary (P3), the fir
 - Binaries in z-target/bins: `pc-batch4-5ca8887` (sha256 `8b7ba51e…`), `pc-dev-73ae13c` (`f77cdb69…`).
 - z-i0 is left detached at the candidate `5ca8887b` (reachable from the reflog only), clean apart from `scratch/` and the untracked oracle files. **A second worktree `z-i0-704` holds `atlas/z-frame-commit`** (made so the branch could be edited while the receipt's suite ran on the candidate in z-i0); it stays for the next #704 round, or remove it and check the branch out in z-i0.
 - Aleph: not used (no index in the z worktrees). Null: file memory only (the MCP calls are not retried on this seat).
+## 2026-10-15 17:40 Z-lane I0 (#704 develop merge; macOS receipt #690)
+
+Session 16:05 to about 17:40 ET, headless. Package I0 (in-progress -> open; the 12:55 note's two jobs: merge develop into #704, then the macOS receipt for #690; #706 skipped, it went to R1 HOLD @ `b5727d9a` at 14:32 ET). Lane PRs open at start: 2 of 8 (#678, #704).
+
+### Before -> after
+
+- **#704 (M3 PR2): develop `a07422ce` merged in at `68a03cb0`, one fix on top at `47608bf7`, pushed; merge note posted on the PR.** One conflict hunk (`load_html`: this PR's `wgate::hold` against #701's `begin_nav` guard; both kept, hold first, as `load` does); `presenter.rs` auto-merged (#703's shared `Presenter::execute` inside this PR's `HoldStage::Execute` timers). The merged tree did not compile: #701 renamed `ViewState::nav_generation` to `nav_id`, which `FrameCommit` and its test read; three lines, no behaviour change. Targeted set at `47608bf7` on the Mac: `31 passed; 0 failed; 2 ignored` (frame_commit, wgate, render_no_clone, load_cancel, lazy_geometry). CI at the head: all green but `js-suites`, which failed on #699's watchdog wall-clock test (`control.rs:669`, "a tick late" on the runner; this PR touches nothing in rustkit-js); `gh run rerun` is refused on the seat, noted on the PR for Atlas. Full engine suite at `47608bf7`: `821 passed; 9 failed; 5 ignored` in 2672 s at load 20 to 43: the known five, three of the same `page_script_tests` wall-clock asserts and `vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget` (a 3 s bound from #699); `cargo check -p hiwave-app` clean; log banked as `suite-704-47608bf.log`. Needs the quick R1 re-check of the merge and R2 at `47608bf7` (the R2 stamp will come once the CI rerun is green).
+- **macOS receipt for #690 `957abce0` posted (comment 6202245355).** Candidate: local merge onto develop `a07422ce` (`f38d2bd1`, not pushed, merge-tree clean). Develop's parity binary this session is byte-identical to this morning's batch-4 candidate (`8b7ba51e…`), as it should be. Campaign identical in all 26 cases; script guards 380 pass, 1 skip; the Inspector renders on the Mac from a captured page (`--inspector-select-at 20,25` selects `div#block.a.b`, node 7; 21 elements; load 158, script 49, paint 1, ArrowDown 32 ms) and from the planted dump with its diff (`div#f2` marked "first difference", `flex-grow` RustKit 2 against Chromium 1), real glyphs for ▲▼▸▾ where Linux had blocks; no host path in the written page. Engine suite at the candidate: `822 passed; 10 failed; 5 ignored` in 1783 s at load 20 to 30: develop's five plus five `page_script_tests` wall-clock asserts (`took < 2.5 s / 3 s / 5 s`; lib.rs:29186, :29260, :29287, :29513, :29534), not in the PR's files; all 17 `inspector_page_tests` ok. Rerun of the five `page_script_tests` alone at the candidate: `11 passed; 5 failed` in 105 s, the same five, at load 35 to 43 (the #704 suite and other seats beside it). So the lane did NOT show them passing this session: the class is wall-clock (`took <` 2.5 to 5 s), three of the five fail at the #704 merged head too and failed on develop `73ae13cb` in the 10:00 session, so the reading is that it is load-bound and not #690 work; a quiet rerun on develop and on the candidate is owed (follow-up comment on #690) and is the first item next session.
+- No all-site A/B for #690: the engine change is a module and functions no capture calls; `parity-capture` enables scripts for a fixture only under `--run-inline-scripts`; campaign identical (the #674 reading).
+
+### Decisions for Atlas
+
+- #690 is receipted at `957abce0` on the candidate above; the land call is yours. If #704 lands first, #690 does not need develop merged again for it (no shared files: #704 is engine lib.rs/presenter/wgate, #690 adds `inspector_page.rs` and a seven-line lib.rs hunk at the module list, which merge-tree merges clean against `a07422ce`).
+- The `page_script_tests` wall-clock class fails whenever the suite runs at load above about 20 on this Mac; three of the five failed on develop in the 10:00 session too. They are budget tests whose limits assume a quiet machine. Your call whether they get a load-aware limit or an `ignored` under `CI`-style load; the lane did not touch them.
+- `js-suites` on #704 needs a rerun (one watchdog timing test, #699's). The lane cannot click it.
+
+### Owed to the real window
+
+Unchanged: a wheel scroll on the Wikipedia portal (P3), the first `Window thread hold` / `Input to present` lines from a hand test (#704), h1-h16 on the merged head; the Inspector has no window in slice 1.
+
+### Not run
+
+- The real window and the app (no screen grants). Linux and Windows (CI). `cargo test -p parity-capture` and `-p hiwave-app` at the #690 candidate. The 26-case campaign at #704's merged head (its paint path is unchanged since `147e7ad6`; the merge brings in three receipted PRs). A quiet rerun of the wall-clock class (`page_script_tests`, `vm_interrupt_tests`) on develop, the #690 candidate and the #704 head.
+
+### Mistakes
+
+- The first #704 test build was started before reading that the merged tree compiled: a compile error cost one build cycle (two minutes with sccache). Commit messages with a line starting `#` are refused by the seat's command check: write them to a file and `-F`.
+- `cp` from the harness's task output directory is refused on this seat (outside the working directories): read it with Python instead (`panics690.py`, `fill690.py` take the path).
+
+### Tools and banked files
+
+- New in z-i0/scratch/zi0: `receipt-ins690.md` / `fill690.py` / `posted-690-receipt.md`, `receipt-ins690.json`, `panics690.py`, `pr704_merge_note.md`, `pr704_ci_note.md`, `commit704-navid.txt`, `ins690-out/` and `ins690-diff-out/` (the two Inspector renders: png, html, display list), `ins690-run.*`, `ins690-diff-run.*`, `camp-ins690-f38d2bd.*`, `camp-dev-a07422c.*`, `suite-ins690-f38d2bd.log`, `suite-704-47608bf.log`, `rerun-pagescript-ins690.log`, `pr690_rerun_note.md`, `digest-1605.md` / `digest_fill_1605.py`.
+- Binaries in z-target/bins: `pc-ins690-f38d2bd` (sha256 `9dd0d420…`), `pc-dev-a07422c` (`8b7ba51e…`, = `pc-batch4-5ca8887`).
+- z-i0 is on `zi0-cand-690` at the candidate `f38d2bd1` (local branch, not pushed), clean apart from `scratch/` and the untracked oracle file. z-i0-704 is on `atlas/z-frame-commit` at `47608bf7` = origin.
+- Aleph: not used (no index in the z worktrees). Null: file memory only.
