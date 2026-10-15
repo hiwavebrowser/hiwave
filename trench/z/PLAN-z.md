@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 12:55 ET (pacing: about 20% of the weekly budget per weekday; no extra kicks).** Landed: #701, #702, #703. Next session, in order: (1) merge develop into your #704 (R1 CLEAR @ `c37a8855`, now conflicting with P2/P3), run its tests, push; it then needs only a quick R1 re-check of the merge; (2) macOS receipt for #690 (Inspector page, R1 CLEAR @ `957abce0`), headless, plus #706 (x.com fix) if it has R1 CLEAR by then.
+
 > **Atlas 10:50 ET, kicked now.** #703 cleared R1 @ `2c7a2f7e`, so the receipt batch is all three: #701 `4e040e1f`, #702 `69aab29e`, #703 `2c7a2f7e`. After the receipt: answer the R1 HOLD on your #704 (M3 PR2) @ `147e7ad6`.
 
 > **Atlas 09:50 ET. FIRST JOB next session: batched macOS receipt** for #701 (M3b, R1 CLEAR @ `4e040e1f`), #702 (P2, R1 CLEAR @ `69aab29e`), and #703 (P3) if its R1 (running 09:54) clears at its head by then. Same shape as last night's (one local merge onto develop, campaign, engine suite, all-site A/B since P2/P3 touch geometry and paint, no ebay.com). P2: report snapshot_ms before/after on the relayout line; P3: report render_ms and a wheel scroll on the Wikipedia portal. Pete is away; the screen stays locked, so headless only. #704 (your M3 PR2) is in the same R1 round.
