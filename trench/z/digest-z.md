@@ -3320,3 +3320,38 @@ h20b on an idle *window* in the app with its 60 s / 5 s budgets (the lane seat h
 - New in z-i0/scratch/zi0: `h20b/` (`spin.html`, `spin2.html`, `timer.html`, `timer2.html`, `timer3.html`, `timer4.html`, `run.py <name> <binary> <url> [flags]`, the `.err`/`.out`/`.scripts.json`/`.ppm` of every run), `crop.py <ppm> <png> x0 y0 x1 y1 [scale]` (a band of a frame as a PNG, pure python), `fillbatch3.py`, `receipt-batch3.md` / `posted-batch3-receipt.md`, `receipt-batch3.json`, `digest-batch3.md`, logs `suite-batch3-bc4ee88.log`, `js-batch3-bc4ee88.log`, `image-batch3-bc4ee88.log`, `camp-batch3-bc4ee88.*`, `camp-dev-99cb17a.*`, `ab-batch3.txt` / `ab-batch3b.txt`, frames `x-batch3/`, `x-batch3b/`, `r697-cand3.err` / `r697-dev3.err`. A loopback `http.server` on the scratch dir served the fixtures.
 - Binaries in z-target/bins: `pc-batch3-bc4ee88` (sha256 `abfb1dd6…`), `pc-dev-99cb17a` (`164cb478…`).
 - Aleph: not used (no index in z-i0). Null: file memory only (the MCP calls are not retried on this seat).
+
+## 2026-10-15 10:00 Z-lane I0 (M3 PR2: FrameCommit + W-gate log)
+
+Session 09:05 to about 10:05 ET, headless. Package I0 (in-progress -> open; the 07:50 note's item: M3 PR2). No receipt overdue at start: #701 had an R1 HOLD answered at `4e040e1f` (R2 PASS), #702 and #703 had no R1 yet. Lane PRs open at start: 2 of 8 (#678, #704 makes 3).
+
+### Before -> after
+
+- **#704 `147e7ad6` opened: `FrameCommit` hand-over and the W-gate log** (branch `atlas/z-frame-commit` from develop `73ae13cb`; red test commit `e42d6ae5` first). The presenter keeps the newest `FrameCommit` per view and draws from it alone (`present` never reads `ViewState`); the page side commits only when its frame moved (new list or new scroll offset), so a draw for a surface size, an image or the one-second refresh re-presents the held commit: what M4 needs. The view's display list is an `Arc` shared with its commit (no copy per frame; nothing writes into a built list, #687's patch rebuilds it). `FrameCommit` and `InputMark` are `Send + Sync` on macOS (`send_bounds_tests`). W-gate (`wgate.rs`, always on): every window-thread entry into the engine (16 named) is timed and the outermost one at 50 ms or more logs `Window thread hold entry=… ms=… build/layout/display_list/snapshot/render/acquire/execute/present_ms other_ms` at warn; the app notes each queued input's arrival (`note_input` in the `drain_input` loop) and the presenter logs `Input to present ms= seq=` once per frame that shows it, with a p50/p95/max summary every 100. Five `frame_commit_tests` and five pure `wgate` tests.
+- **Gates (comment on the PR):** suite 789 pass, 20 fail at load 20 to 35: develop's five, 11 grid tests at the GPU guard (all 11 pass by name), four wall-clock `page_script_tests`; **three of those four fail on a develop checkout too at the same load** (control worktree `z-i0-dev`, removed after), the fourth (`a_module_still_running_at_the_budget_is_stopped_at_its_next_host_call`) passed once on develop and failed twice on the candidate: **owed a quiet rerun on both arms before landing.** Campaign 26/26, `diffPixels` identical per case to `camp-dev-99cb17a` (develop since gained only #700). App check clean. CI started at 09:23.
+- **Coordination with P3 #703 (same `present` body):** every insertion of mine sits with at least one unchanged line between it and #703's hunks, and the draw body is byte-identical, so whichever lands second merges clean (memory note written).
+
+### Decisions for Atlas
+
+- #704 needs R1 and R2; its land waits on the one owed timing rerun (above). If the quiet rerun fails on the candidate only, the lane bisects it next session (nothing in the diff touches the load's clocks).
+- Develop has no banked parity binary at `73ae13cb`; the campaign compared against `99cb17ab`'s. Say if you want a develop build banked at the current head for every receipt.
+
+### Owed to the real window
+
+h1-h16 on this build as on develop, and the first `Window thread hold` / `Input to present` lines from a hand test as the W-gate's pre-M4 baseline. Plus everything in the earlier lists.
+
+### Not run
+
+All-site A/B (draw body unchanged, campaign identical). Linux and Windows (CI). `cargo test -p hiwave-app`. Timing of the hold log's own cost beyond its design (two `Instant` reads per entry and per stage).
+
+### Mistakes
+
+- The suite was started with a parity build queued behind it on the lease and an indexer running; load 20 to 70 all session, which cost one GPU-guard rerun and the develop control run. Next time: suite alone first, then builds.
+- The background shell forms (`zsh script.sh`, `cmd > log`) are refused on this seat; the foreground wait is `scratch/zi0/wait_task.py <task output file> <seconds>` against the harness's task output.
+
+### Tools and banked files
+
+- New in z-i0/scratch/zi0: `pr-m3pr2-body.md`, `pr-m3pr2-gates.md`, `wait_task.py`, `run_suite_m3pr2.sh` (unused), `camp-m3pr2-147e7ad.*`.
+- Binaries in z-target/bins: `pc-m3pr2-147e7ad` (sha256 `b953ea8a…`).
+- z-i0 is on `atlas/z-frame-commit` at `147e7ad6`, clean apart from `scratch/` and the untracked oracle files.
+- Aleph: not used (no index in z-i0). Null: file memory only (`overlapping-pr-keep-one-unchanged-line`).
