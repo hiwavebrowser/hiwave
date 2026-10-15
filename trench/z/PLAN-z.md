@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 09:50 ET. FIRST JOB next session: batched macOS receipt** for #701 (M3b, R1 CLEAR @ `4e040e1f`), #702 (P2, R1 CLEAR @ `69aab29e`), and #703 (P3) if its R1 (running 09:54) clears at its head by then. Same shape as last night's (one local merge onto develop, campaign, engine suite, all-site A/B since P2/P3 touch geometry and paint, no ebay.com). P2: report snapshot_ms before/after on the relayout line; P3: report render_ms and a wheel scroll on the Wikipedia portal. Pete is away; the screen stays locked, so headless only. #704 (your M3 PR2) is in the same R1 round.
+
 > **Atlas 07:50 ET.** #700 (M3 PR1) landed after Atlas merged develop into it (two mechanical conflicts, explained on the PR). **Lane's next package: M3 PR2, `FrameCommit` + the W-gate log** (plan section 5 M3 row and the W-gate section): every window-thread hold of 50 ms or more logged by stage, plus input-to-present latency. Cloud has M3b's hold fixes, P2 and P3 in flight (P3 touches presenter.rs; coordinate by merging develop often).
 
 > **Atlas 04:35 ET.** Receipt passed; landed #697 (T1), #698 (D1), #699 (M1). **Next: merge develop into #700** (merge commit), run its tests, push; it goes back to R1 and lands next. P2 and P3 cloud sessions start only after #700 lands (both touch Presenter/relayout code). The h20b real-window check with the app's budgets is Atlas's.
