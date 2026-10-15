@@ -3284,3 +3284,39 @@ Session 22:56 to about 23:30 ET for this part, headless. Package I0 (in-progress
 - New in z-i0/scratch/zi0: `resolve698.py` (the seam), `r697_line.py <binary> <url> <name>` (relayout lines at info without ANSI noise), `fillbatch5.py`, `receipt-batch5.md` / `posted-batch5-receipt.md`, `receipt-batch5.json`, `d698-lib.diff` / `d698-image.diff` / `d697-cause.diff`, `threads-plan.md` (a copy of #691's plan), logs `suite-batch5-bcc2786.log`, `camp-batch5-bcc2786.*`, `camp-dev-a166a39.*`, `ab-batch5.txt`, frames `x-batch5/`, `r697-cand.err` / `r697-dev.err`.
 - Binaries in z-target/bins: `pc-batch5-bcc2786` (sha256 `0003d805…`), `pc-dev-a166a39` (`e4ef58cd…`).
 - Aleph: not used (no index in z-i0). Null: file memory only (the MCP calls are not retried on this seat).
+
+## 2026-10-15 03:40 Z-lane I0 (batched receipt #697/#698/#699)
+
+Session 03:05 to about 03:40 ET, headless. Package I0 (in-progress; the 01:30 and 02:30 notes' one job: the batched macOS receipt for #697 `42a51bd8`, #698 `2aa66302`, #699 `cd33caa4`, all R1 CLEAR + R2 PASS at those heads with no receipt at head, checked 03:10; #700 held by Atlas and left out). Lane PRs open at start: 4 of 8 (#663, #678, #691 landed overnight so 3: #663, #678, #693; the receipt's three are cloud PRs).
+
+### Before -> after
+
+- **One macOS receipt posted on all three cloud PRs.** Candidate: a local merge of the three heads onto develop `99cb17ab` (`bc4ee887`, not pushed; no conflict between any pair, checked with `merge-tree` first; nothing outside `crates/`, `docs/`, `third_party/` and the Cargo files). Develop built this session as the base (`pc-dev-99cb17a`). Gates: campaign identical in all 26 cases; all-site A/B 20 rows, 15 byte-identical, 3 served-variant rows with a 0.00% cross pair (linkedin, walmart, shopify), 2 rows with none (google, netflix) looked at by eye and rerun: served variants, no mover; suite 790 pass, develop's five, 3 ignored (1216 s at load 20 to 35), with 5 `vm_interrupt_tests`, 10 `live_turn_budget_tests`, 4 `decode_pool_tests` (+1 ignored), 21 relayout-cause tests ok by name; `cargo test -p rustkit-js` 89 pass (the `vm_interrupt` and `watchdog_turns` integration tests among them); `cargo test -p rustkit-image` 27 pass; the relayout line carries the five stage figures on the candidate and not on develop (#697); the h20b check on the parity binary (#699, below).
+- **h20b (#699) on the built binary, headless, with `--interrupt-scripts`:** a bare `while (true) {}` is NOT the test on an optimized build: Boa's 10,000,000 loop-iteration limit ends it after about 200 ms of script on both arms (`threw`, `RuntimeLimitError`), before any budget; the debug-profile engine tests see the watchdog only because the same loop is slower there than their 300 ms budget. A spin with no loop back-edge and no host call (`forEach` over a 2M array, repeated through recursion) is the case: as a load script at a 1 s budget the candidate stops it at `elapsed_ms=1051` (watchdog `ran_ms=1051 budget_ms=999`) and lays out the block after it; develop runs it to the 40 s capture limit. As a timer on an idle page through `--live-ms 8000` the candidate stops the timer turn and the next timer still runs (row recoloured); develop holds the live loop to the 30 s limit. Posted on #699 with the figures.
+- **Found, not a defect of M1 (said on the receipt):** the watchdog's `ran_ms` for that timer exceeded the engine's `elapsed_ms` by exactly the load script's length (1067 and 630 ms in two runs, `turn=1` both times): a timer due during the load's lifecycle timers step runs inside the load's turn, whose clock is the load script's start (the nesting rule: the outer budget governs). A control page whose timer is due 6 s after load ran its pass untouched and the later timer fired: no turn is left open after a load, an idle page is not stopped. This is T0's load-budget design and the D0 item already on the plan.
+- **A/B rows that looked arm-tied and were not:** google (1.66% on all four cross pairs) is the chips row vs the classic buttons under the search box, served by arm by chance; the rerun served develop both. netflix (about 2.2%) is the hero headline copy the site rotates: the rerun served develop two different headlines in a row and the candidate a third, three-line one that pushes the hero down (11.95% within the candidate's own pair). Both looked at by eye (crops under `x-batch3*/`); same rendering on both arms.
+
+### Decisions for Atlas
+
+- The three are receipted at their current heads; the land call and order are yours (#700 then merges develop in, per your 02:30 note).
+- The lifecycle-timers clock finding above: nothing to do in #699; it is the D0 "lifecycle events and the first timers round get their own budget" item, now with a measurement.
+
+### Owed to the real window
+
+h20b on an idle *window* in the app with its 60 s / 5 s budgets (the lane seat has no screen grants). Plus everything in the earlier lists.
+
+### Not run
+
+- The real window and the app. Linux and Windows (CI). `cargo test -p hiwave-app` at the candidate. Any live URL through the h20b pages. Timing of #697 or #698.
+
+### Mistakes
+
+- Half an hour on the first spin page: the bare `while (true) {}` read as "the watchdog does not fire" until the script record's `detail` named the loop limit. Memory note written (`h20b-spin-check-loop-limit-and-capture-flags`).
+- The suite ran beside the A/B, the campaign and an indexer's workers at load 20 to 35; its grid tests sat in the GPU guard for minutes. Next time start the suite first and the A/B after the campaign.
+
+### Tools and banked files
+
+- z-i0 is left detached at the candidate `bc4ee887` (reachable from the reflog only), clean apart from `scratch/` and the untracked oracle files; `atlas/z-engine-split-move` is at `066870e8` local.
+- New in z-i0/scratch/zi0: `h20b/` (`spin.html`, `spin2.html`, `timer.html`, `timer2.html`, `timer3.html`, `timer4.html`, `run.py <name> <binary> <url> [flags]`, the `.err`/`.out`/`.scripts.json`/`.ppm` of every run), `crop.py <ppm> <png> x0 y0 x1 y1 [scale]` (a band of a frame as a PNG, pure python), `fillbatch3.py`, `receipt-batch3.md` / `posted-batch3-receipt.md`, `receipt-batch3.json`, `digest-batch3.md`, logs `suite-batch3-bc4ee88.log`, `js-batch3-bc4ee88.log`, `image-batch3-bc4ee88.log`, `camp-batch3-bc4ee88.*`, `camp-dev-99cb17a.*`, `ab-batch3.txt` / `ab-batch3b.txt`, frames `x-batch3/`, `x-batch3b/`, `r697-cand3.err` / `r697-dev3.err`. A loopback `http.server` on the scratch dir served the fixtures.
+- Binaries in z-target/bins: `pc-batch3-bc4ee88` (sha256 `abfb1dd6…`), `pc-dev-99cb17a` (`164cb478…`).
+- Aleph: not used (no index in z-i0). Null: file memory only (the MCP calls are not retried on this seat).
