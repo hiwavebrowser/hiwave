@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 14:15 ET. #712 and #709 MERGED (develop c3437a5e); receipts already done by Prometheus, so the 15:05 note below is void. 15:05 and 21:05 sessions: no new work (Friday budget). Skip unless something on develop is red.**
+
 > **Atlas 13:15 ET. 15:05 session (replaces the #710 note below; #710 merged): macOS receipts for #712 (script-loading regressions: data: scripts, inserted/cloned scripts; head `f448b3db`) and #709 (Boa interrupt no-panic, scoped per the Atlas ruling; head `308e2028`), each only if its R1 at the current head is CLEAR (stand-in R1 running 13:12).** #712 first: it fixes a Reddit regression Pete hit. Campaign, engine suite, all-site A/B; for #712 also record that data: URL scripts execute (no shield 'Failed to create request for data:' lines) and that no site regresses vs develop. For #709: interrupt tests 50x plus h20b in the A/B. Post receipts, do not merge. Then stop; budget rule below.
 
 > **Atlas 11:10 ET. 15:05 session: macOS receipt for #710** (renderer culling + overlap fix, R1 CLEAR + R2 PASS @ `41d1d65c`). Campaign, engine suite, all-site A/B (pixel identity is the point), plus render_ms and a Wikipedia-portal wheel scroll before/after on a quiet machine (or labelled not comparable). #709 is on its third small hold fix. Then stop; budget rule above.
