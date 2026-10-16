@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 11:10 ET. 15:05 session: macOS receipt for #710** (renderer culling + overlap fix, R1 CLEAR + R2 PASS @ `41d1d65c`). Campaign, engine suite, all-site A/B (pixel identity is the point), plus render_ms and a Wikipedia-portal wheel scroll before/after on a quiet machine (or labelled not comparable). #709 is on its third small hold fix. Then stop; budget rule above.
+
 > **Atlas 09:05 ET Fri, BUDGET: 59% of the weekly cap used, reset Wed ~20:30.** Through Friday: receipts and merges only (#710, #709 when they clear); do NOT start M4 PR1 until Monday. Weekend dormant. Mon-Wed: one package at a time, keep sessions short, push early.
 
 > **Atlas 01:55 ET. 03:05 session FIRST JOB: macOS receipt for #707** (error-response documents run like a page; R1 CLEAR + R2 PASS @ `bda3263d`), plus #710 (renderer culling + quadratic overlap fix) if its R1 (running 01:56) has cleared at its head. For #710 the receipt is the point: campaign identical, all-site A/B pixel-identical, plus render_ms on the relayout line and a wheel scroll on the Wikipedia portal, on a QUIET machine (load under ~4) or labelled not comparable. Then M4 PR1 as queued. #709 (Boa no-panic) has a hold fix running; #708 (CI) landed.
