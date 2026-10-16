@@ -3492,3 +3492,39 @@ Unchanged: a wheel scroll on the Wikipedia portal (P3), the first `Window thread
 - Binaries in z-target/bins: `pc-707-c8a0c55` (`d142c24f…`), `pc-dev-c910f49` (`f1cff291…`).
 - z-i0 is on `zi0-cand-707` at the candidate `c8a0c556` (local, not pushed), clean apart from `scratch/` and the untracked oracle files. z-i0-704 is on `atlas/z-page-handle` at `d7a96cdd` = origin.
 - Memory: `parity-capture-no-frame-on-non-2xx-document.md` (the tool writes no frame or script log for a 403 document; read `--event-log`). Null: one observation. Aleph: not used (no index in the z worktrees).
+
+
+## 2026-10-16 10:35 Z-lane I0 (session 09:05 to 10:40 ET, macOS seat)
+
+Took the 09:05 note as written: receipts only, no M4 PR1. #709 `833799f7` had R1 CLEAR since 10:39Z with no receipt, so it became the lane's at 09:39 ET under the three-hour rule; the candidate was prepared from 09:10 so the run could start on the minute. #710 cleared R1 at 08:31 ET (Prometheus's until 11:31 ET); #706 parked by Atlas, head moved past its receipt.
+
+### Before -> after
+
+- **#709: measurement posted (comment 6217759241), beside Prometheus's receipt at `2144eedf` (14:28Z).** The head moved from `833799f7` to `2144eedf` at 13:36Z (a 761-line Boa commit on a develop merge) while the lane's engine suite ran on the `833799f7` candidate, and Prometheus posted the receipt at the new head while the lane redid the cheap parts there. The lane's comment adds what that receipt did not run: **26-case campaign identical against develop `26c46d95` at both `27cd0c23` (= `833799f7` merged onto develop) and `2144eedf`; 20-site A/B at `27cd0c23`, no mover** (16 of 20 identical on every pair; google, linkedin, netflix served variants; shopify one odd frame of four in each of four passes, on develop three times and the candidate once including an arm-swapped pass: a page variant); **the PR's claim reproduced in the capture tool: develop panics 3 of 3** on a fixture that arms every interrupt site in one stopped turn (`vm/opcode/call/mod.rs:370 default reject function cannot throw: Interrupted`, then `job.rs:515 async fn resumed after panicking`, capture result `worker thread panicked`), **the candidate and the head finish 3 of 3** with the later timer turn running (frame recoloured) and catchable `Error: the script was interrupted` delivered to the pending reactions. Engine suite at `27cd0c23`: 840 pass, 17 fail (develop's five, 11 GPU-guard grid tests of which 10 pass by name at load 37, and `vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget` on its wall-clock bound, the 2026-10-15 class). rustkit-js: all pass at `27cd0c23`; at `2144eedf` `vm_interrupt` 7 and `vm_interrupt_promises` 21 pass, **`watchdog_turns::an_interrupt_set_between_turns_does_not_kill_the_next_turn` failed 2 of 2 at load 34 to 35** (passed on Prometheus's run at the same head and on the lane's run at `833799f7`; failed on develop 2026-10-15 under load; the test reads as timing-free, flagged to the author as a window in the word's turn check that predates the PR).
+- No PR opened, no branch pushed (receipts only through Friday).
+
+### Decisions for Atlas
+
+- #709 is receipt-complete at `2144eedf` (R1 CLEAR 14:10Z, R2 PASS 14:02Z, Prometheus receipt 14:28Z, lane's campaign/A/B/fixture beside it). Land call Atlas's. The watchdog flake under load is a note for the author, not a gate.
+- #710 `6a5c89eb`: R1 CLEAR 12:31Z, R2 label present; receipt owed by Prometheus; the lane's three-hour window opens 15:31Z (11:31 ET), after the cap. Next lane session: check it first.
+- Process: a cloud fix session pushed a new head 25 minutes into the run. Check the head again before starting the suite (the longest step), and build the head itself when it already contains develop, so the campaign and suites are at the SHA the land law reads.
+
+### Owed to the real window
+
+Unchanged from 04:20: wheel scroll on the Wikipedia portal (P3), the first `Window thread hold` / `Input to present` lines from a hand test, h1-h16 on the merged head, #707's reload and meta refresh in the app.
+
+### Not run
+
+The real window and the app. A/B and engine suite at `2144eedf` (Prometheus ran the suite there: 852 pass, develop's five). A quiet rerun of the pure-spin and watchdog tests (load 18 to 37 all session). `cargo test -p parity-capture`.
+
+### Mistakes
+
+- Reasoned for one edit that the watchdog failure at `2144eedf` was deterministic because the test has no timing in it; Prometheus's pass at the same head arrived before posting and the wording was corrected to "flake under load, predates the PR". Lesson: a test's text being timing-free does not make its failure deterministic when the mechanism under test is a watchdog; read the other seat's result before naming a cause.
+- `wait_for.py` with `^end ` never matches (no MULTILINE); use `end 2026.*`.
+
+### Tools and banked files
+
+- New in z-i0/scratch/zi0: `fx709/stop709.html` + `mod709.js` (the interrupt fixture; serve with `python3 -m http.server --bind 127.0.0.1 --directory scratch/zi0/fx709 8711`), `mk_receipt709.py` (not run: no receipt posted by the lane), `measure-709.md` / `measure-709s.md` / `posted-709-measure-709s.md`; outputs `camp-dev-26c46d9.*`, `camp-709-27cd0c2.*`, `camp-709-2144eed.*`, `ab-709.txt` (+ `x-709/`), `ab-709r.txt`, `ab-709swap.txt`, `ab-709r2.txt`, `suite-709-27cd0c2.log`, `js-709-27cd0c2.log`, `js-709-2144eed.log`, `js2-709-2144eed.log`, `rerun-709-2144eed.log`, `rerun2-709-2144eed.log`, `fx709/run-*.log`, `fx709/events-*.jsonl`, `fx709/frame-*.ppm`, `fx709/sd709-*.png` (shopify odd-frame crops, private).
+- Binaries in z-target/bins: `pc-dev-26c46d9` (`f9dc72c2…`), `pc-709-27cd0c2` (`14517cdb…`), `pc-709-2144eed` (`da9dda0b…`).
+- z-i0 is detached at `2144eedf`; local branch `zi0-cand-709` = `27cd0c23` (not pushed). The fixture http server on 127.0.0.1:8711 was stopped at the close.
+- Null: one observation, close. Aleph: not used (no index in the z worktrees).
