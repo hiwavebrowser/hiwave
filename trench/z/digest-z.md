@@ -3528,3 +3528,23 @@ The real window and the app. A/B and engine suite at `2144eedf` (Prometheus ran 
 - Binaries in z-target/bins: `pc-dev-26c46d9` (`f9dc72c2…`), `pc-709-27cd0c2` (`14517cdb…`), `pc-709-2144eed` (`da9dda0b…`).
 - z-i0 is detached at `2144eedf`; local branch `zi0-cand-709` = `27cd0c23` (not pushed). The fixture http server on 127.0.0.1:8711 was stopped at the close.
 - Null: one observation, close. Aleph: not used (no index in the z worktrees).
+
+
+## 2026-10-16 15:10 Z-lane I0 (session 15:05 to 15:12 ET, macOS seat)
+
+Took the 14:15 note as written: #712 and #709 are merged, their receipts were Prometheus's, so the session's only job was to check develop for red.
+
+### Before -> after
+
+- **Develop `c3437a5e` (the #709 merge, carrying #712) is green:** Develop Compile success at 18:10Z. The cancelled run at `e96f7b71` (the #712 merge) was superseded by the #709 push eighteen seconds later, the cancel-older rule, not a failure. Earlier develop heads `da208e4a` (#710), `26c46d95` (#707) and `c910f494` are green too.
+- Open PRs: #713, #705, #694 (Cursor test drafts, R2 PASS), #678 (stacked on old #666, R2 FAIL), #570 (docs), and **#706 `89c6d210`, R2 FAIL at 19:05Z: CONFLICTING again after #709/#712 landed** (it was CLEAN at 12:18Z). Atlas parked #706; a develop merge into it is the cloud fix session's, not the lane's. No PR with R1 CLEAR and a receipt owed; no PR opened, nothing pushed to hiwave-macos.
+- No build, no campaign, no A/B this session (Friday budget: receipts and merges only through tonight).
+
+### Decisions for Atlas
+
+- #706 needs a develop merge before any further review or receipt; its 10-15 receipt at `4ba7ab9e` is for an old head.
+- 21:05 session: same check, unless the note changes.
+
+### Not run
+
+Everything that costs a build. Null: one observation. Aleph: not used.
