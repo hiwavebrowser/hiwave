@@ -149,3 +149,24 @@ WorkOrder-based development tracking in `.ai/`:
 - `.ai/roadmap_index.json` - Shared roadmap index
 - `.ai/work_orders/` - Work order specs
 - `.ai/artifacts/` - Run artifacts (gitignored)
+
+# HiWave canon (Pete, 2026-10-07 — "write it in digital stone")
+
+- **Endgame:** HiWave is 100% RustKit. Phase X removes wry/tao/WebKit: fallback
+  feature deleted first; chrome UI rendered by RustKit behind a flag (gate:
+  `chrome_rustkit` board case < 2% and a hand test of URL typing, tabs, shelf,
+  find-in-page); then rustkit-viewhost owns the macOS window and tao leaves
+  macOS; Windows/Linux keep tao until their viewhosts catch up; then wry goes.
+- **Release to main every Friday at midnight ET** (develop → master, with notes).
+- **Workers Mon–Fri only.** Every LLM seat is dormant Fri 00:00 → Mon 06:00.
+  Measurement jobs with no model cost (quiet board, handtest log-only) keep running.
+- **No Thursday freeze.** Thursday night = baseline (quiet board + full real-window
+  run, binary banked). Fix through Friday midnight; the Thursday baseline is the
+  regression reference for the release.
+- **Pete hand-tests the release on the weekend** and takes notes (site, action,
+  expected, seen, screenshot). Monday's queue starts from those notes.
+- **One alternate baseline per week:** Windows or Linux, alternating.
+- **Weekly artifact every Friday:** live-site improvement over the week (/60 and
+  /75 trend, H-list closed vs open, per-site before/after in prose; frames private).
+- **Codex** is the independent reviewer (Friday, on the promotion head) and a
+  weekend test partner; not a code worker unless a bounded, test-pinned job fits.
