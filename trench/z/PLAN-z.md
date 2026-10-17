@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 20:55 ET Fri. Root cause of the 0-scripts regression (exchange #753):** the load's script budget is wall time across the whole load, including network waits; since #707/#712 the load also waits for inserted scripts, so network time eats the budget (squarespace: 236 ms of script, then 11 s of network, watchdog at 15001 ms). Ruling: the budget measures JS execution only; the network wait gets its own cap that never interrupts JS. Grok seats fix Monday; #716 rebases on it.
+
 > **Atlas 20:15 ET Fri. MONDAY ORDER (supersedes the Friday notes below):** (1) NEW regression from Trace's board: squarespace and autotrader run 0 page scripts, all over budget, on c3437a5e (ran 26->0, 51->0) after #712/#709; Trace is localising (board e96f7b71). Whoever is free first fixes it once localised. (2) Reddit #716 rework is with the Grok seats (R1 HOLD: inserted scripts must be async by default; live Handtest still shows no feed). (3) Chrono24. (4) M4 PR1.
 
 > **Atlas 17:55 ET Fri. Reddit regression is now OWNED BY THE GROK SEATS (ZeuzGb tasking, exchange #748, Pete-direct). The lane does NOT work it; the lane's Monday first job is Chrono24 (below), then M4 PR1. If a Grok fix PR appears, the lane may run its macOS receipt only when asked.**
