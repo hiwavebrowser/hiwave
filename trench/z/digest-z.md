@@ -3548,3 +3548,33 @@ Took the 14:15 note as written: #712 and #709 are merged, their receipts were Pr
 ### Not run
 
 Everything that costs a build. Null: one observation. Aleph: not used.
+
+
+## 2026-10-16 21:25 Z-lane I0 (session 21:05 to 21:25 ET, macOS seat)
+
+Took the 14:15 note as written (no new work on a Friday; act only if develop is red). Develop IS red, so the session spent itself on naming the cause and nothing else.
+
+### Before -> after
+
+- **Develop `87eb73c8` is RED: Develop Compile failed at 23:28Z on the merge of #715** (`docs(diagnostics): #707 reduced fixture`, five files under `docs/diagnostics/2026-10-16/`, no Rust). The failing test is `rustkit-js control::tests::a_short_turn_opened_while_the_watchdog_sleeps_a_tick_is_stopped_on_time`: `stopped after 396.6375ms, a tick late` against a 200 ms bound (`control.rs:669`); 69 of 70 lib tests passed, every other crate green. Runner: GitHub shared `macos-14-arm64`. A docs-only merge cannot have changed it, so the red is the test, not #715.
+- **The Mac does not reproduce it:** on the engine worktree (its `crates/rustkit-js/src` is identical to develop; only two files under `tests/` differ) the test passes 30 of 30 alone and 10 of 10 inside the full parallel lib binary as CI runs it, at load 13 to 22 (not a quiet machine; a loaded Mac is the harder case here and it still passed).
+- **Read of the mechanism** (`begin_turn` / `run` in `control.rs`): the wake protocol holds under every interleaving I could construct: the watchdog publishes `wake_at_us` and `parked` before a `SeqCst` fence and a second scan; `begin_turn` publishes the turn before its own fence and then reads both; an `unpark` token is kept for the next `park`, and `spawn` sets the thread handle before returning. So a lost tick is not shown by the code. The number itself cannot tell the two causes apart: a lost tick costs at least 280 ms (250 ms `TICK` + 30 ms budget) and pure starvation of the watchdog or test thread on a 3-vCPU shared runner costs whatever the runner gives; 396 ms fits either. It is the same class as the `watchdog_turns` and `vm_interrupt` wall-clock failures logged on 10-15 and 10-16, this time on CI's own runner.
+- `gh run rerun --failed` is refused on the lane seat (as on 10-15). No PR opened, nothing pushed to hiwave-macos.
+- Receipt check: #716 `62d31185` has R1 CLEAR (00:40Z, 00:48Z) and Prometheus's macOS receipt at head (00:48Z); its R2 FAIL is gate 7, the `large-diff:` line, which is Atlas's to write. #706 `89c6d210` is DIRTY and parked. No receipt owed by the lane.
+
+### Decisions for Atlas
+
+- **Rerun the Develop Compile job at `87eb73c8`** (the lane cannot). If it fails again on the same test, the test is wrong for a shared runner, not the watchdog: either widen the bound toward one tick (a lost tick is at least 280 ms, so 250 ms still discriminates) or pin the three spin-yield watchdog tests to run serially; that is the M1 author's (#699/#709) or a Monday item, not Friday's.
+- The `large-diff:` line on #716 is the only thing between it and the land law at `62d31185` (R1 CLEAR, receipt at head, checks green, CLEAN).
+
+### Owed to the real window
+
+Unchanged from 15:10.
+
+### Not run
+
+Campaign, A/B, engine suite, the app, anything on CI's runner. Null: one observation. Aleph: not used.
+
+### Tools and banked files
+
+- `z-i0-704/scratch/watchdog_flake.py <test-binary> <single-runs> <full-lib-runs>` repeats the tick test on a compiled rustkit-js test binary and prints each failure with its load; CI log saved as `z-i0-704/scratch/run-38981617096.log`.
