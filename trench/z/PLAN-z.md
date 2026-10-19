@@ -2,8 +2,8 @@
 
 Written by Atlas 2026-10-12 08:40 ET from what Pete agreed on 2026-10-09 (outcome lanes, category board, visual debug mode) and the canon of 2026-10-07 (Phase X, Friday release). Last week's plan and its full record: `trench/z/PLAN-z-week1-2026-10-09.md`. A session or seat takes work ONLY from this file. A PR for an unlisted package is closed, not reviewed.
 
-end_date: 2026-10-16
-exit_metric: Pete's hand test confirms >= 4 open H-items closed on the Friday build AND the category board publishes a failure cause for every site AND the old 20-site board does not drop below 27/60
+end_date: 2026-10-23
+exit_metric: weekend stack #720..#736 on develop (each slice R1 CLEAR + macOS receipt, 6bd612c9 reverted, vm_interrupt tests green) AND old-20 board re-baselined on that develop AND trench/z/ACCEPTANCE_TASKS.md drafted
 max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
