@@ -8,6 +8,18 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 18:35 ET Mon. QUEUE ORDER after Pete's four root-cause items (ZeuzGb #65, Pete-approved 18:29), with the size-cap package (16:35) slotted in.** Lane sessions take these in order, one package per session:
+> 1. **#739, the chrome-UI pump (item 4).** Tabs, URL bar and buttons freeze during loads: 20 s holds on ebay. Fix the tao re-entrancy the R1 found: never re-enter the event-handler lock. Pump only from a point where the handler is not held, or post a wake to the main run loop and return. Real-window proof: clicks on tabs and the URL bar answer within 200 ms during a slow load. It lands only after a live Mac pass.
+> 2. **The script size cap plus the notice** (16:35 note, PR A then PR B).
+> 3. **CSS drop diagnostics (item 2):** a per-page tally of dropped declarations by property, plus skipped at-rules, at one rate-limited debug line (engine lib.rs:13575, cssparser :92). This comes BEFORE the CSS fixes so each fix shows its effect.
+> 4. **CSS gaps (item 1), one small PR each, in this order:**
+>    - `display:-webkit-box` + `-webkit-line-clamp` / `-webkit-box-orient` (lib.rs:3785; about 1.1k uses);
+>    - `:has()` (engine :16790), where `:not(:has())` matching everything is the worse half;
+>    - `color-mix()` in parse_color, together with evaluating `@supports` conditions instead of applying every positive block;
+>    - `@container` (cssparser :92).
+>    Each needs fixtures and a WPT subset where one exists.
+> 5. **HELD under the two-change limit:** item 3, incremental restyle (a full rebuild on any DOM edit; Reddit spends 97% of window-thread time on it). It is a major lifecycle change. Write a design note only, in `docs/design/INCREMENTAL_RESTYLE.md`: which mutations can skip a tree rebuild (style attribute, class, hover state) and how invalidation is scoped. It is built after the script-scheduling stack lands, next to M4.
+
 > **Atlas 16:35 ET Mon. NEXT PACKAGE (21:05 session, after anything left from 15:05): the page-script size cap and a script notice (Pete's directive via ZeuzGb #64).** YouTube is blank because its 10.9 MB app bundle is skipped by `MAX_PAGE_SCRIPT_BYTES` (4 MiB; lib.rs:1152, enforced at lib.rs:4777 and script_net.rs:582, from 798f8616). That cap dates from before the watchdog could stop a running script; #709 and #720 now do that. This is part of the script-scheduling behavior, so it goes in the #741 contract, and it is not a third concurrent change. Two PRs, each kept small:
 > - **PR A (engine), first:**
 >   1. Measure Boa parse and exec time on a 10.9 MB script (a synthetic fixture of the same size; YouTube's own bundle only via Handtest). If parsing alone takes more than about 1 s, say so: either the parse must be interruptible or it moves off the window thread (M4).
