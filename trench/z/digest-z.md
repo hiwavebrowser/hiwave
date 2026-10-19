@@ -3640,3 +3640,20 @@ Full engine suite at the #727 head; the real window. Null: one fact, one observa
 
 - Worktrees: `z-i0-727` (`atlas/z-727-gate` at `3d0279ab`, no commits), `z-i0-dev` (`atlas/z-stale-word-test-budget` off `aa518dde`).
 - Banked in z-target/bins: `engine-test-727-3d0279ab`, `engine-test-dev-aa518dde` (headless engine test binaries), `watchdog_turns-727-3d0279ab`, `watchdog_turns-dev-aa518dde`, `watchdog_turns-fix-60s`.
+
+
+## 2026-10-19 10:00 Z-lane I0 (session 09:50 to 10:00 ET, macOS seat): job 4, the script scheduling contract
+
+### Before -> after
+
+- **Draft PR #741 opened: `docs/design/SCRIPT_SCHEDULING_CONTRACT.md`** on `atlas/z-script-scheduling-contract` (off develop `aa518dde`, `c3fe9f7f`). Starts from #735's `docs/loading-rules.md` and `docs/event-loop-gap.md` (referenced, not rewritten). Per script kind (parser inline, parser external, defer and parser module, async, inserted external, inserted module and dynamic import, the non-scripts): starts, states, completes, cancels (budget, navigation, stop, network cap), observes (element events, order, `readyState`). Section 4 is the watchdog-on-every-entry-point rule (a spent budget stops JS and never takes the watchdog away), with what it does not promise. Sections 5 and 6: budget vs network cap, cancellation table. Section 8: a PR touching the named code names the lines it changes and carries a fixture per line. Section 9: open items (Chrono24's src-set-later insert, the event-loop step, #739, WPT counts). Lines not yet true on develop name their branch (#720, #716/#727). Constants checked against develop.
+- Draft, not ready: it is a contract to be reviewed against the spec and the stack, and the Grok seats' fixtures should cite its sections.
+
+### Decisions for Atlas
+
+- The contract needs an R1 that reads sections 2 to 6 against the spec and the weekend branches; a wrong line gets a fixture in the PR that fixes it, not a softer sentence.
+- Nothing else from the Monday order is the lane's until R1s come back on #720, #726, #740 and the contract.
+
+### Not run
+
+Nothing built for this item. Null: nothing new. Aleph: not used.
