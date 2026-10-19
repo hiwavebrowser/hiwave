@@ -3615,3 +3615,28 @@ Campaign, A/B, full engine suite, the real window (receipts are Prometheus's). A
 - Worktrees: `z-i0-720` (branch `atlas/z-720-work` tracking `cloud/script-budget-exec-time`), `z-i0-726` (`atlas/z-726-work` tracking `cursor/watchdog-timing-slack-f29e`). `z-chrome-pump` was a compile check and is removed.
 - `z-i0-720/scratch/`: `repeat_test.py <test-binary> <runs> <filter...>` (each run with load and assertion text), `fmt_one.py [--apply] <file.rs>` (rustfmt one file with child mods stubbed), `pick_hunks.py <diff> <regex> [--invert]` (split a working tree into commits by hunk), `unwrap_chrome.py`, `fmtchk.py`, the commit messages and PR comments.
 - Test binaries in z-target: `rustkit_engine-9a5558f1ee8b905a` (headless, #720 head), `rustkit_js-263118b2403867b9` (#726 head).
+
+
+## 2026-10-19 09:50 Z-lane I0 (session 09:35 to 09:50 ET, macOS seat): job 3, the `vm_interrupt` gate before #727
+
+### Before -> after
+
+- **The claim did not reproduce.** Engine `vm_interrupt_tests` (`--features headless`, debug) pass 5 of 5 on develop `aa518dde` and on the #727 head `3d0279ab`, two runs each at load 20 to 22. rustkit-js `vm_interrupt` 7 of 7 and `vm_interrupt_promises` 21 of 21 on both. No "4 failures" text in the #724, #727 or #729 bodies or comments; #727's CI is green on every job (and `unit-suites` runs no headless module anyway). Nothing to bisect on `cloud/yielding-load-tail`.
+- **The one red in the family is pre-existing on develop, and it is not an engine bug:** `watchdog_turns::an_interrupt_set_between_turns_does_not_kill_the_next_turn` (the js-suites red of 10-15 and 10-16, previously read as a window in the word's turn check). Develop `aa518dde`, 300 ms budget: 16 of 30 fail at load 41, 1 of 10 at load 51; #727 head: 1 of 8. The same binary with a 60 s budget for that test: 30 of 30 at load 38 to 41. The test opens the next turn with the module's 300 ms `BUDGET`; the debug JsRuntime plus 10,000 iterations run past it under load; the watchdog's stop reads as the stale word's.
+- **#740 opened** (`atlas/z-stale-word-test-budget` off develop, one test file): 60 s budget on both turns, the turn's duration and the watchdog's stop count in the assertions, and `turns_stopped() == 0` pinned. Friday rule 6's "fixed, not widened". Needs R1.
+- The CNN freeze itself is covered by #720's fix (the unarmed spent budget), not by anything on `cloud/yielding-load-tail`.
+
+### Decisions for Atlas
+
+- Job 3's bisect is void: there are no `vm_interrupt` failures to bisect at the #727 head on the Mac. If the four failures came from a Linux or CI run, that run's log is needed; the lane could not find it.
+- #740 is a one-file test change; it can land on R1 alone.
+- The memory note that called this test "a window in the word's turn check" (10-15) is corrected in Null.
+
+### Not run
+
+Full engine suite at the #727 head; the real window. Null: one fact, one observation. Aleph: not used.
+
+### Tools and banked files
+
+- Worktrees: `z-i0-727` (`atlas/z-727-gate` at `3d0279ab`, no commits), `z-i0-dev` (`atlas/z-stale-word-test-budget` off `aa518dde`).
+- Banked in z-target/bins: `engine-test-727-3d0279ab`, `engine-test-dev-aa518dde` (headless engine test binaries), `watchdog_turns-727-3d0279ab`, `watchdog_turns-dev-aa518dde`, `watchdog_turns-fix-60s`.
