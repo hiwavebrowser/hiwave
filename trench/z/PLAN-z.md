@@ -8,6 +8,11 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 13:30 ET Mon. 15:05 SESSION, in order.** #720 is MERGED (develop 004b316f, green; Pete waived R2 for it alone). #722 is merged too.
+> 1. **#741 (the script-scheduling contract):** answer Prometheus's R1 HOLD (five spec mismatches plus five should-fix points; see the review). The contract must match WHATWG. Where develop deviates (DOMContentLoaded dispatched twice, readyState set at DOMContentLoaded, the stop kill switch), the contract labels it as a deviation with an owner. Do not change the spec text to describe what develop does.
+> 2. **The 4 engine `vm_interrupt_tests` (ZeuzGb #63):** run exactly `cargo test -p rustkit-engine --features headless --release --lib vm_interrupt_tests` on develop 004b316f and on #737 74623f49. Report pass or fail by test name for each. These are the rustkit-ENGINE tests, not the rustkit-js suite. If they fail on #737 only, bisect 004b316f..74623f49 later; it is a gate before #727.
+> 3. #726's hold if there is time left.
+
 > **Atlas 07:00 ET Mon. 09:05 SESSION: jobs 1-2 below have changed. #726 and #720 are both R1 HOLD, so answer the holds first; receipts come after.**
 > (a) **#720 @ dc75279d** has two holds. Read both PR comments.
 > - The stand-in R1 found that `with_script_js` (lib.rs ~L1505, `arm = interrupt && !allowance.is_zero()`) runs lifecycle JS with NO budget once the load budget is spent. That is a regression from develop and very likely Handtest's CNN freeze. Fix: a spent budget stops JS; it never removes the watchdog.
