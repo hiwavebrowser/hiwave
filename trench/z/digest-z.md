@@ -3657,3 +3657,29 @@ Full engine suite at the #727 head; the real window. Null: one fact, one observa
 ### Not run
 
 Nothing built for this item. Null: nothing new. Aleph: not used.
+
+
+## 2026-10-19 15:30 Z-lane I0 (session 15:05 to 15:35 ET, macOS seat): the 13:30 order, jobs 1 to 3
+
+### Before -> after
+
+- **Job 1, #741 (script-scheduling contract): R1 HOLD @ `c3fe9f7f` answered as draft 2 `2a477d9f`** (one docs file; reply posted on the PR). The rule is now in the header: sections 2 to 7 say what WHATWG says; where develop `004b316f` or the #737 head `74623f49` differs, the line carries `[deviation Dn]` and section 9 names where, owner and fixture. Every disputed line was checked against the code at both SHAs. Deviations recorded: **D1** `readyState` becomes `interactive` after the deferred list (`lib.rs` 5040 / 6821); **D2** `DOMContentLoaded` dispatched twice, non-bubbling (`__rustkit_fire`, `bindings/lib.rs` 427); **D3** inserted modules: external runs through `import()` and turns an evaluation error into element `error`, `async=false` not honoured, inline inserted modules do not run at all (draft 1's "`import()` of a `data:` URL" was true nowhere); **D4** no `pagehide`/`visibilitychange`/`unload` on navigation (owner: Atlas to assign, rule 2); **D5** user Stop during a committed load is a kill switch (`stop_all`, `lib.rs` 11523), labelled deliberate, `window.stop()` excluded (not bound today); **D6** a parser `<script src="">` joins the empty src onto the base and fetches the document itself (`lib.rs` 4441). Should-fix items 6 to 10 folded in (script-blocking sheets only, async runs when ready, inline parser modules, module MIME vs classic `nosniff`, `src=""`). The Chrono24 open item is corrected: develop does prepare on a later `src` set (`web_scripts.js` `changed`); the fixtures are what is owed.
+- **Job 2, the `vm_interrupt` gate: the failures ARE real in `--release`, on develop as much as on the stack.** `cargo test -p rustkit-engine --features headless --release --lib vm_interrupt_tests`: develop `004b316f` **1 passed, 5 failed**; #737 `74623f49` **2 passed, 3 failed** (its file lacks #720's CNN test; the click-listener forEach test passes there and fails on develop). By name, develop: timer spin FAIL, click listener FAIL, load-script spin FAIL, inspector script_error FAIL, CNN shape FAIL, without-the-switch ok. #737: timer FAIL, load-script FAIL, inspector FAIL, click ok, without-the-switch ok. One mode everywhere: `Threw("RuntimeLimitError: reached the maximum number of iteration loops")` after 75 to 233 ms, under the 300 ms budget: the app's 10M loop-iteration limit ends the spin before the watchdog. Debug passes because 10M iterations take longer than 300 ms there (this morning's 5/5 was debug). **Nothing to bisect on `cloud/yielding-load-tail`; develop is the worse head.**
+- **#742 opened** (`atlas/z-vm-interrupt-release-tests` off `004b316f`, `8a110965`, one test file): `script_loop_iteration_limit: u64::MAX / 2` in the tests' shared `config()`, the pin `load_cancel_tests` already uses. Release 6/6 twice, debug 6/6. Needs R1. Logs: `.worktrees/z-vmint-dev-004b316f.log`, `z-vmint-737-74623f49.log`, `z-vmint-fix-release*.log`.
+- **Job 3, #726:** nothing to do. Prometheus R1 CLEAR @ `ea99dca0` (12:55 ET) and receipt PASS (13:20 ET); `control.rs` is byte-identical to develop `004b316f`, so the PR is redundant and Prometheus suggests Atlas close it as landed via #720.
+
+### Decisions for Atlas
+
+- **The 10M loop-iteration limit is a page-visible stop the contract does not list.** In the app (release) any one execution past 10M total loop iterations, however fast (75 to 233 ms here), dies with `RuntimeLimitError` long before the 5 s watchdog. Keep it as a second net and add it to section 6 of #741, or raise it so the watchdog is the only stop. Not changed by #742.
+- #742 is test-only and can land on R1 alone; it is the gate before #727 (the "4 failures" were this).
+- #741 draft 2 needs the R1 re-read; the thing to review is the section 9 table (owners, whether D4 waits, whether D5 is the product choice Pete wants).
+- #726: close as landed via #720 (Prometheus's suggestion; Atlas's call).
+- #740 still has no R1.
+
+### Not run
+
+Full engine suite at `8a110965` (the change is one `#[cfg(test)]` config). The real window. Null MCP not called (file memory written: `vm-interrupt-tests-release-profile-loop-limit`, `contract-review-verify-develop-at-both-shas`). Aleph: not used (hub cwd).
+
+### Tools
+
+`.worktrees/z-vmint.py <wt> <log>` (release vm_interrupt run through the lease, `exit=` in the log), `z-show.py <wt> <sha> <path> <from> <to>` (slice a file at a SHA), `z-find.py <root> <regex>...`. Worktrees: `z-i0-727` now on `atlas/z-vm-interrupt-release-tests`; `z-i0-dev` on `atlas/z-script-scheduling-contract` @ `2a477d9f`.
