@@ -3578,3 +3578,40 @@ Campaign, A/B, engine suite, the app, anything on CI's runner. Null: one observa
 ### Tools and banked files
 
 - `z-i0-704/scratch/watchdog_flake.py <test-binary> <single-runs> <full-lib-runs>` repeats the tick test on a compiled rustkit-js test binary and prints each failure with its load; CI log saved as `z-i0-704/scratch/run-38981617096.log`.
+
+
+## 2026-10-19 09:35 Z-lane I0 (session 09:05 to 09:35 ET, macOS seat): the #720 and #726 R1 holds
+
+Took the 09:05 note as written: the holds first, receipts are Prometheus's. Both answered and pushed (no force-push); nothing merged.
+
+### Before -> after
+
+- **#726 `680284aa` -> `ea99dca0`** (R1 HOLD: a one-tick ceiling sits on the value a missed wake produces). Took the reviewer's first option: `Watchdog::spawn_with_tick` (private; `spawn` keeps `TICK`), the test's own watchdog gets a 2 s tick, ceiling 1 s, floor 30 ms. One more thing was needed: with the long tick alone the wake-disabled mutation still passed 3 to 4 of 6, because the old test ended the stopped turn before opening the short one, so the watchdog could park with nothing open and the short turn woke it by the `parked` path (the mutation leaves that path alone). `Shared.sleeping` (set before park, cleared when the watchdog runs) and the test waits for it with the stopped turn still open. Mutation: 6 of 6 fail at 2.13 to 2.15 s. Wake restored: `control::tests` x50, 50 of 50 at load 17. Comment on the PR.
+- **#720 `dc75279d` -> `7883d82a`**, five commits:
+  - `220a9dc4` test first: `vm_interrupt_tests::a_spin_after_the_load_budget_is_spent_is_still_stopped`, the CNN shape (a page script spends the budget, then a `load` listener and a timer due in the load each spin in nested loops under the iteration limit, self-break at 4 s). Fails on `dc75279d`: `[inline#1]` only, both spins ran to their limit, load 20.2 s.
+  - `6220b911` the fix: `with_script_js` arms `STOP_GRACE` when the allowance is zero (a spent budget stops JS; it never takes the watchdog away). Passes: `[inline#1, event:load, timers]`, page answers after, a `pump_live` turn runs.
+  - `a7843ed3` the ten rustfmt-joined lines put back by hand; `cargo fmt --all` NOT run (lib.rs 748 hunks on develop, script_net.rs 27, inspector.rs 38).
+  - `72ed3f13` the chrome UI pump taken out (engine hook, `await_with_chrome_ui` at ten call sites, the app's run-loop pump and event-loop early return, its test). `cargo check -p hiwave-app` clean; engine test binaries build with and without `headless`.
+  - `7883d82a` the #726 commit cherry-picked (replaces `f2e1c6e3`'s one-tick ceiling).
+  - Mac at load 17 to 20 (not quiet), debug, `--features headless`: `vm_interrupt_tests` 6 + `script_budget_tests` 5 = 11 pass. Comment on the PR.
+- **#739 opened (draft)**: `atlas/z-chrome-pump` = `git revert 72ed3f13` on `7883d82a`, base `cloud/script-budget-exec-time` so the diff is the pump alone (retargets when #720 lands). Body names the tao `handle_redraw` re-entrancy and the live-Mac pass it needs (resize during a slow document fetch). Engine tests and the app compile on it. 28 PRs are open against the plan's `max_open_prs: 8`; the stack is Atlas's, this one is the follow-up the 09:05 note asked for.
+- Develop moved to `aa518dde` during the session (from `87eb73c8`).
+
+### Decisions for Atlas
+
+- #720 and #726 need their R1 re-run at `7883d82a` / `ea99dca0`; then Prometheus's receipts (job 1: the three timing tests x50 on a loaded machine; job 2: campaign, engine suite, all-site A/B, squarespace and autotrader script counts).
+- #739 should carry `no-check` or stay draft until #720 lands and someone with the screen does the resize pass; it is not for R1 yet.
+
+### Owed to the real window
+
+The CNN freeze itself: the fixture reproduces the mechanism headless; Handtest's CNN in the window at a #720 build is still the proof.
+
+### Not run
+
+Campaign, A/B, full engine suite, the real window (receipts are Prometheus's). Aleph: not used (no index in the z worktrees). Null: one observation.
+
+### Tools and banked files
+
+- Worktrees: `z-i0-720` (branch `atlas/z-720-work` tracking `cloud/script-budget-exec-time`), `z-i0-726` (`atlas/z-726-work` tracking `cursor/watchdog-timing-slack-f29e`). `z-chrome-pump` was a compile check and is removed.
+- `z-i0-720/scratch/`: `repeat_test.py <test-binary> <runs> <filter...>` (each run with load and assertion text), `fmt_one.py [--apply] <file.rs>` (rustfmt one file with child mods stubbed), `pick_hunks.py <diff> <regex> [--invert]` (split a working tree into commits by hunk), `unwrap_chrome.py`, `fmtchk.py`, the commit messages and PR comments.
+- Test binaries in z-target: `rustkit_engine-9a5558f1ee8b905a` (headless, #720 head), `rustkit_js-263118b2403867b9` (#726 head).
