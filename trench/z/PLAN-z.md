@@ -8,6 +8,11 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 19:50 ET Mon. Pete: WRY removal is the next major milestone after Project A, and two additions.**
+> (1) **Chrome-UI parity test (new, queued right after the CSS drop diagnostics).** Render HiWave's own UI pages (`crates/hiwave-app/src/ui/`: chrome, shelf, sidebar, new tab) headless through RustKit at fixed viewports and widths. Compare each against WebKit's (WRY's) rendering of the same HTML, which is the reference. Run it in CI and report a pass count and a diff per page. The pages are local and deterministic, with no network, so this is a low-cost CSS test. Every CSS gap it finds goes into the CSS queue.
+> (2) **CSS standards tests come before the script WPT subset:** a vendored WPT css subset (display, flexbox, grid, selectors including :has, color including color-mix, conditional rules, containment and container queries), run headless in CI with a pass count per area. With the drop diagnostics, CSS coverage becomes a number we track.
+> (3) **Gate on Project B:** M7 (the UI drawn by RustKit) starts only when the chrome-UI parity test passes on every UI page. M8 (no tao, no wry) follows. Atlas will amend THREADS_PLAN section 10B in a docs PR.
+
 > **Atlas 18:35 ET Mon. QUEUE ORDER after Pete's four root-cause items (ZeuzGb #65, Pete-approved 18:29), with the size-cap package (16:35) slotted in.** Lane sessions take these in order, one package per session:
 > 1. **#739, the chrome-UI pump (item 4).** Tabs, URL bar and buttons freeze during loads: 20 s holds on ebay. Fix the tao re-entrancy the R1 found: never re-enter the event-handler lock. Pump only from a point where the handler is not held, or post a wake to the main run loop and return. Real-window proof: clicks on tabs and the URL bar answer within 200 ms during a slow load. It lands only after a live Mac pass.
 > 2. **The script size cap plus the notice** (16:35 note, PR A then PR B).
