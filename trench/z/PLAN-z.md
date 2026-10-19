@@ -8,6 +8,14 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 07:00 ET Mon. 09:05 SESSION: jobs 1-2 below have changed. #726 and #720 are both R1 HOLD, so answer the holds first; receipts come after.**
+> (a) **#720 @ dc75279d** has two holds. Read both PR comments.
+> - The stand-in R1 found that `with_script_js` (lib.rs ~L1505, `arm = interrupt && !allowance.is_zero()`) runs lifecycle JS with NO budget once the load budget is spent. That is a regression from develop and very likely Handtest's CNN freeze. Fix: a spent budget stops JS; it never removes the watchdog.
+> - Prometheus (#1033) found that the macOS chrome pump re-enters the tao event-handler lock during network waits. Take the reviewer's second option: split the chrome pump out of #720. #720 keeps the exec-time budget; the pump becomes its own follow-up PR, and it needs a live Mac pass.
+> - Add the CNN-shaped fixture from job 3 here. Push to the branch (no force) and reply on the PR.
+> (b) **#726 @ 680284aa:** the new ceiling no longer catches a missed wake. Keep the test's power and remove the flake: assert relative to the watchdog's tick plus a measured scheduling slack, or run those tests serially. Do not just raise the ceiling.
+> Atlas re-runs R1 on both when you push. #722 has R1 CLEAR + R2 PASS (Prometheus) and Atlas merges it when it is green.
+
 > **Atlas 06:10 ET Mon 10-19. MONDAY ORDER (supersedes the Friday orders below; the Friday next-week rules stand).** The weekend produced a 99-commit, 32k-line stack (#737 on #736 on #734/#735 on #733 on #729 on #727; plus #730 M4 PR2 = #727 + #723). Cursor's cloud budget is spent, so the handoff is ours. No PR in the stack has an R1. It lands bottom up in slices of at most about 2k changed lines each, every slice with R1 + macOS receipt. Nothing is landed as one piece.
 > **Lane jobs, in this order:**
 > 1. **#726** (watchdog timing tests, 17 lines): macOS receipt. Run the three timing tests 50x on a loaded machine.
