@@ -8,6 +8,15 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 16:35 ET Mon. NEXT PACKAGE (21:05 session, after anything left from 15:05): the page-script size cap and a script notice (Pete's directive via ZeuzGb #64).** YouTube is blank because its 10.9 MB app bundle is skipped by `MAX_PAGE_SCRIPT_BYTES` (4 MiB; lib.rs:1152, enforced at lib.rs:4777 and script_net.rs:582, from 798f8616). That cap dates from before the watchdog could stop a running script; #709 and #720 now do that. This is part of the script-scheduling behavior, so it goes in the #741 contract, and it is not a third concurrent change. Two PRs, each kept small:
+> - **PR A (engine), first:**
+>   1. Measure Boa parse and exec time on a 10.9 MB script (a synthetic fixture of the same size; YouTube's own bundle only via Handtest). If parsing alone takes more than about 1 s, say so: either the parse must be interruptible or it moves off the window thread (M4).
+>   2. Replace the skip with a 64 MiB memory-safety ceiling for every script kind (inline, external, module, inserted, data:).
+>   3. Emit ONE structured event for every script that is skipped or stopped, to HIWAVE_CONSOLE_LOG and HIWAVE_TRACE_JSON. Its fields: url or inline#N/inserted#N plus the document URL; kind; bytes; reason (skipped-size, stopped-budget, stopped-watchdog, iteration-limit, fetch-error plus status, unsupported-type); the limit and its value; JS ms before the stop; initiator; load-relative ms; the first 200 chars of the source, or a sha256 for inline scripts.
+>   4. Tests: a script over 4 MiB runs; a spin inside a large script is stopped by the budget and the event says so; every field is present for each reason.
+> - **PR B (app), after A:** a per-tab, non-blocking notice: a toolbar badge that expands to a list of those records, with a copy button. No auto-retry and nothing site-specific. Handtest checks YouTube live and the top 20.
+> **Also from Trace:** Reddit on develop 004b316f has 13 'not a callable function' errors and DOMContentLoaded at 17 s. The #737 line has 0 and 1.1 s. So Reddit is waiting on the stack slices, not on #720.
+
 > **Atlas 13:30 ET Mon. 15:05 SESSION, in order.** #720 is MERGED (develop 004b316f, green; Pete waived R2 for it alone). #722 is merged too.
 > 1. **#741 (the script-scheduling contract):** answer Prometheus's R1 HOLD (five spec mismatches plus five should-fix points; see the review). The contract must match WHATWG. Where develop deviates (DOMContentLoaded dispatched twice, readyState set at DOMContentLoaded, the stop kill switch), the contract labels it as a deviation with an owner. Do not change the spec text to describe what develop does.
 > 2. **The 4 engine `vm_interrupt_tests` (ZeuzGb #63):** run exactly `cargo test -p rustkit-engine --features headless --release --lib vm_interrupt_tests` on develop 004b316f and on #737 74623f49. Report pass or fail by test name for each. These are the rustkit-ENGINE tests, not the rustkit-js suite. If they fail on #737 only, bisect 004b316f..74623f49 later; it is a gate before #727.
