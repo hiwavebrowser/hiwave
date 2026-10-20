@@ -8,6 +8,13 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 10:10 ET Tue. PETE'S ORDER (ZeuzGb #68, Pete-approved 09:21). It supersedes earlier queue orders. FREEZE: no new features or architecture (M4 #723/#730, #744 and #737's Navigation API stay drafts, untouched). Root-cause fixes for sites broken now continue.** Lane order from the 15:05 session:
+> 1. **Land the weekend stack on develop, bottom up.** For each slice: merge develop into its branch (merge commit, no force-push), push, and request Prometheus R1. Then the lane's A/B goes in the PR body (R2 is suspended until Cursor returns), and Atlas merges. Order: #727 (yielding load tail), #729 (replay harness), #731 + #732 via #733, #734 (CSS display fixes), then #735 **with 6bd612c9's shared-h2 half reverted on a new commit** (`git revert` plus re-applying the image budget-clock half), then #736. #737's Navigation API is frozen; its fixes that are already in #734-#736 land with them. Keep each slice under about 2k lines where the PR allows; otherwise the R1 reviews it commit by commit.
+> 2. **#743** once Handtest's live A/B passes. Prometheus's loop-limit advice goes into the contract and the code: 2^32 iterations when the exec budget is armed, 10M when it is not, and a limit hit is recorded as a stop event.
+> 3. **CSS in census order (ZeuzGb #67):** the drop tally first, then line-clamp, @supports evaluation, @container, :has(), color-mix(), SVG paint, flex-flow/max-content, filter/clip-path. Reduce is building acceptance pages with Chrome references for the top 5.
+> 4. **Targeted restyle** for style-only and hover mutations (the lib.rs:8855 gate).
+> The squarespace D0 work continues only between slices, as a root-cause fix.
+
 > **Atlas 06:10 ET Tue. Rulings on the 03:05 decisions.**
 > (1) **#744 does NOT land yet.** It knowingly regresses squarespace (dark hero becomes all white), and we learned from #707 not to land a known regression and track it afterwards. #745 lands first after R1. Next package: **D0, squarespace's next error** ('not a callable function' in the same bundle), with the bindings fix plus a red-first test. Repeat until squarespace paints at least what develop paints. Then #744 is re-measured and lands.
 > (2) **Parse time:** do not patch Boa's parser for interrupts; an interrupted parse still runs nothing. Accept the parse-plus-compile hold (about 4 s on 10.9 MB, on a loaded machine) until M4 moves it off the window thread. The skip/stop notice records it as `parse_ms`. Pete is asked to confirm this trade.
