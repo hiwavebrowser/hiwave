@@ -3683,3 +3683,20 @@ Full engine suite at `8a110965` (the change is one `#[cfg(test)]` config). The r
 ### Tools
 
 `.worktrees/z-vmint.py <wt> <log>` (release vm_interrupt run through the lease, `exit=` in the log), `z-show.py <wt> <sha> <path> <from> <to>` (slice a file at a SHA), `z-find.py <root> <regex>...`. Worktrees: `z-i0-727` now on `atlas/z-vm-interrupt-release-tests`; `z-i0-dev` on `atlas/z-script-scheduling-contract` @ `2a477d9f`.
+
+## 2026-10-19 21:58 Z-lane I0 (#739 chrome-UI pump, re-run of the lost 21:05 session)
+
+**Before -> after.** During a slow load the window thread is no longer held. Grant-free window check (`driver.py --checks i0a_nav,h1_slow`, `HIWAVE_STALL_LOG=1`, release, throwaway profile): on develop `004b316f` (binary `dbb99a2b…`) all 5 slow loads held it, for [1663, 1325, 1332, 1249, 1436] ms. On #743 `cf23defe` (`92a2b650…`) it was never held for 200 ms or more. h1_slow passed on both. The load average was about 20, so these figures were taken under load.
+
+**PR.** **#743** (draft, `atlas/z-chrome-coop-load`, base develop): `f156fd48` adds the red test (the load held its caller for 4.66 s on develop), and `cf23defe` is the fix. The load is now a future on the live runtime. The event loop polls it in 8 ms slices from `MainEventsCleared` and returns to tao between slices, so there is no nested run loop and no re-entry of tao's lock. While a load runs, other engine calls use `try_borrow` and do nothing. A resize during the load is applied when the load ends. Stop and new loads cancel through the M3b canceller; Stop on macOS was a `window.stop()` TODO. `cargo test -p hiwave-app`: 83/83 passed, including 5 new tests. `git diff -w` is +265/-53.
+
+**Why not fix #739.** The lost session's finding (`.worktrees/z-739-finding.md`) holds up. A nested `CFRunLoopRunInMode` never calls `sendEvent:`, so even a safe pump would leave the chrome unable to take clicks. I commented on #739 pointing to #743. Closing #739 is Atlas's call.
+
+**Blockers / open.**
+- The queue note's proof is clicks on tabs and the URL bar answered within 200 ms, plus a resize and an expose during a slow fetch with no hang. That needs a seat with Accessibility and Screen Recording, or Pete; this seat has neither. #743 stays a draft until then.
+- R1 has not been requested from me. The R1 for #743 is Prometheus's.
+- No campaign and no all-site A/B were run. The change touches only `hiwave-app`, which `parity-capture` does not link, so both are identical by construction.
+- Script inside a slice still holds the window for as long as it runs. The budgets bound that, and M4 (#730) removes it and deletes this code.
+- Unchanged on both builds: the app takes a page's script navigation only after the load ends ("left within 1 s" failed on both at 1.7 to 1.9 s).
+
+**Notes.** `tokio::time::timeout` has to be built inside `block_on(async { … })`. Built outside, it panics with "no reactor" (the first test run caught this). Binaries are banked in `z-i0-739/scratch/`, and the runs are in `z-realwindow-runs/20261020T0155Z-coopload-cf23defe` and `20261020T0205Z-coopload-dev-004b316f`. Aleph has no artifacts for hiwave-macos, so grep was used.

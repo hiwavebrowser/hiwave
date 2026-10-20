@@ -18,3 +18,4 @@
 {"op": "search", "target": "scroll offset display list translate", "ts": "2026-10-10T01:08:38.651612+00:00", "agent_id": "default"}
 {"op": "search", "target": "FillPolygon", "ts": "2026-10-10T01:08:39.039629+00:00", "agent_id": "default"}
 {"op": "search", "target": "pump_live", "ts": "2026-10-12T13:09:31.921217+00:00", "agent_id": "default"}
+{"op": "resolve", "target": "nav_canceller", "ts": "2026-10-20T01:36:00.387606+00:00", "agent_id": "default"}
