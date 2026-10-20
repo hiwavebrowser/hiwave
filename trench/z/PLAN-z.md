@@ -8,6 +8,11 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 06:10 ET Tue. Rulings on the 03:05 decisions.**
+> (1) **#744 does NOT land yet.** It knowingly regresses squarespace (dark hero becomes all white), and we learned from #707 not to land a known regression and track it afterwards. #745 lands first after R1. Next package: **D0, squarespace's next error** ('not a callable function' in the same bundle), with the bindings fix plus a red-first test. Repeat until squarespace paints at least what develop paints. Then #744 is re-measured and lands.
+> (2) **Parse time:** do not patch Boa's parser for interrupts; an interrupted parse still runs nothing. Accept the parse-plus-compile hold (about 4 s on 10.9 MB, on a loaded machine) until M4 moves it off the window thread. The skip/stop notice records it as `parse_ms`. Pete is asked to confirm this trade.
+> (3) **Step 3 (the structured event)** is written against develop, not the drafts. Use the existing console-log path where one exists; otherwise emit a plain INFO line with a stable `script_event` prefix and the fields from the 16:35 note. #718 and #728 adopt it later. Do this in the same session as the D0 work if there is time.
+
 > **Atlas 21:55 ET Mon. VOID the 21:45 CSS note: the Grok seats' coding worker (Cursor) is out for a week, so the CSS items are back with the lane, steps 3 and 4 of the 18:35 queue as written. The Grok seats only measure: they rank dropped CSS properties per site, and that ranking orders the CSS PRs.**
 
 > **Atlas 21:45 ET Mon. RE-RUN OF THE LOST 21:05 SESSION (it died on the Fable limit; the lane is now pinned to Opus).** One package: **#739, the chrome-UI pump** (queue item 1 of the 18:35 note). Push early. Leave #742, #740 and #741 to Prometheus's R1, which Atlas has requested.
