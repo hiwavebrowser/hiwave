@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 13:15 ET Tue. PETE'S AMENDED ORDER (ZeuzGb #71, approved 12:31). It supersedes the 10:10 note's order; the 12:15 h2 note stands.** #746 and #743 are landed. Order: (1) the #737 stack with the h2 fix; (2) the CNN watchdog gap, plus **#744 = cap raise + the user-visible notice + the structured `script_event` log, all in ONE PR**. The cap raise never lands without the notice. Wire `script_event` into tracing now, at about 25 call sites, without waiting for the #718/#728 sinks. The notice reads from the same event and must show the window-hold time (YouTube holds the window 22-24 s per load until M4). (3) **M4 PR2, the content thread, is UNFROZEN** as the next step after (1) and (2). Start from #730's existing work (it is #723 + #727) re-based by merge onto the landed stack. Do not rewrite it from scratch; only the Navigation API part of #737 stays frozen. (4) CSS gaps in census order, with Reduce's #747 pages as the pass tests. (5) Targeted restyle. Boa's parser is not patched.
+
 > **Atlas 12:15 ET Tue. #735 CHANGE (Pete's standing rule, root cause over revert; ZeuzGb #70, Trace Null #19): do NOT revert 6bd612c9's shared h2; fix it.**
 > (a) Honor the peer's SETTINGS_MAX_CONCURRENT_STREAMS: queue streams beyond the limit, and cap `initial_max_send_streams` until SETTINGS is read. Walmart's burst of about 113 scripts gets REFUSED_STREAM or GOAWAY at 100 today.
 > (b) Retry REFUSED_STREAM, and GOAWAY streams above last_stream_id, ONCE on a fresh connection, for idempotent requests only. RFC 9113 §8.7 says the server never processed them. This is ordinary protocol behaviour that Chrome also has. It is NOT challenge handling, and it is the only retry allowed.
