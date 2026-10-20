@@ -3773,3 +3773,5 @@ Full engine suite at `8a110965` (the change is one `#[cfg(test)]` config). The r
 
 ### Not run
 Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's step.
+
+**16:55 addendum: #729 suite finished.** 878 passed, 32 failed (3130 s, load 37). The grid failures are NOT geometry. Each one panics in the GPU test guard (`lib.rs:130`): it "waited 120s for `grid_block_axis_align_tests::grid_items_and_rows_are_aligned_on_the_block_axis` to finish with the GPU". One test held the GPU under load and the ones queued behind it timed out. The next session reruns that test alone, then the grid modules, on `cf503bb1` before pushing to #729.
