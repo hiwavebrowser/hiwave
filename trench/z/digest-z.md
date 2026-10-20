@@ -3745,3 +3745,31 @@ Full engine suite at `8a110965` (the change is one `#[cfg(test)]` config). The r
 - It belongs on #744's branch (it is size-cap PR A's step 3).
 
 **Method note.** The event log's `script_error` has url:line:column. Fetching the bundle with python urllib (curl is refused on the seat) and slicing that line at the column named the call in two minutes, with no diag patch needed. Bundle copy: `z-d0-location/scratch-dl/sq/index.js`.
+
+
+## 2026-10-20 16:50 Z-lane I0 (stack slice 1, #727; session 15:05 to 16:50 ET, macOS seat)
+
+**Before -> after.** #727 (`cloud/yielding-load-tail`) conflicted with develop at `3d0279ab`. Develop `8532ba64` is now merged into it as `ab761189`, plus the test-only commit `b29c1041`. Both are pushed with no force. The PR comment is posted and R1 was requested from Prometheus (exchange #773). The merged diff against develop is 6,505+/350- in 42 files; the body's `large-diff:` line stands, so R1 goes per commit.
+
+**Merge resolution (3 files).**
+- `script_net.rs`: develop's side only removed `await_with_chrome_ui` and reflowed lines, so #727's rewrite of the pump is kept. The last `await_with_chrome_ui` becomes a plain await, because #743 polls the load in slices.
+- `webview_rustkit.rs`: #743's cooperative load is kept, and both of its load paths call `load_url_yielding`. `host_view` and the clip stay (`from_engine` takes it as a parameter; 0 when headless).
+- `main.rs`: the `chrome_pump_active` branch is removed, along with `content_host_bounds` and `place_host_frame`, which were dead once the branch went.
+
+**Finding: four of #727's own tests are red on macOS at `3d0279ab` itself.** They are `a_yielding_load_returns_during_the_inserted_script_fetch`, `navigating_away_drops_an_inserted_script_still_fetching`, `a_script_inserted_by_the_load_handler_does_not_delay_load` and `cancelling_a_load_closes_the_inserted_fetch`. Linux CI passes them. Probes showed the yield works: the document arrives in 5 ms, then parse plus the debug build's first layout take about 1.35 s before any script runs, and the inserted script is requested only after the load has yielded. The wall-clock limits were timing that layout. `b29c1041` changes the checks: each slow handler sets a flag once it has answered and the load must return before that; the cancel test times from the cancel. A load that waits out its fetch still fails. error_page_script_tests 29/29.
+
+**Tests on `ab761189`** (debug, load about 20):
+- hiwave-app 84/84.
+- Engine: 889 passed, 10 failed. The 10 are the standing five (referrer x3, image_loader_routing, remote_font), the four tests above, and `live_turn_budget_tests::an_answer_that_arrives_in_a_stopped_turn...`, which passes alone (10/10).
+
+**Slice 2 (#729) prepared, NOT pushed to its PR.** The new #727 head merged into `cloud/replay-on-727` as `cf503bb1`. The one conflict was in `lib.rs`: the chrome-UI block goes, and #729's `script_in_shadow` / `script_type_essence` / `script_external_label` stay. It compiles. It is parked on `atlas/z-729-merge-wip`.
+- ab4993cb needs no cherry-pick: #729's head `a187141c` already carries the at-ms stamp, and ab4993cb was #728's copy of it.
+- Its engine suite was still running at the cap, at **load 37**. About 35 FAILED so far: about 20 grid tests (grid_in_flex, grid_template_areas, grid_fixed_track, ...), page_script budget tests, history_traversal back-no-op, navigating_away, and the standing five. None of these are read yet. Log: `z-i0-stack/scratch/engine729.log`.
+
+### Next session
+1. Read `engine729.log`. Rerun the grid failures alone on `cf503bb1` AND on `origin/cloud/replay-on-727`. Load 37 can explain the budget and timing tests; it does not obviously explain grid geometry asserts.
+2. If they pass alone, push `cf503bb1` to `cloud/replay-on-727` (check the PR head first) and request R1.
+3. Then #733 and #736 the same way. The h2 fix (12:15 note) goes on #736's branch.
+
+### Not run
+Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's step.
