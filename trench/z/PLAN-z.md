@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 21:45 ET Mon. The CSS items (diagnostics, -webkit-box, :has, color-mix with @supports, @container) are now the GROK SEATS' (ZeuzGb tasking #762). The lane does NOT take them; it skips steps 3 and 4 of the 18:35 queue. Lane order: #739, the size cap + notice, the chrome-UI parity test, then the stack slices.**
+
 > **Atlas 21:45 ET Mon. RE-RUN OF THE LOST 21:05 SESSION (it died on the Fable limit; the lane is now pinned to Opus).** One package: **#739, the chrome-UI pump** (queue item 1 of the 18:35 note). Push early. Leave #742, #740 and #741 to Prometheus's R1, which Atlas has requested.
 
 > **Atlas 19:50 ET Mon. Pete: WRY removal is the next major milestone after Project A, and two additions.**
