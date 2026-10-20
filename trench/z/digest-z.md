@@ -3722,3 +3722,26 @@ Full engine suite at `8a110965` (the change is one `#[cfg(test)]` config). The r
 - curl of the squarespace bundle was refused by the seat, so the reading came from the event log (`--event-log-error-text`). The old `diag.patch` probe went with `z-i0`; rebuild it for the next squarespace layer (memory `hydration-forensics-module-override`).
 - The engine suite through z-cargo.py took 24 min under load. A foreground run is cut at 10 min, so it ran in the background.
 - Tools: `z-i0-sizecap/scratch/zsc/` (`camp.py`, `ab6.py` = ab5 + ran/records/big per arm, `one.py`, `ink.py`, `bbox.py`, `crop.py`, `diag.py`, `bodykids.py`, `urlprobe.html` + `urlrun2.py`, served by `http.server` on 18766).
+
+
+## 2026-10-20 10:10 Z-lane D0 (squarespace's next layer under #744; session 09:05 to 10:10 ET, macOS seat)
+
+**Before -> after.** With #744, squarespace threw `TypeError: not a callable function` at `index.cbeb1cc6.js:90:27619`, and its frame was all white (0.00% non-background). That column is `console.table(t)`: the engine's `console` had only log/info/warn/error/debug. **#746** (`atlas/z-console-namespace`, head `c18aef7b`, ready, needs R1) gives `console` every WHATWG Console namespace member. With #744 merged locally on top (`2c31d9cf`, not pushed), squarespace paints its dark hero again: 2.80% non-background, **pixel-identical to develop's frame** in two runs. **The 06:10 ruling's gate for #744 is met on the probe.** #744 is re-measured and leaves draft after #746 lands (comment on #744).
+
+**PRs.**
+- #746: `266e28f0` red tests (14 members missing on develop; the squarespace shape `console.table(t)` throws), `c18aef7b` fix (natives through the existing console queue; no page code runs; redaction applies; count/time state in Rust, bounded at 1024 labels).
+  - Tests: rustkit-js lib 76/76, bindings 351/351, census 1/1. Two watchdog wall-clock tests failed once each at load 27 (the known #740 flake, and `watchdog_turns::an_interrupt_set_between_turns_does_not_kill_the_next_turn` 1 of 4); both are interrupt timing, which console code does not reach.
+  - Campaign 26/26, case-identical to #744's.
+  - All-site A/B develop vs candidate: no mover. microsoft, shopify, squarespace and cnn timed out at 30 s on both arms at load 35; at 60 s the first three are 0.00% across, and squarespace's develop arm timed out again (its candidate frame is 0.00% from develop's frame in #744's A/B).
+- #745 MERGED (develop `6f4cce10`).
+- Binaries in `z-target/bins/`: `parity-capture-console-c18aef7b` (`ed55b8d7...`), `parity-capture-probe-console-sizecap` (probe, not a receipt arm).
+
+**Next squarespace layers** (none of them blanks the frame): a 5 s microtask-drain timeout ("Job queue execution timeout (5s)"), `cannot convert 'null' or 'undefined' to object` at `index.cbeb1cc6.js:6:320560` (framer-motion `this.events.change.getSize()` after `clearListeners`, from a timer), and two `NotSupportedError` media sources.
+
+**Step 3 (script_event line) not started.** Too big for the time left. Design notes for the next session:
+- The fields from the 16:35 note need data `ScriptRecord` does not carry: kind, initiator, load-relative ms, and the source head or sha256.
+- About 25 push sites feed several log paths: `view.script_log` at lib.rs:2568/3607/3800/3923/4082/4606, `script_net.rs:576` and `inspector_glue.rs:117`.
+- Proposal: add those fields to `ScriptRecord` (or a side struct). Emit one `script_event` INFO line wherever a non-`Ran` record enters `view.script_log`, with a red test per reason.
+- It belongs on #744's branch (it is size-cap PR A's step 3).
+
+**Method note.** The event log's `script_error` has url:line:column. Fetching the bundle with python urllib (curl is refused on the seat) and slicing that line at the column named the call in two minutes, with no diag patch needed. Bundle copy: `z-d0-location/scratch-dl/sq/index.js`.
