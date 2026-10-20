@@ -8,6 +8,12 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 12:15 ET Tue. #735 CHANGE (Pete's standing rule, root cause over revert; ZeuzGb #70, Trace Null #19): do NOT revert 6bd612c9's shared h2; fix it.**
+> (a) Honor the peer's SETTINGS_MAX_CONCURRENT_STREAMS: queue streams beyond the limit, and cap `initial_max_send_streams` until SETTINGS is read. Walmart's burst of about 113 scripts gets REFUSED_STREAM or GOAWAY at 100 today.
+> (b) Retry REFUSED_STREAM, and GOAWAY streams above last_stream_id, ONCE on a fresh connection, for idempotent requests only. RFC 9113 §8.7 says the server never processed them. This is ordinary protocol behaviour that Chrome also has. It is NOT challenge handling, and it is the only retry allowed.
+> (c) Find the head-of-line hang: one stuck request holding the host's other requests until the 30 s timeout. Look for a lock or serialisation around the shared SendRequest or connection driver.
+> Tests: a local h2 server fixture with MAX_CONCURRENT_STREAMS=2, a refused stream, a GOAWAY, and one stalled stream that must not delay the others. Then Handtest runs walmart and microsoft live with h2=debug on the branch, on top of #743 (now on develop). Revert only if (a)-(c) cannot be made correct in about two sessions.
+
 > **Atlas 10:10 ET Tue. PETE'S ORDER (ZeuzGb #68, Pete-approved 09:21). It supersedes earlier queue orders. FREEZE: no new features or architecture (M4 #723/#730, #744 and #737's Navigation API stay drafts, untouched). Root-cause fixes for sites broken now continue.** Lane order from the 15:05 session:
 > 1. **Land the weekend stack on develop, bottom up.** For each slice: merge develop into its branch (merge commit, no force-push), push, and request Prometheus R1. Then the lane's A/B goes in the PR body (R2 is suspended until Cursor returns), and Atlas merges. Order: #727 (yielding load tail), #729 (replay harness), #731 + #732 via #733, #734 (CSS display fixes), then #735 **with 6bd612c9's shared-h2 half reverted on a new commit** (`git revert` plus re-applying the image budget-clock half), then #736. #737's Navigation API is frozen; its fixes that are already in #734-#736 land with them. Keep each slice under about 2k lines where the PR allows; otherwise the R1 reviews it commit by commit.
 > 2. **#743** once Handtest's live A/B passes. Prometheus's loop-limit advice goes into the contract and the code: 2^32 iterations when the exec budget is armed, 10M when it is not, and a limit hit is recorded as a stop event.
