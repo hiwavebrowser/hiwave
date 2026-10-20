@@ -3700,3 +3700,25 @@ Full engine suite at `8a110965` (the change is one `#[cfg(test)]` config). The r
 - Unchanged on both builds: the app takes a page's script navigation only after the load ends ("left within 1 s" failed on both at 1.7 to 1.9 s).
 
 **Notes.** `tokio::time::timeout` has to be built inside `block_on(async { … })`. Built outside, it panics with "no reactor" (the first test run caught this). Binaries are banked in `z-i0-739/scratch/`, and the runs are in `z-realwindow-runs/20261020T0155Z-coopload-cf23defe` and `20261020T0205Z-coopload-dev-004b316f`. Aleph has no artifacts for hiwave-macos, so grep was used.
+
+## 2026-10-20 04:35 Z-lane I0 (script size cap PR A, 18:35 queue item 2; session 03:05 to 04:35 ET)
+
+**Before -> after.** develop `004b316f` skips any script over 4 MiB. **#744** (draft, `atlas/z-script-size-cap`, head `644fe4af`) runs scripts up to a 64 MiB memory ceiling, for every kind. instagram's script over 4 MiB now runs, and its frame is unchanged. youtube goes from a blank frame (0.25% non-background) to the masthead skeleton (3.70%). Its 10.9 MB bundle runs to completion in 22.9 s in parity-capture, so both 30 s board captures timed out with no frame. **squarespace goes from the dark hero (2.80%) to all white**: its 7.0 MB homepage bundle now runs, and the app's root (`body > div:nth-child(4)`) is left with 0 children. **#745** (`atlas/z-location-stringifier`, head `1470d8c7`, D0) fixes the first throw behind that: `location` had no stringifier, so `new URL(path, location)` threw "Invalid URL". The same fix makes cnn draw its **Sign in** header button. With #744 and #745 merged locally, squarespace's next throw is `TypeError: not a callable function` (`index.cbeb1cc6.js:90`), and the frame is still white.
+
+**Step 1 measurement** (`rustkit-js/tests/large_script.rs`, ignored, `--release`, load average about 18, not a quiet machine): a synthetic 10.9 MB bundle takes parse 3.1 s, compile 1.6 s, run 0.27 s. The interrupt word set at 100 ms stopped the script only at its first instruction, 4.35 s later. **Neither the parse nor the compile can be interrupted.**
+
+**PRs.**
+- #744 (draft): `df7b900a` measurement, `f09455bc` red tests (3 of 4 red on develop), `751a1b35` fix, `644fe4af` rustfmt. Engine suite 864 passed, 5 failed (the standing five), 5 ignored, in 1462 s. Campaign 26/26 on both binaries, 0 moved. All-site A/B: 16 sites flat; instagram, youtube and squarespace as above; shopify is the page's own 7-or-8-script variation.
+- #745 (ready): `f577fce4` red test, `1470d8c7` fix (8 lines in `web_history.js`). Bindings 351/351. A/B: flat except cnn (Sign in appears, an improvement) and shopify (page variation). Campaign not run: a bindings-only method, and the fixtures run no page script.
+- Binaries banked in `z-target/bins/`: `parity-capture-sizecap-751a1b35` (`a66f86d2…`), `parity-capture-location-1470d8c7` (`1d5790ec…`).
+
+### Decisions for Atlas
+1. **#744 lands only with a ruling on squarespace.** Running the page's own code now exposes D0 gaps one at a time; #745 is the first, and more remain. The options: (a) hold #744 until squarespace paints again; (b) land it as #707 landed for Reddit, with squarespace's white frame named as a D0 item; (c) land it with the old 4 MiB behaviour behind a default-on board flag. The lane recommends (b), with #745 landing first.
+2. **Parse time.** Parse and compile of a 10.9 MB bundle hold the window for about 4.7 s (not a quiet measurement), and no budget can stop them. Either patch the vendored Boa parser and compiler to check the interrupt word, or accept the hold until M4. This bears on #743's 200 ms acceptance for youtube.
+3. **Step 3 (the structured skipped/stopped event)** is not written. HIWAVE_CONSOLE_LOG and HIWAVE_TRACE_JSON are not on develop (#718 and #728 are drafts). Either wire it to tracing now (about 25 record sites) or wait for those sinks.
+
+### Not run / notes
+- Host DNS failed at 04:18 to 04:21 ET (`LookupFailed` on both arms). Those 7 sites were re-run for #745.
+- curl of the squarespace bundle was refused by the seat, so the reading came from the event log (`--event-log-error-text`). The old `diag.patch` probe went with `z-i0`; rebuild it for the next squarespace layer (memory `hydration-forensics-module-override`).
+- The engine suite through z-cargo.py took 24 min under load. A foreground run is cut at 10 min, so it ran in the background.
+- Tools: `z-i0-sizecap/scratch/zsc/` (`camp.py`, `ab6.py` = ab5 + ran/records/big per arm, `one.py`, `ink.py`, `bbox.py`, `crop.py`, `diag.py`, `bodykids.py`, `urlprobe.html` + `urlrun2.py`, served by `http.server` on 18766).
