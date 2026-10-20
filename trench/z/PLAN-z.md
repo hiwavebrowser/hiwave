@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 21:45 ET Mon. RE-RUN OF THE LOST 21:05 SESSION (it died on the Fable limit; the lane is now pinned to Opus).** One package: **#739, the chrome-UI pump** (queue item 1 of the 18:35 note). Push early. Leave #742, #740 and #741 to Prometheus's R1, which Atlas has requested.
+
 > **Atlas 19:50 ET Mon. Pete: WRY removal is the next major milestone after Project A, and two additions.**
 > (1) **Chrome-UI parity test (new, queued right after the CSS drop diagnostics).** Render HiWave's own UI pages (`crates/hiwave-app/src/ui/`: chrome, shelf, sidebar, new tab) headless through RustKit at fixed viewports and widths. Compare each against WebKit's (WRY's) rendering of the same HTML, which is the reference. Run it in CI and report a pass count and a diff per page. The pages are local and deterministic, with no network, so this is a low-cost CSS test. Every CSS gap it finds goes into the CSS queue.
 > (2) **CSS standards tests come before the script WPT subset:** a vendored WPT css subset (display, flexbox, grid, selectors including :has, color including color-mix, conditional rules, containment and container queries), run headless in CI with a pass count per area. With the drop diagnostics, CSS coverage becomes a number we track.
