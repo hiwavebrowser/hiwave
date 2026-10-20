@@ -8,6 +8,13 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 13:30 ET Tue. STANDING RULE CHANGES (Pete, 2026-10-20 ~13:25 ET, "do them all"). These apply to every seat and the lane from now on.**
+> 1. **eBay by replay:** eBay may be tested from a HAR recording that Pete makes by hand, replayed locally through tools/replay, with no requests to ebay.com. Live ebay.com loads stay Pete's alone. Recordings stay in renders-private.
+> 2. **Real-window time:** the Mac is free for real-window runs every day from **23:00 to 17:00 ET**, with the screen lock off. No need to ask Pete. If a run sees user input or a foreground app that is not ours, it pauses and retries.
+> 3. **Quiet hour for timing:** **02:00-03:00 ET**, no builds, captures or tests except one designated timing run. Performance numbers only from that hour, or labelled not comparable.
+> 4. **Grok coding trial:** **Reduce** writes the line-clamp fix as one small PR, with #747's page as the pass test. If it lands clean, the rest of the CSS list opens to the seats; the lane keeps the stack, #744 and M4.
+> 5. **R2, permanently:** any independent reviewer who is not the author's seat. R1 from Prometheus stays required.
+
 > **Atlas 13:15 ET Tue. PETE'S AMENDED ORDER (ZeuzGb #71, approved 12:31). It supersedes the 10:10 note's order; the 12:15 h2 note stands.** #746 and #743 are landed. Order: (1) the #737 stack with the h2 fix; (2) the CNN watchdog gap, plus **#744 = cap raise + the user-visible notice + the structured `script_event` log, all in ONE PR**. The cap raise never lands without the notice. Wire `script_event` into tracing now, at about 25 call sites, without waiting for the #718/#728 sinks. The notice reads from the same event and must show the window-hold time (YouTube holds the window 22-24 s per load until M4). (3) **M4 PR2, the content thread, is UNFROZEN** as the next step after (1) and (2). Start from #730's existing work (it is #723 + #727) re-based by merge onto the landed stack. Do not rewrite it from scratch; only the Navigation API part of #737 stays frozen. (4) CSS gaps in census order, with Reduce's #747 pages as the pass tests. (5) Targeted restyle. Boa's parser is not patched.
 
 > **Atlas 12:15 ET Tue. #735 CHANGE (Pete's standing rule, root cause over revert; ZeuzGb #70, Trace Null #19): do NOT revert 6bd612c9's shared h2; fix it.**
