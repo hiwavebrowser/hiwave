@@ -3863,3 +3863,34 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 3. h2 item (b).
 4. The cnn "click never reaches the dialog" item (Pete's 12:50 (2)).
 5. The navigating_away 5x run in the 02:00 quiet hour (Pete's 12:50 (3)).
+
+## 2026-10-21 19:25 Z-lane I0 (#733 R1 answered in full; #736 WIP has develop + h2 retry)
+
+**Before:** #733 at `1cf8f497`: only H1 of Prometheus's R1 HOLD @ `bc7a63f7` was answered. Still owed: N1, the `a_stalled_subresource` bound, the campaign, the A/B and the full suite at the head. #736's merge WIP was at `05e6f3d4` (old #733 base, no develop, h2 (b) not started).
+
+**After:**
+- **#733 → `74e7a986`** (fast-forward; comment issuecomment-6328112844; delta R1 requested, exchange #792).
+  - N1: red `b4989822`, then fix `619dce64`. Before the fix, a load cancelled while a defer script was still fetching traced that script as `fetched:true status:200`. Two sites stamped 200 early: the script catalog and the runner's pre-loop. Now a script is recorded as fetching until its body arrives, and `Ready(Err)` goes back to `note_observed`. N2: the comment is fixed.
+  - The `a_stalled_subresource` bound (`74e7a986`): the test now times from the first subresource budget (a test-only `load_phase` mark), so binding setup is not counted. It passed 5/5 at load 17-20.
+  - N4: no change; the hook returns when tracking is off, and tracking and diag.on are one flag. N3 (`adoptedStyleSheets.push`) is not done.
+  - Gates vs `bc7a63f7` (so the H1 cap is covered too): campaign 26/26 identical. All-site A/B: no mover. linkedin and yahoo were noisy, so I re-ran them twice with the arms swapped: linkedin's difference follows capture position, and yahoo's is a 68-record served variant. Engine suite: **920 passed + develop's 5** (1490 s). Bins: `parity-capture-z-74e7a986` (sha `417f1b4b…`).
+- **#736 merge WIP → `e8be0714` on `atlas/z-736-merge-wip`** (not the PR branch):
+  - `d5e7ec45` merges #733 `74e7a986`. One conflict, in the catalog: #736's `note_inline_slot` plus #733's "fetching".
+  - `35659f8a` merges develop, which brings #753's 8 MiB stack. Two additive conflicts: two css tests, and the control.rs imports.
+  - h2 item (b): red `0808e4e8`, fix `d7a4e724`. An idempotent request whose stream was REFUSED_STREAM, or above a GOAWAY's last stream id, is retried once on a new connection. The cached-connection retry that was already there counts as the one retry. Both paths (`request_https` and the cleartext test path) do this. rustkit-http 40/40, and the new tests passed 6/6 more.
+  - rustkit-js 93/93. Engine suite on the WIP (`e8be0714`, 1000 tests, 2064 s, load about 18): **982 passed, 13 failed**. That is develop's 5 plus 8 more:
+    - **Real merge regressions (2), not pushed because of them:**
+      - `lit_render_tests::adopted_stylesheets_style_the_shadow_root_and_the_document`: the second adopted sheet does not apply (`block|400|18` against `flex|90|30`).
+      - `media_match_tests::match_media_and_the_cascade_share_the_viewport`: the cascade's resolution query scale is 10 against 40.
+      - Lead: develop's #758 (sheet-parse-cache) meeting #733/#736's adopted-sheet and media code. Neither failure is on #733 at `74e7a986` (920 + 5).
+    - `form_action_url_tests::a_protocol_relative_action_takes_the_documents_scheme` (develop's #749 test): returns None for a form with no fields, because `form_submission` returns early when `entries.is_empty()`. Develop has the same line, so check by name whether it fails on develop too.
+    - The others are already known: the navigating_away race; `host_runtime` replacing_a_page and `script_time_does_not_spend_the_fetch_clock` (both seen at 10:35; the second is #736's own); and the two `vm_interrupt` budget asserts, which fail at load above 15 (see memory).
+- **Item 4 (the cnn dialog click) is cloud draft #754** (`cloud/overlay-click-dispatch`), so the lane does not take it.
+
+**Blockers / decisions for Atlas:**
+1. **The subresource phases run in series, each with its own budget** (found while answering the bound question): sheets, then fonts, then images, then SVG. On the test page the budgets start at 0, +502, +519 and +1031 ms. A page with a stalled sheet, a stalled image and a stalled SVG therefore holds the load for 3 x 8 s = 24 s at the default budget. The old test comment claimed images and SVG share one budget. Do images and SVG share one deadline (my recommendation: yes, in its own small PR after the stack), or do we keep it as it is?
+
+**Next session (I0):**
+1. #736 WIP: fix the two merge regressions (adopted sheets and the media resolution scale against #758's sheet cache), red first where the merge allows. Run form_action by name on develop. Then hiwave-app, then push `atlas/z-736-merge-wip` to `cloud/reddit-734-735` (check its head is still `409a2b89`) and request R1.
+2. #733: the delta R1 answer, if Prometheus holds.
+3. The navigating_away 5x run in the 02:00 quiet hour (Pete's 12:50 (3)).
