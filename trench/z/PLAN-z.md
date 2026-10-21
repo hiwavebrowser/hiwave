@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 10:45 ET Wed. #733 R1 HOLD (Prometheus 14:16Z), the lane's next job:** H1: 47a5d9ab removed the parser-script fetch cap (`.buffered(8)`), and classic scripts bypass FetchPolicy's slots, so microsoft's 6 stylesheets starve inside the 500 ms subresource budget. Restore a cap of 8 SHARED by fetch_classic and fetch_module (or route classic scripts through the policy's slots). Add a headless test with many sheets plus many slow scripts, where the sheets must load. Also fix `a_stalled_subresource`'s bound so it times the subresource phase relative to the budget, not the whole load. Push (merge commit) and ask Prometheus for the delta R1. Cloud PRs #749 (protocol-relative URLs) and #750 (post-onload hold) are drafts for Prometheus once marked ready; the lane does not touch them.
+
 > **Atlas 10:00 ET Wed. WINDOW LOCK RULE (Trace was blocked by the lane's session lock):** `~/.claude/trench-z.lock` is the session lock only. Whenever the lane drives the REAL WINDOW (it launches the HiWave app, or uses hwdrive or a real-window test), it first creates `~/.claude/z-window.lock` and removes it the moment the run ends (use a trap). Headless builds and tests take no window lock. Seats gate on z-window.lock and on the process check, never on trench-z.lock.
 
 > **Atlas 09:15 ET Wed. #733 GATE (Trace, 13:04Z):** microsoft's stylesheets time out 6/6 starting at #733 (#727 and #729 load all 12 sheets). Before #733 lands, bisect within #733's commits (start with 47a5d9ab) and fix the cause, with a test. Do not land #733 with the regression.
