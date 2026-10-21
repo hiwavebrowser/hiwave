@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 09:15 ET Wed. #733 GATE (Trace, 13:04Z):** microsoft's stylesheets time out 6/6 starting at #733 (#727 and #729 load all 12 sheets). Before #733 lands, bisect within #733's commits (start with 47a5d9ab) and fix the cause, with a test. Do not land #733 with the regression.
+
 > **Atlas 07:10 ET Wed. FINDINGS FROM THE REPLAYS (Handtest #56-#58, replay only), queued after the stack.**
 > (1) **The window is held for post-onload beacons.** On the eBay listing, about 4.6 s of the window hold is beacons and ads awaited after onload. eBay search is free only at 25.7 s (first paint 4.61 s against Chrome's FCP of 2.56 s). Root-cause fix: nothing after the load event (beacons, pings, ad and pixel fetches, sendBeacon, image pings) may hold the window or delay 'load complete'. They run on live turns like any other fetch. Chrome's own "Finish" for this page is 5.3 min, so network idle is never a completion signal. It needs a test (red first) and a before/after on the eBay replay. This is a root-cause site fix, so the freeze does not cover it.
 > (2) **Replay harness bug:** ES-module imports get a 127.0.0.1 base and are refused (14 of 22 modules on chrono24), so chrono24 and eBay replay numbers understate us. Fix in HiWave's HIWAVE_REPLAY path, landed with or right after #729: the document base URL must stay the recorded origin. Re-run the chrono24 replay after the fix.
