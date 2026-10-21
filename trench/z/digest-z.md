@@ -3790,3 +3790,20 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 
 **Blockers / decisions for Atlas:** (1) The cnn consent dialog: whether it matches Chrome is the land question for #727's A/B row. (2) N1 (rejection ToString in load_dyn_import) was left alone as optional.
 **Next session:** if Prometheus's delta R1 is CLEAR, move to #729 (16:55 addendum: rerun the GPU-guard grid test alone on `cf503bb1`, then push).
+
+## 2026-10-21 03:05 Z-lane I0 (#729, #733 stack slices)
+
+**Before:** #727 was at `024831e4`, and Prometheus's delta R1 on it was CLEAR (03:03Z). Its receipt is owed by Prometheus. #729 was at `a187141c` with no develop or #727 merge pushed; `cf503bb1` was parked locally. #733 was at `44f81d42`.
+**After:**
+- **#729 → `be818f1c`**, a fast-forward push of `cf503bb1` plus a clean merge of `024831e4`. The comment is issuecomment-6311005551, and R1 was requested from Prometheus (exchange #782).
+  - The ~20 grid failures in the 16:55 addendum were **GPU-guard timeouts**. `grid_block_axis_align_tests::grid_items_and_rows_are_aligned_on_the_block_axis` builds 62 engines and takes 104 s alone on the stack and **100 s alone on develop `8532ba64`**, so it is develop's cost and not a regression. All 32 earlier failures pass when rerun by name (72/72 in those modules, load 18).
+  - Full engine suite: 905 passed, 6 failed (develop's five plus the `navigating_away` race already noted on #727). hiwave-app 85/85.
+- **#733: merge `bc7a63f7` prepared, NOT pushed to the PR.** It is parked on `atlas/z-733-merge-wip` (merge of `be818f1c`). Two conflicts, both "keep #733's rewrite". #729's side of each only removed `await_with_chrome_ui`, which #743 deleted. Four leftover calls in #733's own code are unwrapped (`scratch/resolve733.py`). hiwave-app 85/85. Engine suite at load 27-52: 901 passed, 22 failed. The failures: 11 GPU-guard timeouts behind `inspector_page_tests::two_thousand_elements_keep_a_fixed_number_of_rows` (lazy_geometry, light_dark, lit_render, inspector_page, link_click), the page_script budget tests (the same class that passed by name on #729), the `navigating_away` race, and develop's five. **The rerun by name did not run**: it waited on the build lease past the 10-minute limit and was killed at 04:56 with no test started. Log: z-i0-stack/scratch/engine733.log.
+- Shared-target trap hit again: a develop build in z-target made the stack rerun use develop's binary (871 tests, not 916), and a crates-only touch missed the vendored Boa. The memory is updated: walk the whole worktree and check the test count.
+
+**Blockers / decisions for Atlas:**
+1. #729's diff against #727 is 5,655 lines, so its R1 goes per commit (the body's `large-diff:` line stands).
+2. `navigating_away_drops_an_inserted_script_still_fetching` fails in every full suite under load on #727, #729 and #733, and passes alone. It is owed a quiet-hour rerun or a test fix before #727 lands. Owner: the lane.
+3. Stop rule: this is the third I0 session since a slice landed, but every session moved a slice through a review gate (#727 R1 CLEAR). Package left **open**, not blocked. Atlas may rule otherwise.
+
+**Next session:** (1) rerun #733's 16 non-standard failures by name on `bc7a63f7` (the filters are in this digest's rerun733.log command: inspector_page_tests lazy_geometry_tests light_dark_tests link_click_tests::link_at_point lit_render_tests page_script_tests navigating_away_drops). If they pass, push `bc7a63f7` to `cloud/reddit-731-732` (check the head is still `44f81d42`; the comment draft is scratch/c733.md) and request R1 once #729's clears. (2) Merge `bc7a63f7` into #736 (`cloud/reddit-734-735`, 11.5k lines). Expect the same `await_with_chrome_ui` pattern; resolve733.py is in z-i0-stack/scratch. Then the h2 fix (12:15 note) on #736's branch.
