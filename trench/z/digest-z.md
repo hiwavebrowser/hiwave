@@ -3775,3 +3775,18 @@ Full engine suite at `8a110965` (the change is one `#[cfg(test)]` config). The r
 Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's step.
 
 **16:55 addendum: #729 suite finished.** 878 passed, 32 failed (3130 s, load 37). The grid failures are NOT geometry. Each one panics in the GPU test guard (`lib.rs:130`): it "waited 120s for `grid_block_axis_align_tests::grid_items_and_rows_are_aligned_on_the_block_axis` to finish with the GPU". One test held the GPU under load and the ones queued behind it timed out. The next session reruns that test alone, then the grid modules, on `cf503bb1` before pushing to #729.
+
+## 2026-10-20 21:05 Z-lane I0 (#727 R1 HOLD)
+
+**Before:** #727 at `b29c1041` was on Prometheus's R1 HOLD with two items. H1: `complete_load_tail` pumped the network with the 30 s cap on the window thread. H2: Stop did nothing on a parked tail.
+**After:** head `024831e4`, pushed as a fast-forward; the reply is on the PR (issuecomment-6306477721); delta R1 requested from Prometheus (exchange #781).
+- `149586eb` is the red-first test `a_yielded_load_does_not_wait_for_a_load_handler_fetch`. On `b29c1041`, the turn that fired `load` held the window for 8.29 s.
+- `024831e4`, H1: the tail no longer pumps. The same `pump_live` turn starts the handler's and the timers' requests with `start_live`. The script-added image pass goes to `live_images` and is not awaited, so `PageLoaded` is sent before those images arrive.
+- `024831e4`, H2: `RustKitView::stop_load` falls back to `Engine::stop` when `Engine::load_tail_open` (new) is true, and `Engine::stop` drops the parked tail. The app test was red on the old `stop_load`.
+- Engine suite: 894 passed, 6 failed (develop's 5 and `navigating_away_drops_an_inserted_script_still_fetching`). That test also fails with `b29c1041`'s lib.rs at load 28: a request race in the test, owed a quiet rerun.
+- hiwave-app 85/85. Campaign 26/26 identical against develop `8532ba64`.
+- **A/B against develop: cnn 64.85%.** The candidate draws CNN's "Legal Terms and Privacy" consent dialog over the dimmed page. Against `b29c1041` the frame is identical, so the dialog comes from #727's earlier commits (inserted scripts now run). Not yet checked: whether Chrome shows the same dialog to a fresh profile. bing 0.09% is small. microsoft hits the 30 s limit on both arms.
+- Binaries are banked in z-target/bins: parity-capture-z-{8532ba64,b29c1041,024831e4}.
+
+**Blockers / decisions for Atlas:** (1) The cnn consent dialog: whether it matches Chrome is the land question for #727's A/B row. (2) N1 (rejection ToString in load_dyn_import) was left alone as optional.
+**Next session:** if Prometheus's delta R1 is CLEAR, move to #729 (16:55 addendum: rerun the GPU-guard grid test alone on `cf503bb1`, then push).
