@@ -3842,3 +3842,24 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 2. **#733 gate:** ask Trace for the exact command and binary behind 6/6. Then the lane bisects 44f81d42's commits with that same command.
 
 **Next session:** (1) the #733 microsoft bisect, with Trace's method. (2) After ruling 1, push `atlas/z-736-merge-wip` to `cloud/reddit-734-735` (head still `409a2b89`?) and request R1. (3) h2 item (b), retry once, red first, in both `request_https` and the cleartext test path.
+
+## 2026-10-21 16:50 Z-lane I0 (#727 Atlas hold answered; #733 R1 H1 cap)
+
+**Before:** #727 at `024831e4` with Atlas's HOLD (15:45Z: post-load live turns swallow input, holds of about 5 s, back to back). #733 at `bc7a63f7` with Prometheus's R1 HOLD H1 (14:16Z: parser script fetches uncapped; microsoft's sheets time out).
+**After:**
+- **#727 → `431f24c9`** (fast-forward; comment issuecomment-6325457047; delta R1 + Trace re-run requested, exchange #790).
+  - Item 1. Red `46a0cfb9`: a post-load `import()` waited 2 s inside one turn, then rejected as "timed out". Fix `da7aadeb`: dynamic-import modules start like `live_requests` and are supplied on a later turn. `LIVE_NETWORK_BUDGET` is gone; no network wait is left in a live turn.
+  - Item 2. Red `be3fc29b`: the app ran two live turns back to back each wake. Fix `431f24c9`: `next_turn_at` holds the next turn back by as long as the last one took, so the window gets a turn in between. **Not bounded: the layout cost inside a turn** (cnn about 140 ms, ebay about 500 ms; targeted restyle / M4).
+  - Item 3. I found no path where a turn drops a click. A click after a watchdog-stopped turn reaches its listener, before and after the fix. The lost cnn Agree click is the separate "click never reaches the dialog" item.
+  - Results: engine 895 + develop's 5 + the navigating_away race; hiwave-app 87/87; campaign 26/26 identical vs `024831e4`; A/B vs `024831e4`: no mover. shopify alternates the HTML it serves by capture position; I checked that with the arms swapped. Bins: `z-target/bins/parity-capture-z-431f24c9`.
+- **#733 → `1cf8f497`** (fast-forward; comment on the PR). Red `bdec50de`: 20 parser script fetches were out at once. Fix `1cf8f497`: a `Semaphore(8)` shared by classic and module parser fetches; the sheets go out with the first batch. Suite: the full engine suite was cut at its 30-minute background limit after 413 passing tests (load about 17); its only failures by then were two of develop's standing five (image_loader_routing, referrer subresources). The script, module, stylesheet, budget and error-page modules by name on the same binary: 79 passed, 1 failed (develop's referrer test). **The full suite, the 26-case campaign and the all-site A/B at this head are still owed**; next session.
+- **Pete's 12:50 answer (1), the stack size: already on develop** via cloud #753 (`.cargo/config.toml` RUST_MIN_STACK 8 MiB plus a 16 MiB `spawn_script_thread`). So decision 1 of the 10:35 digest is resolved, and #736's merge WIP can now take develop and be pushed.
+
+**Blockers / decisions:** none new. Trace's microsoft re-run on `1cf8f497` decides whether the cap was the whole #733 regression.
+
+**Next session (I0):**
+1. #733: the `a_stalled_subresource` bound, N1 trace record, campaign + A/B at the head, then R1.
+2. #736: merge develop (for #753's stack) into `atlas/z-736-merge-wip`, rerun, push, request R1.
+3. h2 item (b).
+4. The cnn "click never reaches the dialog" item (Pete's 12:50 (2)).
+5. The navigating_away 5x run in the 02:00 quiet hour (Pete's 12:50 (3)).
