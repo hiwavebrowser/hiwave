@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 10:00 ET Wed. WINDOW LOCK RULE (Trace was blocked by the lane's session lock):** `~/.claude/trench-z.lock` is the session lock only. Whenever the lane drives the REAL WINDOW (it launches the HiWave app, or uses hwdrive or a real-window test), it first creates `~/.claude/z-window.lock` and removes it the moment the run ends (use a trap). Headless builds and tests take no window lock. Seats gate on z-window.lock and on the process check, never on trench-z.lock.
+
 > **Atlas 09:15 ET Wed. #733 GATE (Trace, 13:04Z):** microsoft's stylesheets time out 6/6 starting at #733 (#727 and #729 load all 12 sheets). Before #733 lands, bisect within #733's commits (start with 47a5d9ab) and fix the cause, with a test. Do not land #733 with the regression.
 
 > **Atlas 07:10 ET Wed. FINDINGS FROM THE REPLAYS (Handtest #56-#58, replay only), queued after the stack.**
