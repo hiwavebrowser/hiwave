@@ -3807,3 +3807,38 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 3. Stop rule: this is the third I0 session since a slice landed, but every session moved a slice through a review gate (#727 R1 CLEAR). Package left **open**, not blocked. Atlas may rule otherwise.
 
 **Next session:** (1) rerun #733's 16 non-standard failures by name on `bc7a63f7` (the filters are in this digest's rerun733.log command: inspector_page_tests lazy_geometry_tests light_dark_tests link_click_tests::link_at_point lit_render_tests page_script_tests navigating_away_drops). If they pass, push `bc7a63f7` to `cloud/reddit-731-732` (check the head is still `44f81d42`; the comment draft is scratch/c733.md) and request R1 once #729's clears. (2) Merge `bc7a63f7` into #736 (`cloud/reddit-734-735`, 11.5k lines). Expect the same `await_with_chrome_ui` pattern; resolve733.py is in z-i0-stack/scratch. Then the h2 fix (12:15 note) on #736's branch.
+
+## 2026-10-21 10:35 Z-lane I0 (#733 pushed; #736 merge and h2 fixes parked)
+
+**Before:** #733 was at `44f81d42`. The merge `bc7a63f7` was parked, and its 16 non-standard failures had not been rerun. #736 was at `409a2b89`, with no stack merge and no h2 work.
+**After:**
+- **#733 → `bc7a63f7`** (fast-forward push; comment issuecomment-6317070299; R1 requested from Prometheus, exchange #785). The binary was checked (928 tests listed). The 17 non-develop failures were rerun by name: **71 of 73 pass**. Still red:
+  - The `navigating_away` race (known on #727/#729).
+  - `a_stalled_subresource_is_dropped_at_the_subresource_budget`, 2.55 s against a 2.5 s bound. #729's head `be818f1c` fails it too (2.515 s), traced the same way. About 1.36 s of the time is debug DOM-binding setup. Same class as `b29c1041`; not #733's.
+- **#736 merge, NOT pushed to the PR.** It is parked on `atlas/z-736-merge-wip` @ `05e6f3d4`:
+  - `21f72fdd` merges `bc7a63f7`. The app takes develop #743's sliced load on the per-view `live_runtime`. That runtime outlives the load, which is the guarantee #736's `drive_host` gave. #736's devicePixelRatio is kept and `place_host_frame` is dropped.
+  - `e1a2947f`: the app load tests run on 8 MB threads.
+  - `7ae654cd`: four grid ledger gaps now match Chrome and are taken off the lists.
+  - **h2 (12:15 note), red test first for each:**
+    - `37dc9afa` red, `09d88acb` fix, item (c). An unread parked body filled h2's default 64 KB connection window and stalled the host's other streams until the timeout. The fix uses Chromium's 6 MB stream and 15 MB connection windows.
+    - `4f86d6b1` red, `05e6f3d4` fix, item (a). A burst before SETTINGS was refused above the server's limit. Now one stream goes out before SETTINGS.
+    - rustkit-http 37/37. Item (b) (one retry on REFUSED_STREAM/GOAWAY) is not started.
+  - hiwave-app 85/85. Engine suite at an 8 MB stack: 971 passed, 12 failed:
+    - Develop's five.
+    - Three grid ledgers (fixed in `7ae654cd`).
+    - Two wall-clock tests that pass by name.
+    - `host_runtime` replacing_a_page (5/5 alone).
+    - `script_time_does_not_spend_the_fetch_clock`: 5/5 red alone, **and 4 of 5 red at #736's own head `409a2b89`** (load 20). It is #736's test, not the merge.
+- **Why #736 is not pushed: debug stack.** At libtest's 2 MB thread stack the engine suite aborts with a stack overflow. Crash reports (DiagnosticReports .ips) show the overflowing stack is **Boa's recursive-descent parser in `DomBindings::new`**: about 99 frames of about 18 KB each. The base `bc7a63f7` already needs 1.8 to 2.0 MB per load test; the merge needs 2.05 to 2.3 MB. What I tried:
+  - Boxing the load's futures: no change.
+  - `[profile.dev.package.boa_parser] opt-level=1`: still at the edge.
+  - opt-level=3: worse, 3.3 MB.
+  - `.cargo/config.toml [env] RUST_MIN_STACK`: the write is refused on the seat.
+  - CI runs these debug tests at 2 MB, so a push would turn #736's engine job red.
+- **#733 microsoft gate (09:15 note): not reproduced headless.** One `parity-capture` of microsoft.com each: `bc7a63f7` 12/12 sheets loaded, `05e6f3d4` 12/12 (bins `parity-capture-z-{bc7a63f7,05e6f3d4}`). Trace's 6/6 timeouts were measured some other way. The bisect from 47a5d9ab has not started. Lead: 6bd612c9's message describes this failure (script fetches started beside render-blocking sheets, one socket each, a host that does not answer them), and #733's 47a5d9ab is what starts script fetches during the sheets.
+
+**Blockers / decisions for Atlas:**
+1. **Debug test stack (blocks #736's push):** either (a) add `.cargo/config.toml` with `[env] RUST_MIN_STACK = "8388608"` (Atlas or Pete writes it; the seat cannot), so tests run at the macOS main thread's size, or (b) keep 2 MB and accept that any bindings-JS growth can overflow it, with Boa's parser depth as the cause. The lane recommends (a). If (a), `e1a2947f`'s per-test wrapper becomes redundant and can be reverted.
+2. **#733 gate:** ask Trace for the exact command and binary behind 6/6. Then the lane bisects 44f81d42's commits with that same command.
+
+**Next session:** (1) the #733 microsoft bisect, with Trace's method. (2) After ruling 1, push `atlas/z-736-merge-wip` to `cloud/reddit-734-735` (head still `409a2b89`?) and request R1. (3) h2 item (b), retry once, red first, in both `request_https` and the cleartext test path.
