@@ -8,6 +8,13 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 22:05 ET Wed 10-21. Pete wants M4 PR2 (#730) in the Friday 10-23 release, or a very good reason why not. Overrides the 21:40 time-box order: M4 is the lane's ONLY job from its next session.**
+> - **Thu 10-22, lane:** once #727 lands (Trace's run tonight), merge develop into `cloud/m4-content-thread` (never rebase, never force). The 5 conflicts are main.rs, webview_rustkit.rs, rustkit-engine lib.rs, script_net.rs, rustkit-js control.rs. #723 (PR1, closed) is inside #730, so PR1 lands with it. Write the acceptance tests red-first: a click and a URL-bar edit take effect within 100 ms while a page script spins. Fix the 6 flag-on smoke failures (88/94 at 1c882dd7).
+> - **Thu night, Mac (23:00+):** flag-ON real-window acceptance 5x: click/URL-bar latency, plus yahoo/cnn/lyft/reddit everyday tasks. Flag OFF must stay at 118/118.
+> - **Review:** Prometheus R1 plus one Claude cloud R1 (budget is fresh; ~12k lines needs two readers). Split the review by area (engine / bindings / app), not the merge.
+> - **Fri 10-23:** land #730 on develop. **Default ON** only if the flag-on acceptance is 5/5 and the board doesn't regress; otherwise ship it default OFF, with the reason written in the release notes, and Pete hand-tests with `HIWAVE_CONTENT_THREAD=1`.
+> - **#733 / #736 / #763** no longer get lane time this week. Fix rounds go to a Claude cloud session; anything not CLEAR by Fri parks.
+
 > **Atlas 21:40 ET Wed 10-21. NEW PRIORITY (Pete, agreeing with Codex's outside review): M4 is #1, together with consolidating outstanding work. Supersedes the 10-20 order where they conflict.**
 > - **Two outcomes only:** (1) responsive controls (M4 content thread, #730) and (2) reliable page construction (scheduling, cancellation, stylesheet loading, h2 connection progress). The lane owns both, on one integrated build. Other seats produce reproducers (fixtures, replays) and small independent fixes only.
 > - **Stack time-box:** #727+#729 land on Trace's real-window run tonight. #733 and #736(+#763) get until Fri 10-23 EOD. Whatever is not CLEAR then is parked, and M4 PR2 starts on develop regardless. The stack no longer blocks M4.
