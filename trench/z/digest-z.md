@@ -3944,6 +3944,8 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
   - PR comments issuecomment-6335888946 and -6336226906. R1 and Handtest smoke requested (exchange #799).
 - Lesson (memory saved): a content_thread test run alone fails on a cold CoreText. Its first call scans `z-target/debug/deps` for `.lproj` folders and takes more than 10 s. These tests pass serially behind a font warm-up.
 
+- **Real window, no grants (04:29), app `cf792c07` (`88919c6d…`):** h16_click_nav ON 35/0 (6 not run), OFF 35/0. **G is fixed with the flag on:** the start beacon is seen before page B on all 4 script routes, and each ON log shows the content thread. H (a real click) and C (frames) need the grant seat. Runs: `z-realwindow-runs/20261022T0832Z-h16-m4cf79-{on,off}`.
+
 **Blockers / decisions for Atlas:**
 1. When #727 lands, #730 needs one more develop merge (#727's commits are already inside it), then a suite rerun.
 2. The 6 flag-on smoke failures (C first frame, G h16 start beacon, H click origin) are code-complete since `1c882dd7`, and their engine tests pass. Only Handtest's grant-holding seat can show them in the window. This seat has no grants (memory), so tonight's Mac run is the gate.
