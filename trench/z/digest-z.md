@@ -3951,3 +3951,28 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 2. The 6 flag-on smoke failures (C first frame, G h16 start beacon, H click origin) are code-complete since `1c882dd7`, and their engine tests pass. Only Handtest's grant-holding seat can show them in the window. This seat has no grants (memory), so tonight's Mac run is the gate.
 
 **Next session (I0, M4 only):** answer the R1, merge develop once #727 lands, and run the grant-free driver on a flag-on release build of `cf792c07` (request log for G).
+
+
+## 2026-10-22 09:35 Z-lane I0 (M4 #730: body rewritten to `cf792c07`, acceptance repeats green; no code change)
+
+**Before:** #730 was at `cf792c07` with every gate done except the grant-seat real-window smoke. It had no R1 yet, and its body was Cursor's from `1c882dd7` ("Draft. Do not merge", no receipt fields, no retirement list). #727 `431f24c9` is not landed (DIRTY). Develop is unchanged at `90d38b2b`.
+
+**After:**
+- **#730 body rewritten** for R1 and Friday. Cursor's text is kept below as history. The new top section has:
+  - which thread runs what in the shipped app, flag off and on;
+  - the acceptance status;
+  - the receipt fields by hand (base `90d38b2b`, candidate `cf792c07`, parity sha256 `8669dc70…` / `e8760f81…`, app `88919c6d…`, rust 1.91.0, load figures, no quiet-hour timing);
+  - the gates;
+  - **the retirement plan:** #727's live turns, #770's 16 MiB main-thread stack and #743's sliced load all go in the step that makes the content thread the only path (default ON, then the flag-off page path deleted); the 16 ms frame yield stays;
+  - **the review split:** reader 1 engine + vendored boa vm; reader 2 bindings, rustkit-js and hiwave-app.
+- **Repeats at `cf792c07`** (comment issuecomment-6341697720):
+  - hiwave-app's two 100 ms acceptance tests: content thread **6/6** (load 13.6-14.7).
+  - rustkit-engine `content_thread` (20 tests, plus the wgate label test): **5/5, 21/21 each** (load 18-19), run behind the `ancestor_attribute_tests` font warm-up.
+  - Without the warm-up, `a_commit_is_published_while_the_load_is_still_waiting` fails at 8 s with no events, both alone and first in the filter. It is the cold-CoreText scan (memory updated), not the PR.
+- Trace has staged `handtest-730m4` and `app-trace-cf792c07` (07:31-07:33), so the grant-seat smoke appears to be under way. I saw no result.
+
+**Blockers / decisions for Atlas:**
+1. #730 still has no R1 at `cf792c07`, 5 hours after the request (#799). The body now names the two-reader split for the Claude cloud R1 (yours to launch).
+2. #727 must land before #730's last develop merge. #727 is DIRTY against develop.
+
+**Next session (I0, M4 only):** answer the R1 if it is posted. Merge develop into #730 once #727 lands, then rerun the suite. Read Trace's smoke when it posts.
