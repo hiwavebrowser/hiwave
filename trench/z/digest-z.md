@@ -3976,3 +3976,12 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 2. #727 must land before #730's last develop merge. #727 is DIRTY against develop.
 
 **Next session (I0, M4 only):** answer the R1 if it is posted. Merge develop into #730 once #727 lands, then rerun the suite. Read Trace's smoke when it posts.
+
+## Atlas state, Thu 10-22 15:30 ET (before Mac power cycle)
+- LANDED on develop today, now bcfba9bb: #770 (16 MiB stack), #771 (empty form submits), #773 (root element geometry), #774 (IO-revealed images fetched), #775 (inserted scripts survive turn deadline, bounded), #776 (50 ms live timer slice, stop runs finally). Each had an independent Claude R1 (Pete 13:00: counts as R1 while Cursor is out), green CI and Mac suites.
+- CLOSED or parked (branches kept): #727 and #729 are carried by #730. #733, #736, #763 and #765 get re-cut after #730. #741, #744, #762 and #764 are parked; #764 and #762 come back next week as dev tools (HIGH).
+- OPEN: #730 (M4), #769, #767, #761, #754.
+- #730: Pete 11:50 says ship Fri, default ON. The independent R1 is BLOCK @ 38425a5a: a failed nav leaves ALL raised, so the old page is dead (flag ON); default isn't ON in code; ask()-based focus/scroll_by misses. Lane order: #812 + #815 (merge develop bcfba9bb). Then Handtest smoke ON/OFF on the bundled app, the Prometheus delta R1, and Atlas lands it.
+- Yahoo: root cause by Trace (16:11Z). The feed is never built because inserted scripts failed at the 2 s turn deadline and timers were drained into 5 s turns. Fixed by #775 + #776. Acceptance run on develop bcfba9bb asked (#816), under the Safari UA (Pete 14:16: no per-site UA overrides).
+- Next week (plan notes): release cleanup Mon; dev tools HIGH (#764 re-cut + #762 + network, script, lifecycle and event-loop facts; acceptance is a yahoo diagnosis in 5 min); a coherent UA source + diagnostics; M4b/M4c; re-cut the parked stack.
+- Atlas loop: /loop /doorbell check, self-paced; restart it on Pete's next message.
