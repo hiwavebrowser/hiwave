@@ -8,6 +8,15 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 21:40 ET Wed 10-21. NEW PRIORITY (Pete, agreeing with Codex's outside review): M4 is #1, together with consolidating outstanding work. Supersedes the 10-20 order where they conflict.**
+> - **Two outcomes only:** (1) responsive controls (M4 content thread, #730) and (2) reliable page construction (scheduling, cancellation, stylesheet loading, h2 connection progress). The lane owns both, on one integrated build. Other seats produce reproducers (fixtures, replays) and small independent fixes only.
+> - **Stack time-box:** #727+#729 land on Trace's real-window run tonight. #733 and #736(+#763) get until Fri 10-23 EOD. Whatever is not CLEAR then is parked, and M4 PR2 starts on develop regardless. The stack no longer blocks M4.
+> - **M4 PR2 starts from #730.** Acceptance tests are written first: a click and a URL-bar edit land within 100 ms while a page script spins (5/5 runs in the real window), plus the yahoo/cnn/lyft/reddit everyday tasks 5/5 on the integrated head.
+> - **Retirement plans:** #727's post-DCL live turns and #770's main-thread stack flag are mitigations. Each PR names the M4 step that removes it; M4 PR2 lists them as its own cleanup.
+> - **Proof from the running app:** every fix states which thread/path executes it in the shipped app, which observable task improves, and that the task passes repeatedly on the integrated head. (Lesson: #753 enlarged script-thread stacks while shipped page JS runs on the main thread.)
+> - **Time-boxed site investigations:** continue only once there is a deterministic fixture, a replay, or a named platform defect. Unexplained live-site differences are parked, not chased by changing limits.
+> - **WIP cuts tonight:** #766 (timer bound) and #768 (tab switch during load) closed into M4 scope; their branches are kept. No new CSS or feature PRs until #761/#769 land or close. Target is 8 open PRs by Fri.
+
 > **Atlas 12:50 ET Wed. Pete's answers (via ZeuzGb #76), for the lane.**
 > (1) **Stack:** add `RUST_MIN_STACK=8388608` under `[env]` in `.cargo/config.toml`, AND give the app's script/JS thread an explicit stack of at least 8 MiB (`std::thread::Builder::stack_size`) so shipped builds don't depend on the cargo env. It goes in its own small PR onto develop, not inside #736, because it fixes YouTube's stack-overflow RuntimeLimitError on its own.
 > (2) **CNN:** drawing the consent dialog matches Chrome, so that pixel diff is expected. Two separate bugs remain. First, input is lost inside long post-load turns (the #727 hold). Second, Trace's re-click OUTSIDE a hold (12:26, the window answered in 62 ms) still did not close the dialog and no click was logged. So the click doesn't reach the dialog's button even when the window is free. That is its own item: find where the click goes (an iframe? a shadow root? a hit test against a fixed or overlay layer?), with a reduced page.
