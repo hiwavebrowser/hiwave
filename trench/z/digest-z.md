@@ -3985,3 +3985,42 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 - Yahoo: root cause by Trace (16:11Z). The feed is never built because inserted scripts failed at the 2 s turn deadline and timers were drained into 5 s turns. Fixed by #775 + #776. Acceptance run on develop bcfba9bb asked (#816), under the Safari UA (Pete 14:16: no per-site UA overrides).
 - Next week (plan notes): release cleanup Mon; dev tools HIGH (#764 re-cut + #762 + network, script, lifecycle and event-loop facts; acceptance is a yahoo diagnosis in 5 min); a coherent UA source + diagnostics; M4b/M4c; re-cut the parked stack.
 - Atlas loop: /loop /doorbell check, self-paced; restart it on Pete's next message.
+
+
+## 2026-10-22 16:40 Z-lane I0 (M4 #730: develop merged twice, to `ea3058c5`; every gate but R1 and the grant-seat window run)
+
+**Before:** #730 was at `38425a5a`: `cf792c07` plus cloud #772, merged by Pete at 10:36. It was CONFLICTING with develop `1fe3dfb5`, which had #770, #771, #773, #774 and #775. #727 had been closed into #730 (Atlas 14:51), so this was the develop merge #730 was waiting for. Develop then moved again during the session, to `bcfba9bb` (#776).
+
+**After: #730 → `ea3058c5`** (fast-forward; merges only, no force-push).
+- **`959ad644`, merge `1fe3dfb5` (7 files).**
+  - #775 and #727 each built an inserted-script scheduler: #775's `LiveScripts` (parked hand-off) and #727's `InsertedScripts` (fetch thread, board, cancel, live wake).
+  - **Kept #727's**, because the content thread is built on it. Dropped #775's `LiveScripts`, `run_fetched`, `fetch_inserted` and `PARKED_SCRIPTS`.
+  - #775's tests come in, adapted only where they read `LiveScripts`. At the merge, 3 of the 8 are red.
+  - Also: #774's images-planned wrapper is put around the `LoadYield` load; Stop always abandons `live_inserted` (#775's rule); #730's `root_element_id(layout)` is renamed `first_named_box_id` beside develop's.
+- **`979c95ea`, fix.** `run_inserted` now does what #775 fixed:
+  - a script that arrives after the budget is spent stays queued;
+  - an event the budget leaves unfired is owed and fires first on the next turn;
+  - a stopped script still hears `load`;
+  - a script too large to run hears `error`.
+  - #775's tests: 8/8.
+- **`41dc3bdf`, merge `bcfba9bb` (#776).**
+  - Kept #730's 16 ms `LIVE_FRAME_MS` as the one timer slice. #776's 50 ms slice and the old `LIVE_NETWORK_BUDGET` are not taken.
+  - Took #776's Boa change (a stop runs the `finally` blocks it unwinds through), with #730's interrupt diagnostics line kept inside it.
+  - New test, red: a `setTimeout(0)` chain through the framed helper starved `requestAnimationFrame`.
+- **`fc46b4a4`, fix.** A framed turn that yields still runs its animation-frame round. Bindings 365/365.
+- **`ea3058c5`, fix.** `979c95ea` had raised the inserted-fetch cap from 8 to 24 so one assertion in #775's chunk test held. The full suite then failed #727's own cap-at-8 test, so the cap is back to 8. Reasons: #733's microsoft stylesheet gate, and Chrome's 6 connections per HTTP/1.1 host. The chunk test now compares two chunks that are out together.
+- **Gates at `ea3058c5`** (load 18-20):
+  - Engine suite (at `fc46b4a4`): 983 passed, 6 failed. The 6 are develop's 5 (::1) plus the cap test, which is fixed in `ea3058c5`; form_action is green now that #771 is in. Rerun by name at `ea3058c5`: 18/18.
+  - hiwave-app 91/91, including both 100 ms acceptance tests and #770's stack test.
+  - rustkit-js all green. One vm_interrupt timing read of 72.7 ms at load 20, then a pass on the next run.
+  - Campaign 26/26 identical to develop `bcfba9bb`.
+  - **All-site A/B vs `bcfba9bb`:** one mover, cnn at 72.90%, the consent dialog (Pete: matches Chrome), the same as at `cf792c07`. No other mover. microsoft timed out on both arms.
+  - Bins: `parity-capture-z-ea3058c5` (`7fb9fa49…`) and `parity-capture-dev-bcfba9bb` (`0d398915…`); a new detached worktree `z-i0-devbase` holds the develop build.
+  - PR comments: issuecomment-6350346671 (merges and gates) and -6350754158 (A/B).
+
+**Blockers / decisions for Atlas:**
+1. #730 still has no R1, now at `ea3058c5`. Per the "do not ping" order I sent no exchange request: R1 (two readers: engine; bindings + app) is yours to launch.
+2. A choice for R1 to confirm: the inserted-script fetch slots (8) and queue (64) stay process-wide on #727's fetch thread. #775 had per-view bounds (24/512).
+3. Tonight's flag-on real-window acceptance (grant seat) should run on `ea3058c5`, not `cf792c07`.
+
+**Next session (I0, M4 only):** answer the R1 when it posts. Merge develop again if it moves; the remaining #730 fixes (cloud/live-timer-slice) are now in.
