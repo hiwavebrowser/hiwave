@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-22 14:16 ET, Pete (via ZeuzGb), narrowing the 12:40 note:** keep the Safari 17.4 + HiWave UA for yahoo and everywhere, and give no site a special-cased UA. The per-site override list and the yahoo override are dropped. Acceptance for the yahoo fixes: the JS-built feed fills below the fold under the Safari UA. The identification-profile work shrinks to one coherent UA source plus diagnostics, and an Inspector picker for testing only. It now sits below dev tools in next week's order.
+
 > **10-22 13:15 ET, Pete: dev tools are HIGH priority next week.** They should make bugs like today's yahoo blank easy to find. Base: re-open the parked #764 (Inspector wired to RustKit content: pick, details, console, copy; branch cloud/inspector-rustkit @ 5e088823, +1523/-73) and fold in the parked #762 (script_event records + per-tab skipped/stopped notice). Add the facts Trace had to dig out of info logs today:
 > - (a) Network: every request with its state (in flight / done / failed and why, e.g. "timed out at turn deadline"), initiator, and timing. This would have shown the 20 inserted scripts failing at the same instant, and no nexus-gateway request.
 > - (b) Scripts: each script's outcome (ran / threw / timed out / OverBudget / stopped by watchdog / never got load or error).
