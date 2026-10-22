@@ -3918,3 +3918,34 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 2. The 19:25 question still stands: should the image and SVG subresource budgets share one deadline?
 
 **Next session (per Atlas 22:05: M4 is the lane's ONLY job):** once #727 lands, merge develop into `cloud/m4-content-thread` (#730; merge only, the 5 known conflicts), write the 100 ms click/URL-bar acceptance tests red first, and fix the 6 flag-on smoke failures. #733/#736 fix rounds (including the walmart logo) go to a cloud session.
+
+
+## 2026-10-22 04:25 Z-lane I0 (M4 #730 at `cf792c07`: merged onto #727 + develop, one fix, acceptance tests; all gates but the real-window smoke)
+
+**Before:** #730 (`cloud/m4-content-thread`) was at `1c882dd7`, behind develop by 65 commits and behind #727's head (`431f24c9`, not landed) by 30. It had flag-on smoke failures (88/94 at `c573b756`) and no acceptance tests.
+
+**After:**
+- **#730 → `cf792c07`** (fast-forward, merges only).
+  - `0aca1e04` merges #727 `431f24c9`, which carries develop's #743. #743's sliced flag-off load was rebuilt on #730's `PageHandle`:
+    - The flag-off endpoint is now `Rc<RefCell<PageEndpoint>>`, shared with `PendingLoad`, which polls the new `PageEndpoint::navigate` for one 8 ms slice per wake.
+    - `submit()` drops commands while a load holds the endpoint, as develop does.
+    - `stop_load()` is the one Stop.
+  - `ed132810` merges develop `90d38b2b`. `pump_all` takes develop's `requests` flag. The horizon loop and the post-load settle pass `!post_load_live`.
+  - `cabfea34` fixes #730's own sliced timer horizon: it logged a watchdog-stopped slice as `Threw(RuntimeLimitError)` instead of OverBudget. The vm_interrupt CNN test was red at `ed132810`, both in the suite and alone; it passes now.
+  - `cf792c07` adds the M4 acceptance tests (Atlas 22:05). A page timer spins; the URL-bar navigation must be taken and the new page requested within 100 ms, and a click must be taken within 100 ms and heard after the stop (not dropped).
+    - **Red on the flag-off view:** the window was free about 4.9 s late.
+    - **Green on the content thread.**
+- Gates (load 15-19):
+  - Engine suite: 950 passed + 7 failed. The 7 are develop's 5 (::1), form_action (develop, #771), and the vm_interrupt test now fixed.
+  - hiwave-app 90/90. rustkit-js green.
+  - Campaign 26/26 identical, flag off and on.
+  - **All-site A/B vs develop `90d38b2b`:** one mover, cnn 72.9%. B draws the consent dialog; Pete ruled that matches Chrome. No other mover. linkedin, walmart and shopify are noisy within arm A.
+  - Bins: `parity-capture-z-cf792c07` (`8669dc70…`) and `parity-capture-dev-90d38b2b`.
+  - PR comments issuecomment-6335888946 and -6336226906. R1 and Handtest smoke requested (exchange #799).
+- Lesson (memory saved): a content_thread test run alone fails on a cold CoreText. Its first call scans `z-target/debug/deps` for `.lproj` folders and takes more than 10 s. These tests pass serially behind a font warm-up.
+
+**Blockers / decisions for Atlas:**
+1. When #727 lands, #730 needs one more develop merge (#727's commits are already inside it), then a suite rerun.
+2. The 6 flag-on smoke failures (C first frame, G h16 start beacon, H click origin) are code-complete since `1c882dd7`, and their engine tests pass. Only Handtest's grant-holding seat can show them in the window. This seat has no grants (memory), so tonight's Mac run is the gate.
+
+**Next session (I0, M4 only):** answer the R1, merge develop once #727 lands, and run the grant-free driver on a flag-on release build of `cf792c07` (request log for G).
