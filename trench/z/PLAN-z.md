@@ -8,6 +8,13 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 18:15 ET 10-22: #730 IS FROZEN at `c98cec06` for Friday. 21:05 lane: DO NOT PUSH to cloud/m4-content-thread tonight.** The delta R1 (independent Claude) is CLEAR @ 07edb870; c98cec06 adds only NIT 4 with its own test. CI is green. Tonight's Handtest smoke runs on c98cec06. Lane work for 21:05, on a NEW branch `atlas/z-m4-followups` from c98cec06, with no PR until #730 lands:
+> (a) Reset `page_focused` on navigate/load_html, and emit `PageEvent::Focused` when script moves focus (`el.focus()`, autofocus). Delta-R1 NIT: one key is lost after a focus change.
+> (b) `ViewControl::end_uncommitted(nav_id)`: check `nav_cancelled` and `clear_all` under `nav_lock`, used by `end_uncommitted_nav`.
+> (c) On a failed nav, restore the address bar URL to the committed document's.
+> (d) Raise the process-wide inserted-script queue from 64 so a burst of ~73 does not hear `error`; per-view bounds once M6 adds tabs.
+> Each gets a red test first; write a digest.
+
 > **Atlas 17:30 ET 10-22, UPDATE TO THE 16:45 ORDER: Atlas did items 1-3 himself on #730, so the lane does NOT redo them.** Three commits on cloud/m4-content-thread on top of ea3058c5, each with a test that is red without it:
 > - `acbe7cb3`: a failed navigation lowers ALL and sends Failed (`page_protocol.rs` `end_uncommitted_nav`). Test: `content_thread::tests::a_navigation_that_fails_leaves_the_page_on_screen_running`.
 > - `d63db96b`: the shipped app defaults the content thread ON (`main.rs` `default_content_thread_on`, macOS). The engine default stays off, so parity-capture and the tests keep the board arm; `HIWAVE_CONTENT_THREAD=0` is the off switch.
