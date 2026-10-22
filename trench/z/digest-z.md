@@ -3894,3 +3894,27 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 1. #736 WIP: fix the two merge regressions (adopted sheets and the media resolution scale against #758's sheet cache), red first where the merge allows. Run form_action by name on develop. Then hiwave-app, then push `atlas/z-736-merge-wip` to `cloud/reddit-734-735` (check its head is still `409a2b89`) and request R1.
 2. #733: the delta R1 answer, if Prometheus holds.
 3. The navigating_away 5x run in the 02:00 quiet hour (Pete's 12:50 (3)).
+
+
+## 2026-10-21 22:20 Z-lane I0 (#736 pushed at `04070460`: the stack, develop and the h2 fixes, R1 requested)
+
+**Before:** #736 (`cloud/reddit-734-735`) at `409a2b89`, with no R1 and no A/B. The merge WIP (`e8be0714`) was not pushed because of 2 merge regressions. A develop-side `form_action` failure was unattributed.
+
+**After:**
+- **#736 → `04070460`** (fast-forward from `409a2b89`; comment issuecomment-6331064382; R1 requested, exchange #797). It carries #733 `74e7a986`, develop `35659f8a`, and the h2 fixes (a) stream limit, (b) one retry of an unprocessed stream, (c) head-of-line stall, each with its test first.
+- **The 2 merge regressions are fixed in `04070460`.** #758's rule-index fingerprint (develop) vouched for the `<style>` and `<link>` sheets and the viewport. On the stack the indexed list also holds `document.adoptedStyleSheets`, and the `@media` filter also takes the dpr, so either change reused a stale index. The fingerprint now carries the dpr and the adopted sheets' text. `lit_render_tests::adopted_stylesheets…` and `media_match_tests::match_media_and_the_cascade_share_the_viewport` were red at `e8be0714` and are green now.
+- **`form_action_url_tests::a_protocol_relative_action_takes_the_documents_scheme` fails on develop `90d38b2b`** (run by name there). It is #749's own test: `form_submission` returns `None` when a form has no entries. It is a develop regression and not the stack's (regression rule: owner needed).
+- Gates at `04070460`:
+  - Engine suite: 985 passed, 10 failed, at load 18-38 (another job used 8 cores). The 10: develop's 5; form_action (develop); the 2 vm_interrupt wall-clock asserts; `host_runtime` image_fetch (its server only accepts for 20 s; it passes 3/3 at load 18); `host_runtime` replacing_a_page (also red in the `e8be0714` and `e1a2947f` suites).
+  - hiwave-app 85/85.
+  - Campaign 26/26 identical vs #733.
+  - A/B vs #733 `74e7a986`: walmart 53% better (hero carousel, tiles) **but the spark logo is gone**; github 4.3% better; wikipedia 14.7% layout shift (Chrome not checked); netflix, facebook, lyft, yahoo, shopify and microsoft 0.3-3.7%, not inspected. B loads faster everywhere (the load was too high for timing claims).
+  - Bins: `z-target/bins/parity-capture-z-04070460` (`cccd2981…`).
+- **walmart logo lead (for #736's cloud fix round):** both arms fetch `spark-icon.svg` with the same bytes (494/957), and both give the `<img>` the same 36x36 box at (32,24). A paints it through the SVG lane as 147 `fill_polygon` commands. B emits a single `image` command for the SVG URL, which paints nothing, and B has **zero** `fill_polygon` on the whole page. `RUSTKIT_TREE_REUSE=0` and `RUSTKIT_SHEET_CACHE=0` do not bring it back. Next check: develop `90d38b2b` on the same page; if develop draws the logo, bisect #734..#736. Probe files: `z-i0-stack/scratch/wm/`.
+- Lane mistake (no harm landed): I ran the develop form_action test through `z-cargo.py` from `z-i0-dev`, which poisoned the shared target. The first suite run then failed to compile (19 errors in rustkit-bindings). Fixed by touching all 1423 sources; `z-cargo-dev.py` is the right tool, as the memory says.
+
+**Blockers / decisions for Atlas:**
+1. form_action on develop (#749's test, red on develop): who owns it? The likely fix is to drop the `entries.is_empty()` early return in `form_submission` (an empty form still submits to `action?`).
+2. The 19:25 question still stands: should the image and SVG subresource budgets share one deadline?
+
+**Next session (per Atlas 22:05: M4 is the lane's ONLY job):** once #727 lands, merge develop into `cloud/m4-content-thread` (#730; merge only, the 5 known conflicts), write the 100 ms click/URL-bar acceptance tests red first, and fix the 6 flag-on smoke failures. #733/#736 fix rounds (including the walmart logo) go to a cloud session.
