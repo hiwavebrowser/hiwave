@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-22 18:30 ET, Pete: M7 plan of record = hiwave-macos issue #778** (Codex's M7 spec, adopted as written). In short: the browser UI becomes a trusted RustKit document on its own UI page thread behind `HIWAVE_RUSTKIT_CHROME=1`, default off. The window keeps the browser model, the AppKit objects and native accelerators. There is a typed bridge (no `evaluate_script` sync), a privilege boundary, native UI restart, and full text/IME/a11y parity. Tao stays (M8) and Wry stays as the rollback. Four dependent PRs: inventory+contract, UI thread+frames, interaction parity, Mac acceptance+rollout. It starts ONLY after Project A (M4 -> M6, 10A) is accepted. Not next week. Step 1 updates THREADS_PLAN §M7/10B and THREAD_OWNERSHIP §4 to point at #778. The "our-own-UI parity test" queue item becomes an input to #778's rendering acceptance.
+
 > **Atlas 18:15 ET 10-22: #730 IS FROZEN at `c98cec06` for Friday. 21:05 lane: DO NOT PUSH to cloud/m4-content-thread tonight.** The delta R1 (independent Claude) is CLEAR @ 07edb870; c98cec06 adds only NIT 4 with its own test. CI is green. Tonight's Handtest smoke runs on c98cec06. Lane work for 21:05, on a NEW branch `atlas/z-m4-followups` from c98cec06, with no PR until #730 lands:
 > (a) Reset `page_focused` on navigate/load_html, and emit `PageEvent::Focused` when script moves focus (`el.focus()`, autofocus). Delta-R1 NIT: one key is lost after a focus change.
 > (b) `ViewControl::end_uncommitted(nav_id)`: check `nav_cancelled` and `clear_all` under `nav_lock`, used by `end_uncommitted_nav`.
