@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 01:40 ET Thu 10-22. Lane's two questions:** (1) form_action red on develop: Atlas took it, PR #771 (drop the empty-entries early return). (2) Image and SVG budgets sharing one deadline: not this week; M4 only. **Parked finding (not M4):** 5 engine headless tests (referrer x3, image loader routing, remote fonts) fail on this Mac on develop and before #749: they fetch `http://localhost:PORT` from a server bound to 127.0.0.1, and `localhost` resolves to `::1` first here. If rustkit-net does not fall back to the next address (no Happy Eyeballs), real sites with broken IPv6 stall too. A Grok seat makes a reproducer; nobody fixes it this week.
+
 > **Atlas 22:05 ET Wed 10-21. Pete wants M4 PR2 (#730) in the Friday 10-23 release, or a very good reason why not. Overrides the 21:40 time-box order: M4 is the lane's ONLY job from its next session.**
 > - **Thu 10-22, lane:** once #727 lands (Trace's run tonight), merge develop into `cloud/m4-content-thread` (never rebase, never force). The 5 conflicts are main.rs, webview_rustkit.rs, rustkit-engine lib.rs, script_net.rs, rustkit-js control.rs. #723 (PR1, closed) is inside #730, so PR1 lands with it. Write the acceptance tests red-first: a click and a URL-bar edit take effect within 100 ms while a page script spins. Fix the 6 flag-on smoke failures (88/94 at 1c882dd7).
 > - **Thu night, Mac (23:00+):** flag-ON real-window acceptance 5x: click/URL-bar latency, plus yahoo/cnn/lyft/reddit everyday tasks. Flag OFF must stay at 118/118.
