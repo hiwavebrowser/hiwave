@@ -20,6 +20,8 @@ Branch `atlas/dt-live-wake` @ 93d75eb4 (on develop 64c8d382). No PR yet: 11 PRs 
 
 Before the fix, all 21 open requests were inserted scripts: every Next.js page chunk, plus gpt.js, prebid, taboola and opus. After it, all of them load, and the feed's third-party calls go out (taboola widgets, pubmatic, pbs).
 
+**Not the feed.** A 1280×4000 frame after `--live-ms 25000` is the same before and after the fix: the "For You" feed is still skeleton cards. This fixes the instrument, not yahoo.
+
 **Consequence.** Before this fix, a headless diagnosis of yahoo's blank below-fold feed measured our tool's sleep, not the browser. The T1 #777 acceptance run (live 25 s) had the same blind spot.
 
 **Campaign** (26 cases, `--profile parity`): 26/26, mean 1.11% (1.1078), unchanged. Campaign sha256 99f95e87c7ee72de82677d202d7f7ecf72fc77fa4c524cd364cd39e62051febf.

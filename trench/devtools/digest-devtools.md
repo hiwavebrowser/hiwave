@@ -90,7 +90,8 @@ Blockers: none.
   - **Fixed on its own branch, `atlas/dt-live-wake` @ 93d75eb4. No PR because of the cap; the ready body is `receipts/LW-live-wake-93d75eb4.md`.**
   - Red-before test: "late.js ran 6086 ms after load (window 6000)".
   - Yahoo after the fix: 16 turns, 69 timers, 162 answered / 0 open (before: 119 / 21). All chunks load, and the feed's third-party calls go out. Campaign 26/26, 1.11%.
-  - **Every earlier headless live run (#777's T1 acceptance included) under-ran inserted scripts.** Next step on the exit metric: render the yahoo frame below the fold on this branch and see whether the feed now paints.
+  - **Every earlier headless live run (#777's T1 acceptance included) under-ran inserted scripts.**
+  - **But it is not the blank feed.** Yahoo at 1280×4000 with `--live-ms 25000`, before (b28497c1) and after (93d75eb4) the fix: the two frames match. The "For You" feed is still grey skeleton cards in both, though after the fix the chunks load and run (9 turns, 30 timers, 30 requests, 28.7 s busy). The blank feed has another cause, and the exit metric still needs T3/T4 to name it. The frames stay private, in lane scratch.
 - Comment posted on #792 with this correction, the fixture result and the partial suite.
 - Fixture (`tools/t2_fixture.py`, `--shield`):
   - gpt.js → `blocked_by {EasyList, ||g.doubleclick.net^}`
