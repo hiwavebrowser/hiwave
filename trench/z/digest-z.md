@@ -4024,3 +4024,27 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 3. Tonight's flag-on real-window acceptance (grant seat) should run on `ea3058c5`, not `cf792c07`.
 
 **Next session (I0, M4 only):** answer the R1 when it posts. Merge develop again if it moves; the remaining #730 fixes (cloud/live-timer-slice) are now in.
+
+
+## 2026-10-22 22:38 Z-lane I0 (#730 follow-ups a-f) + DT (dev tools)
+
+**Before:** #730 frozen at `c98cec06` with follow-ups (a)-(f) ordered; no follow-ups branch; #764 (Inspector) closed and written against the window-thread engine.
+
+**After:**
+- **`atlas/z-m4-followups` @ `29fbb606`** (from `c98cec06`, pushed; no PR until #730 lands). One commit per item, each with a test that was red without it:
+  - (a) `cfedb581`: the window hears focus a script moved (`focus()`/`blur()`, timer, autofocus); a navigation or New Tab clears `page_focused`.
+  - (b) `a748f3d2`: `ViewControl::end_uncommitted` does the check and `clear_all` under `nav_lock` (red with the same method lock-free).
+  - (c) `e5cd3f03`: a failed navigation sends the committed document's URL last, so the address bar shows the page on screen.
+  - (d) `1f0c6f09`: process-wide inserted-script queue 64 -> 512 (burst of 100: load=64 error=36 before). In-flight cap stays 8 (the (g) watch item is untouched).
+  - (e) `a1dc4ac4`: a 204/205 navigation is aborted, so the page stays (it was replaced by an empty document, flag on AND off), and the load ends Complete, not Failed. Failed is sent at most once per nav (an empty 500 sent two).
+  - (f) `29fbb606`: a stopped inserted-script listener marks its own element's record (pump index), not the last record with that URL; `owed` is a VecDeque.
+- **Gates at `29fbb606`** (receipt `trench/z/receipts/2026-10-22-m4-followups-29fbb606.md`, load 12-29): engine 978 pass / 18 fail. The 18 are 11 GPU-guard grid tests (11/11 by name), develop's 5 ::1 tests, and 2 that are red the same way at `c98cec06` (`navigating_away_drops_an_inserted_script_still_fetching`, `a_stalled_subresource...` 2.85 s vs 2.5 s). App 56/58; the 2 timing tests pass by name at load 28. js all green. **Campaign + all-site A/B NOT run**: they are owed at the PR head after develop is merged in.
+- PR body drafted: `trench/z/receipts/2026-10-22-m4-followups-pr-body.md` (fill `@@GATES@@`).
+- **DT started: `atlas/z-devtools-inspector` @ `38d6583d`** (pushed, no PR). This is a merge of #764 `5e088823` onto `c98cec06`, plus the re-cut: `PageCmd::Devtools { DevtoolsQuery, reply }` answered on the page's own thread; `RustKitView::devtools_ask/devtools_eval` return receivers; `devtools_panel` is request/answer, pumped from the live wake. Base is #730's head because PRs land as merge commits and #764's app code borrowed an engine the content-thread window does not have. Tests: engine devtools + content_thread 34/34, app content_thread 5/5 (new: the Inspector gets the tree and an element with the content thread on). No real-window run yet.
+
+**Blockers / decisions for Atlas:**
+1. **Inspector console hides the page's text.** The Inspector records value shapes, so `console.log('from the page')` shows as `<string len=13>` (#764's tests pin this). That works against the "diagnose yahoo in 5 minutes" acceptance. Should the panel show real text when the user opens the Inspector? It stays in-app, but it is a privacy call for Pete.
+2. #762 (script_event) is stacked on #744 (cap raise, still draft). Fold #762 into DT without #744, or wait for #744?
+3. The mandate's `new-task.sh` / `done-task.sh` and `cp -c` need approval on the lane seat. I made the fresh checkouts by hand (`git -C _seed/hiwave-macos.git worktree add`, no seed target clone). `z-i0-m4` (old M4 worktree, on `atlas/z-m4-followups`) and `z-m4-followups-gates` are left for cleanup: the seat cannot delete them.
+
+**Next session:** (1) if #730 is on develop: merge develop into `atlas/z-m4-followups`, rerun the suite, run the campaign and A/B, open `fix: #730 follow-ups` with the drafted body. (2) DT: a real-window check of pick/outline/console on the content thread, then split the re-cut into a PR once #730 lands.
