@@ -4048,3 +4048,25 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 3. The mandate's `new-task.sh` / `done-task.sh` and `cp -c` need approval on the lane seat. I made the fresh checkouts by hand (`git -C _seed/hiwave-macos.git worktree add`, no seed target clone). `z-i0-m4` (old M4 worktree, on `atlas/z-m4-followups`) and `z-m4-followups-gates` are left for cleanup: the seat cannot delete them.
 
 **Next session:** (1) if #730 is on develop: merge develop into `atlas/z-m4-followups`, rerun the suite, run the campaign and A/B, open `fix: #730 follow-ups` with the drafted body. (2) DT: a real-window check of pick/outline/console on the content thread, then split the re-cut into a PR once #730 lands.
+
+## 2026-10-23 04:30 Z-lane I0 (#730 follow-ups: PR #780 opened with (h) and (i)) + DT (develop merged)
+
+**Before:** #730 landed on develop as `7bafd96d`. `atlas/z-m4-followups` @ `29fbb606` held (a)-(f) with no PR and no campaign or A/B. Handtest items (h) address bar and (i) positioned input on k7 were not started. DT re-cut `38d6583d` sat on #730's head.
+
+**After:**
+- **PR #780 `fix: #730 follow-ups` @ `ea1c96d2`** (develop `f5729c2d` merged in at `970a456b`, no conflicts). Body has the receipt.py block and every gate.
+  - **(h)** red `1464e586`, fix `0e2b4325`. The chrome UI is a WKWebView. WebKit undoes the focus handler's `select()` after the mouseup of the focusing click and leaves a caret at the click point, so typing appended (or inserted `httpsxyz://...`). Now the focusing mouseup cancels its default and selects all, unless the press moved more than 3 px. New `tools/parity_oracle/url_bar_select_log.mjs` loads the shipped chrome.html in **Playwright WebKit 26.0 (installed tonight into the ms-playwright cache)**: 2/4 before, 4/4 after. Chromium passes before and after, which is why the oracle never caught it.
+  - **(i)** red `4efeeb73`, fix `ea1c96d2`. Form controls (input/textarea/select/text button) leave box construction early and never got `transfer_own_positioning`, so `position: absolute/fixed` and the offsets were dropped. `positioned_form_control_cases.json` (pinned Chromium, `id:x:y`; the log script gains `"boxes": "xy"`): 0/9 before, 9/10 after. One listed gap: a checkbox has no UA margin (Chrome `3px 3px 3px 4px`). There is also a focus test, red without the fix.
+  - Gates: campaign 26/26 identical vs develop (at the merge head and at the final head). A/B at the merge head: no mover. A/B at `ea1c96d2`: one mover, **wikipedia 13.65% toward Chrome** (Vector's six dropdown checkboxes are abspos in Chrome and now leave the flow; on the live page in Chromium, heading to tabs is 36 px, candidate 36, develop 44). Engine 1025 passed + 6 failed (develop's 5 ::1 tests + `navigating_away_drops_an_inserted_script_still_fetching`, which is red on develop `f5729c2d` at the same line). App green. Receipts in `trench/z/receipts/2026-10-23-pr780-*`.
+- **DT:** develop merged into `atlas/z-devtools-inspector` @ `97caa648` (clean; +1809/-75 vs develop). Engine devtools 13/13, content_thread 22/22, app 59/59 (the 5 s timing test passes by name at load 32). No PR yet: the suite would not fit before the cap.
+- Lane tools rebuilt in the hub (`trench/z/tools/`: camp.py, campdiff.py, ab5.py, wt_check.py), because the old scratch died with z-i0-stack.
+- Worktrees removed: z-i0-followups, z-i0-devbase-f5729c2, z-dt-merge, z-m4-followups-gates, z-devtools-inspector. **z-i0-m4 is left for Atlas**: it is a worktree of ~/Repos/hiwave-macos (no tracked changes, head on origin), which the lane may not touch.
+
+**Not fixed, found (written in #780's tests):**
+1. The hit test stops at any box whose border box does not hold the point (`LayoutBox::hit_test_internal`), so an absolute box outside all of its ancestors' boxes is drawn but cannot be clicked. Fixed boxes are collected separately and are fine. This touches the hover hot path (#681 timing), so it needs its own PR, either precomputed paths like `held_fixed_paths` or a cached descendant overflow bound.
+2. `position: relative` is static for every element (`positioning_of`, a deliberate choice). A relative field is not offset.
+3. The k7 fixture is not on this machine where the lane can see it. (i) was reduced from the report's words. Handtest should re-run k7 on #780.
+
+**Decisions for Atlas:** (1) carried: should the Inspector console show real text (privacy)? (2) carried: fold #762 into DT without #744? (3) the checkbox/radio UA margin is a separate small fix. Who takes it?
+
+**Next session:** (1) answer #780's R1 if one has posted. (2) DT: fresh checkout of `atlas/z-devtools-inspector` @ `97caa648`, full suite + campaign, then open the re-cut PR (needs a decision on (1)).
