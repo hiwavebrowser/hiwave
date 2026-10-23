@@ -64,6 +64,8 @@ Blockers: none.
 
 ## 2026-10-23 18:35 devtools T1b + T2
 
+**PR cap breach, for Atlas:** #792 was opened at 19:22, after the 19:05 cap order. The hub was last pulled at 19:00, so the lane hadn't seen it. 11 PRs are open. `gh pr close` needs approval on this seat, so #792 is still open. **Atlas: close it (the branch keeps the work, and the body is in `receipts/T2-pr-792-body.md`) or keep it.** #791 was opened at 18:53, before the order. From now on the lane pulls the hub before every `gh pr create`.
+
 **T1b: console redaction with the mirror on (the 17:35 order). Done: draft hiwave-macos #791 (`atlas/dt-console-shape` @ 58800963), awaiting R1.**
 - Before: with `HIWAVE_CONSOLE_LOG` on and `keep_console_text` off, `console.message` reached the Inspector as page text. Red-before test: `"console Log secret-console-text 12"` in the default-config record.
 - After:
