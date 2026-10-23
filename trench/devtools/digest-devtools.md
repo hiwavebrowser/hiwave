@@ -84,12 +84,20 @@ Blockers: none.
   - 141 requests, 0 failures, 0 `blocked_by`. Without `--shield`: 140 requests, 0 failures.
   - s.yimg.com: 71 requests, all answered except two inserted scripts still open.
   - **Our shield does not block yahoo's static assets.**
-- **New yahoo lead, for T3/T4:**
-  - 21 `inserted_script` requests are recorded at t=35.8 s and never answered: every Next.js page chunk (`app/homepage/page-….js`), plus gpt.js, prebid, taboola and opus.
-  - `load_finished` is at 7.9 s, then there are no events from 8.9 s to 35.9 s; `live_stats.turns = 4` in 27 s.
-  - The chunks are drained on the last live turn, either inserted that late or waiting since about 8 s; this log can't tell which. **This is probably the blank below-fold feed.** T3 (script lifecycle: discovered vs fetched) answers which one.
+- **Yahoo lead, and why it was our tool:**
+  - What showed: 21 `inserted_script` requests were recorded at t=35.8 s and never answered, every Next.js page chunk among them. There were 4 live turns in 27 s.
+  - Cause: parity-capture never installed `set_live_wake`. An inserted script's fetch isn't counted in `in_flight` (the engine relies on the waker). So `run_live` slept the whole remaining window.
+  - **Fixed on its own branch, `atlas/dt-live-wake` @ 93d75eb4. No PR because of the cap; the ready body is `receipts/LW-live-wake-93d75eb4.md`.**
+  - Red-before test: "late.js ran 6086 ms after load (window 6000)".
+  - Yahoo after the fix: 16 turns, 69 timers, 162 answered / 0 open (before: 119 / 21). All chunks load, and the feed's third-party calls go out. Campaign 26/26, 1.11%.
+  - **Every earlier headless live run (#777's T1 acceptance included) under-ran inserted scripts.** Next step on the exit metric: render the yahoo frame below the fold on this branch and see whether the feed now paints.
+- Comment posted on #792 with this correction, the fixture result and the partial suite.
+- Fixture (`tools/t2_fixture.py`, `--shield`):
+  - gpt.js → `blocked_by {EasyList, ||g.doubleclick.net^}`
+  - the never-answering route → `over_budget "subresource budget spent"` at 8 s
+  - the plain image → 200
+- Full engine suite on b28497c1: stopped at 321 tests to free the lease, with only the known T5 failure (`navigating_away_drops_an_inserted_script_still_fetching`). It still needs a full run.
 - (E) finding: the per-origin (6) and per-page (24) in-flight caps queue on a semaphore and never refuse. The inserted-script fetch queue is 512 deep and process-wide, with 8 in flight per process. So a "cap overflow" outcome barely exists. **Decision for Atlas:** add `queued_ms` (time waiting for a slot) on `response`/`failure`, and reason `"in-flight cap"` when the deadline passes while a request is still queued, instead of a new failure kind. Proposed in #792. Not built.
-- Full engine lib suite on b28497c1: running at stop time (see the PR comment if posted; otherwise next session).
 - Lane tools now live in `trench/devtools/tools/`:
   - `netsum.py`, `netopen.py`: event-log summaries.
   - `run.py`: runs a binary through python, as this seat requires.
