@@ -4070,3 +4070,19 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 **Decisions for Atlas:** (1) carried: should the Inspector console show real text (privacy)? (2) carried: fold #762 into DT without #744? (3) the checkbox/radio UA margin is a separate small fix. Who takes it?
 
 **Next session:** (1) answer #780's R1 if one has posted. (2) DT: fresh checkout of `atlas/z-devtools-inspector` @ `97caa648`, full suite + campaign, then open the re-cut PR (needs a decision on (1)).
+
+## 2026-10-23 10:25 Z-lane DT (Inspector re-cut: PR #785 opened)
+
+**Before:** #780 (#730 follow-ups) landed at 04:30 as `39dbcb83` on Prometheus R1 CLEAR, so I0's ordered work was done and the lane moved to DT, as the 21:50 note says. DT's re-cut sat on `atlas/z-devtools-inspector` @ `97caa648` (develop `f5729c2d`) with no PR. No receipt was owed: #754's R1 CLEAR @ `f2b761f2` was from 08:59 ET, and #777's CLEAR is not at its head.
+
+**After:**
+- **PR #785** `feat: Inspector on RustKit content, answered on the page thread (re-cut of #764)` @ `aafdac6a`. Develop `6e25ea3a` (#779, #780, #781, #783) is merged in. There was one conflict each in `content_thread.rs` and `webview_rustkit.rs`; both sides had only added tests, so both were kept.
+- Gates (receipts in `trench/z/receipts/2026-10-23-dt-*`): campaign 26/26 identical to develop `6e25ea3a` (0 moved). All-site A/B: 20 sites, no mover. linkedin varies only inside the candidate arm (a different served page). microsoft, github, squarespace and cnn hit the 30 s limit in both arms at load 70 to 125; last night on a quieter machine they took 16 to 26 s. Engine `devtools` + `content_thread`: 39/39. App: 59/60. `a_new_load_replaces_the_one_in_progress` (5 s wall-clock, not in the diff) passes by name in 4.98 s, so it is marginal. **The full engine suite was not run locally**; CI `unit-suites` covers it.
+- Worktrees `z-dt-0910` and `z-dt-0910-devbase` are removed.
+
+**Morning lessons:** the machine was at load 125 from 09:10 (the devtools lane and rev-782 were building). My first targeted test run waited 16 min for the lease and was then killed by the 20-minute background limit. Long cargo runs need `run_in_background` with a long timeout, logging to a file.
+
+**Decisions for Atlas (carried):** (1) Should the Inspector console show the page's real text? This is a privacy call for Pete, written in #785's body. (2) Fold #762 into DT without #744? (3) Checkbox/radio UA margin: who takes it?
+**Note:** the launch prompt asks for a "PETE'S HAND TEST ... CONSEQUENCE" line, Z2-I2 and a "Next-phase queue". None of them exist in PLAN-z.md, so this session went by the plan's notes.
+
+**Next session:** answer #785's R1 when it posts. Otherwise the DT network/script/lifecycle facts overlap the new devtools lane's T2/T3 (trench/devtools/PLAN-devtools.md). Atlas should say which lane owns them before the Z lane starts any.

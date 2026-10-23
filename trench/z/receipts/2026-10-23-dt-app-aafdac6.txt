@@ -1,0 +1,5 @@
+  --> crates/hiwave-app/tests/support/assertions.rs:29:8
+test webview_rustkit::tests::a_new_load_replaces_the_one_in_progress ... FAILED
+thread 'webview_rustkit::tests::a_new_load_replaces_the_one_in_progress' (271455401) panicked at crates/hiwave-app/src/webview_rustkit.rs:1548:9:
+assertion failed: started.elapsed() < Duration::from_secs(5)
+test result: FAILED. 59 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.75s
