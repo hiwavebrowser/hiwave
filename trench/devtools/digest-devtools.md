@@ -61,3 +61,38 @@ Blockers: none. The build lease is shared with the Z lane, and two engine test r
 Blockers: none.
 - A hiwave-app test build hit the 20-minute tool limit once, under lease contention. A follow-up `check --tests` and then the test run finished fine.
 - This seat cannot run `ps`, so lease waits can't be seen.
+
+## 2026-10-23 18:35 devtools T1b + T2
+
+**T1b: console redaction with the mirror on (the 17:35 order). Done: draft hiwave-macos #791 (`atlas/dt-console-shape` @ 58800963), awaiting R1.**
+- Before: with `HIWAVE_CONSOLE_LOG` on and `keep_console_text` off, `console.message` reached the Inspector as page text. Red-before test: `"console Log secret-console-text 12"` in the default-config record.
+- After:
+  - rustkit-js `set_console_shape_handler`: while it is set, each console call also builds a shape line (the redaction text). It goes to the second handler, right after the text handler, for the same call.
+  - The glue sends the text line to the mirror and the shape line to the Inspector. It also covers an Inspector that starts listening after `attach`.
+  - Off cost: one `Cell` read per console call.
+- Tests: rustkit-js all green (lib 82/82, 1 new); engine inspector/console_log/error_text 98/98, including the GPU page tests. Campaign 26/26, mean 1.11%.
+- Checkout `dt-cshape-1840` removed. Receipt: `receipts/T1b-pr-791-body.md`.
+
+**T2: network facts. Draft hiwave-macos #792 (`atlas/dt-net-facts` @ b28497c1). (C) and (D) were done this session; (E) and the combined fixture are left.**
+- (C) 39f1cf9e: the shield adapter moves unchanged to a new crate, `hiwave-shield-intercept` (hiwave-app aliases it as `shield_adapter`), plus `wait_until_ready`. `parity-capture --shield [--shield-wait-ms 30000]` is off by default, so the board path has no interceptor.
+- (D) b28497c1: initiators `fetch`, `xhr` and `inserted_script` instead of `script`. Red-before test `script_made_requests_name_the_api_that_made_them`; three old pins updated.
+- Cost of B's `from_rules_debug`, max RSS on a micro fixture (3 runs each): no shield 86.4 MB, shield with `from_rules` 168.5 MB, shield with `from_rules_debug` 177.4 MB. **Naming the list and rule costs about +9 MB**, in the app too. EasyList itself is about 82 MB.
+- Campaign 26/26, mean 1.11%.
+- **#832 answer (yahoo headless live, `--shield --live-ms 25000`, lists ready):**
+  - 141 requests, 0 failures, 0 `blocked_by`. Without `--shield`: 140 requests, 0 failures.
+  - s.yimg.com: 71 requests, all answered except two inserted scripts still open.
+  - **Our shield does not block yahoo's static assets.**
+- **New yahoo lead, for T3/T4:**
+  - 21 `inserted_script` requests are recorded at t=35.8 s and never answered: every Next.js page chunk (`app/homepage/page-….js`), plus gpt.js, prebid, taboola and opus.
+  - `load_finished` is at 7.9 s, then there are no events from 8.9 s to 35.9 s; `live_stats.turns = 4` in 27 s.
+  - The chunks are drained on the last live turn, either inserted that late or waiting since about 8 s; this log can't tell which. **This is probably the blank below-fold feed.** T3 (script lifecycle: discovered vs fetched) answers which one.
+- (E) finding: the per-origin (6) and per-page (24) in-flight caps queue on a semaphore and never refuse. The inserted-script fetch queue is 512 deep and process-wide, with 8 in flight per process. So a "cap overflow" outcome barely exists. **Decision for Atlas:** add `queued_ms` (time waiting for a slot) on `response`/`failure`, and reason `"in-flight cap"` when the deadline passes while a request is still queued, instead of a new failure kind. Proposed in #792. Not built.
+- Full engine lib suite on b28497c1: running at stop time (see the PR comment if posted; otherwise next session).
+- Lane tools now live in `trench/devtools/tools/`:
+  - `netsum.py`, `netopen.py`: event-log summaries.
+  - `run.py`: runs a binary through python, as this seat requires.
+  - `rss.py`: max RSS measurement.
+- Checkout `dt-t2c-1900` is kept: T2 acceptance isn't done. Next session: a fresh checkout of `atlas/dt-net-facts`, then (E) as decided, then the combined fixture.
+
+Blockers: none. Notes:
+- `parity-capture` has no PNG `--output` flag. The default `--timeout-ms` of 30000 is too short for `--live-ms 25000` plus the shield wait; use 120000.
