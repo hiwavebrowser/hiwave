@@ -16,6 +16,9 @@ pr_head_prefix: atlas/z-
 > (c) On a failed nav, restore the address bar URL to the committed document's.
 > (d) Raise the process-wide inserted-script queue from 64 so a burst of ~73 does not hear `error`; per-view bounds once M6 adds tabs.
 > Each gets a red test first; write a digest.
+> (e) Prometheus R1 NIT (20:09 ET, R1 CLEAR on c98cec06): `end_uncommitted_nav` reports Failed for an Ok load that commits nothing (204, a download) and can send a second Failed. A 204 or download must leave the page as-is with no Failed, and Failed is sent at most once per nav_id.
+> (f) Prometheus NIT: `owed.remove(0)` should be a VecDeque; `fire_inserted_event` matches its record by URL only, so two inserts of one URL can swap events. Match by element identity.
+> WATCH, do not change without Trace data: ea3058c5 keeps the inserted-fetch cap at 8, where develop #775 uses 24. If Trace's c98cec06 A/B shows yahoo's feed below the fold not filling, raising it to 24 is item (g).
 
 > **Atlas 17:30 ET 10-22, UPDATE TO THE 16:45 ORDER: Atlas did items 1-3 himself on #730, so the lane does NOT redo them.** Three commits on cloud/m4-content-thread on top of ea3058c5, each with a test that is red without it:
 > - `acbe7cb3`: a failed navigation lowers ALL and sends Failed (`page_protocol.rs` `end_uncommitted_nav`). Test: `content_thread::tests::a_navigation_that_fails_leaves_the_page_on_screen_running`.
