@@ -4086,3 +4086,28 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 **Note:** the launch prompt asks for a "PETE'S HAND TEST ... CONSEQUENCE" line, Z2-I2 and a "Next-phase queue". None of them exist in PLAN-z.md, so this session went by the plan's notes.
 
 **Next session:** answer #785's R1 when it posts. Otherwise the DT network/script/lifecycle facts overlap the new devtools lane's T2/T3 (trench/devtools/PLAN-devtools.md). Atlas should say which lane owns them before the Z lane starts any.
+
+
+## 2026-10-23 16:45 Z-lane DT (#785 HOLD answered) + FL (blocked, decision) + AS (PR #788)
+
+**Before:** #785 was on R1 HOLD @ `aafdac6a` (Prometheus: the idle panel's wake loop, the outline surviving a navigation, plus Pete's shape-only privacy ruling). Two new packages from Atlas's 13:35 and 11:25 notes were queued after it: forced layout on geometry reads (FL) and the adopted-stylesheets re-cut (AS). Develop was at `6e25ea3a`, then moved to `64c8d382` (#754) during the session.
+
+**After:**
+- **DT, #785 @ `c072fd52`** (red tests `27cc4913` first, no force-push):
+  - HOLD 1: the page pokes the window only on news, and the panel polls the console on a 250 ms clock folded into `live_wake`.
+  - HOLD 2: `begin_nav_as` clears the outline, and the panel drops old-page answers.
+  - NITs: `page_changed` now fires on NavigationCommit only; a new `tree_stale` covers first layout and load end.
+  - Pete's shape-only ruling: tree text is `<text len=N>`; nav and stack URLs go through `scrub_url(false)`.
+  - Gates: devtools 17/17, content_thread 26/26, app 60/61 (the known 5 s wall-clock test, passes by name), campaign 26/26 identical. No A/B, because nothing on the board's path changed.
+  - Reply posted on the PR. **Waiting on Prometheus's delta re-R1.** Develop moved after the push, so whoever lands second merges develop.
+- **FL, blocked.** Red test pushed: `atlas/z-forced-layout` @ `8ec85298` (16 inline-blocks; Chrome hides 8, RustKit 16). No PR. Decision packet below.
+- **AS, PR #788 @ `794ac8a2`** (red `74ec5c0f`: document sheet + replaceSync + disabled, shadow `:host`, Lit marker).
+  - The re-cut alone was not enough. **The rule-index fingerprint (#758) vouched only for `<style>`/`<link>` sheets**, so the adopted rules were never indexed. Fixed: no fingerprint when the document has adopted sheets.
+  - Campaign 26/26 identical. A/B 20 sites, no mover. **microsoft and squarespace timed out 4/4 in both arms at load 44**, so they are not measured; re-run them quiet before landing.
+  - Receipts in `trench/z/receipts/2026-10-23-as-*`.
+
+**Decision for Atlas (FL, one line):** a geometry read cannot reach layout mid-script without either (1) unsafe re-entry of the engine through an RAII-armed `*mut Engine` hook plus `Rc<DomBindings>` (about 1-2 sessions; the first `unsafe` re-entry in rustkit-engine; needs a soundness R1) or (2) a safe refactor that moves style+layout into an `Rc` context the bindings own (about 3+ sessions, touches every paint). The lane's pick is (1), scoped to layout only, with no observer tick and no paint inside.
+
+**Also:** the `_seed` mirror kept a stale local `atlas/z-devtools-inspector`, so `worktree add -b` failed; a detached checkout with a refspec push works. Like the 10:25 session, this one found no "PETE'S HAND TEST/CONSEQUENCE" line, Z2-I2 or "Next-phase queue" in PLAN-z.md and went by the plan's notes. The session ran on a Friday under the Fri 00:00 dormant rule because the plan's same-day notes order this work.
+
+**Next session:** (1) answer #785's re-R1 or #788's R1 if posted; (2) #788: re-run microsoft and squarespace on a quiet machine; (3) FL once Atlas rules.
