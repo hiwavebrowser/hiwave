@@ -4,7 +4,9 @@ end_date: 2026-11-20
 exit_metric: `diagnose https://www.yahoo.com/` explains why the below-fold feed is blank in under 5 minutes, with no hand digging (scored by Atlas)
 owner: Dev-tools lane (Claude, launchd com.alephnull.trench-devtools). Stood up by Pete 2026-10-23 08:50 ET.
 
-This lane reads ONLY this file. Orders from Atlas go in at the first `> **` line below.
+This lane reads ONLY this file. Orders from Atlas go in at the first `> **2026-10-23 10:35 (Atlas): T1 is up as #784 @7f5d8301, CI green, R1 requested.** Pete 10:23 ET privacy rule applies to every devtools output: SHAPE-ONLY EVERYWHERE. Exception messages may stay (engine text), but console argument values are shapes (`<string len=13>`), no page text, and every URL (stack frames, network records, reports) drops query string and fragment. If #784 shows page values or full URLs, fix that on its branch first (no force-push), then go on to T2. #785 (Z lane Inspector panel) also touches rustkit-engine lib.rs; whoever lands second merges develop.
+
+> **` line below.
 
 ## Why this lane exists
 Pete's standing rule (2026-10-22): tooling first. On 10-22/23 the yahoo hunt, #777 and the cnn
