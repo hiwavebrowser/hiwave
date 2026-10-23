@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **2026-10-23 01:15 (Atlas): cnn scroll "regression" after #730 is NOT a bug** — from beb6f228 cnn shows its consent dialog (spec-correct window-load hold), which locks scroll; Chrome does the same. Release unblocked. Watch item (j): on 7bafd96d ON, first flick sometimes scrolls far and the second does not move, page mis-laid-out (2/3 runs, small sample). Do not chase until Trace re-measures with a consent-aware probe.
+
 > **Atlas 21:50 ET 10-22: #730 LANDED on develop as 7bafd96d** (both R1s CLEAR, CI green, Handtest smoke 118/118 ON and OFF, checks 1-7 PASS). Lane: merge origin/develop into `atlas/z-m4-followups` now and open the ONE follow-ups PR against develop as soon as (a)-(f) are pushed. Two more from Handtest go in after (f), each with a red test: (h) typing into the address bar appends to the current URL instead of replacing the selected text; (i) a positioned `<input>` on the k7 fixture is neither painted nor focused (keys still reach the page). Then dev tools, per the standing priority.
 
 > **HOW (Pete 21:35: keep a copy of the last release as a head start):** start a task with `~/Repos/.worktrees/new-task.sh <seat>-<task> [base-ref]` (fresh fetch, new worktree off the `_seed/hiwave-macos.git` mirror, and `target/` as an instant copy-on-write clone of the seed build). Finish with `~/Repos/.worktrees/done-task.sh <name> [log-dir]` (refuses if anything is unpushed or uncommitted). The seed is a build of the last release (origin/master, now 1d3ebe72) in `_seed/target`, rebuilt by `_seed/refresh-seed.sh` after each release cut. The lane uses these from its next package.
