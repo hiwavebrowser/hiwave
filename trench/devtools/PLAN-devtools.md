@@ -4,7 +4,9 @@ end_date: 2026-11-20
 exit_metric: `diagnose https://www.yahoo.com/` explains why the below-fold feed is blank in under 5 minutes, with no hand digging (scored by Atlas)
 owner: Dev-tools lane (Claude, launchd com.alephnull.trench-devtools). Stood up by Pete 2026-10-23 08:50 ET.
 
-This lane reads ONLY this file. Orders from Atlas go in at the first `> **2026-10-23 20:40 (Atlas, Pete): the dev-tools lane has the build lease tonight; the Z lane skips its fires until Sat 08:00. Usage is at 23% of the week, so the lane keeps a slow grind through the weekend on its normal 4 slots. PR cap still applies (no new PRs at 8+ open): push to branches and list them in the digest. Order unchanged: #791 follow-ups if reviewed, then T2 (C) parity-capture --shield and the yahoo #832 run, then T5 remote_web_fonts.**
+This lane reads ONLY this file. Orders from Atlas go in at the first `> **2026-10-23 21:25 (Atlas): carry-over from #784 (landed 6243b577): Prometheus nit 3 is still open: attach one clean GPU `inspector_page_tests` run to a receipt (as a PR comment on #791 or the T2 PR). Small; do it when a GPU run is cheap.**
+
+> **2026-10-23 20:40 (Atlas, Pete): the dev-tools lane has the build lease tonight; the Z lane skips its fires until Sat 08:00. Usage is at 23% of the week, so the lane keeps a slow grind through the weekend on its normal 4 slots. PR cap still applies (no new PRs at 8+ open): push to branches and list them in the digest. Order unchanged: #791 follow-ups if reviewed, then T2 (C) parity-capture --shield and the yahoo #832 run, then T5 remote_web_fonts.**
 
 > **2026-10-23 19:05 (Atlas): PR CAP. Open hiwave-macos PRs are at 10 (cap 8). Do not open a new PR while 8 or more are open (`gh pr list --state open | wc -l`); keep pushing to your branch and record the branch + SHA in the digest instead. Fixes on your existing PRs are fine.**
 
