@@ -129,3 +129,27 @@ Next session: T3 (first open package), or T5's quiet 3-run if it has under 45 mi
 
 Blockers: T2 waits on Atlas's (E) yes/no. Notes: three suite runs at load ~19 took 87 min of the 2 h session; the GPU-guard class only shows when another GPU test is slow.
 - 21:25 carry-over (#784 nit 3): one clean GPU `inspector_page_tests` run on develop @ ff6ad36a (it contains #784's landing, 6243b577), fresh checkout `dt-insp-2210` (removed). Result: 17 passed, 0 failed, 93.8 s. Posted on #791 (issuecomment-6378611356).
+
+
+## 2026-10-24 00:40 devtools T3
+
+**T3: script lifecycle per tab. Done on `atlas/dt-script-life` @ e1aceaa0 (pushed). No PR: 9 open, cap 8. Ready body: `receipts/T3-script-life-pr-body.md`.**
+- Before: the event log had no per-script record. Script outcomes lived only in the engine's `script_log` (no kind, no times, no holds), and `DOMContentLoaded`/`load` were not in the log at all.
+- After: one `script` record per page script: kind (parser/defer/async/module/inserted), outcome (ran/threw/skipped/fetch_failed/over_budget/stopped/engine_failed) + engine reason, `queued_ms` (inserted: insertion to queue drain), `fetch_ms`, `waited_ms`, `ran_ms`, `event`, `held`. Plus a `lifecycle` record at `DOMContentLoaded` and `load`, whose `held_by` names the scripts `load` waited for. `rustkit-bindings` `InsertedScript` gains `inserted_at`. Docs: new "Scripts" section in `docs/INSPECTOR_EVENT_LOG.md`.
+- Red before: `script_lifecycle_tests` reads the JSON, so it compiles on develop. 3 of 4 fail there (the 4th is the nobody-listening cost guard).
+- Tests: script_lifecycle 4/4, engine `inspector` 97/97 (two pinned-order tests gained the 3 new records), `script devtools console` 214/214, parity-capture 18/18.
+- Full engine lib suite: 1067 passed, 5 failed. The 5 are the known Mac localhost tests that T5 fixes.
+- Campaign 26/26, mean 1.1078% (same as develop). Receipt clean (dirty_state false).
+- **cnn acceptance met:** OneTrust `otSDKStub.js` then `otBannerSdk.js`, both `inserted`, `held=load`, `event=load`, named in `load`'s held_by (10 scripts). No bisect.
+- **yahoo (exit-metric lead):**
+  - The one inserted script, `benji-2.3.489.js` (ad loader), arrived at f=196 ms and then sat with **waited_ms 24519**, running only on the last turn. This is LW's missing live wake, visible in one record.
+  - DCL and load both fire at 5.77 s, and nothing held load.
+- **Lead for T4 (not explained):**
+  - On cnn the last script ends at 11.73 s and `load` fires at 18.40 s. The log is silent from 11.85 to 17.76 s, with no script request open.
+  - Then four OneTrust fetches are recorded at once.
+  - So load waited about 6 s on a callback, a timer or the turn cadence, which the log does not record yet.
+  - Five of cnn's inserted scripts show `queued_ms` 2.2 to 3.2 s: inserted during the parser scripts, drained only after DCL.
+- New lane tool: `tools/scriptsum.py <event-log>`, the script/lifecycle timeline plus who held load.
+- Checkout `dt-t3-0040` removed (done-task).
+
+Blockers: T2 still waits on Atlas's (E) yes/no. PR cap: T3, T5 and LW bodies are ready, waiting for the cap.
