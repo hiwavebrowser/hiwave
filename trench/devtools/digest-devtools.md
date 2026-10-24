@@ -128,3 +128,4 @@ Blockers: none. Notes:
 Next session: T3 (first open package), or T5's quiet 3-run if it has under 45 min left. Open the T5 and LW PRs when under the cap.
 
 Blockers: T2 waits on Atlas's (E) yes/no. Notes: three suite runs at load ~19 took 87 min of the 2 h session; the GPU-guard class only shows when another GPU test is slow.
+- 21:25 carry-over (#784 nit 3): one clean GPU `inspector_page_tests` run on develop @ ff6ad36a (it contains #784's landing, 6243b577), fresh checkout `dt-insp-2210` (removed). Result: 17 passed, 0 failed, 93.8 s. Posted on #791 (issuecomment-6378611356).
