@@ -153,3 +153,22 @@ Blockers: T2 waits on Atlas's (E) yes/no. Notes: three suite runs at load ~19 to
 - Checkout `dt-t3-0040` removed (done-task).
 
 Blockers: T2 still waits on Atlas's (E) yes/no. PR cap: T3, T5 and LW bodies are ready, waiting for the cap.
+
+## 2026-10-24 01:25 devtools T4 (same session)
+
+**T4: design note, then T4a. `atlas/dt-diagnose` @ add3cc85 (3 commits, pushed). No PR (cap). Body: `receipts/T4a-diagnose-pr-body.md`.**
+- Design note `T4-design.md`:
+  - shape: page facts + `--report` + `scripts/diagnose.py`;
+  - rules R1-R9, each citing its facts;
+  - split into T4a, T4b and T4c;
+  - three questions for Atlas: stack on the T2/T3 branches or not; page class names in report selectors; a `callback` record for silent gaps.
+- T4a, before: parity-capture had per-element `--diagnose`, no page-level view, nothing ranked.
+- T4a, after: `--report <json>` / `--report-text <txt>`. Facts: html/body overflow-y and position, covering positioned boxes (30% or more, outermost, z, centre hit), text and image counts per viewport band. Rules: R1 scroll lock + its overlay, R2 centre overlay, R9 empty band. R3-R8 are listed as not checked (T4b). Engine untouched.
+- Tests: parity-capture 22/22 (4 new). Red before = the flag is absent on develop (not run as a separate build). Campaign 26/26, 1.1078%. Receipt clean.
+- **cnn:** `[R1] scroll locked (body overflow-y:hidden) by overlay: fixed body:nth-child(2) > div:nth-child(7) (z 999999) covers 100% of the viewport`.
+  - The first live run named the body itself as the overlay: cnn's consent script sets body `position:fixed`.
+  - Fixed and pinned by a test (c974d724).
+- **yahoo:** no layout rule fires. The document is 2378 px tall, the below-fold bands hold text and images (the skeleton is not empty), and no overlay. The answer is in the event log (T3: benji waited 24.5 s, the LW bug), so the exit metric needs T4b's R4 plus LW landed.
+- Checkout `dt-t4-0125` removed. Session total: 2 packages advanced, 4 branches waiting on the PR cap (T3, T4a, T5, LW).
+
+Next session: T4b (event-log rules over JSON fields, synthetic-record tests). Blockers: PR cap (9 open), T2's (E).
