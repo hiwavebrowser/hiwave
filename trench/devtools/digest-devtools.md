@@ -237,3 +237,26 @@ Next for T4: acceptance once LW, T3 (and #777 for the feed itself) land. Landing
 - T6 design note awaits R1.
 - PR cap 9/8 all session, so no PRs opened. Branches waiting: LW, T3, T4, T5.
 - Blockers: the cap; T2 (E) for Atlas; T6 R1.
+
+
+## 2026-10-24 12:50 devtools T2 (E + fixture, Sat session)
+
+**T2 done: draft #792 `atlas/dt-net-facts` @ 22813653 (develop ff6ad36a merged in at e17e54e7). Body updated on the PR and in `receipts/T2-pr-792-body.md`; receipt in `receipts/T2e-receipt-22813653.json`. Awaiting R1.**
+- Before: the in-flight caps (6 per origin and 24 per page for script requests; 8 per process for inserted scripts) queue and never refuse. A request capped until its deadline read `timeout timed out`, the same as one the server never answered.
+- After (E), as Atlas decided:
+  - `response`/`failure` carry `queued_ms` (null when no cap queues the request).
+  - A deadline that passes while the request is still queued gets the reason `in-flight cap`. No new failure kind.
+  - `rustkit-net` `policy::SlotWait` is stamped by the policy and by the inserted-script thread. It is built only when the Inspector listens.
+- **Race found and pinned:** requests started together share a deadline. When the six blockers time out, their freed slot reaches the queued seventh just before its own timeout fires, so judged at recording time it read `timed out`. The check is now made at the deadline (`SlotWait::waiting_at`). Shown red: the fixture with the wiring removed, and with it wired but no deadline, both read `timed out`.
+- Combined fixture `a_shield_block_a_timeout_and_a_cap_overflow_each_record_their_result` (about 32 s, rides the 30 s live timeout): a shield block with list and rule, six `timeout timed out`, and `/hang/6 timeout in-flight cap` with `queued_ms` ≥ 25 s. Unit `policy::a_request_queued_behind_the_cap_reports_its_wait`.
+- Tests: policy 50/50, engine `inspector` 100/100, engine `script` 178/178. Full engine lib at 22813653: 1066 passed, 5 failed (exactly T5's known Mac localhost five: referrer x3, image_loader_routing, remote_web_fonts), 31 min at load 13-17. Campaign 26/26, 1.1078% (same as develop). Receipt clean.
+- **#832 correction.** The earlier answer, that the shield blocks no yahoo asset, was measured under parity-capture's live-wake bug, when inserted scripts never loaded.
+  - With LW merged locally (not pushed): 175 requests, all answered, 11 blocked, each with list and rule.
+  - On s.yimg.com: `/aaq/prebid/prebid-current.js` x3 (EasyList prebid rules) and `/ss/analytics-3.90.0.js` (EasyPrivacy). The rest are ad and analytics hosts.
+  - **No feed or app chunk is blocked.** Corrected on the PR.
+- yahoo `queued_ms` (LW): 14 of 44 inserted scripts queued over 100 ms, max 1.12 s. fetch/XHR queued 0. **The caps do not explain the multi-second script waits T4d saw.**
+- Wart, not fixed: adblock's optimizer joins rules with ` <+> ` in `rule` (prebid). Naming the single rule means building the debug engine with the optimizer off. Left as a follow-up.
+- Left as is: the inserted-script queue-full refusal is still `policy "too many script requests"`. The decision covered only the in-flight reason.
+- Machine: load 11 to 17 from foreign processes all session.
+
+Next: T4 acceptance waits on LW + T3 landing. T5 needs load below 10. T6 waits on Prometheus R1. PR cap: 9 open of 8, so no new PRs. Branches waiting: LW, T3, T4, T5.
