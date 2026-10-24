@@ -107,3 +107,24 @@ Blockers: none.
 
 Blockers: none. Notes:
 - `parity-capture` has no PNG `--output` flag. The default `--timeout-ms` of 30000 is too short for `--live-ms 25000` plus the shield wait; use 120000.
+
+## 2026-10-23 22:10 devtools T5 (T2 blocked)
+
+**T2: set blocked.** #792 has no review and no answer on (E). Decision packet for Atlas, in the plan row: build `queued_ms` on `response`/`failure`, plus reason `"in-flight cap"` when the deadline passes while a request is still queued (no new failure kind)? yes/no. The combined fixture follows (E). #791: no review yet, nothing to follow up.
+
+**T5: clean Mac gates. 6 of 6 fixed on `atlas/dt-mac-gates` @ 7a908255 (pushed). No PR: 9 open, cap 8. Ready body: `receipts/T5-mac-gates-pr-body.md`.**
+- Before: `remote_web_fonts_are_fetched_concurrently` loaded 0 of 8. A probe printed `AddressDenied("127.0.0.1 resolves to 127.0.0.1")` for every face. The hypothesis held: `load_html` leaves the page at about:blank, and `page_address_policy` gives a page with no http(s) origin public-only. That is by design (#445 doc comment), so the vet is right and the test was wrong.
+- After: the test sets the view URL to the font host (the existing `view.url = Some(..)` test seam), so its fetches are same-origin loopback. 8 of 8 load, concurrently.
+- Same flaw found in `page_script_tests::a_stalled_web_font_is_dropped_at_the_subresource_budget`: it passed only because the fetch was denied at once, so the 500 ms budget never cut anything. Same fix, plus a new `took >= 400 ms` assert. The new assert was not run red at 4fa6d6f8 (lease budget); the probe shows the denial is instant.
+- Test-only diff (every hunk is in a `#[cfg(test)]` module), so the campaign was not re-run. It merges clean onto develop (19 behind).
+- Acceptance, engine lib suite x3 at 7a908255, load 17-24:
+  - run 1: 1031 passed, 2 failed (`vm_interrupt` load-budget wall-clock asserts, 3.3 / 3.4 s against a 3 s bound)
+  - run 2: 1022 passed, 11 failed (all 11 are GPU-guard 120 s waits behind `grid_block_axis_align`)
+  - run 3: **1033 passed, 0 failed**
+  - The six T5 tests passed in all three runs. **The strict "0 failed x3" is not met. Owed: three runs at load < 10.** Receipt: `receipts/T5-receipt-7a908255.md`.
+- Checkout `dt-t5-2045` is kept (acceptance not passed). Older dt-* checkouts remain: dt-t5-1009, dt-t2-1320, dt-t2c-1900, dt-cshape-scripts.
+- New lane tool: `tools/suite3.py <worktree> <log-prefix> [runs]` runs the suite N times and writes a `.done` summary.
+
+Next session: T3 (first open package), or T5's quiet 3-run if it has under 45 min left. Open the T5 and LW PRs when under the cap.
+
+Blockers: T2 waits on Atlas's (E) yes/no. Notes: three suite runs at load ~19 took 87 min of the 2 h session; the GPU-guard class only shows when another GPU test is slow.
