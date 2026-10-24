@@ -54,6 +54,17 @@ platform — it is not inferred from anything else, and a passing build is never
 evidence of pixel fidelity. Details in
 [How these numbers are produced](#how-these-numbers-are-produced).
 
+### macOS at V1.4.0 (2026-10-24)
+
+macOS is the reference tree for RustKit; Windows and Linux are measured against it.
+
+- **Real-site board:** 28 / 60 on the top-20 live sites against pinned Chrome for Testing 148 (33 / 78 on the 26-site list), up from 27 / 60 at V1.3.0.
+- **Fixed-page campaign:** 26 / 26 cases, 1.1% average diff from Chrome.
+- **New this release:** pages run on their own content thread, so the window and address bar stay responsive while a page loads; the HiWave Inspector (Elements and Console, JavaScript error stacks, shape-only privacy); CSS `:has()`, `@supports`, `color-mix()`, `-webkit-line-clamp` and scoped shadow-DOM styles; clicks reach transformed consent dialogs.
+- **Known gaps:** JavaScript coverage is partial (heavy JS sites still render thin); `@container`, `clip-path`, `filter`, `display: contents` and CSS fill on inline SVG are in review; the browser UI is still the system WebView.
+
+Full status, sources for every number, and the known-gap list: [hiwave-macos README](./hiwave-macos#readme).
+
 **Per-platform engine status** (what actually renders, what is parsed-but-inert,
 known gaps): see each platform README —
 [Windows](./hiwave-windows#readme) · [macOS](./hiwave-macos#readme) ·
@@ -97,7 +108,7 @@ View the interactive [**Churn Report Dashboard**](churn-reports/dashboard.html) 
 
 ## Visual Parity Testing
 
-RustKit engine is tested against Chrome 120 baselines using **triple verification**:
+RustKit is tested against pinned Chrome for Testing baselines (148 on macOS) using **triple verification**:
 
 | Verification | Description | Weight |
 |--------------|-------------|--------|
@@ -217,15 +228,14 @@ Each platform offers multiple build variants with different rendering backends:
 - **`hiwave-windows-native-win32`** — 100% RustKit native Win32 (experimental) 🚧 *Experimental*
 
 #### 🍎 macOS
-- **`hiwave-macos-rustkit`** — RustKit hybrid mode (RustKit for content, WebKit for UI) ⚠️ *In Development*
-- **`hiwave-macos-webkit`** — WebKit fallback (uses system WebKit for all rendering) ✅ *Stable*
+- **`hiwave-macos-rustkit`** — RustKit renders every page; the browser UI (tabs, address bar, sidebar) is still drawn by the system WebView ⚠️ *In Development*. The WebKit-for-content fallback was removed in October 2026: on macOS, pages always render in RustKit.
 
 #### 🐧 Linux
 - **`hiwave-linux-webview`** — GTK WebKit2 (uses system WebKit for all rendering) ✅ *Stable*
 - **`hiwave-linux-rustkit`** — RustKit hybrid mode (experimental) 🚧 *Experimental*
 - **`hiwave-linux-native-linux`** — 100% RustKit native (experimental) 🚧 *Experimental*
 
-**Recommendation**: For daily use, choose the **WebView2/WebKit variants** for maximum stability. RustKit variants are for testing and development as the engine continues to mature.
+**Recommendation**: On Windows and Linux, choose the **WebView2/WebKit variants** for daily use. On macOS, RustKit is the only content engine; treat it as alpha. RustKit variants are for testing and development as the engine continues to mature.
 
 ### Installation & Usage Instructions
 
@@ -319,9 +329,9 @@ This repository is the umbrella project containing all HiWave components:
 
 | Platform | Repository | Status |
 |----------|------------|--------|
-| 🪟 **Windows** | [hiwave-windows](./hiwave-windows) | Alpha — RustKit engine |
-| 🍎 **macOS** | [hiwave-macos](./hiwave-macos) | Alpha — RustKit engine |
-| 🐧 **Linux** | [hiwave-linux](./hiwave-linux) | Alpha — RustKit engine |
+| 🪟 **Windows** | [hiwave-windows](./hiwave-windows) | Alpha — RustKit engine; engine sync trails macOS (repo last pushed 2026-10-09) |
+| 🍎 **macOS** | [hiwave-macos](./hiwave-macos) | Alpha — RustKit engine; the reference platform. **V1.4.0** released 2026-10-24 |
+| 🐧 **Linux** | [hiwave-linux](./hiwave-linux) | Alpha — RustKit engine; engine sync trails macOS (repo last pushed 2026-10-15) |
 
 Each platform directory contains its own README with platform-specific build instructions.
 
