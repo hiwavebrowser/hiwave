@@ -209,3 +209,31 @@ Next session: T4b (event-log rules over JSON fields, synthetic-record tests). Bl
 - New lane tools: `tools/nexts_bisect.py` (runs Next's inline scripts parser vs innerHTML-inserted, error text local only), `tools/chrome_calls.cjs` (Chromium fetch/XHR by host), `tools/srccol.py` (source at line:col of a public script).
 
 Next for T4: acceptance once LW, T3 (and #777 for the feed itself) land. Landing order unchanged: LW, T3, T4. #777 now has a second bug in front of the yahoo feed (the `onerror` TypeError).
+
+
+## 2026-10-24 07:20 devtools T6 (same session)
+
+**T6: design note only, `T6-design.md` (hub). No code: the plan says R1 first. State: blocked on Prometheus R1.**
+- Gate met: #785 merged 2026-10-23 23:32 (59580b19).
+- Facts from develop ff6ad36a:
+  - Records already sit in a per-view `Arc<Inspector>` ring, redacted when recorded. But the panel's console read is a page command every 250 ms (`CONSOLE_POLL`, #785's rate limit): about 4 per second while idle.
+  - The page loop wakes about 20 times a second on its own (50 ms sleep cap), so the metric must count devtools-caused wakes. No counter exists.
+  - Console lines reach the Inspector only at a flush, so a hung script's lines are stuck.
+  - Network records are written on the page runtime.
+  - Records are wiped on panel close (`Attach(false)`), not on navigation, and have no document id.
+- Shape:
+  - a `DevtoolsCounters` counter and a red test first;
+  - one `devtools` thread per process that owns the read side (the window never takes the Inspector lock: sinks run under it);
+  - a push watermark plus a condvar in place of the poll;
+  - live snapshots stay page commands, with deadlines and a `page busy` state;
+  - a `doc` id on records, and no clear on detach.
+- Packages T6a-d. Questions for Atlas/Prometheus: (1) a ring buffer from tab creation (proposed 512, measured); (2) console push per call during a long script; (3) network records while the page is blocked are out of T6 (reads served, not updated).
+- T5 not run: load 11.8 to 12.6 all session from eight unrelated python processes at 100% CPU (41 min and counting). Acceptance needs load below 10, and three suite runs would hold the lease past the Z lane's 08:00 restart.
+- Checkout `dt-t6-0712` removed (no commits). Older lane checkouts still on disk, about 13 GB each with their target/ (acceptance not passed, so not removed): `dt-t2-1320`, `dt-t2c-1900`, `dt-t4r4-0147`, `dt-t5-1009`, `dt-t5-2045`, `dt-cshape-scripts`.
+
+**Session summary (06:35-07:20):**
+- T4d pushed (`atlas/dt-diagnose` @ c7ee3505).
+- The yahoo exit-metric read now names the site's own failing code and the missing feed calls in about 32 s. The 7730 SyntaxError is #777's innerHTML bug (repro tool in `tools/`). With #777, a second bug blanks the page: TypeErrors at script `onerror=`.
+- T6 design note awaits R1.
+- PR cap 9/8 all session, so no PRs opened. Branches waiting: LW, T3, T4, T5.
+- Blockers: the cap; T2 (E) for Atlas; T6 R1.
