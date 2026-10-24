@@ -1,4 +1,59 @@
-Dev-tools lane, package T4: **`diagnose`**. `parity-capture --report` / `--report-text` (page state, then ranked causes from the layout and the event log) and `scripts/diagnose.py <url>`. Branch `atlas/dt-diagnose` @ e271b032 (5 commits on develop ff6ad36a: T4a 88d786fe..add3cc85, T4b 18576572, T4c e271b032). Design note: `trench/devtools/T4-design.md` on `atlas/z`.
+Dev-tools lane, package T4: **`diagnose`**. `parity-capture --report` / `--report-text` (page state, then ranked causes from the layout and the event log) and `scripts/diagnose.py <url>`. Branch `atlas/dt-diagnose` @ c7ee3505 (11 commits on develop ff6ad36a: T4a 88d786fe..add3cc85, T4b 18576572, T4c e271b032, T4d 14b125f8..c7ee3505). Design note: `trench/devtools/T4-design.md` on `atlas/z`.
+
+## T4d: R4 and R8 read the timeline, not single records (14b125f8, 9c2a2e80, 8c84cf16)
+A `script` record is written when its script ends, so it ran over `[t - ran_ms, t]` and waited `waited_ms` before that. The rules now use those spans:
+- **R4, queued is not starved (14b125f8).** Other scripts' runs during a wait are subtracted. R4 fires only on 3 s or more of idle wait, and says how much was spent behind running scripts.
+- **R4, the load's script phase (9c2a2e80).** The yahoo read with LW + T3 showed that no page script ran until 5.8 s, parser ones included. The async chunks' bodies were in by 1.7 s, and scripts started after first layout (4.5 s) and the last image response (5.8 s). The old rule printed 30 "starved" async lines for this. Now it prints one line: `no page script ran until t=5.8 s: N script body(ies) had arrived 3.0 s or more before (first at t=1.6 s); first layout at t=4.9 s; last answer before it: image at t=5.7 s`. Only the wait after the first script ran is checked for a missed turn. This replaces the earlier note that the async lines were "behind the parser scripts": the parser scripts waited too.
+- **R8 (14b125f8, 8c84cf16).**
+  - Times are sorted, so out-of-order records no longer give overlapping duplicate gaps.
+  - A running script's span is not silence. The wording is now "no script ran", not "no script ended".
+  - Silence after load counts when a script body is in and waiting to run across the gap (the design note's "or requests are open"). In one yahoo run, nine inserted chunks were in at 11.3 s and no record of any kind came until 15.4 s.
+- Red before (run: the three new tests put onto e271b032's `report.rs`): 3 of 3 fail, 6 old tests pass.
+  - queued-not-starved: the old code also names `queued.js` (waited 3.9 s, all of it behind p1) and prints two overlapping R8 gaps, 6.1 s each, from 4.9 s and from 5.0 s.
+  - script phase: the old code prints `async script a.js … waited 4.2 s for a turn`, where no script had run yet.
+  - silence after load: the old code has no R8 line.
+- **R5, the page's own site first (5ff0d770, 21f0cab3).** This is the design note's rule, which the code had not followed. An error whose script shares the navigation's site (the last two host labels) reads `the page's own script: …` and ranks after R1/R2/R10/R9, before R4. The line also counts the fetch/XHR to the page's exact host after the error: `; then 0 fetch/XHR to www.yahoo.com`. It counts by host, not site, because yahoo's ad and analytics hosts share the site.
+  - Pinned Chromium, same User-Agent, 25 s: document 5436 px; 22 fetches to `www.yahoo.com` (Next route prefetches) and 12 to `nexus-gateway-prod.media.yahoo.com`.
+  - RustKit: 2366 px, and none to either host.
+- **R5, caught and logged errors (c7ee3505).** A `console.error` record with an `error_stack` is grouped by the frame that threw: `logged TypeError thrown in <url:line:col>`.
+- **R10, new (c7ee3505).** The first viewport has no text and no image. R9 needs content above the empty band, so a page blank from the top fired nothing.
+- Tests: parity-capture 34/34 (6 new; the benji test gained a parser script so its wait falls after scripts began).
+- Campaign 26/26, mean 1.1078%. `binary_sha256` d81581e81ab5cd8fde2f157d6439096ff31909e196182328f900184a3b9cde25, campaign sha256 a3b34376cf9b2ee3c77c2dd01f4fac576c5875ceab2e689e234bd0da81237b7c, candidate c7ee3505, dirty_state false, utc 2026-10-24T11:07:27Z. Same as at 8c84cf16 (1.1078%).
+- cnn at c7ee3505 (develop engine): unchanged at the top, `[R1] scroll locked (body overflow-y:hidden) by overlay: fixed body:nth-child(2) > div:nth-child(7) (z 999999) covers 100% of the viewport`. Nothing new fires. The fave bundle is on `cnn.io`, so it is correctly not ranked as cnn.com's own script.
+
+### yahoo, LW + T3 + T4d merged locally (not pushed), 33-36 s wall clock per run
+```
+  1. [R4] no page script ran until t=5.7 s: 7 script body(ies) had arrived 3.0 s or more before (first at t=1.6 s); first layout at t=4.9 s; last answer before it: image at t=5.7 s
+  2. [R4] inserted script …/chunks/67222-….js arrived in 1853 ms and waited 5.4 s for a turn (1.2 s of it behind other scripts running)
+  …
+  5. [R5] uncaught SyntaxError in https://www.yahoo.com/_nca/_next/static/chunks/7730-4e3ddf231f766d70.js:1:6278 (x2)
+```
+- With LW merged, benji's 24.5 s wait and the 21 open script requests are gone.
+- Line 1 is stable over three runs: the first script ran at 5.8, 5.7 and 4.8 s.
+- Inserted-script waits of 4 to 5 s showed in two of the three runs and not in the other. They were taken at load average 14 to 16 (eight unrelated python processes at 100% CPU). Do not read them as an engine fact until a quiet run repeats them.
+- Document 2366 to 2390 px tall in all three runs: the page never grows a feed below the skeleton. With 21f0cab3, R5 ranks first: `the page's own script: uncaught SyntaxError in …/7730-….js:1:6278 (x2); then 0 fetch/XHR to www.yahoo.com`.
+
+### What chunk 7730's SyntaxError is (#777)
+Found by reading the report's own lines, then a local check (the error text is kept locally only):
+- 7730:1:6278 is `document.head.appendChild(u)` in Next's `self.__next_s` loader (`beforeInteractive` scripts). Inline entries get `u.innerHTML = r.children`.
+- The messages: `expected token ';', got ':' in for statement at line 1, col 808` and `… got ')' … col 395`.
+- Repro (lane tool `tools/nexts_bisect.py`): each of the page's four inline `__next_s` scripts runs clean as a parser script. Inserted through `innerHTML`, as Next does, two fail with exactly these messages: `cmpstub` col 808 and `ad-shield-container` col 395. Col 395 is `…o<r.length;…`, so the text is parsed as HTML.
+- With #777 (`atlas/innerhtml-rawtext` @ 32f2c2f1) merged into the stack, both pass.
+
+### yahoo, LW + T3 + T4d + #777 merged locally (32 s wall clock)
+```
+diagnose https://www.yahoo.com/  viewport 1280x800  document 800px tall  77 elements
+  1. [R10] the first viewport has no text and no image (77 elements, document 800px tall)
+  2. [R5] the page's own script: logged TypeError thrown in …/chunks/7730-….js:1:6198; then 0 fetch/XHR to www.yahoo.com
+  3. [R5] the page's own script: logged TypeError thrown in …/chunks/webpack-….js:1:13395; then 0 fetch/XHR to www.yahoo.com
+  4. [R4] no page script ran until t=5.0 s: …
+```
+- #777 removes the SyntaxErrors, and the page then goes blank. No inserted script runs after load (no benji, no taboola). Two TypeErrors, `cannot convert 'null' or 'undefined' to object`, are caught and logged, and React's error boundary takes the page.
+- Before c7ee3505 the report's only line here was R4.
+- Both throw sites assign `onerror` on a freshly made `<script>`:
+  - 7730:1:6198 `u.onerror=n`, just after `u.onload=()=>e()`;
+  - webpack:1:13395 `b.onerror=i.bind(null,b.onerror)`.
+- A top-level `createElement('script'); s.onload=…; s.onerror=…` does not throw. The trigger is in the context (a timer turn, inside a promise executor, or page state). Not chased further: this is #777's next step, not the lane's.
 
 ## T4b: event-log rules (18576572)
 `--report` now collects the load's Inspector records and adds, after the layout causes:
@@ -7,7 +62,7 @@ Dev-tools lane, package T4: **`diagnose`**. `parity-capture --report` / `--repor
 - **R6**: shield blocks first (T2's `blocked_by`), then other failures. Scripts and stylesheets come first; cancels are left out.
 - **R5**: uncaught errors, grouped by name and place.
 - **R7**: `load` 5 s or more after `DOMContentLoaded`, with T3's `held_by`.
-- **R8**: a stretch of 3 s or more with no record before the load finished.
+- **R8**: a stretch of 3 s or more with no record before the load finished (T4d: or while a script body waits to run).
 
 Fields are read by name from the JSON records. A build without T2's or T3's records runs the rest and lists the skipped rules under "Not checked" (on develop: R3, R4, R6's attribution, R7). Tests are synthetic records taken from the yahoo and cnn runs.
 

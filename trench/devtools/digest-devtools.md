@@ -188,3 +188,24 @@ Next session: T4b (event-log rules over JSON fields, synthetic-record tests). Bl
 - Checkout `dt-t4b-0137` removed. The demo merge branch was deleted locally and never pushed.
 
 **Session summary:** T3 done; T4a/b/c done. T4 acceptance waits on T3 + LW landing. Branches waiting on the PR cap: T3 `dt-script-life`, T4 `dt-diagnose`, T5 `dt-mac-gates`, LW `dt-live-wake`. Suggested landing order once under the cap: LW, T3, T4 (T4's yahoo answer needs both).
+
+
+## 2026-10-24 07:10 devtools T4 (T4d, Sat session)
+
+**T4d on `atlas/dt-diagnose` @ c7ee3505 (6 commits, pushed; no PR: 9 open, cap 8). Body updated: `receipts/T4a-diagnose-pr-body.md`.**
+- Before: on the yahoo read with LW + T3, R4 printed 30 "starved" async lines that were wrong. R8 read records in their own order, did not sort them, and looked only before load. R5 kept the table order, so the site's own chunk error sat below the script waits. A page blank from the top fired no rule.
+- After:
+  - R4 subtracts other scripts' runs from a wait.
+  - R4 says once that `no page script ran until t=5.8 s`. Scripts start only after first layout and the last image response; that is an engine load-order fact.
+  - R8 sorts times, skips script runs, and also counts silence after load while a script waits.
+  - R5 ranks the page's own site first, adds `then N fetch/XHR to <page host>`, and reads errors caught and passed to `console.error` (`error_stack`).
+  - New R10: nothing to read in the first viewport.
+- Red before: the three T4d timeline tests were put onto e271b032's `report.rs` and run there: 3 of 3 fail with the old misreads. Tests: parity-capture 34/34. Campaign 26/26, 1.1078%, at c7ee3505. Receipt clean (binary d81581e8). cnn's top line is unchanged (R1).
+- **yahoo exit metric, now readable in about 32 s of wall clock** (local stacks, not pushed):
+  - LW + T3 + T4d: `R5 the page's own script: uncaught SyntaxError in 7730:1:6278 (x2); then 0 fetch/XHR to www.yahoo.com`. Pinned Chromium makes 22 fetches to www.yahoo.com and 12 to `nexus-gateway-prod.media.yahoo.com` in 25 s. We make none, so the feed never asks for its data.
+  - **The SyntaxError is #777's innerHTML bug.** 7730:1:6278 is Next's `__next_s` loader doing `script.innerHTML = children; head.appendChild`. `tools/nexts_bisect.py inner` reproduces both messages exactly (`cmpstub` col 808, `ad-shield-container` col 395, text parsed as HTML at `o<r.length`). Both scripts run clean as parser scripts. #777 @ 32f2c2f1 fixes both.
+  - LW + T3 + T4d + #777: the page goes **blank** (77 elements, R10). The cause is two TypeErrors, `cannot convert 'null' or 'undefined' to object`, caught and logged. Both are thrown where a new `<script>` gets `onerror` assigned (7730:1:6198 `u.onerror=n`; webpack:1:13395 `b.onerror=i.bind(null,b.onerror)`), and React's error boundary takes the page. A top-level `s.onerror=` does not throw, so the trigger is in the context. **Lead for #777's owner; not chased (lane rule).** Before c7ee3505 the report's only line here was R4.
+- Machine: load 14 to 16 all session (eight unrelated python processes at 100% CPU), so the 4-5 s inserted-script waits seen in 2 of 3 runs are not yet engine facts.
+- New lane tools: `tools/nexts_bisect.py` (runs Next's inline scripts parser vs innerHTML-inserted, error text local only), `tools/chrome_calls.cjs` (Chromium fetch/XHR by host), `tools/srccol.py` (source at line:col of a public script).
+
+Next for T4: acceptance once LW, T3 (and #777 for the feed itself) land. Landing order unchanged: LW, T3, T4. #777 now has a second bug in front of the yahoo feed (the `onerror` TypeError).

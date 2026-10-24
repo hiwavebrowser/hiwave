@@ -37,8 +37,17 @@ Each rule names the facts it read (seq numbers or a page_state path). A rule who
 | R7 late or held load | `load` more than 5 s after `DOMContentLoaded` | `load waited N s for: <held_by top 3>` |
 | R8 silent gap | no record for 3 s or more while `load` is pending or requests are open (cnn: 11.85 to 17.76 s) | `engine silent N s at t=…: not a script or request (callback/timer/turn)` |
 | R9 blank below the fold | band 2 or 3 has no text and no images while the top band has some | `below the fold is empty from y=N: <R3/R4/R6 facts about scripts still open>` |
+| R10 nothing to read (T4d) | the first viewport has no text and no image | `the first viewport has no text and no image (N elements, document Npx tall)` |
 
 Order: R1, R2, then R9 joined to its causes (R4, R3, R6), then R5, R7, R8. Score = rule weight × (fact present on the page's own origin ? 2 : 1). Ties keep the table order.
+
+**As built (T4d, `atlas/dt-diagnose` @ c7ee3505):** the order is R1, R2, R10, R9, R5 for the page's own site (the last two host labels), then R4, R3, R6, other R5, R7, R8.
+- A `script` record is written when its script ends. Its run is `[t - ran_ms, t]` and its wait is the `waited_ms` before that.
+- R4 says once when no page script ran until late in the load (`no page script ran until t=…`).
+- R4 counts only the idle part of a wait after the first script ran. Waits behind other running scripts are a queue.
+- R8 sorts the times, takes script runs out of gaps, and also counts silence after load while a script body waits to run.
+- R5 includes errors caught and passed to `console.error` that carry an `error_stack`, named by the frame that threw.
+- An own-site R5 line ends with the count of fetch/XHR to the page's exact host after the error.
 
 ## Privacy
 The text and JSON follow the event log's rules: no query strings, no page text. The overlay selector does carry page-chosen names (id and classes), unlike the event log. The report is for local use and the lane's PR bodies, so they are kept but capped at 64 characters. **Decision for Atlas:** is a selector with page class names acceptable in a report that may be pasted into a PR? The alternative is tag plus position only (`div fixed z=9999 covers 100%`).
