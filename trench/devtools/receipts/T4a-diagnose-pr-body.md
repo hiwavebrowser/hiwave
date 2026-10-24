@@ -1,4 +1,45 @@
-Dev-tools lane, package T4 (part a): **`parity-capture --report` / `--report-text`**, page state and a ranked "most likely cause" list. Branch `atlas/dt-diagnose` @ add3cc85 (3 commits on develop ff6ad36a). Design note: `trench/devtools/T4-design.md` on `atlas/z`.
+Dev-tools lane, package T4: **`diagnose`**. `parity-capture --report` / `--report-text` (page state, then ranked causes from the layout and the event log) and `scripts/diagnose.py <url>`. Branch `atlas/dt-diagnose` @ e271b032 (5 commits on develop ff6ad36a: T4a 88d786fe..add3cc85, T4b 18576572, T4c e271b032). Design note: `trench/devtools/T4-design.md` on `atlas/z`.
+
+## T4b: event-log rules (18576572)
+`--report` now collects the load's Inspector records and adds, after the layout causes:
+- **R4**: an `inserted` or `async` script that waited 3 s or more between its body arriving and running; script requests still open when the capture ended.
+- **R3**: scripts that never finished (`nomodule` excluded).
+- **R6**: shield blocks first (T2's `blocked_by`), then other failures. Scripts and stylesheets come first; cancels are left out.
+- **R5**: uncaught errors, grouped by name and place.
+- **R7**: `load` 5 s or more after `DOMContentLoaded`, with T3's `held_by`.
+- **R8**: a stretch of 3 s or more with no record before the load finished.
+
+Fields are read by name from the JSON records. A build without T2's or T3's records runs the rest and lists the skipped rules under "Not checked" (on develop: R3, R4, R6's attribution, R7). Tests are synthetic records taken from the yahoo and cnn runs.
+
+## T4c: `scripts/diagnose.py <url> [--keep DIR] [--shield] [--live-ms N]` (e271b032)
+Runs parity-capture headless live with `--event-log --report --report-text` and prints the report. It does not build.
+
+## cnn with T4b (develop engine, so no T3 records)
+```
+  1. [R1] scroll locked (body overflow-y:hidden) by overlay: fixed body:nth-child(2) > div:nth-child(7) (z 999999) covers 100% of the viewport
+  2. [R5] uncaught TypeError in https://registry.api.cnn.io/bundles/fave/latest-4.x/js:1:75470
+  3. [R5] uncaught TypeError (unhandled rejection) in event:load
+  4. [R8] event log silent 6.0 s from t=12.2 s before the load finished: no script ended, no request moved
+Not checked: R3, R4 (T3); R6 shield list/rule (T2); R7 (T3)
+```
+
+## yahoo with T3 merged locally (not pushed; what the exit metric will read once T3 lands)
+```
+  1. [R4] inserted script https://s.yimg.com/du/benji/benji-2.3.489.js arrived in 192 ms and waited 24.5 s for a turn
+  2. [R4] async script …/chunks/23772-….js arrived in 182 ms and waited 3.2 s for a turn
+  3. [R4] async script …/chunks/app/global-error-….js arrived in 222 ms and waited 3.2 s for a turn
+  4. [R4] 21 script request(s) still open when the capture ended, first https://securepubads.g.doubleclick.net/tag/js/gpt.js at t=31.5 s
+  5. [R5] uncaught SyntaxError in https://www.yahoo.com/_nca/_next/static/chunks/7730-4e3ddf231f766d70.js:1:6278 (x2)
+```
+- Line 1 and line 4 are the missing live wake that `atlas/dt-live-wake` (LW) fixes. Inserted scripts run only on the last turn.
+- Line 5 is #777's chunk 7730, now a SyntaxError where #777 saw a TypeError.
+- The `async` lines name scripts that waited behind the parser scripts (the engine runs async scripts in document order after the deferred ones). That is not turn starvation. A threshold or wording tweak may be wanted.
+
+## T4b receipt (binary at 18576572; e271b032 adds only the Python script)
+Campaign 26/26, mean 1.1078%. `binary_sha256` fa59637b928648c7f298fbea569f9d6c95d001ab6102fbccae67807d34f43b3f, campaign sha256 523f51261fad4eb2df18e8ba467badd7a4fc1b817f3b387d11a04adf635aa70f, dirty_state false, utc 2026-10-24T05:43:48Z. parity-capture tests 28/28.
+
+---
+The T4a sections below are kept as they were written.
 
 ## What it does
 At the end of a capture, after any actions and the final render, from the element diagnostics of the final layout (`all_element_diagnostics`, read-only, up to 20 000 elements) and the element hit at the viewport's centre:

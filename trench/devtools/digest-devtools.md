@@ -172,3 +172,19 @@ Blockers: T2 still waits on Atlas's (E) yes/no. PR cap: T3, T5 and LW bodies are
 - Checkout `dt-t4-0125` removed. Session total: 2 packages advanced, 4 branches waiting on the PR cap (T3, T4a, T5, LW).
 
 Next session: T4b (event-log rules over JSON fields, synthetic-record tests). Blockers: PR cap (9 open), T2's (E).
+
+## 2026-10-24 01:36 devtools T4b + T4c (same session)
+
+**T4b + T4c on `atlas/dt-diagnose` @ e271b032 (pushed; no PR, cap). Body updated: `receipts/T4a-diagnose-pr-body.md`.**
+- T4b (18576572): `--report` collects the load's records and ranks R4 (starved inserted/async scripts, script requests open at the end), R3, R6 (shield first), R5 (errors grouped by place), R7 (late load + held_by), R8 (silent stretch of 3 s or more). Fields are read by name, so develop lists R3/R4/R6-attribution/R7 under "Not checked".
+- T4c (e271b032): `scripts/diagnose.py <url> [--keep DIR]`.
+- Tests: parity-capture 28/28. Campaign 26/26, 1.1078%. Receipt clean (binary fa59637b).
+- **cnn (develop engine):** R1 scroll lock by fixed overlay; R5 fave bundle TypeError + an unhandled rejection in event:load; R8 6.0 s silent from 12.2 s.
+- **yahoo, T3 merged locally (not pushed):** the exit-metric read once T3 lands:
+  - R4: benji waited 24.5 s.
+  - R4: 21 script requests open at the end, drained on the last turn at 31.5 s. Both are LW's bug.
+  - R5: chunk 7730 SyntaxError at 1:6278 (x2). This is #777's chunk, now a SyntaxError and no longer a TypeError. **Worth a look for #777.**
+  - The R4 `async` lines are scripts queued behind parser scripts, not starved: the wording or threshold may want a tweak.
+- Checkout `dt-t4b-0137` removed. The demo merge branch was deleted locally and never pushed.
+
+**Session summary:** T3 done; T4a/b/c done. T4 acceptance waits on T3 + LW landing. Branches waiting on the PR cap: T3 `dt-script-life`, T4 `dt-diagnose`, T5 `dt-mac-gates`, LW `dt-live-wake`. Suggested landing order once under the cap: LW, T3, T4 (T4's yahoo answer needs both).
