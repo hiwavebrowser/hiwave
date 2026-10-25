@@ -1,0 +1,29 @@
+# T6b ring A/B, parity-capture eb8bcc65 (sha256 64e0fb0b...). A = HIWAVE_DEVTOOLS_RING=0, B = ring on (default). ab5.py, 1280x800, 30 s, A,B,A,B per site. Load 11-12 (own aleph serve).
+google       within A 1.68%  within B 0.05%  across 0.00% 0.05% 1.68% 1.73%  failed: 0  secs A,B,A,B 4.2,3.7,4.6,4.0  script records A,B,A,B 14,14,14,14
+youtube      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.5,6.4,7.3,9.9  script records A,B,A,B 42,40,42,43
+facebook     within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 12.2,11.3,11.3,11.1  script records A,B,A,B 60,60,60,60
+instagram    within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 10.4,8.5,9.3,10.0  script records A,B,A,B 54,54,54,54
+wikipedia    within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 5.9,6.0,5.9,5.9  script records A,B,A,B 7,7,7,7
+lyft         within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 17.7,15.6,16.9,21.9  script records A,B,A,B 36,36,36,36
+reddit       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 0.9,0.6,0.6,0.5  script records A,B,A,B 1,1,1,1
+x            within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 2.7,1.8,1.7,2.4  script records A,B,A,B 10,10,10,10
+linkedin     within A 0.00%  within B 0.00%  across 2.64% 2.64% 2.64% 2.64%  failed: 0  secs A,B,A,B 6.1,5.8,5.7,6.3  script records A,B,A,B 6,6,6,6
+yahoo        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.4,6.3,6.4,6.5  script records A,B,A,B 58,58,58,58
+bing         within A 0.00%  within B 0.21%  across 0.00% 0.21% 0.00% 0.21%  failed: 0  secs A,B,A,B 1.2,1.0,1.1,1.0  script records A,B,A,B 10,10,10,10
+walmart      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 9.8,9.6,10.3,9.9  script records A,B,A,B 123,123,123,123
+microsoft    within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 29.1,26.4,26.1,23.3  script records A,B,A,B 274,274,274,274
+apple        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 11.0,10.7,12.5,10.7  script records A,B,A,B 14,14,14,14
+netflix      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 13.1,12.5,13.0,12.8  script records A,B,A,B 11,11,11,11
+github       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 16.8,17.0,17.0,17.0  script records A,B,A,B 8,8,8,8
+shopify      within A 0.00%  within B 1.29%  across 1.29% 0.00% 1.29% 0.00%  failed: 0  secs A,B,A,B 7.6,11.8,6.6,7.6  script records A,B,A,B 8,9,8,8
+squarespace  within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 23.5,27.1,27.4,24.9  script records A,B,A,B 29,29,29,29
+cnn          within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 16.3,14.6,14.0,14.1  script records A,B,A,B 18,18,17,17
+weather      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 5.1,5.2,5.8,5.2  script records A,B,A,B 77,77,77,77
+# linkedin rerun A/B
+linkedin     within A 41.21%  within B 0.00%  across 41.13% 41.13% 1.55% 1.55%  failed: 0  secs A,B,A,B 9.1,6.1,6.1,6.1  script records A,B,A,B 18,6,6,5
+# linkedin rerun A/B 2
+linkedin     within A 2.96%  within B 41.13%  across 1.55% 41.21% 2.64% 40.97%  failed: 0  secs A,B,A,B 8.0,5.9,5.8,9.3  script records A,B,A,B 6,6,5,18
+# linkedin control A/A (off vs off)
+linkedin     within A 41.13%  within B 2.64%  across 41.13% 40.97% 0.00% 2.64%  failed: 0  secs A,B,A,B 8.9,5.9,5.8,6.4  script records A,B,A,B 18,6,6,6
+# linkedin control B/B (on vs on)
+linkedin     within A 41.12%  within B 2.64%  across 0.00% 2.64% 41.12% 40.96%  failed: 0  secs A,B,A,B 6.3,6.8,8.9,6.2  script records A,B,A,B 6,6,18,6

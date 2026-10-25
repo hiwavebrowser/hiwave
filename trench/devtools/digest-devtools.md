@@ -290,3 +290,38 @@ Next: T4 acceptance waits on LW + T3 landing. T6 waits on Prometheus R1. PR cap:
 - Checkout `dt-t6a-0040` removed (15.5 GB).
 
 Next: T6b-d are blocked on Prometheus R1. T4 acceptance waits on LW + T3 landing. PR cap: 9 open of 8. Branches waiting: LW, T3, T4, T5, T6a.
+
+
+## 2026-10-25 08:15 devtools T6 (T6a suite + T6b, Sun session, 06:35-08:20)
+
+**T6b done, no PR (cap 9 open of 8; Prometheus R1 also needed): `atlas/dt-service` @ eb8bcc65, stacked on T6a 8356804c. Body: `receipts/T6b-push-pr-body.md`. Receipt: `receipts/T6b-receipt-eb8bcc65.json`. A/B: `receipts/T6b-ab-ring-eb8bcc65.txt`.**
+- (1) **Full engine suite on T6a @ 8356804c** (Atlas 01:50 order): 1064 passed, 5 failed, 1799 s. The five are exactly the Mac localhost tests (referrer x3, image_loader_routing, remote_web_fonts) that T5 fixes on `atlas/dt-mac-gates`, which T6a does not include. No T6a regression. Receipt: `receipts/T6a-suite-8356804c.txt`.
+- (2) **T6b**, as the 10-24 07:50 decisions lay it out:
+  - Push watermark. A guard on the Inspector lock stores an atomic watermark and, while a panel watches, signals the devtools thread after the lock is released.
+  - The devtools thread waits on one condvar for reads and records. It wakes the window once per unread batch.
+  - `CONSOLE_POLL` and `ConsolePoll` are gone. The panel asks only when the watermark has moved; that check is one atomic load.
+  - `doc` on records and console entries.
+  - Detach keeps history.
+  - A 512-record ring per tab, on by default (`InspectorConfig::tab`); `HIWAVE_DEVTOOLS_RING=0` turns it off.
+  - Test-only `PageCmd::Block(ms)`.
+- **Before -> after:**
+  - Panel open on an idle page: a console question every 250 ms -> **0 window wakes and 0 page commands in 1 s**.
+  - A console read with the page thread blocked 3 s: answered in under 1 s.
+  - Reopening the panel after a navigation: empty -> both documents' lines, told apart by `doc`.
+- **Red before**, by mutating eb8bcc65 (detach clears; watch never registers; console reads to the page): the three new tests read 0 passed / 3 failed. After: engine `content_thread devtools inspector page_protocol` 144/144, hiwave-app devtools 2/2, parity-capture event_log 2/2. Three tests that pinned "off by default" / "closing empties" were rewritten to say what T6b does.
+- **Ring cost (Q1 gate):**
+  - Campaign 26/26, 1.1078% (same as develop).
+  - 20-site A/B, ring off vs on, one binary: wall-clock 205.0 s vs 203.4 s (0.992), 0 failures, no frame moved.
+  - linkedin read 2.64% across the arms at first. Two reruns plus off/off and on/on controls show the same split with no ring difference involved: linkedin rotates its own page variants.
+  - **The ring ships on.**
+- **Suite on T6b @ eb8bcc65:** 1068 passed, 5 failed, 1787 s, load 11.7-14.8. The five are the same Mac localhost tests; T6a had 1064 passed, and T6b adds 4 tests. Receipt: `receipts/T6b-suite-eb8bcc65.txt`.
+- **Load (Atlas asked for the top 3 by CPU):** the "foreign" load 11-17 the lane has reported since 10-23 is the lane's own.
+  - At 07:22, load 20.3. Top: `BTLEServer` 100%; `aleph.cli serve .` workers (8+ at ~100% each, 47 min old); `null_memory.cli daemon run` (pid 1233) 100%, up 21 days.
+  - The aleph server's parent chain is this session: `claude -p` <- `~/.claude/hooks/trench-devtools.sh`. It starts with every lane session and dies with it, which is why Atlas reads 2.6-5 between sessions.
+  - The seat cannot kill it. Fixing it is fleet tooling: start the lane without the aleph MCP, or let the index settle first.
+  - The null daemon at 100% for 21 days is worth a look by whoever owns Null.
+- Found, not changed: on the content-thread test page, `load_html`'s inline `<script>` did not run (`document.title` stayed empty). The T6b tests log through `eval` instead. This may be how `page()` is configured, not a bug; it is worth a check by whoever owns content_thread tests.
+- Not done: the panel HTML does not group by `doc` yet (the field is in its payload).
+- Checkouts `dt-t6suite-0640` (12 GB) and `dt-t6b-0640` (16 GB) removed.
+
+Next: T6c (busy state + deadlines) and T6d stay blocked (Atlas). Prometheus R1 on T6-design.md is needed before any T6 PR. T4 acceptance waits on LW + T3 landing. PR cap: 9 open of 8. Branches waiting: LW, T3, T4, T5, T6 (a+b on `atlas/dt-service`).
