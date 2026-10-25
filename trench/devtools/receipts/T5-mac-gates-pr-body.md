@@ -1,6 +1,6 @@
 # test: clean Mac gates (six macOS-only engine tests that failed on every Mac run)
 
-Branch `atlas/dt-mac-gates` @ 7a908255 (merges clean onto develop @ the 20:45 fetch, 19 behind). Test-only: every hunk is inside a `#[cfg(test)]` module, so no engine line changed and the 26-case campaign cannot move (not re-run; the shipped code is byte-identical).
+Branch `atlas/dt-mac-gates` @ ff9de6a4 (7a908255 + a clean merge of develop @ 2026-10-24 18:37, 23 commits). Test-only: every hunk is inside a `#[cfg(test)]` module, so no engine line changed and the 26-case campaign cannot move (not re-run; the shipped code is byte-identical).
 
 All six tests were red on every Mac run; Linux CI never runs them (`target_os = "macos"` or headless-only).
 
@@ -16,16 +16,18 @@ Red before: the font test on 4fa6d6f8 printed `AddressDenied` for all 8 faces, `
 
 ## Acceptance: `cargo test -p rustkit-engine --features headless --lib`, 3 consecutive runs on the Mac
 
-At 7a908255, 2026-10-23 20:41–22:07 ET, machine load 17–24 (another lane's work on the Mac):
+At ff9de6a4, 2026-10-24 18:39–20:07 ET (one background call, `trench/devtools/tools/suite3.py`):
 
-| run | wall | result | failures |
+| run | wall | load (1-min, min/median/max) | result |
 |---|---|---|---|
-| 1 | 1704 s | 1031 passed, 2 failed | `vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget`, `…a_spin_after_the_load_budget_is_spent_is_still_stopped`: "the load took 3.31 s / 3.44 s" against a `BUDGET_MS + 2000` wall-clock bound |
-| 2 | 1853 s | 1022 passed, 11 failed | all 11 (`frame_commit_tests::a_noop_represent_keeps_the_held_commit`, grid_fixed_track ×4, grid_in_flex ×5, grid_auto_repeat_percent ×1) are the GPU test guard: "waited 120s for `grid_block_axis_align_tests::grid_items_and_rows_are_aligned_on_the_block_axis`" |
-| 3 | 1641 s | **1033 passed, 0 failed** | none |
+| 1 | 1746 s | 11.5 / 12.2 / 14.4 | **1068 passed, 0 failed** (6 ignored) |
+| 2 | 1772 s | 11.2 / 12.2 / 14.8 | **1068 passed, 0 failed** (6 ignored) |
+| 3 | 1794 s | 11.3 / 12.4 / 20.5 | **1068 passed, 0 failed** (6 ignored) |
 
-The six tests this PR fixes passed in all three runs. The failures in runs 1 and 2 are two load-bound classes outside T5's list: wall-clock budget asserts, and the 120 s GPU-guard wait behind the ~100 s grid_block_axis_align test. **Owed: three runs on a quiet machine (load < 10) for the strict "0 failed ×3".**
+**0 failed in three consecutive runs.** Load stayed 11–13 from processes outside the lane (above the < 10 the plan asked for), yet none of the two load-bound classes seen on 10-23 (vm_interrupt wall-clock asserts at load 17+, the 120 s GPU-guard wait behind `grid_block_axis_align`) showed.
 
-Receipt: `scripts/receipt.py` output in trench/devtools/receipts/T5-receipt-7a908255.md (log hashes).
+Earlier, at 7a908255 on 10-23 at load 17–24: 2 / 11 / 0 failed, all outside the six (those two classes).
+
+Receipt: `scripts/receipt.py` output in trench/devtools/receipts/T5-receipt-ff9de6a4.md (log hashes).
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)

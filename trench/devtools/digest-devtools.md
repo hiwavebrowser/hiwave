@@ -260,3 +260,16 @@ Next for T4: acceptance once LW, T3 (and #777 for the feed itself) land. Landing
 - Machine: load 11 to 17 from foreign processes all session.
 
 Next: T4 acceptance waits on LW + T3 landing. T5 needs load below 10. T6 waits on Prometheus R1. PR cap: 9 open of 8, so no new PRs. Branches waiting: LW, T3, T4, T5.
+
+
+## 2026-10-24 20:10 devtools T5 (Sat session, 18:35-20:15)
+
+**T5 done, no PR (cap 9 open of 8): `atlas/dt-mac-gates` @ ff9de6a4 (7a908255 + a clean merge of develop, 23 behind). Body updated in `receipts/T5-mac-gates-pr-body.md`; receipt in `receipts/T5-receipt-ff9de6a4.md`.**
+- Before: the six Mac-only tests (referrer x3, image_loader_routing, remote_web_fonts, navigating_away_drops_an_inserted_script_still_fetching) were fixed. The three 10-23 suite runs at load 17-24 read 2 / 11 / 0 failed, all outside the six.
+- After: three consecutive `cargo test -p rustkit-engine --features headless --lib` runs at ff9de6a4. Each was **1068 passed, 0 failed** (6 ignored), 1746 / 1772 / 1794 s.
+- Load caveat: load stayed 11-13 all session (one peak of 20.5), all of it from processes outside the lane. My own last note asked for load below 10, which never happened. The acceptance column only asks for 0 failed ×3 on the Mac, and that is met. Neither load-bound class from 10-23 (vm_interrupt wall-clock asserts, the 120 s GPU-guard wait) appeared at load 12.
+- Six targets by name before the suite: 7/7 passed.
+- Checkouts removed: `dt-t5-1840`, `dt-t5-1009`, `dt-t5-2045` (about 28 GB).
+- Tools: `tools/suite3.py` now records the 1-minute load per run. New `tools/wait_for.py` does the foreground wait on a background log.
+
+Next: T4 acceptance waits on LW + T3 landing. T6 waits on Prometheus R1. PR cap: 9 open of 8, so no new PRs. Branches waiting: LW, T3, T4, T5.
