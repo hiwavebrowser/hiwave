@@ -1,0 +1,42 @@
+{
+ "base_sha": "ff6ad36a",
+ "binary": "target/parity/parity-capture",
+ "binary_mtime_utc": "2026-10-25T22:44:50.752904Z",
+ "binary_sha256": "fc331f9dfe892541dd388a29bf184c1a58675b2c770724725105d138fe1ce766",
+ "branch": "HEAD",
+ "campaign": {
+  "cases": 26,
+  "failed": 0,
+  "file": "scratch/camp-t8-96f3e10d.json",
+  "mean_diff_pct": 1.1078,
+  "passed": 26,
+  "sha256": "d170d68856e03bea98e3ab04e5a388d15abab014b15e7f34fa067c3ce61fe875",
+  "timestamp": "2026-10-25T18:45:23.963936"
+ },
+ "candidate_sha": "431692521de90e1a578e5fe4b8454b884810f723",
+ "cargo": "cargo 1.91.0 (ea2d97820 2025-10-10)",
+ "cargo_lock_sha256": "d43bf3f40c046d3d625a2876c81a524fcaac59b37460f330942147537a4c8cb7",
+ "chrome_version": null,
+ "cpu": "arm",
+ "dirty_state": false,
+ "effective_engine_flags": {},
+ "features": null,
+ "host": null,
+ "note": "engine headless lib suite 1067 passed / 5 failed (Mac localhost set) on 43169252; campaign on 96f3e10d (43169252 is test-only)",
+ "os": "macOS-26.5.2-arm64-arm-64bit",
+ "profile": "parity",
+ "raw_runs": [
+  {
+   "bytes": 177463,
+   "file": "t8-suite2.log",
+   "sha256": "eaf2c45096b9c849d8b9c34197151054f366f703ac40c89d537d52f832bcdd7f"
+  }
+ ],
+ "repo": "https://github.com/hiwavebrowser/hiwave-macos.git",
+ "rustflags": null,
+ "sccache": true,
+ "target": "aarch64-apple-darwin",
+ "toolchain": "rustc 1.91.0 (f8297e351 2025-10-28)",
+ "utc": "2026-10-25T23:20:38.035701Z",
+ "work_package": "T8"
+}

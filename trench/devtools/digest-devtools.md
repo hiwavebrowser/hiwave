@@ -348,3 +348,29 @@ Next: T6c (busy state + deadlines) and T6d stay blocked (Atlas). Prometheus R1 o
 - Checkouts `dt-t6b2-1240` (10 GB) and `dt-inlinescript-1300` (12 GB) removed.
 
 Next: T6c and T6d are still blocked on Prometheus R1. Atlas decides who fixes the `load_html` inline-script gap and whether it becomes a package. PR cap unchanged (no PR opened). Branches waiting: LW, T3, T4, T5, T6 (a+b+grouping on `atlas/dt-service` @ a3652306), `atlas/dt-inline-script` (red test only).
+
+
+## 2026-10-25 19:21 devtools T8 (load_html runs inline scripts, Sun session, 18:35-19:25)
+
+- **Package choice:** T8, per Atlas 10-25 13:05. T4 comes earlier in the table and reads "open", but its acceptance waits on LW + T3 landing, so it cannot move this session.
+- **Load at start:** 4.82 / 4.05 / 3.39; about 3.4-4.4 through the session.
+- **Before -> after:**
+  - Before: `Engine::load_html_as` ran no `<script>`; red test bd00fb21 failed.
+  - After: `atlas/dt-inline-script` @ 43169252 (fix 96f3e10d + test-only 43169252). `load_html_as` runs the inline classic scripts in document order after the first layout, then `DOMContentLoaded` and `load`, before `PageLoaded`.
+  - It uses the same `inline#n` names, budget/watchdog, script log and Inspector records as the URL path.
+  - External and module scripts are logged as skipped (no network on this path). Timers are left to the live loop.
+  - JS off is unchanged: the RustKit chrome is untouched, and parity-capture `--html-file` without script runs nothing.
+- **Inspector page and `run_inline_scripts`:** `Engine::run_inline_scripts` is removed. The parity-capture Inspector page and `--run-inline-scripts` read the script log, so nothing runs twice, and a throwing script still fails the capture.
+- **Tests:**
+  - Red test green, plus 3 new: lifecycle order `loading,second,dcl:interactive,load:complete`; `about.html`'s `hiwaveAbout.setVersion` updates `#versionBadge`; the Inspector page's script log is exactly `[inline#1 Ran]`.
+  - With the new call disabled, the four read 0/4.
+  - parity-capture 18/18.
+- **Suite:**
+  - 96f3e10d: 1052 passed / 20 failed. That is the five Mac localhost tests plus 15 `shadow_tree_tests`, whose helper re-ran the page scripts by hand, so `attachShadow` threw a second time. Fixed in the test helper (43169252).
+  - 43169252: **1067 passed / 5 failed** (the Mac localhost set only, the same as develop), 956 s.
+- **Campaign:** 26/26, 1.1078%, the same as develop.
+- **PR:** none (cap 9/8). Body is in `receipts/T8-inline-script-pr-body.md`, receipt in `T8-receipt-43169252.json`, suite summary in `T8-suite-43169252.txt`.
+- **Behaviour change for review:** `parity-capture --html-file --actions` already turned script on. Inline scripts now run there on load, as in Chromium.
+- Checkout `dt-t8-1840` removed.
+
+Next: stop (Atlas: after T8, stop). T6c/T6d are blocked on Prometheus R1. T4 acceptance waits on LW + T3 landing. Branches waiting for the PR cap: LW, T3, T4, T5, T6 (`atlas/dt-service` @ a3652306), T8 (`atlas/dt-inline-script` @ 43169252).
