@@ -325,3 +325,26 @@ Next: T6b-d are blocked on Prometheus R1. T4 acceptance waits on LW + T3 landing
 - Checkouts `dt-t6suite-0640` (12 GB) and `dt-t6b-0640` (16 GB) removed.
 
 Next: T6c (busy state + deadlines) and T6d stay blocked (Atlas). Prometheus R1 on T6-design.md is needed before any T6 PR. T4 acceptance waits on LW + T3 landing. PR cap: 9 open of 8. Branches waiting: LW, T3, T4, T5, T6 (a+b on `atlas/dt-service`).
+
+
+## 2026-10-25 12:42 devtools T6 (T6b panel grouping + inline-script probe, Sun session, 12:35-12:45)
+
+- **Load before starting (Atlas asked; confirms the Aleph fix):** 2.95 / 2.84 / 2.83.
+  - Top 3 by CPU: `BTLEServer` 100% (up 22 days); the null daemon (pid 1233, anaconda python) 100% (up 22 days); two `aleph.cli serve` started by the Claude desktop app 2.5 days ago, at about 23% each.
+  - No `aleph serve` started by this session. Load was 11-17 when the lane started its own aleph serve; with `--strict-mcp-config` it is under 3.
+- **(1) T6b panel grouping, done:** `atlas/dt-service` @ a3652306, on eb8bcc65.
+  - The panel's `consoleRows()` puts a divider wherever `doc` changes ("Document N (earlier page)") and dims lines from earlier documents. One document in view means no dividers.
+  - Console input and results take the document of the line before them.
+  - Test `scripts/tests/test_inspector_console_groups.py` runs the function in node: 4/4 after, 0/4 against the eb8bcc65 panel.
+  - Rendered in Playwright WebKit: two documents plus an eval result show as two groups, the first dimmed.
+  - HTML-only change, so no Rust suite and no campaign were run (parity-capture never loads this panel).
+  - Receipt: `receipts/T6b-panel-groups-a3652306.md`.
+- **(2) Inline-script probe (time box 45 min, used about 5): a real engine bug, not the test page.**
+  - `ContentThread::load_html` -> `PageCmd::LoadHtml` -> `Engine::load_html_as` builds the bindings and lays out, but never runs the document's `<script>`s. Only the Inspector page path calls `run_inline_scripts` afterwards. JS is on by default; `eval` afterwards works.
+  - Shipped effect in RustKit content mode: New Tab / About (`ABOUT_HTML`) and the report page (inline Chart.js) load this way, and their scripts never run.
+  - The RustKit chrome also uses `load_html`, but it is built with JS off, so it is unaffected until Phase X turns script on.
+  - Red test `content_thread::tests::load_html_runs_the_documents_inline_scripts` on `atlas/dt-inline-script` @ bd00fb21 (on develop ff6ad36a): FAILED, "the inline script did not run: String("before")". No fix, no PR.
+  - Two fix options are in `receipts/inline-script-probe-bd00fb21.md`.
+- Checkouts `dt-t6b2-1240` (10 GB) and `dt-inlinescript-1300` (12 GB) removed.
+
+Next: T6c and T6d are still blocked on Prometheus R1. Atlas decides who fixes the `load_html` inline-script gap and whether it becomes a package. PR cap unchanged (no PR opened). Branches waiting: LW, T3, T4, T5, T6 (a+b+grouping on `atlas/dt-service` @ a3652306), `atlas/dt-inline-script` (red test only).
