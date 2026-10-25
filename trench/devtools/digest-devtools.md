@@ -273,3 +273,20 @@ Next: T4 acceptance waits on LW + T3 landing. T5 needs load below 10. T6 waits o
 - Tools: `tools/suite3.py` now records the 1-minute load per run. New `tools/wait_for.py` does the foreground wait on a background log.
 
 Next: T4 acceptance waits on LW + T3 landing. T6 waits on Prometheus R1. PR cap: 9 open of 8, so no new PRs. Branches waiting: LW, T3, T4, T5.
+
+
+## 2026-10-25 01:00 devtools T6a (Sun session, 00:35-01:00)
+
+**T6a done, no PR (cap 9 open of 8): `atlas/dt-service` @ 8356804c (on develop ff6ad36a). Body in `receipts/T6a-service-pr-body.md`, receipt in `receipts/T6a-receipt-8356804c.json`. Prometheus R1 on `T6-design.md` is still required before any T6 PR.**
+- Before: every console read from the open panel was a page command. On develop's routing the red test reads **5 devtools page commands in 2 s** on an idle page.
+- After: **0**. A `devtools` thread (one per process, started on the first console read) answers console reads from the view's `Arc<Inspector>` ring and posts the window wake when there is something new. The late `console.log` still reaches the panel.
+- `DevtoolsCounters` counts per page and per process. `HIWAVE_DEVTOOLS_COUNTERS=1` logs once a second.
+- Live DOM/style questions stay page commands. `CONSOLE_POLL`, the watermark and `doc` marks are T6b.
+- The design held in code; no redesign was needed.
+- Tests: engine content_thread 27/27, devtools 18/18, inspector 97/97, page_protocol 1/1; hiwave-app devtools 2/2. The full engine lib suite was not run.
+- Campaign 26/26, 1.1078% (same as develop). Receipt clean.
+- Load was 11-17 from foreign processes.
+- Weekend note: canon says LLM seats are dormant Fri 00:00 to Mon 06:00. This session ran under the plan's 10-23 20:40 order (weekend slow grind on 4 slots) and Atlas's 10-24 21:00 T6a order. Atlas should confirm whether the canon now wins for the rest of this weekend.
+- Checkout `dt-t6a-0040` removed (15.5 GB).
+
+Next: T6b-d are blocked on Prometheus R1. T4 acceptance waits on LW + T3 landing. PR cap: 9 open of 8. Branches waiting: LW, T3, T4, T5, T6a.
