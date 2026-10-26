@@ -1,0 +1,3 @@
+github       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 42.6,35.9,35.0,33.6  script records A,B,A,B 8,8,8,8
+cnn          within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 28.5,28.8,35.7,35.7  script records A,B,A,B 23,23,23,23
+microsoft    within A 74.71%  within B 0.00%  across 74.71% 74.71% 0.00% 0.00%  failed: 0  secs A,B,A,B 86.5,64.1,69.2,80.9  script records A,B,A,B 275,274,274,274

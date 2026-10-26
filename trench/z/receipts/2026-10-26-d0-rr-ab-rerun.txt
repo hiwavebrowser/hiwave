@@ -1,0 +1,2 @@
+yahoo        within A 0.50%  within B 0.00%  across 0.50% 0.50% 0.00% 0.00%  failed: 0  secs A,B,A,B 16.9,12.6,11.7,13.0  script records A,B,A,B 58,58,58,58
+walmart      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 24.4,14.6,17.0,18.2  script records A,B,A,B 123,123,123,123

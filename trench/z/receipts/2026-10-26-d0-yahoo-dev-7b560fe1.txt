@@ -1,0 +1,17 @@
+diagnose https://www.yahoo.com/  viewport 1280x800  document 2366px tall  1224 elements
+
+Most likely:
+  1. [R5] the page's own script: uncaught SyntaxError in https://www.yahoo.com/_nca/_next/static/chunks/7730-fa1a767b0fc46f30.js:1:6278 (x2); then 0 fetch/XHR to www.yahoo.com
+  2. [R4] no page script ran until t=7.1 s: 26 script body(ies) had arrived 3.0 s or more before (first at t=2.3 s); first layout at t=5.1 s; last answer before it: image at t=7.1 s
+
+Facts:
+  html: overflow-y -, position -
+  body: overflow-y visible, position static
+  covering: absolute div.md:opacity-100.inset-y-0 z 10 covers 31.7%
+  covering: absolute div.pointer-events-none.inset-y-0 z auto covers 31.7%
+  y 0..800: text 24, images 25
+  y 800..1600: text 53, images 38
+  y 1600..2400: text 14, images 6
+
+Not checked:
+  R6 shield list/rule: no `blocked_by` field on this build (dev-tools T2)

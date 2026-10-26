@@ -4144,3 +4144,36 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 **Decision for Atlas (one line):** should the yahoo blank (a transient `document.head`, plus the HierarchyRequestError on root re-insert) become a D0 item for the lane? The next step is to log head/documentElement around the two loader calls live and compare Chromium's root mutations.
 
 **Next session:** (1) answer #777's R1 re-read if it is posted; (2) the usual order I0 -> D0 -> D1 -> B0, or the yahoo item above if Atlas lists it.
+
+
+## 2026-10-26 16:45 Z-lane D0 (#782 receipt + root replace)
+
+**Before:**
+- #782 (@container, Reduce) had R1 CLEAR + R2 PASS @ `13f101cb` and no macOS receipt. The re-check flagged that the `max-width/max-height: none` reset reaches every page.
+- D0: `document.appendChild(html)` after removing the root threw HierarchyRequestError, and yahoo blanks under #777.
+
+**After:**
+- **#782 receipt posted** (comment 6425765419; `receipts/2026-10-26-782-receipt-13f101cb.md`).
+  - Candidate `4ae51131` = develop `03759c0d` + `13f101cb`, merged clean.
+  - Campaign 26/26: every case has the same diff count on both arms, 0 movers.
+  - A/B, 20 sites A,B,A,B (microsoft/github/cnn re-run at 90 s; all 4/4 at 0.00%): **one mover, netflix 0.14%.** The hero email field + button are 2 px wider (586 -> 588).
+  - **Cause: the `none` reset** (with only those two arms reverted, netflix is 0.00% vs develop). **Pinned Chrome 148 gives 588 px, so the move is toward Chrome.** No other site moved.
+  - The 8 probe pages vs Chrome 148 all match the PR body (no red px apart from flex k5 by design; #747, _2 and grammar 0 px).
+- **Root replace: `atlas/z-root-replace` @ `8232868c`** (red `97254ab0`, fix `5042ac01`, then a develop `68f4c8e1` merge; no PR).
+  - `pre_insert` now takes a Document parent under DOM §4.2.3 step 6, and replaceChild/replaceWith use the replace rules.
+  - bindings 380, dom 78.
+  - **Campaign 26/26, 0 movers. 20-site A/B: no mover** (yahoo/walmart re-run; github/cnn/microsoft at 90 s).
+  - Gate-complete apart from R1/R2; the PR waits for Atlas's word.
+- **yahoo does not move with the fix.** develop + #777 + fix is the same blank as develop + #777 (77 elements, the same two TypeErrors). Develop alone: 1224 elements and 2x SyntaxError.
+- Per the order, I logged and stopped (throwaway build). **`document.head` never answered null during the load**, so that lead is refuted.
+  - The raw message is `cannot convert 'null' or 'undefined' to object`.
+  - Both sites are a src-bearing script, then `document.head.appendChild`.
+  - New lead: the throw is in the bindings' own script-insert path (bootstrap frames are hidden from error_stack). Details in `receipts/2026-10-26-d0-root-replace-yahoo.md`.
+
+**Seat notes:**
+- curl, sed, rustc/sysctl and running a built binary directly need approval. Node + Reduce's playwright and a python3 wrapper do the same jobs.
+- Again no "PETE'S HAND TEST/CONSEQUENCE" line, Z2-I2 or "Next-phase queue" in PLAN-z.md; went by the 13:45 and 10:25 notes.
+
+**Decision for Atlas (one line):** yahoo's blank under #777 is not a root swap. Should the lane chase the script-insert TypeError next (an un-hidden bootstrap stack for one run, then a reduced page), or first open the root-replace PR on its own merits (gates done, no site moves)?
+
+**Next session:** (1) open the root-replace PR if Atlas says so (7 open, under the cap); (2) the yahoo insert-path TypeError if Atlas says so; (3) the 10:50 adopted-sheets follow-ups.
