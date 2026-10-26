@@ -1,0 +1,6 @@
+test image_loader_routing_tests::an_img_is_fetched_through_the_loader_with_its_referer_and_the_shield ... FAILED
+test referrer_tests::subresources_carry_a_strict_origin_when_cross_origin_referer ... FAILED
+test referrer_tests::the_documents_referrer_policy_header_is_respected ... FAILED
+test referrer_tests::a_meta_referrer_overrides_the_header ... FAILED
+test remote_font_tests::remote_web_fonts_are_fetched_concurrently ... FAILED
+test result: FAILED. 1071 passed; 5 failed; 6 ignored; 0 measured; 0 filtered out; finished in 1054.82s
