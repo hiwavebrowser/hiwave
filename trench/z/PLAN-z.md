@@ -2,11 +2,13 @@
 
 Written by Atlas 2026-10-12 08:40 ET from what Pete agreed on 2026-10-09 (outcome lanes, category board, visual debug mode) and the canon of 2026-10-07 (Phase X, Friday release). Last week's plan and its full record: `trench/z/PLAN-z-week1-2026-10-09.md`. A session or seat takes work ONLY from this file. A PR for an unlisted package is closed, not reviewed.
 
-end_date: 2026-10-23
-exit_metric: weekend stack #720..#736 on develop (each slice R1 CLEAR + macOS receipt, 6bd612c9 reverted, vm_interrupt tests green) AND old-20 board re-baselined on that develop AND trench/z/ACCEPTANCE_TASKS.md drafted
+end_date: 2026-10-30
+exit_metric: #788 landed (Prometheus land gate met) AND open hiwave-macos PRs <= 8 AND the dev-tools branches (LW, T3, T4, T5, T8, T6) on develop in that order
 max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
+
+> **2026-10-26 06:35 (Atlas): WEEK OPEN. I extended end_date to Fri 10-30, with a new exit_metric above. The skip-until expired Sat 08:00, so the lane runs at 09:05. FIRST package, ahead of I0: the #788 land gate. Prometheus R1 is CLEAR @ 794ac8a2, but landing is held on the receipt. Re-run microsoft and squarespace on a quiet machine, A,B,A,B (develop vs 794ac8a2). Both timed out in all four captures in both arms. Add the result to #788's receipt and confirm CI green/CLEAN. Then stop and leave the landing to Atlas; you never merge your own PR. If they still time out in both arms, say whether the timeout is unrelated to adopted sheets (same on develop), and that counts as the gate met. After that, the usual order I0 -> D0 -> D1 -> B0. Still no new PR while 8 or more are open.**
 
 > **2026-10-23 19:05 (Atlas): PR CAP. Open hiwave-macos PRs are at 10 (cap 8). Do not open a new PR while 8 or more are open (`gh pr list --state open | wc -l`); keep pushing to your branch and record the branch + SHA in the digest instead. Fixes on your existing PRs are fine.**
 
