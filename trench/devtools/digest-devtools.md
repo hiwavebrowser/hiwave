@@ -447,3 +447,33 @@ Next: #792 conditions (a) and (b); then the rest of T6c (live-query deadlines + 
 
 Next: the 08:50 list: #792 conditions (a) and (b), the rest of T6c, and a quiet T6 ring A/B.
 
+
+
+## 2026-10-26 18:35 devtools T2 + T6 + review follow-ups (Mon session, 18:35-19:45; Atlas order 14:35)
+
+- **(1) #792 T2: R1 conditions answered @ 536351fa** (was 22813653). develop 68f4c8e1 merged @ a3791247. One conflict, in `INSPECTOR_EVENT_LOG.md`, with both sides kept.
+  - **(a) ` <+> ` rules.** adblock-rust joins plain pattern rules that share options and a token. Each part is now looked up: the list is named only when every part is from it, else `unattributed`. Red before: an EasyPrivacy match joined with an EasyList rule read `EasyList` (2/2 tests red with the old lookup).
+  - **(b) Rule names gated.** `with_filter_lists()` is the plain engine again. Rule text comes only from `with_filter_lists_naming_rules()`, which the intercept worker uses after `name_matched_rules()`. parity-capture `--shield` calls it.
+  - **RSS:** max RSS on the full lists, 3 runs each: **111.0 vs 118.9 MB, so rule names cost +7.9 MB**. The app now pays 0.
+  - **Behaviour change for Atlas/Prometheus:** in the app, a filter-list block now has `rule: null`, and the list is `unattributed` when both lists are loaded.
+  - Suite **1099/0**, campaign **26/26, 1.1078%**. Comment posted. Receipts: `T2-r1-conditions-536351fa.md`, `T2-receipt-536351fa.md`.
+  - Not in this push: the (slot, no deadline) arm still judges at record time, and the yahoo LW numbers still need re-measuring.
+- **(2) T6 is draft PR #803 @ 3eca9c25** (`atlas/dt-service`, 5 open PRs before it).
+  - develop 68f4c8e1 merged @ 6b1463f5. The conflict was `inspector.rs` State: I kept T6's id → doc map together with T3's lifecycle fields.
+  - `ring_off()` fix for T3's two tests.
+  - **New find:** the lost-wakeup test failed once under the 165-test parallel set. The global `BEFORE_WAIT` hook was taken by another test's service pass before this test's read (next_seq 2, not 1). It is a test race, not a service bug. The hook is now set after the read (3eca9c25).
+  - Suite **1107/0**, campaign **26/26, 1.1078%**, app devtools 2/2.
+  - The body covers T6a, T6b, the 7 conditions (4 = T6d, not in the PR; 5 started) and T6c so far.
+  - **Quiet ring A/B: PENDING.** Load was 7-9 all session, and the rule is under 4. Body: `receipts/T6-pr-body-3eca9c25.md`.
+- **(3) `atlas/dt-review-followups` @ dfeb141a** (branch only, no PR, as ordered).
+  - **#799 nit:** `--run-inline-scripts` fails on any `Skipped` except the new engine const `HTML_LOAD_RUNS_INLINE_CLASSIC_ONLY`. That covers too large and an earlier engine panic. Tested with an inline script over 4 MB. Red-before was not run separately: the old filter has no `Skipped` arm.
+  - **#797 `held_load`:** a navigation with nobody listening now clears `held_load` and its count. Red before: doc 2's `load` named doc 1's `inline#1`.
+  - **#797 `unparseable#n` collision:** the inserted path's label is now `unparseable-inserted#<node>`, apart from the load path's `unparseable#<index>`, and the docs are updated. **Untested:** neither `s.src =` nor `setAttribute('src', …)` with a bad port reached `script_net`'s unparseable branch (no `script` record at all). The bindings must drop it earlier, so that branch may be dead. Worth a look.
+  - **#802 nits:** diagnose.py uses a `TemporaryDirectory` (removed even on failure) and prints the stderr tail when there is no report. `site_of`: `file://` has no site, and an IPv4 host is whole. Unit test added.
+  - **#791:** stack frames come from `/app.js?token=SECRET` (no `token` reaches the Inspector, and the frames name `/app.js`). A new `console.assert` + `timeLog` shapes test. Both pin behaviour that was already correct, so they were never red.
+  - Targeted tests are green: script_lifecycle + inspector 110/110, parity-capture 38/38, the 3 mirror tests. Full suite **1097/1**. The one failure is the wall-clock `a_slow_post_load_fetch_or_import_holds_no_live_turn` (103.9 ms at load 7-9), the same as 14:05; it passes alone.
+- **Leave to Atlas:** `gh pr ready` on #803 if wanted. Prometheus re-checks: #792 delta 22813653..536351fa, and #803 R1 on the PR.
+- **Checkouts:** `dt-t2cond-1840` and `dt-t6pr-1905` removed. `dt-followups-1931` removed too (its branch is pushed). Older ones still on disk, not mine to remove: `dt-t2-1320` (holds a stale local `atlas/dt-net-facts` @ 3792a2e1), `dt-t2c-1900`, `dt-t4r4-0147`, `dt-cshape-scripts`.
+- **PRs:** 1 new (#803); 6 open.
+
+Next: the rest of T6c (deadlines and generation ids for NodeAt/DomTree/Element/Highlight, busy state) on #803. A quiet ring A/B when load is under 4. T6d (condition 4). Whether the inserted unparseable branch is reachable at all.

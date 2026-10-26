@@ -1,0 +1,5 @@
+atlas/dt-review-followups @ dfeb141a on develop 68f4c8e1
+cargo test -p rustkit-engine --features headless --lib: 1097 passed, 1 failed, 6 ignored (986 s, load 7-9)
+failed: error_page_script_tests::a_slow_post_load_fetch_or_import_holds_no_live_turn (a live turn held the window for 103.9 ms; wall-clock assert); alone: 1 passed
+targeted: script_lifecycle + inspector 110/110; parity-capture 38/38; with_the_mirror_on 3/3
+red-before: a_detached_navigation_forgets_what_held_the_last_load (left [inline#1], right [])
