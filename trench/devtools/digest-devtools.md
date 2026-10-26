@@ -400,3 +400,33 @@ Next: stop (Atlas: after T8, stop). T6c/T6d are blocked on Prometheus R1. T4 acc
 - **Checkout `dt-stack-0035` kept:** done-task.sh refuses because of its unpushed local merge and fix commits, which must not be pushed. Remove it by hand when Atlas is done with it.
 
 Next: T4 is done and waiting for Atlas's score. T6c/T6d are blocked on Prometheus R1. Landing notes for Monday: T8 resolves the main.rs doc hunk, and T6 adds the two ring_off test lines after T3. Branches waiting for the PR cap: LW, T3, T4, T5, T6, T8 (SHAs as before).
+
+
+## 2026-10-26 08:15 devtools T4 (a) + T6 (b,c,d) + T1b R1 (Mon session, 06:35-08:20)
+
+- **Order:** Atlas 10-26 06:20 (a)-(d), then the 07:40 order, item (1). Load was 9-12 for the whole session; it stayed about 10 after my own suite ended, so it comes from outside the lane.
+- **(a) T4 cause over symptom:** `atlas/dt-diagnose` @ **1f9185ae**. An uncaught own-site error now ranks above R10 when the first viewport is blank. Caught+logged errors and third-party errors stay below it. With the new arm off, 2 of 12 report tests are red. parity-capture 35/35. Live yahoo now shows it: line 1 is R5 chunk 7730 SyntaxError, line 2 is R10.
+- **(b) T6 R1 conditions 1, 2, 3, 6, 7 + ring 2048:** `atlas/dt-service` @ **9eba090c**, one test per condition. With all five changes off, the five tests read 0/5.
+  - (1) The service re-reads the watermarks under the mutex before sleeping, with a 1 s backstop while a panel is open (no clock otherwise). SeqCst.
+  - (2) Answers carry `page_crashed` (from lock poison), and the panel prints 'page crashed'.
+  - (3) Watches hold `Weak`. 20 closed tabs keep 0 rings; a full 2048 ring is about 301 KiB of payload per tab.
+  - (6) A response or failure gets the doc its request started in.
+  - (7) The service re-applies the URL rule to what it serves.
+  - Suite **1073/5** (the Mac localhost set).
+  - Campaign **26/26, 1.1078%**.
+  - **20-site A/B: no pixel mover.** Wall-clock B/A = **1.028** over 16 sites. The run is NOT clean: load 8-12, microsoft and github hit 30 s on both arms twice, and cnn and lyft lost single captures. I can't call it a move or not; repeat it quiet before the T6 PR. Receipt: `receipts/T6-r1-conditions-9eba090c.md`, table in `T6-ab-ring2048-9eba090c.txt`.
+- **(c) yahoo bisect:** develop ff6ad36a + LW + T3 + T4, with no T8/T5/T6, is **already blank** (R10, 155 elements). Verdict: **"yahoo changed"**. The same stack was not blank on 10-24. One build plus one 31 s run settled it, so no further steps.
+- **(d) T6c started:** `atlas/dt-service` @ **2d1b0bd4**.
+  - `PageCmd::DevtoolsEval` carries a deadline. A page that reaches it late answers `EVAL_CANCELLED` and never runs it. The page also skips it when the panel has already dropped the receiver.
+  - The panel gives up after 5 s and drops the receiver, so a late reply is discarded.
+  - Red before: the late eval ran. 150/150 across content_thread, page_protocol, devtools and inspector.
+  - **Left for T6c:** deadlines and generation ids for NodeAt/DomTree/Element/Highlight, and the busy state. The panel only checks its deadline on a live wake, so a hung page with no wakes shows the cancel only at its next wake.
+- **07:40 (1) #791 T1b:** the requested proof found a **real leak**. With the mirror on and keep off, `script_error.message` carried the page's thrown text. Function names and `console.error` records were already shapes.
+  - Fixed @ **82af54cf**: the message is kept only under `keeps_error_text()`. New test red before, green after; inspector 90/90; suite **1040/5** (the Mac localhost set).
+  - Comment posted on #791.
+  - **Not marked ready:** `gh pr ready` needs approval on this seat. Atlas, please flip it.
+- **Not started:** 07:40 (2) #792 conditions (a) `<+>` rule attribution and (b) `from_rules_debug` ~9 MB RSS gate, plus the nits.
+- **Checkouts:** `dt-bisect-0729` kept. It holds 3 local merge commits (LW, T3, T4 on develop) that must not be pushed, so done-task refuses. Remove it by hand. All other checkouts removed.
+- **PRs:** no new PR (cap).
+
+Next: #792 conditions (a) and (b); then the rest of T6c (live-query deadlines + generation ids, busy state); a quiet re-run of the T6 ring A/B before the T6 PR.
