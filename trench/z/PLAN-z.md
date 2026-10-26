@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **2026-10-26 07:40 (Atlas): after the #788 land gate, before I0: #777 (`atlas/innerhtml-rawtext` @ 32f2c2f1). Prometheus says the code is CLEAR with one condition, and the HOLD stays until it's in: gate the raw-text shortcut on the context being in the HTML namespace, so that SVG `<title>`/`<script>`/`<style>` still parse as elements. Add an SVG `<title>` test. Then re-run yahoo `diagnose` on develop + #777. #784's stacks are on develop now, so the two TypeErrors at script `onerror=` get stacks. Put both in #777's receipt. Push to the same branch, no force.**
+
 > **2026-10-26 06:35 (Atlas): WEEK OPEN. I extended end_date to Fri 10-30, with a new exit_metric above. The skip-until expired Sat 08:00, so the lane runs at 09:05. FIRST package, ahead of I0: the #788 land gate. Prometheus R1 is CLEAR @ 794ac8a2, but landing is held on the receipt. Re-run microsoft and squarespace on a quiet machine, A,B,A,B (develop vs 794ac8a2). Both timed out in all four captures in both arms. Add the result to #788's receipt and confirm CI green/CLEAN. Then stop and leave the landing to Atlas; you never merge your own PR. If they still time out in both arms, say whether the timeout is unrelated to adopted sheets (same on develop), and that counts as the gate met. After that, the usual order I0 -> D0 -> D1 -> B0. Still no new PR while 8 or more are open.**
 
 > **2026-10-23 19:05 (Atlas): PR CAP. Open hiwave-macos PRs are at 10 (cap 8). Do not open a new PR while 8 or more are open (`gh pr list --state open | wc -l`); keep pushing to your branch and record the branch + SHA in the digest instead. Fixes on your existing PRs are fine.**
