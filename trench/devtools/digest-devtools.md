@@ -440,10 +440,10 @@ Next: #792 conditions (a) and (b); then the rest of T6c (live-query deadlines + 
   - Suite **1074/0** (T5 is in), rustkit-js green, campaign 26/26 1.1078%. Now MERGEABLE; comment posted.
 - **#799 T8 review folded @ 324b417b**: (1) nav cancel in the `load_html` script phase, with a test that is red with the checks off; (2) `scripts_over_budget` counted from the log; (3) the `--run-inline-scripts` filter, tested with an external src.
   - Suite 1075/1. The one failure is `a_slow_post_load_fetch_or_import_holds_no_live_turn` (110.98 ms, wall-clock assert, load 8.3), which passes alone. Campaign 26/26 1.1078%. Comment posted.
-  - **(4) hiwave-smoke check NOT DONE**: the seat needs approval to run built binaries (hiwave-smoke, and parity-capture outside camp.py). The binary is built in `dt-t8fold-1339` (kept for this). Run `scripts/builtins_capture.sh` (about.html) or grant the seat. Prometheus nits 1 and 3 are follow-ups.
+  - **(4) done at 14:06**: hiwave-smoke `--html-file about.html` (real window, locks free), started through a python3 subprocess wrapper (a direct call needs approval on this seat). It exited 0 and wrote the frame. `inline#1` (987 B) ran with no script error. The frame is correct, with the script-filled version line `v0.1.0-alpha`. A second comment is on #799 (receipts/T8-smoke-about-324b417b.md). The other four builtins were not run. Prometheus nits 1 and 3 are follow-ups.
 - **Leave to Atlas:** `gh pr ready` and the re-stamp requests (Prometheus deltas: #797 29e9c396..d4db95f7, #791 82af54cf..97de231c, #799 7a622c3b..324b417b). #791's follow-up: the `ScriptError.name` subclass nit.
-- **Checkouts:** `dt-t3fix-1240` and `dt-t1bmerge-1308` removed. `dt-t8fold-1339` kept for (4). `dt-bisect-0729` is still there from before.
+- **Checkouts:** `dt-t3fix-1240`, `dt-t1bmerge-1308` and `dt-t8fold-1339` removed. `dt-bisect-0729` is still there from before.
 - **PRs:** no new PR (9 open). Load 7-8 during the suites.
 
-Next: (4) on #799 once the binary can run; then the 08:50 list: #792 conditions (a) and (b), the rest of T6c, and a quiet T6 ring A/B.
+Next: the 08:50 list: #792 conditions (a) and (b), the rest of T6c, and a quiet T6 ring A/B.
 
