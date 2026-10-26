@@ -374,3 +374,29 @@ Next: T6c and T6d are still blocked on Prometheus R1. Atlas decides who fixes th
 - Checkout `dt-t8-1840` removed.
 
 Next: stop (Atlas: after T8, stop). T6c/T6d are blocked on Prometheus R1. T4 acceptance waits on LW + T3 landing. Branches waiting for the PR cap: LW, T3, T4, T5, T6 (`atlas/dt-service` @ a3652306), T8 (`atlas/dt-inline-script` @ 43169252).
+
+
+## 2026-10-26 01:05 devtools T4 (Monday stack check + T4 acceptance read, Mon session, 00:35-01:05)
+
+- **Order:** Atlas 10-25 20:15. The table had no package in-progress, so I took the first open one, T4. Weekend rule: Atlas 10-25 01:50 lets this lane run through Mon 06:00.
+- **Load at start:** 2.78 / 2.68 / 2.66, and 3.2-3.5 during the suite. This seat can't list the top processes: `ps` and `top` both need approval.
+- **Stack:** develop ff6ad36a, then LW, T3, T4, T5, T8, T6 with `--no-ff`, on local branch `local/monday-stack-0035` in checkout `dt-stack-0035`. Nothing was pushed.
+  - One textual conflict: **T8 vs T4**, in `parity-capture/src/main.rs` `struct Args`. T4's `--report`/`--report-text` sit next to T8's reworded `run_inline_scripts` doc comment. The fix is to keep both, and it belongs to T8's develop merge.
+  - Two semantic failures: **T3 vs T6**. T6's default 512 tab ring means (1) T3's `with_nobody_listening_no_script_record_is_built` sees an active inspector, and (2) `a_page_throwing_any_engine_message...` loses 50 of its 456 errors to the ring once T3's per-script records are added.
+  - The fix is two test lines that turn the ring off (`ring_off()`, as T6 already does in its own test). It belongs to T6's develop merge after T3 lands. The diff is in the receipt. I didn't commit to any queued branch.
+- **Results:**
+  - Engine suite on the merged stack: **1079 passed / 2 failed** (B1, B2 only), 962 s. The Mac localhost five pass because T5 is in the stack.
+  - After the fix: 6/6 targeted.
+  - parity-capture tests: 35/35.
+  - Campaign: **26/26, 1.1078%**, the same as develop.
+- **T4 acceptance read:** `diagnose https://www.yahoo.com/` cold on the stack took **31.0 s wall clock** (31.0 s again on a second run).
+  - Top line: `[R10] the first viewport has no text and no image (154 elements, document 800px tall)`.
+  - Line 2: `[R5] own script: uncaught SyntaxError in chunk 7730...:1:6278 (x2); then 0 fetch/XHR to www.yahoo.com` = #777.
+  - R6 (shield) isn't checked because T2 isn't in the stack.
+  - Change from T4d: today yahoo is blank without #777. I haven't found why (yahoo build or T5/T8/T6); not bisected.
+- **Question for Atlas:** one yahoo load writes 562 records (114 of them T3 `script` records). With T3 + T6, a panel opened late loses its first ~50 records, including `navigation_start`. Should `TAB_RING_CAPACITY` be raised?
+- **PR:** none (cap: 9 open of 8).
+- **Receipts:** `receipts/monday-stack-check.md`, `receipts/monday-stack-suite-6a6eb306.txt`.
+- **Checkout `dt-stack-0035` kept:** done-task.sh refuses because of its unpushed local merge and fix commits, which must not be pushed. Remove it by hand when Atlas is done with it.
+
+Next: T4 is done and waiting for Atlas's score. T6c/T6d are blocked on Prometheus R1. Landing notes for Monday: T8 resolves the main.rs doc hunk, and T6 adds the two ring_off test lines after T3. Branches waiting for the PR cap: LW, T3, T4, T5, T6, T8 (SHAs as before).

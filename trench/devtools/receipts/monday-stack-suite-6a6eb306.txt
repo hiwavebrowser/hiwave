@@ -1,0 +1,10 @@
+rustkit-engine --features headless --lib @ local stack 6a6eb306 (2026-10-26 00:38-00:54 ET, load ~3)
+test inspector_engine_tests::a_page_throwing_any_engine_message_is_a_page_record_with_no_text ... FAILED
+test script_lifecycle_tests::with_nobody_listening_no_script_record_is_built ... FAILED
+---- inspector_engine_tests::a_page_throwing_any_engine_message_is_a_page_record_with_no_text stdout ----
+thread 'inspector_engine_tests::a_page_throwing_any_engine_message_is_a_page_record_with_no_text' (292043297) panicked at crates/rustkit-engine/src/inspector_engine_tests.rs:1485:5:
+  left: 406
+ right: 456
+---- script_lifecycle_tests::with_nobody_listening_no_script_record_is_built stdout ----
+thread 'script_lifecycle_tests::with_nobody_listening_no_script_record_is_built' (292048809) panicked at crates/rustkit-engine/src/script_lifecycle_tests.rs:183:5:
+test result: FAILED. 1079 passed; 2 failed; 6 ignored; 0 measured; 0 filtered out; finished in 961.93s
