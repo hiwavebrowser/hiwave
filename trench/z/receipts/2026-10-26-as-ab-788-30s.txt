@@ -1,0 +1,2 @@
+microsoft    within A n/a%  within B n/a%  across n/a% n/a% n/a% n/a%  failed: 4  secs A,B,A,B 30.8,30.9,30.2,30.2  script records A,B,A,B -,-,-,-
+squarespace  within A n/a%  within B n/a%  across 0.00% n/a% n/a% n/a%  failed: 2  secs A,B,A,B 26.4,22.6,30.2,30.2  script records A,B,A,B 28,28,-,-
