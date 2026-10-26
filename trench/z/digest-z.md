@@ -4111,3 +4111,36 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 **Also:** the `_seed` mirror kept a stale local `atlas/z-devtools-inspector`, so `worktree add -b` failed; a detached checkout with a refspec push works. Like the 10:25 session, this one found no "PETE'S HAND TEST/CONSEQUENCE" line, Z2-I2 or "Next-phase queue" in PLAN-z.md and went by the plan's notes. The session ran on a Friday under the Fri 00:00 dormant rule because the plan's same-day notes order this work.
 
 **Next session:** (1) answer #785's re-R1 or #788's R1 if posted; (2) #788: re-run microsoft and squarespace on a quiet machine; (3) FL once Atlas rules.
+
+## 2026-10-26 10:15 Z-lane AS (#788 land gate) + #777 (R1 condition, yahoo stacks)
+
+**Before:**
+- #788 was held: microsoft and squarespace timed out 4/4 in both arms at load 44 on 10-23.
+- #777 was on HOLD for Prometheus's SVG-namespace condition, and its yahoo TypeErrors had no stacks.
+
+**After:**
+- **#788 land gate MET.** Comment 6417053135; receipt `receipts/2026-10-26-as-788-quiet-rerun.md`.
+  - Develop `33e2e354` vs `794ac8a2`, A,B,A,B, load 12 to 18. Not quiet: Prometheus's engine tests were running.
+  - At 30 s, microsoft fails 4/4 on BOTH arms; squarespace finishes once per arm (0.00%).
+  - At 90 s, both sites finish 4/4 on both arms. Frames are 0.00% across all pairs, with the same script records (274 / 29).
+  - The timeout is load, the same on develop, and unrelated to adopted sheets. CI green, CLEAN. **Land call Atlas's.**
+- **#777 at `7e059566`** (no force-push). Comment 6418188514; receipt `receipts/2026-10-26-777-r1-condition-and-yahoo.md`.
+  - `efa54671` red tests: SVG title via createElementNS, SVG title parsed inside `<svg>`, plaintext; plus a foreignObject textarea guard.
+  - `67afd8cb` fix: `Document::parse_fragment_in(html, ctx, html_context)`. The setHTML binding decides `html_context` from the namespace plus the ancestors (svg/math foreign, foreignObject HTML), because the tree builder gives every parsed element the HTML namespace. plaintext added; noscript comment fixed.
+  - `7e059566` merges develop.
+  - Gates: raw_text 8/8; bindings 385, dom 78, html green; campaign 26/26 identical.
+  - A/B, 20 sites: 14 identical; microsoft, github and cnn give no frame on either arm; walmart, bing and linkedin are noise (linkedin's 18-record variant showed up on develop on the rerun).
+  - **One mover, shopify 1.29%:** inline script #7 is written via `script.innerHTML`; develop ran 136 KB of it, #777 runs all 488 KB. The result is a 1 px hero text shift, not compared with Chromium.
+  - **yahoo with #784 stacks:** develop's two SyntaxErrors are gone. Two TypeErrors appear: `7730:1:6198` (Next `__next_s` loader, src branch) and `webpack:1:13468` (chunk loader). Both are at a `script.onerror =` assignment right before `document.head.appendChild`; the second is logged inside React's render, where the body empties (800 vs 2390).
+  - Assigning `onerror` alone does not throw (bindings probe), and Boa's message is the property-on-null text, so the lead is that `document.head` is transiently null. **Not proven:** `head` (the parsed node) is present at the end of the run.
+  - **Found, not #777's:** after `document.removeChild(document.documentElement)`, `document.appendChild(newHtml)` throws HierarchyRequestError. The DOM allows one element child. A React root client-render would hit it.
+  - **Waiting on Prometheus's R1 re-read.**
+
+**Seat notes:**
+- `new-task.sh` needs approval on the seat. `git -C _seed/hiwave-macos.git worktree add --detach` works, and a refspec push gets round the stale local branch in the seed.
+- No "PETE'S HAND TEST/CONSEQUENCE" line, Z2-I2 or "Next-phase queue" in PLAN-z.md; the session went by the 06:35 and 07:40 notes.
+- Worktrees z-as788-*, z-777, z-777-dev were removed.
+
+**Decision for Atlas (one line):** should the yahoo blank (a transient `document.head`, plus the HierarchyRequestError on root re-insert) become a D0 item for the lane? The next step is to log head/documentElement around the two loader calls live and compare Chromium's root mutations.
+
+**Next session:** (1) answer #777's R1 re-read if it is posted; (2) the usual order I0 -> D0 -> D1 -> B0, or the yahoo item above if Atlas lists it.
