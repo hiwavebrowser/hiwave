@@ -430,3 +430,20 @@ Next: T4 is done and waiting for Atlas's score. T6c/T6d are blocked on Prometheu
 - **PRs:** no new PR (cap).
 
 Next: #792 conditions (a) and (b); then the rest of T6c (live-query deadlines + generation ids, busy state); a quiet re-run of the T6 ring A/B before the T6 PR.
+
+## 2026-10-26 14:05 devtools T3 + T1b + T8 (Mon session, 12:35-14:05; orders 09:05, 09:40, 11:40)
+
+- **#797 T3 R2 HOLD answered @ d4db95f7** (was 29e9c396). (1) An unparseable `src` is labelled `unparseable#n` in the script log, the Inspector and `held_by`, never by its text. (2) A `cancelled` outcome covers the load path (between scripts, and during a module's import fetch) and `cancel_inserted_jobs`. (3) The lifecycle flags are now kept with nobody listening, so a late attach reads `held=load`. Prometheus's `held`/"will hear" doc points are folded in. No dead_code warning traces to T3 in either test build (the warnings there predate it).
+  - Red-before 4/4. Suite 1071/5, the Mac localhost set (branch base predates T5). Campaign 26/26 1.1078%. Comment posted; 9 behind develop, merge-tree clean.
+- **#791 T1b: develop 5593cf37 merged @ 97de231c** (merge commit). Stacks and shapes are both kept: `ConsoleCall` carries shape + `ConsoleStacks`, and the shapes path strips function names (`nameless`).
+  - New test `with_the_mirror_on_console_error_stacks_are_shapes_only`, red when names are kept (keep_error_text arm).
+  - Suite **1074/0** (T5 is in), rustkit-js green, campaign 26/26 1.1078%. Now MERGEABLE; comment posted.
+- **#799 T8 review folded @ 324b417b**: (1) nav cancel in the `load_html` script phase, with a test that is red with the checks off; (2) `scripts_over_budget` counted from the log; (3) the `--run-inline-scripts` filter, tested with an external src.
+  - Suite 1075/1. The one failure is `a_slow_post_load_fetch_or_import_holds_no_live_turn` (110.98 ms, wall-clock assert, load 8.3), which passes alone. Campaign 26/26 1.1078%. Comment posted.
+  - **(4) hiwave-smoke check NOT DONE**: the seat needs approval to run built binaries (hiwave-smoke, and parity-capture outside camp.py). The binary is built in `dt-t8fold-1339` (kept for this). Run `scripts/builtins_capture.sh` (about.html) or grant the seat. Prometheus nits 1 and 3 are follow-ups.
+- **Leave to Atlas:** `gh pr ready` and the re-stamp requests (Prometheus deltas: #797 29e9c396..d4db95f7, #791 82af54cf..97de231c, #799 7a622c3b..324b417b). #791's follow-up: the `ScriptError.name` subclass nit.
+- **Checkouts:** `dt-t3fix-1240` and `dt-t1bmerge-1308` removed. `dt-t8fold-1339` kept for (4). `dt-bisect-0729` is still there from before.
+- **PRs:** no new PR (9 open). Load 7-8 during the suites.
+
+Next: (4) on #799 once the binary can run; then the 08:50 list: #792 conditions (a) and (b), the rest of T6c, and a quiet T6 ring A/B.
+
