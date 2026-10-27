@@ -4234,3 +4234,29 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 - Open PRs: 6 (#808 included).
 
 **Next session:** (1) answer #808's R1; (2) FL step (b), the forced-layout hook in `ensure_geometry`, with the red test `script_fresh_layout_tests` from `atlas/z-forced-layout`, then the 10-23 13:35 acceptance (Chrome's iteration count, #786 cnn under ~25 s, yahoo/reddit timing); (3) the #788 follow-ups; (4) the #807 nits.
+
+## 2026-10-27 10:30 Z-lane FL (step b, forced layout -> PR #812)
+
+**Before:** #808 (step a) had landed as `3e2f9cf8`. A script geometry read in the same task as a DOM write answered from the old layout, so the red cnn loop hid 16 items where Chrome hides 8.
+
+**After:**
+- **PR #812** (`atlas/z-fl-step-b` @ `f2c3314c`, off develop `ce776530`; needs R1). Its commits:
+  - b1 `387bc4b1`: a restore-on-drop guard for `lctx.building`.
+  - `ba0023d4`: the red test.
+  - b2 `56a7a7e9`: bindings `DirtyMark` + the `ForcedLayout` hook in `ensure_fresh_geometry`.
+  - b3 `5446a6b7`: engine `LayoutCtx::lay_out_document`, shared by relayout and the hook, with a per-task count.
+  - b4 `f2c3314c`: the empty `impl Engine {}` blocks, and no per-node Rc clones.
+- The cnn loop stops at **8 = Chrome** (8 forced layouts). Two more tests: Prometheus's SVG + focused control case, and a forced layout after resize. 3 of the 4 fresh-layout tests are red with the hook off.
+- Suites: engine lib **1125/1125** (6 ignored), bindings 383/383.
+- Campaign 26/26, **0 movers**.
+- 20-site A/B: 19 no mover; **cnn moves toward Chrome**. The consent dialog goes from off the right edge to Chrome's x, and the header's right side comes back. The dialog is still ~200 px too high. That is a new item, not this PR.
+- Receipts: `receipts/2026-10-27-fl-step-b.md`, `-fl-step-b-ab.txt`.
+
+**Blockers / notes:**
+- The engine lib suite now takes ~18 min. In the foreground it hits the 10-min cut, and the run is killed before the failure details print. Run it in the background from the start.
+- Still owed before #812 can land:
+  - #786 rebased on it: cnn under ~25 s.
+  - yahoo/reddit `--release` timing within 10%.
+- Open PRs: 7 with #812.
+
+**Next session:** (1) #812's R1; (2) the owed acceptance (#786 merge build + cnn timing; release A/B timing for yahoo/reddit); (3) the #788 follow-ups; (4) the #807 nits.
