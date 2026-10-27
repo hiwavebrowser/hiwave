@@ -505,3 +505,29 @@ Next: the rest of T6c (deadlines and generation ids for NodeAt/DomTree/Element/H
 
 Next: the rest of T6c (generation ids for NodeAt/DomTree/Element/Highlight, busy state), then T6d (condition 4). A quiet ring A/B if load ever gets under 4; if it is clean, turning the default back on is one line.
 
+
+
+## 2026-10-27 06:35 devtools #806 + T6c + T6d (Tue session, 06:35-07:45; Atlas notes 04:10, 03:20)
+
+- **#806 merge (Atlas 04:10, done first) @ 89b32a93** (was 9071f48d, DIRTY).
+  - develop 3e2f9cf8 merged in as a merge commit, with no rebase and no force-push. The one conflict was `script_net.rs` `enqueue_inserted`. I kept my let-else plus #792's `waits_on(SlotWait)`, `queued()`, the `inserted_script` label and `FetchJob.wait`, and dropped develop's unreachable `unparseable#n` arm.
+  - Prometheus nits: `FetchedInserted::Skipped` and its 4 arms are deleted, and its dead_code warning is gone. `tracing::warn!` sits beside the `debug_assert!`; the crate logs with `tracing`, not `log`. The doc sentence is fixed.
+  - The Chart.js `include_str!` stays. `inspector_page.rs` already embeds `inspector_rustkit.html` from hiwave-app in production code, so moving one test wouldn't untie the crates.
+  - Engine **1120/0**, bindings **383/0**. No campaign: this is a merge plus dead-code removal. One PR comment posted. Receipt: `receipts/806-develop-merge.md`.
+- **T6c: draft PR #809, `atlas/dt-t6c` @ 33a04a80.**
+  - **Same-thread console read during a load (Prometheus #803 note).** The view now keeps its Inspector and counters from build, so the read no longer borrows the endpoint the load holds. Red before 1/1.
+  - **Live queries:** one of each kind out at a time, with the newest asked next. Each has a 2 s deadline; past it, the panel shows `page busy (no answer for N s)` and greys the kept tree. A late answer is dropped, and its kind is asked again with the newest question. Highlight is now its own kind. Console reads and Attach are exempt.
+  - Three panel-state tests. They are new state, so there is no red build to compare against.
+  - **Deviation for Atlas:** §4's `in script N s` can't come from the last `script` record, because a hung script has no record until it ends. N is how long the oldest late question has waited. Naming the script needs a script-began atomic on the Inspector; that's a small follow-up.
+  - App **60/0**. Campaign **26/26, 1.1078%**; parity-capture doesn't link hiwave-app.
+- **T6d: draft PR #810, `atlas/dt-t6d` @ 99aa6e2c** (condition 4 + Atlas Q2).
+  - rustkit-js `set_console_live` is decided per call. Live calls go to the handlers at once, with held calls first, each once and in order. Live calls are capped at 200/s; past that, calls are held, and a `K console calls dropped (more than 1024 held)` warn line now also counts the flush path's drops, which used to vanish without a count.
+  - The engine turns live on while the Inspector is active. Shapes and nameless stacks are unchanged (same handlers).
+  - Red before **2/2** (rustkit-js live timing; engine reader sees the line 400 ms before a 600 ms script ends). Plus the mid-evaluation dedupe, hot-loop and live-off tests.
+  - Engine **1116/0**, rustkit-js **86/0**, bindings **382/0**, campaign **26/26, 1.1078%**.
+- **Not done:** the ring quiet A/B. Load was 8-18 all session (not the lane's: it ran one cargo job at a time), and the rule is under 4.
+- **Checkouts:** `dt-followups-0636`, `dt-t6c-0700` and `dt-t6d-0715` are removed. `dt-cshape-scripts` was deleted (Atlas 03:20). `dt-t2-1320` was already gone.
+- **Open PRs: 7** (with #809 and #810).
+- **Leave to Atlas:** Prometheus delta re-check on #806 @ 89b32a93, R1 on #809 and #810, `gh pr ready`, and the T6c busy-text deviation.
+
+Next: T7 (HTTP-thread network recording) once Atlas writes it into the table. The quiet ring A/B, if load ever gets under 4.
