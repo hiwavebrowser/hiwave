@@ -1,0 +1,3 @@
+lyft         within A n/a%  within B 0.00%  across 0.00% 0.00% n/a% n/a%  failed: 1  secs A,B,A,B 13.2,12.2,0.4,12.7  script records A,B,A,B 36,36,-,36
+linkedin     within A 2.96%  within B 0.00%  across 1.55% 1.55% 2.64% 2.64%  failed: 0  secs A,B,A,B 5.1,4.7,4.8,5.3  script records A,B,A,B 6,6,6,6
+walmart      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 7.3,8.5,8.4,8.2  script records A,B,A,B 127,127,127,127
