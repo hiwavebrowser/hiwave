@@ -531,3 +531,37 @@ Next: the rest of T6c (generation ids for NodeAt/DomTree/Element/Highlight, busy
 - **Leave to Atlas:** Prometheus delta re-check on #806 @ 89b32a93, R1 on #809 and #810, `gh pr ready`, and the T6c busy-text deviation.
 
 Next: T7 (HTTP-thread network recording) once Atlas writes it into the table. The quiet ring A/B, if load ever gets under 4.
+
+## 2026-10-27 12:35 devtools T6 (#809 HOLD, #810 condition + Atlas 13:35 HOLD) + T7 design note
+
+- **#809 (T6c) independent HOLD answered @ 4d1fe7ae** (was 33a04a80). Both R1s are now CLEAR at this head; Atlas 13:40 says don't push to it.
+  - Subtree questions coalesce per expanded node, not per kind.
+  - A late answer is shown when nothing newer was wanted for its slot. Before, it was asked again forever.
+  - A late hover after the pointer left clears the outline.
+  - Navigation and close paths pulled out as `forget_page`/`forget_questions`, with a test.
+  - Red before: 4 of 9 panel tests with the old behaviour. App **64/0**.
+  - Prometheus nit (b) was not a bug: `domTreeContainer` is `#dom-tree`, a sibling of `#page-busy`.
+  - No campaign: the change is app-only, and parity-capture does not link hiwave-app.
+- **#810 (T6d) condition answered @ b36807e6, then Atlas 13:35 HOLD @ 5ea74e5e** (was 99aa6e2c).
+  - Boa has no drain hook (its interrupt is a stop word), so held calls are **counted, not delivered**. `Inspector::console_held()` is an atomic the runtime keeps.
+  - The devtools thread wakes the window when a watched view's held count moves, without a read and without touching `woken`. The console answer carries `held`.
+  - The panel's `pump` shows "K console lines held by a running script".
+  - Prometheus nits: live delivery is rebuilt in the handler setters; the dropped line says "; console rate cap"; the timing test spins 1000 ms. Review nits: cap = hand-overs, the flush test is looser, the hot-loop bound can now fail, no private doc link. Held-count tests take stable reads; the cap flag is set by the latest hold.
+  - Red before: 2/2 at b36807e6 and 2/2 at 5ea74e5e (service test plus a view-level hot-loop-then-hang test).
+  - Final head 5ea74e5e: engine **1118/0**, rustkit-js **88/0**, app **57/0** three runs in a row (the view test flaked once in its first form; fixed with a second burst). At b36807e6: bindings **382/0**.
+  - Campaign **26/26, 1.1078%**, every case identical at both heads.
+  - One comment per push on #810.
+- **#809 leftovers** (the in-time Unavailable hover clearing the outline, with a test) are on a **new branch `atlas/dt-t6c-followups` @ cacf5917**, not on #809. They are for a follow-up PR after #809 lands. App **65/0**.
+- **T7 design note written:** `trench/devtools/T7-design.md`.
+  - Finding: a script request's HTTP work is polled by the page thread (`settle_live` on its LocalSet), and rustkit-http has no thread of its own. Moving only the record writes would change nothing.
+  - Proposal: a 2-worker `rustkit-net` runtime. `begin_request` stays on the page thread at request start (doc stamp, scrub). The guard moves into the spawned task, so response and failure records are written there. Abort-on-drop for navigation and close.
+  - Step 0 is a `Send` compile probe.
+  - Blocked on Prometheus R1; no code.
+- **Not done:**
+  - 09:20 item (3), naming the running script in the busy text. Scoped, not started: scripts start at 5+ sites, and the one central turn wrapper (`with_script_js`) carries no label. It needs a script-began mark at each runner, and Atlas 13:40 says no more T6 work unless a review asks.
+  - Ring quiet A/B: load was 9-18 all session.
+- **Open PRs: 6.**
+- **Checkouts:** `dt-t6c-1240` and `dt-t6d-1240` are kept for Atlas to remove (per the 10-26 08:50 rule).
+- **Leave to Atlas:** Prometheus delta R1 and stamp on #810 @ 5ea74e5e; landing #809; the follow-up PR from `atlas/dt-t6c-followups` after #809 lands; Prometheus R1 on T7-design.md.
+
+Next: T7 once Prometheus clears the design note.
