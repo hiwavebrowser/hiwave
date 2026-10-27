@@ -4263,3 +4263,34 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
   - Merging #786 after #812 needs `Self::rebox_culled_inline` changed to `Engine::rebox_culled_inline`.
 
 **Next session:** (1) #812's R1; (2) the owed acceptance: quiet `--release` timing for cnn with #786+#812, and for yahoo/reddit; (3) the #788 follow-ups; (4) the #807 nits.
+
+## 2026-10-27 15:05 Z-lane FL (#812 land condition: scroll max)
+
+**Before:** #812 @ `f2c3314c` (R1 CLEAR). Land condition: after a forced layout the scroll limits stayed stale, so `scrollTo(0, body.scrollHeight)` after appending rows stopped at the old end. The 1-minute load was 10.7 at the start, so the quiet `--release` timing was deferred (not fudged).
+
+**After:** #812 @ **`3051bdc9`** (plain pushes). Comment 6453103150 asks Prometheus for a delta re-stamp.
+- `d368c6b2`: red test (scrollY 800, expected 1800).
+- `bb012af6`: the fix.
+  - `ForcedGeometry.max_scroll` goes into the bindings' scroll state.
+  - scrollTo/scrollY run the forced layout first.
+  - The engine no longer clamps a dirty task's scroll to the old max; the relayout clamps.
+- `b56e2326`: the 11:50 cheap perf items.
+  - Lazy `GeometrySource` on the forced path.
+  - Per-task budget.
+  - Decline logged once per task.
+  - `StyleMemoAside` unwind guard.
+  - Leftover-state doc.
+- `3051bdc9`: **budget is a count only (256)**. At 1000 ms the A/B showed cnn back on develop's frame (31.48%, stable per arm): cnn's 8 forced layouts ran past 1 s at load ~20. With the time leg off, cnn reads 0.00% vs `f2c3314c`. I pushed back to Prometheus in the comment.
+- Suites at `3051bdc9`:
+  - engine **1127/1127** (6 ignored);
+  - bindings 383/383;
+  - fresh-layout 6/6.
+- Campaign 26/26, **0 movers**.
+- 20-site A/B: **no mover**. cnn 0.00%; linkedin/bing/walmart/google are served variants with 0.00% cross pairs.
+- Receipts: `receipts/2026-10-27-fl-812-scrollmax.md`, `-fl-812-ab-*.txt`.
+
+**Blockers / notes:**
+- Timing is still owed: cnn with #786 under ~25 s, yahoo/reddit within 10%. The load never got under 4 (10.7 / 18.8 / 9.7).
+- A time budget on forced layouts is load-dependent behaviour: avoid it.
+
+**Next session:** (1) if load < 4, the quiet `--release` timing first; (2) Prometheus's re-stamp on #812; (3) the #788 follow-ups; (4) the #807 nits.
