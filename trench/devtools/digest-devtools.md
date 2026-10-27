@@ -477,3 +477,31 @@ Next: the 08:50 list: #792 conditions (a) and (b), the rest of T6c, and a quiet 
 - **PRs:** 1 new (#803); 6 open.
 
 Next: the rest of T6c (deadlines and generation ids for NodeAt/DomTree/Element/Highlight, busy state) on #803. A quiet ring A/B when load is under 4. T6d (condition 4). Whether the inserted unparseable branch is reachable at all.
+
+
+## 2026-10-27 01:10 devtools T6 + T2 + review follow-ups (Tue session, 01:10-02:45; Atlas notes 10-26 21:05, 22:00, 20:50)
+
+- **#803 T6: independent HOLD answered @ 59795a2b** (was 3eca9c25).
+  - **(0) Ring default is now OFF until a panel attaches.** No quiet A/B was possible: load was 7.8 at 01:10 before the lane started anything, and 8.8-11.4 through the session (the rule is under 4). Machine load from foreign processes is a skip reason. `HIWAVE_DEVTOOLS_RING=1` keeps the 2048 ring from view creation.
+  - **The cost of off:** a late panel has no earlier history, and closing the panel drops its session (that is nit 1).
+  - **(a) Same-thread path:** the console answer now posts a window wake.
+  - **(b) Attach during boot or load:** the page watches when it handles the attach. A same-thread attach that a load dropped is stored in `pending_attach` and sent again in `load_ended`. A repeated watch keeps the read mark.
+  - **(c) Nits:** clear on detach when the ring is off; with no devtools thread, an empty answer plus a log line; the blocked-page test asserts the page was in `Block`.
+  - Red before **4/4**. Suite **1112/0**. Campaign **26/26, 1.1078%**. develop e587d94a merged. Comment posted; the PR body now states the default. Receipt: `receipts/T6-review-hold-fix-59795a2b.md`.
+- **#792 T2: independent HOLD answered @ 2a52bc58** (was 536351fa).
+  - The rule→list map is built only with rule names and more than one list. Without rule names, several lists return `unattributed` explicitly.
+  - **`rule_names_rss plain` max RSS: 110.6 → 89.4 MB, so −21.2 MB per engine.** The app builds two engines, so about −42 MB for every user.
+  - The intercept ready-branch assertion now matches what each path produces.
+  - Both-lists test and doc nits done. The body already covered `queued_ms`/`SlotWait`/`in-flight cap` (now also named in the HOLD section).
+  - Red before 1/1. Suite **1099/0**. Campaign **26/26, 1.1078%**. develop merged. Comment posted. Receipts: `T2-review-hold-fix-2a52bc58.md`, `T2-receipt-2a52bc58.md`.
+- **Draft PR #806, `atlas/dt-review-followups` @ 9071f48d** (20:50 (2)-(4); 7 open PRs with it).
+  - **(2) `unparseable-inserted#<node>` removed as unreachable.** `web_scripts.js` resolves `src` with the `URL` it captured at install (the `url` crate) and fires `error` on a throw, so the engine only ever receives a parseable `href`. That holds even when the page replaces `window.URL`. A bindings test pins it. The doc now says such a script gets no `script` record.
+  - **(3) #791 Error subclass name: green, kept as a pin.** Class names and a set `name`, thrown, rejected and `console.error`'d, mirror off and on: no page name reaches any record. The 09:40 trace holds; no breach.
+  - **(4) Callback errors:** timer, rAF and listener throws each reach the Inspector as a `script_error` (pin). The report page runs its inlined Chart.js and its DOMContentLoaded listener (test).
+  - Suite **1098/0** at 0d2fedb6; **1101/0** at head 9071f48d. Campaign **26/26, 1.1078%** at 693bc3ac.
+- **Checkouts:** mine (`dt-t6hold-0115`, `dt-t2hold-0150`, `dt-followups-0208`) are removed. Of the stale ones, `dt-t2-1320`, `dt-t2c-1900` and `dt-t4r4-0147` are removed, and `dt-bisect-0729` was already gone.
+  - **`dt-cshape-scripts` is not a worktree.** It's a folder of edit scripts from 10-23, so done-task fails on it. I left it for Atlas.
+- **Leave to Atlas:** Prometheus delta re-stamps (#803 3eca9c25..59795a2b, #792 536351fa..2a52bc58), R1 on #806, and `gh pr ready`.
+
+Next: the rest of T6c (generation ids for NodeAt/DomTree/Element/Highlight, busy state), then T6d (condition 4). A quiet ring A/B if load ever gets under 4; if it is clean, turning the default back on is one line.
+
