@@ -4259,4 +4259,7 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
   - yahoo/reddit `--release` timing within 10%.
 - Open PRs: 7 with #812.
 
-**Next session:** (1) #812's R1; (2) the owed acceptance (#786 merge build + cnn timing; release A/B timing for yahoo/reddit); (3) the #788 follow-ups; (4) the #807 nits.
+- **10:35: #786 + #812 (local merge) loads cnn: 28.1 / 20.7 s**, against #812 alone at 23.0 / 18.9 s (before, #786 ran over 200 s). Parity profile, loaded machine.
+  - Merging #786 after #812 needs `Self::rebox_culled_inline` changed to `Engine::rebox_culled_inline`.
+
+**Next session:** (1) #812's R1; (2) the owed acceptance: quiet `--release` timing for cnn with #786+#812, and for yahoo/reddit; (3) the #788 follow-ups; (4) the #807 nits.
