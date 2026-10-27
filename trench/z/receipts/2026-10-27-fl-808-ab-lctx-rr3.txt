@@ -1,0 +1,1 @@
+yahoo        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.4,6.7,5.8,5.7  script records A,B,A,B 78,57,58,58

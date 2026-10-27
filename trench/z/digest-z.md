@@ -4203,3 +4203,34 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 - **Push back for Atlas (one line):** during `bindings.evaluate` the engine is only shared-borrowed. So a scoped thread-local `&Engine` (the `scoped-tls` crate, no `unsafe` of ours) would get forced layout in about 1 session instead of 2-3 more. Option 2 is what I'm building unless Pete says otherwise.
 
 **Next session:** (1) the #804 re-stamp answer, if any; (2) FL a3.3: build methods into `impl LayoutCtx` with a `BuildView`, then campaign 26/26 + 20-site A/B at the `atlas/z-layout-ctx` head and the step (a) PR (7 open now, so 8 with it); (3) step (b), the forced-layout hook in `ensure_geometry`.
+
+## 2026-10-27 04:30 Z-lane D0 (yahoo proof -> #807) + FL (step a done, #808)
+
+**Before:**
+- #804 had landed. The 23:10 note asked whether yahoo's below-fold feed paints now, with and without #777.
+- FL step (a) was 4 of 5 commits in (`atlas/z-layout-ctx` @ `847099c3`); a3.3 (the build methods) was left.
+
+**After:**
+- **yahoo proof: #804 does not move yahoo.** On develop yahoo is blank in every capture where React error #418 (a hydration mismatch) fires inside the window: before #804 (`68f4c8e1`, 3/3) and after it (`e587d94a`/`0af43eab`, 5/5). #418 fires 20 to 50 s into a `--live-ms 40000` run; 25 s often ends before it.
+  - Cause: React's recovery resets the body with `removeAttributeNode`, which was missing ("not a callable function"), and the body is left empty.
+  - The next layer was `new Intl.Locale` ("not a constructor").
+- **#807 LANDED as `f6738bdd`** (opened 03:45, Prometheus R1 CLEAR + PASS by 04:15). `Element.removeAttributeNode` + `NamedNodeMap.removeNamedItemNS` and `Intl.Locale`, each red-first (`d74290c6`, `c52928af`).
+  - yahoo paints 2/2 (818 boxes, 2422 px document) vs develop white 2/2.
+  - Campaign 26/26 0 movers; 20-site A/B no mover; bindings 382/382.
+  - With #777 on develop `e587d94a` the two `onerror=` TypeErrors still show (the 10-26 lead stands).
+  - Still open: the #418 mismatch itself. Nits from the 04:15 note are queued.
+- **FL step (a) complete: PR #808** (`atlas/z-layout-ctx` @ `7ab494e1`, develop `f6738bdd` merged).
+  - a3.3a `fb7597eb`: 20 methods that read only the ctx move to `impl LayoutCtx`, in place.
+  - a3.3b `ca3f7aa6`: a `BuildView` (id, `ViewLayout`, url, viewport, focus, external sheets) replaces `building_view`/`building_focus`.
+  - `f0292525`: the box builder and its lookups move.
+  - a3.3c `000a58f7`: `build_layout_from_document`, `inline_sheets` and `sheets_fingerprint` move; the ctx build takes `javascript_enabled`.
+  - Engine lib 528/528 at head (514/514 at each step before the merge); hiwave-app checks. Campaign 26/26 0 movers vs develop and vs a3.2.
+  - 20-site A/B: no mover. yahoo's one 31% develop outlier per pass did not repeat in two more passes (one with the arms swapped); facebook is a served variant that moves between arms.
+  - Receipts: `receipts/2026-10-27-fl-808-*`, `-fl-a33-plan.md`, `-d0-807-*`. Tools: `tools/impl_move.py`, `tools/selfuse.py`.
+
+**Blockers / notes:**
+- `scripts/receipt.py` reads git from the current directory. Run from the wrong worktree, it stamped the wrong SHA once; I caught it and re-ran it from the right checkout.
+- `new-task.sh` and `cp -c` need approval on this seat. Worktrees were made with `git worktree add` from the seed mirror, without the seed target (sccache made the builds fast anyway).
+- Open PRs: 6 (#808 included).
+
+**Next session:** (1) answer #808's R1; (2) FL step (b), the forced-layout hook in `ensure_geometry`, with the red test `script_fresh_layout_tests` from `atlas/z-forced-layout`, then the 10-23 13:35 acceptance (Chrome's iteration count, #786 cnn under ~25 s, yahoo/reddit timing); (3) the #788 follow-ups; (4) the #807 nits.
