@@ -4177,3 +4177,29 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 **Decision for Atlas (one line):** yahoo's blank under #777 is not a root swap. Should the lane chase the script-insert TypeError next (an un-hidden bootstrap stack for one run, then a reduced page), or first open the root-replace PR on its own merits (gates done, no site moves)?
 
 **Next session:** (1) open the root-replace PR if Atlas says so (7 open, under the cap); (2) the yahoo insert-path TypeError if Atlas says so; (3) the 10:50 adopted-sheets follow-ups.
+
+## 2026-10-26 22:15 Z-lane FL (step a, context split) + D0 (#804 opened, R1 HOLD answered)
+
+**Before:**
+- Root replace was gate-complete on `atlas/z-root-replace` @ `8232868c`, with no PR.
+- FL was unblocked at 17:40 (Pete chose option 2, the safe `Rc` layout context), but no code existed beyond the red test `8ec85298`.
+
+**After:**
+- **D0: PR #804 opened** @ `8232868c`, with the gates in the body. Prometheus R1 HOLD came in at 21:15.
+  - **Answered @ `b1a915e3`.** The red commit `6c619363` gave "no throw" for `c.replaceWith(c, html)`. The fix makes `write` take the replace flag explicitly; only replaceChild and replaceWith's in-place branch pass it.
+  - bindings 380, dom 78. Comment 6432012405 asks for the delta re-stamp.
+- **FL step (a), 4 commits, each green with no behaviour change:**
+  - a1 `3cf1110b`: `layout_ctx::LayoutCtx` behind `Rc` holds style_trace, building_view/focus and svg_cache (now a RefCell).
+  - a2 `ee81d6db`: `ViewLayout` per view (`view.lay`) holds focus, the hover/active chains, edit/checked state, sheet cache, rule index and html_clips. One real borrow fix: handle_text_key now takes the edit value before the flush that writes the map.
+  - a3.1 `bc078fa6`: image manager and font loader move into the ctx.
+  - a3.2 `f3d9320a`: the SVG cache fills take `&self`.
+  - Engine lib suite after a1, a2 and a3: **1096 pass**; the only failure is the red FL test (16 vs 8). App, parity-capture and the default-feature check are clean.
+  - Branches: `atlas/z-forced-layout` @ `f3d9320a` (develop merged at `75323b27`), and **`atlas/z-layout-ctx` @ `847099c3`** (the same 4 commits on develop, no red test, no PR yet).
+- Receipts: `receipts/2026-10-26-fl-step-a-plan.md` (the dependency map + the a3/b plan), `-fl-step-a-suites.txt`, `-804-r1-hold-reply.md`, `-d0-rr-pr-body.md`.
+
+**Blockers / notes:**
+- Each engine suite takes about 17 min at load 10-13 and holds the lease, so a cargo check queued behind it times out. Three suites made up most of the session.
+- `gh issue create` is refused on this seat, so the #804 follow-up (`documentElement.replaceWith(h1, h2)` leaves h1 inserted) lives in the PR comment only.
+- **Push back for Atlas (one line):** during `bindings.evaluate` the engine is only shared-borrowed. So a scoped thread-local `&Engine` (the `scoped-tls` crate, no `unsafe` of ours) would get forced layout in about 1 session instead of 2-3 more. Option 2 is what I'm building unless Pete says otherwise.
+
+**Next session:** (1) the #804 re-stamp answer, if any; (2) FL a3.3: build methods into `impl LayoutCtx` with a `BuildView`, then campaign 26/26 + 20-site A/B at the `atlas/z-layout-ctx` head and the step (a) PR (7 open now, so 8 with it); (3) step (b), the forced-layout hook in `ensure_geometry`.

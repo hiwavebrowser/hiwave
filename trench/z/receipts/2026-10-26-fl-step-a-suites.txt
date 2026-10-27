@@ -1,0 +1,10 @@
+FL step (a) engine lib suites, z-fl worktree (develop 68f4c8e1 + red test 8ec85298 merged = 75323b27), debug, --features headless, z-cargo lease, load ~10-13
+a1  3cf1110b: 1096 passed; 1 failed (script_fresh_layout_tests::a_geometry_read_in_the_same_task_as_a_write_sees_the_write, the red FL test: hidden 16, expected 8); 6 ignored; 987.04s
+a2  ee81d6db: 1096 passed; 1 failed (same red test); 6 ignored; 1003.43s
+a3  f3d9320a (a3.1 bc078fa6 + a3.2): 1096 passed; 1 failed (same red test); 6 ignored; 996.79s
+cargo check -p rustkit-engine -p parity-capture -p hiwave-app (default features): clean at a2 and a3.1
+Same commits cherry-picked onto develop as atlas/z-layout-ctx: 79c40570 d20b82f7 16eeadf4 847099c3 (tree = z-fl HEAD minus script_fresh_layout_tests.rs)
+
+#804 R1 HOLD, z-rr2 worktree (atlas/z-root-replace):
+red 6c619363: a_document_refuses_... FAILED left "no throw" right "HierarchyRequestError" (lib.rs:3539)
+fix b1a915e3: rustkit-bindings 380/380, rustkit-dom 78/78
