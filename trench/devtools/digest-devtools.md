@@ -565,3 +565,34 @@ Next: T7 (HTTP-thread network recording) once Atlas writes it into the table. Th
 - **Leave to Atlas:** Prometheus delta R1 and stamp on #810 @ 5ea74e5e; landing #809; the follow-up PR from `atlas/dt-t6c-followups` after #809 lands; Prometheus R1 on T7-design.md.
 
 Next: T7 once Prometheus clears the design note.
+
+## 2026-10-27 18:35 devtools T6 follow-up PR + T7a (Tue session, 18:35-19:55; Atlas notes 15:20, 16:55)
+- **T6: done.** One follow-up PR, as the 15:20 note asked:
+  - **#814** (`atlas/dt-t6-followups` @ a81c00ab). It had already **landed** by 19:48, as 469a8779 on develop.
+  - It has all three items: the in-time Unavailable hover clears the outline; the forget test goes through `console_answered` (the Console arm, pulled out) and `close()`; `clearConsole()` resets `held_shown`, so the held line comes back on the next pump.
+  - Red before, by mutating each fix out against the final tests: 2 failed per run. App **67/0**.
+  - No campaign: the change is app-only. Receipt: `receipts/T6-followups-a81c00ab.md`.
+- **T7a: draft PR #815** (`atlas/dt-t7a` @ cb7622c6), which meets C1 to C5.
+  - **Before → after:** a fetch started before a 1.5 s `PageCmd::Block` showed **no** response record until the block ended (red at 77baefee). Now its response is read **through the devtools service** while the page is still blocked, in the doc the fetch started in.
+  - Live script requests make their Request record on the page thread at start, then run and record on a `rustkit-net` runtime. The page side holds an abort-on-drop guard: a navigation records one `cancelled` in the old doc, and a closed view frees its Inspector.
+  - Per C2, the runtime-or-fallback choice comes before `begin_request`.
+  - Per C3, a panic in the policy call records `engine failure: request task panicked`. A panic in `guard.response`/`fail` is outside the unwind; the code says so.
+  - Per C1(a), `brief_url` drops the query and fragment.
+  - Per C5, `DevtoolsQuery::Network` and `DevtoolsNetwork` carry the current doc, read under the records' lock.
+  - Other parts: the `MAX_LIVE_NET_TASKS` cap of 240; the `DiagContext` nav id plus the test switch and sink set on every poll; the kill switch `HIWAVE_NET_RUNTIME=0`.
+  - **Deviation D1:** one current-thread runtime, not two workers. With two workers, tasks raced to the policy's FIFO origin semaphore, and T2's combined fixture capped `/hang/4` instead of `/hang/6`. One thread first-polls tasks in spawn order, so slots go in request order.
+  - **Tests:** 1–5, 7 and 9–11 are present. Test 6 is T2's fixture, still green on the runtime. **Test 8 (delivery order) is not added.** Only test 1 was run red first.
+  - Engine **1138/0** at cb7622c6. The earlier heads were 1128/1 and 1135/2; the PR body explains both.
+  - Campaign **26/26, 1.1078%**, every case identical to T6d. Receipt: `receipts/T7a-pr-815-cb7622c6.md`.
+- **Owed on #815:**
+  - test 8;
+  - the 20-site A/B with the net runtime on and off (load was 7–10 all session);
+  - RSS and thread count;
+  - `Inspector` lock-hold p99 with the file sink on;
+  - panel rendering of the network list (a named follow-up).
+- **Not done:** no lock-hold measurement, and no panel HTML.
+- **Open PRs: 5** (#815, #812, #801, #787, #777).
+- **Checkouts:** `dt-t6fu-1835` and `dt-t7a-1855` are kept for Atlas to remove. The old `atlas/dt-t6c-followups` branch is superseded by #814.
+- **Leave to Atlas:** Prometheus R1 and the independent review on #815, including a ruling on D1.
+
+Next: #815's review findings. T7b (fold `rk-inserted-script` and `fetch_module` in, with the Send probe first) comes after #815's R1.
