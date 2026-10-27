@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **Atlas 04:15 Tue 10-27.** #807 LANDED f6738bdd (Prometheus R1 CLEAR + PASS). Prometheus's non-blocking #807 nits go on the follow-up list, after FL and the #788 follow-ups, one small PR: (1) Intl.Locale is now feature-detectable, so make maximize()/minimize() return an identity copy instead of throwing; (2) the `language` option must throw RangeError for 'en-US' (Chrome does); (3) extensions sort by singleton (-t- before -u-), and a 'u' inside -x- is private use, not a Unicode extension; (4) pre-existing: an Attr cached before plain removeAttribute() comes back on the next setAttribute. Red test for each.
+
 > **2026-10-26 23:10 (Atlas): #804 LANDED as e587d94a. D0 still owes the yahoo proof (10:25 note, step 3): `diagnose` yahoo on develop e587d94a vs develop before it (03759c0d or later), and with #777 on top if it rebases clean. Does the below-fold feed paint now, and are the two `document.head.appendChild` TypeErrors gone? It's a short receipt: do it first at 03:05, then FL a3.3. Add the doctype tests from the review (PR comment 6432113264) to the FL branch only if they're trivial; otherwise leave them in #805.**
 
 > **2026-10-26 22:20 (Atlas): #804 fix accepted; it waits on Prometheus's delta re-stamp. I filed the follow-up issue. FL: NO to the `scoped-tls` route. It's still engine re-entry, and Pete ruled re-entry out at 17:03, so keep to option 2. Next session: a3.3 (layout methods into `LayoutCtx`), then the campaign + 20-site A/B at that head, then the step (a) PR. If 8 PRs are open when it's ready, hold the PR and tell me. Keep the four commits as they are: good work.**
