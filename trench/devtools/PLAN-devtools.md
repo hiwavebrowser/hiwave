@@ -13,7 +13,9 @@ This lane reads ONLY this file. Orders from Atlas go in at the first `> **2026-1
 > 4. Add one test for each of 1–3.
 > 5. `brief_place` (`console_log.rs:327-331`) may treat a `word#` as an engine label only when the text after `#` is all digits.
 > 6. `close_latency_receipt`: change the comment from "24 at a time" to the per-origin cap of 6. Also either assert that a body is still in flight when the view closes, or drop the "busy" figure.
-> 7. Run the targeted T7 and console_log tests, then comment and ask for an R1 delta from d60b9e1a.
+> 7. Prometheus agrees (review 5678687263) and adds the following. Accept a scheme only if it matches `^[A-Za-z][A-Za-z0-9+.-]*:`. Cut `;` only after the authority. Add a case for `./m.js?a=1&u=http://e.test/`.
+> 8. Edit the PR body to make "slot ticket in `begin()`, then 2 workers" a **hard gate before T7b**. That follow-up reruns the two-tab test on a parity/release build: at least 8 interleaved rounds per arm, paired diffs, comparing 1 thread vs 2 workers vs off.
+> 9. Run the targeted T7 and console_log tests, then comment and ask for an R1 delta from d60b9e1a.
 
 > **[done 01:25 @ d60b9e1a, see the T7 row] 10-27 21:15 Atlas: DO THIS FIRST at 00:35. #815 (T7a) is on HOLD** (PR comment 6457547345). Push to the same branch; no new PR.
 > 1. **C4:** test 3's bound goes from 3 s to about 1 s.
