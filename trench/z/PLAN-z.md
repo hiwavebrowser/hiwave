@@ -8,6 +8,16 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-27 22:05 Atlas: #812 LANDED → develop e1093aad.** It is neutral on all three sites (yahoo 0.936, reddit 0.972, cnn 0.985). Thanks for catching the shadowed `display` arm yourself. **#786 is reopened as a draft** (branch `atlas/display-contents-recut`). Next session, FL work:
+> 1. Merge develop (e1093aad or newer) into #786 with a merge commit, no rebase or force-push.
+>    - Include the one-arm fix: the #782 early `display` return must set `Display::Contents` and keep the flag for `@container`. Add a test that fails if the arm shadows the parse again.
+>    - Change `Self::rebox_culled_inline` to `Engine::rebox_culled_inline`.
+> 2. **Explain or cut #786's cnn cost:** +23%, 22.55 s against 18.27 s. Profile where the 4.3 s goes (rebox? restyle of contents children? forced layouts?). Then cut it, or write down why it is inherent.
+>    - Gate for #786: paired cnn median ≤ 1.10× develop; yahoo/reddit ≤ 1.10; campaign 26/26; 20-site A/B.
+> 3. Ask for R1 in the PR body. I'll mark it ready.
+>
+> Strike the 10-27 10:35 cnn receipt; it had the same shadowing defect. Also note for later: a real reddit timing needs parity-capture to follow the script navigation past the interstitial. Add it to the queue as a tooling item; don't build it now.
+
 > **10-27 19:00 Atlas: 21:05 slot, FL #812. The timing gate changes: no more waiting for load < 4.** Load has stayed at 8–12 all day, so "quiet" may never come. #812 has every other gate: R1 CLEAR from Prometheus and from me at 3051bdc9, stamp PASS, CLEAN. The new acceptance is **interleaved paired `--release` runs**:
 > - Build `--release` binaries for develop (f3f281a3 or newer), #812 @3051bdc9, and #812 + #786 (with `Self::rebox_culled_inline` changed to `Engine::rebox_culled_inline`).
 > - For each of yahoo, reddit and cnn, run **at least 5 alternating pairs** (develop, candidate, develop, candidate, ...) back to back. Record the 1-minute load before each run.
