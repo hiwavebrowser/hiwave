@@ -1,0 +1,1 @@
+Triage tools from the 2026-10-28 hand-test session. The .py files expect to sit in <worktree>/scratch and the .mjs files in <worktree>/tools/parity_oracle (they import deterministic.mjs and use its node_modules). Pinned Chrome: reduce-scratch/cft. Frames they write go to renders-private/ht27 (private).

@@ -4329,3 +4329,36 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 - Worktrees removed: z-fltime-dev/-812/-786, z-fl786-orig, and the landed z-fl-step-b. Kept: z-fl786-reopen (PR branch being fixed).
 
 **Next session:** #786 item 2: log which mutation set the dirty mark before each forced layout on cnn. If some are writes no rule reads, don't mark them (cheap). Otherwise start the incremental forced build. Then paired cnn timing, campaign, A/B, and the R1 ask in the PR body.
+
+## 2026-10-28 03:05 Z-lane HT27 (hand-test triage) + FL (#786 cost) + AS (#788 follow-ups)
+
+**Before:** Pete's 10-27 hand test ("still CSS issues, minimal; netflix and railway most obvious, reddit too") had no triage. #786 failed its cnn cost gate at 1.234x with the cause unknown. The #788 follow-ups were not started.
+
+**After:**
+- **HT27 triage done** (table `## Hand test 10-27` in PLAN-z.md, receipt `2026-10-28-ht27-triage.md`). Five reduced red tests, all red on develop `e1093aad`, on `atlas/z-ht27-triage` @ `fb0097ae` (pushed, no PR):
+  - railway R1 `f2833197`: a complex selector inside `:is()`/`:where()`/`:not()` never matches. This is Tailwind v4's `dark:` variant: day image instead of dusk, logo invisible.
+  - railway R2 `7c4302bb`: a later `relative z-10` sibling paints under an earlier `absolute` one. The hero text, buttons and card are hidden under the image.
+  - railway R3 `fb0097ae`: an `<img>` with `height: 100%` in an `inset: 0` layer takes its aspect ratio.
+  - netflix N1 `7ba368b9`/`4a27464c`: the static position of an abspos flex child ignores `flex-end` overflow. The hero image is missing. The fix is not just the clamp (reverted, see the table).
+  - netflix N2 `430dc89f`: `window.matchMedia()` is a stub answering false. The form is stacked; this likely also covers the header and select.
+  - reddit is not reachable headlessly (challenge in both engines).
+- **FL #786 cost explained, not cut** (comment 6463423954, `tools/dirty_census.py`, receipts `2026-10-28-fl-786-*`):
+  - 72 forced layouts at ~170 ms each, every one after a real layout write (hide loops on `div class`/`style`).
+  - Chrome writes the same sequence (first run 24 `div class`).
+  - "Skip unread writes" would save 1 of 72; script-write incremental restyle is still logged-only.
+  - FL **blocked** on Atlas's call.
+- **AS #788 follow-ups** on `atlas/z-adopted-followups` @ `c4117b38`:
+  - Red tests `eb695ea4`, then fixes `723856d2` and `c4117b38`: observable `adoptedStyleSheets` (push/splice/length), `disabled`/`media` republish, `@media` wrapping, adopters as a Set.
+  - bindings 386/386, engine adopted 3/3, shadow 39/39, campaign 26/26 with 0 moved.
+  - 10k roots: adopt 2025 to 373 ms, RSS +6-8 MB.
+  - Roots are still held strongly (item 1 only in part).
+  - A/B no mover. **PR #816** opened at 04:05, needs R1.
+- **#786 amended gate** (after Atlas 03:50 accepted the cost; comment 6464418999):
+  - Paired timing: cnn 1.246 over 10 pairs (first 5: 1.253), yahoo 0.992, reddit 1.000.
+  - Campaign: 0 moved.
+  - A/B movers: weather 10.33%, apple 2.52% (further from Chrome: nav full height but grey, 3 of 11 items), google, microsoft, cnn and 4 small.
+  - R1 not asked.
+
+**Blockers / decisions for Atlas:**
+1. #786 (cost accepted 03:50): read the A/B movers as display: contents taking effect and ask R1, or reduce the apple nav first?
+2. HT27F order set by Atlas 03:50 (N2 first). Next session: N2 `matchMedia`, from red test `430dc89f`. Worktrees removed: z-fl786-dirty, z-786-gate, z-adopted-followups (pushed). Kept: z-ht27 (holds the develop parity/release binaries and the triage scratch; branch pushed).
