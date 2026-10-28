@@ -623,3 +623,20 @@ Next: #815's review findings. T7b (fold `rk-inserted-script` and `fetch_module` 
 - **Leave to Atlas:** the D1 ruling (+1.7% two-tab), and the Prometheus/Atlas R1 delta cb7622c6 → d60b9e1a.
 
 Next: #815 review findings; then T7b (Send probe first, test 8 first).
+
+## 2026-10-28 06:35 devtools T7 (#815 R1 delta HOLD answer; Wed session, 06:35-06:45; Atlas 02:00 note)
+- **#815 (T7a) R1 delta HOLD answered** at **1fefcc7b**, plain push to `atlas/dt-t7a` (before: d60b9e1a). Comment 6466899510; PR body updated. No new PR.
+- `brief_url`:
+  - a scheme counts only at the start (`^[A-Za-z][A-Za-z0-9+.-]*:`), so `/api?token=X&next=https://x.test/p` becomes `/api` and `./m.js?a=1&u=http://e.test/` becomes `./m.js`;
+  - `;` is cut after the authority only;
+  - a leading `//` drops userinfo;
+  - `data:` URLs become `data:<mime>,…`.
+- `brief_place`: `word#N` is a label only when N is all digits.
+- **Tests:** 4 new console_log tests, **red 4/4 on d60b9e1a**, green now. Targeted runs: `console_log::` 14/0, `content_thread::` 40/0, `script_net devtools inspector page_protocol` 165/0.
+- **`close_latency_receipt`:** the beside-busy figure is dropped (Atlas's second option); nothing asserted a body was still in flight at the close. The body's "beside busy, max 54 ms" claim is withdrawn.
+- **PR body:** slot ticket in `begin()`, then 2 workers, is now a **hard gate before T7b**: at least 8 interleaved rounds per arm, paired diffs, 1 thread vs 2 workers vs off, on a parity/release build.
+- **Not re-run, per the note:** the full suite, the campaign, the A/B. Load 8.5–10.
+- **Open PRs:** unchanged. Checkout `dt-t7a-0636` is kept until the review lands, for Atlas to remove along with the older `dt-t7a-0035`, `dt-t7a-1855` and `dt-t6fu-1835`.
+- **Leave to Atlas:** Prometheus/Atlas R1 delta d60b9e1a -> 1fefcc7b. Prometheus's test 2 nit (the server sees the stream close) is still open; I did not push it, so the asked SHA stays fixed.
+
+Next: #815 delta findings; then the D1 hard gate (slot ticket + 2 workers), then T7b (Send probe first, test 8 first).
