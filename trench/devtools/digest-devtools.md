@@ -596,3 +596,30 @@ Next: T7 once Prometheus clears the design note.
 - **Leave to Atlas:** Prometheus R1 and the independent review on #815, including a ruling on D1.
 
 Next: #815's review findings. T7b (fold `rk-inserted-script` and `fetch_module` in, with the Send probe first) comes after #815's R1.
+
+## 2026-10-28 00:35 devtools T7 (#815 HOLD answers; Wed session, 00:35-01:30; Atlas 21:15 note)
+- **#815 (T7a) HOLD answered**, pushed to `atlas/dt-t7a`: b4c9f720 (fixes), 522532b9 (receipt tests), **d60b9e1a** (env-parse test). Comment 6461395310 plus a short head note; body updated. No new PR.
+- **C4:** test 3 now asserts the Inspector is freed within **1 s** (was 3 s). Close-to-dead-`Weak` timings, n = 10 each: idle p50 36 ms / max 45 ms; beside 24 × 4 MB fetches on `rustkit-net`, p50 18 ms / max 54 ms.
+- **D1 receipts (one current-thread runtime), load 10–13:**
+  - 20-site A/B, `HIWAVE_NET_RUNTIME` on vs off: **B/A 1.014** over 19 clean sites. No pixel mover: every across-arm difference also appears within one arm.
+  - Two heavy tabs at once (cnn + yahoo in one process, 4 rounds each arm): **+1.7% / +1.3%**, in the same direction every round. Both are under the 5% threshold, so D1 is kept and a ruling is asked for.
+  - Named follow-up: take the slot ticket in `begin()` on the page thread, then 2 workers.
+- **Lock hold with the file sink on** (1 MB × 3, rotating): p50 8.7 µs, p99 15.3 µs, max 4.2 ms. Ring only: 3.5 µs / 10.5 µs / 1.5 ms. Sink I/O stays under the lock.
+- **RSS:** cnn medians 776.5 MB (on) vs 776.6 MB (off). yahoo and wikipedia are within 5 MB. Threads: +1 by construction; `ps -M` sampling can't resolve it.
+- **Nits done:**
+  - the poke now comes after the outcome is stored (oneshot);
+  - a `DiagContext` drop guard restores context on panic, and its doc is fixed;
+  - test 7 gains a failure reason that holds the URL;
+  - `brief_url` drops `;params` and `user:pass@`;
+  - the other mirror URL lines are scrubbed and the header narrowed;
+  - the kill-switch env parse has a test.
+- **Suite** 1139/0 @ b4c9f720 (1041 s). **Campaign** 26/26, mean 1.1078%, every case identical. Receipts: `receipts/T7a-hold-answer-522532b9.md`, `T7a-ab-netrt-522532b9.txt`, `camp-t7a-522532b9.log`, `T7a-receipt-522532b9.md`.
+- **Not done:**
+  - test 2 does not yet check that the server sees the stream close;
+  - test 8 and the ring clone are left for T7b;
+  - develop (e1093aad, #812) is not merged in; the PR reads MERGEABLE.
+  - The new receipt tests (C4 latency, lock hold, two tabs) were not run red; they are measurements.
+- **Open PRs: 5.** Checkout `dt-t7a-0035` is kept for Atlas to remove, along with `dt-t6fu-1835` and `dt-t7a-1855`.
+- **Leave to Atlas:** the D1 ruling (+1.7% two-tab), and the Prometheus/Atlas R1 delta cb7622c6 → d60b9e1a.
+
+Next: #815 review findings; then T7b (Send probe first, test 8 first).
