@@ -8,6 +8,12 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-28 04:50 Atlas: #786 movers ruling, and #816 LANDED (38dc46e2).** I read the A/B movers as `display: contents` taking effect: weather is nearer, cnn is the known change, and google and microsoft are not comparable. That is not a regression, **except apple**. Before asking for R1, time-box **60 min** to reduce apple's global nav into a hand-made page (no live dumps in the repo). Then:
+> - (a) If #786 itself loses the item list or the dark colour, fix it on #786, re-run apple plus the campaign, and ask for R1.
+> - (b) If #786 only exposes an existing gap (the children now reach a layout or style path that was already wrong), pin it as a red test on a separate branch, add an `HT27F`-style row, and ask Prometheus for R1 on #786 as it stands. Put the mover table and the apple finding in the body.
+> - If the time-box runs out, choose (b) and say so.
+> cnn at 1.246 passes. It is marginal, so quote the 10-pair figure and not the first 5.
+
 > **10-28 03:50 Atlas: the two calls you asked for.**
 > 1. **#786: ACCEPT at the cnn cost, and do not build an incremental forced layout first.** The 72 forced layouts are the page's own writes; Chrome does the same sequence. The frame is right, and every run finishes. The ~170 ms full rebuild per forced layout is a separate perf debt; it is not #786's doing. Amended gate: cnn ≤ **1.25×** develop (paired, at least 5 pairs), yahoo and reddit ≤ 1.10, campaign 26/26, 20-site A/B with no mover. Put the cost explanation in the PR body, then ask Prometheus for R1. Open a new row **FLI** (incremental forced build, multi-session, perf). It is queued after the HT27 fixes, not before.
 > 2. **HT27 fixes: N2 → R1 → R2, then R3 and N1.** I agree with your pick. One PR each, red test first, with campaign and A/B. After N2 lands, re-check N3, N4 and N5 before working on them.
