@@ -1,0 +1,99 @@
+secs 0.0 exit 0 forced 72
+  0  169.5 ms  insert:head: x6, setAttr:script:src:detached x4, setAttr:link:href:detached x3, setAttr:link:rel:detached x3, setAttr:link:as:detached x3, setAttr:link:type:detached x3
+  1  173.6 ms  setAttr:a:data-zjs x215, setAttr:a:data-zjs-cms_id x215, setAttr:a:data-zjs-canonical_url x215, setAttr:a:data-zjs-zone_id x215, setAttr:a:data-zjs-zone_name x215, setAttr:a:data-zjs-zone_type x215
+  2  168.7 ms  setAttr:div:class x1
+  3  168.3 ms  setAttr:div:class x1
+  4  170.3 ms  setAttr:div:class x1
+  5  167.7 ms  setAttr:div:class x1
+  6  167.3 ms  setAttr:div:class x1
+  7  167.0 ms  setAttr:div:class x1
+  8  167.4 ms  setAttr:div:class x1
+  9  167.3 ms  setAttr:div:class x1
+ 10  167.6 ms  setAttr:div:class x1
+ 11  167.3 ms  setAttr:div:class x1
+ 12  167.1 ms  setAttr:div:class x1
+ 13  167.4 ms  setAttr:div:class x1
+ 14  167.5 ms  setAttr:div:class x1
+ 15  167.4 ms  setAttr:div:class x1
+ 16  167.4 ms  setAttr:div:class x1
+ 17  167.5 ms  setAttr:div:class x1
+ 18  171.1 ms  setAttr:div:class x1
+ 19  168.5 ms  setAttr:div:class x1
+ 20  167.6 ms  setAttr:div:class x1
+ 21  167.7 ms  setAttr:div:class x1
+ 22  167.6 ms  setAttr:div:class x1
+ 23  167.4 ms  setAttr:div:class x1
+ 24  167.6 ms  setAttr:div:class x1
+ 25  168.4 ms  setAttr:a:style x2, setText:a: x1, setAttr:div:style x1, setInnerText:span: x1, removeAttr:button:data-zjs x1, removeAttr:button:data-zjs-action x1
+ 26  170.8 ms  setAttr:div:style x2
+ 27  168.7 ms  setAttr:div:style x1
+ 28  168.3 ms  setAttr:header:style x3
+ 29  168.3 ms  setAttr:div:style x17, setAttr:a:style x16, setAttr:nav:style x1
+ 30  169.0 ms  setAttr:div:style x1
+ 31  167.8 ms  setAttr:div:style x1
+ 32  167.8 ms  setAttr:div:style x1
+ 33  167.9 ms  setAttr:div:style x1
+ 34  168.0 ms  setAttr:div:style x1
+ 35  173.1 ms  setAttr:div:style x1
+ 36  169.7 ms  setAttr:div:style x1
+ 37  169.5 ms  setAttr:div:style x1
+ 38  169.0 ms  setAttr:a:data-zjs-navigation-location x257, setAttr:a:data-zjs-nav_location x257, setAttr:a:style x7, setAttr:div:class:detached x2, setAttr:div:role:detached x2, setAttr:div:tabindex:detached x2
+ 39  169.3 ms  setAttr:li:class x1
+ 40  169.3 ms  setAttr:div:class:detached x2, insert:div: x2, setAttr:div:tabindex x1
+ 41  169.4 ms  setAttr:div:class:detached x2, insert:div: x2
+ 42  170.3 ms  setAttr:div:style x8, setAttr:a:style x7, setAttr:nav:style x1
+ 43  169.7 ms  setAttr:div:style x1
+ 44  169.7 ms  setAttr:div:style x1
+ 45  175.6 ms  setAttr:div:style x1
+ 46  178.9 ms  setAttr:div:style x1
+ 47  169.2 ms  setAttr:div:style x1
+ 48  169.1 ms  setAttr:div:style x1
+ 49  168.7 ms  setAttr:div:style x1
+ 50  169.4 ms  setAttr:div:style x1
+ 51  176.0 ms  setAttr:div:style x1
+ 52  172.4 ms  setAttr:div:class x147, setAttr:a:style x8, setAttr:nav:style x1
+ 53  170.9 ms  setAttr:div:style:detached x2, setAttr:div:id:detached x1, setAttr:div:class:detached x1, insert:body: x1
+ 54  170.5 ms  setAttr:div:style:detached x2, remove:body: x1, setAttr:div:id:detached x1, setAttr:div:class:detached x1, insert:body: x1
+ 55  170.6 ms  setAttr:div:style:detached x2, remove:body: x1, setAttr:div:id:detached x1, setAttr:div:class:detached x1, insert:body: x1
+ 56  170.7 ms  setAttr:div:style:detached x2, remove:body: x1, setAttr:div:id:detached x1, setAttr:div:class:detached x1, insert:body: x1
+ 57  170.4 ms  setAttr:div:style:detached x2, remove:body: x1, setAttr:div:id:detached x1, setAttr:div:class:detached x1, insert:body: x1
+ 58  170.8 ms  setAttr:div:style:detached x2, remove:body: x1, setAttr:div:id:detached x1, setAttr:div:class:detached x1, insert:body: x1
+ 59  170.1 ms  remove:body: x1, setAttr:script:charset:detached x1, setAttr:script:data-domain-script:detached x1, setAttr:script:type:detached x1, setAttr:script:src:detached x1, insert:head: x1
+ 60  170.9 ms  setAttr:div:style x18, insert:body: x1, insert:div: x1
+ 61  177.0 ms  setAttr:a:style x51, setAttr:h2:style x7, setAttr:p:style x6, insert:div: x5, setAttr:img:style x4, setAttr:div:style x2
+ 62  174.8 ms  setAttr:div:style x9, setAttr:a:style x8, setAttr:nav:style x1
+ 63  170.6 ms  setAttr:div:style x1
+ 64  170.6 ms  setAttr:div:style x1
+ 65  170.7 ms  setAttr:div:style x1
+ 66  170.7 ms  setAttr:div:style x1
+ 67  170.6 ms  setAttr:div:style x1
+ 68  170.4 ms  setAttr:div:style x1
+ 69  170.2 ms  setAttr:div:style x1
+ 70  170.4 ms  setAttr:div:style x1
+ 71  170.6 ms  setAttr:div:style x1
+write shape -> forced layouts it preceded
+   35  setAttr:div:style
+   25  setAttr:div:class
+    9  setAttr:div:class:detached
+    8  insert:body:
+    7  setAttr:a:style
+    6  setAttr:div:id:detached
+    6  setAttr:div:style:detached
+    6  remove:body:
+    5  setAttr:nav:style
+    5  insert:div:
+    3  insert:head:
+    3  setAttr:script:src:detached
+    3  setAttr:script:type:detached
+    2  setAttr:script:data-uid:detached
+    2  setAttr:script:async:detached
+    2  setText:a:
+    2  setAttr:header:style
+    1  setAttr:link:href:detached
+    1  setAttr:link:rel:detached
+    1  setAttr:link:as:detached
+    1  setAttr:link:type:detached
+    1  setAttr:html:class
+    1  setAttr:iframe:style:detached
+    1  setAttr:iframe:name:detached
+    1  setAttr:script:defer:detached
