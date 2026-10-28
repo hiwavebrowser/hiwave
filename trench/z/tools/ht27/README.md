@@ -1,1 +1,3 @@
 Triage tools from the 2026-10-28 hand-test session. The .py files expect to sit in <worktree>/scratch and the .mjs files in <worktree>/tools/parity_oracle (they import deterministic.mjs and use its node_modules). Pinned Chrome: reduce-scratch/cft. Frames they write go to renders-private/ht27 (private).
+
+10-28 09:05 session: ev.py (expression file -> full output file), rk_tree.py (engine box tree of a static page), px.py (frame pixels + display list), apple_check.py (live apple vs banked Chrome frame), wait_for.py (poll a file for a regex), nav.html (hand-made apple-nav shape: contents + display: inherit in a flex list).

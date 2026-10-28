@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><style>
+body { margin: 0; font: 12px/1 Arial, sans-serif; }
+ul, li { margin: 0; padding: 0; list-style: none; }
+nav { height: 44px; background: rgb(29, 29, 31); }
+#list { display: flex; justify-content: space-between; height: 44px; width: 600px; }
+.item { height: 44px; box-sizing: border-box; }
+#menu { display: contents; flex-grow: 1; }
+#flyout { display: inherit; margin: 0; }
+#menulist { display: inherit; justify-content: space-evenly; height: 100%; }
+a { display: flex; align-items: center; padding: 0 8px; height: 44px; color: white; text-decoration: none; }
+</style></head><body>
+<nav><ul id="list">
+  <li class="item" id="logo"><a>L</a></li>
+  <li class="item" id="menu"><div id="flyout"><div id="menulist">
+    <div class="item" id="i1"><a>Store</a></div>
+    <div class="item" id="i2"><a>Mac</a></div>
+    <div class="item" id="i3"><a>iPad</a></div>
+  </div></div></li>
+  <li class="item" id="search"><a>S</a></li>
+</ul></nav>
+</body></html>

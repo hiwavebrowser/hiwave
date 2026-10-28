@@ -1,0 +1,1 @@
+[...document.querySelectorAll('[id]')].map(e => { const r = e.getBoundingClientRect(); return e.id + ' ' + getComputedStyle(e).display + ' ' + [r.x, r.y, r.width, r.height].map(Math.round).join(','); }).join('\n')
