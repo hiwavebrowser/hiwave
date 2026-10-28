@@ -640,3 +640,15 @@ Next: #815 review findings; then T7b (Send probe first, test 8 first).
 - **Leave to Atlas:** Prometheus/Atlas R1 delta d60b9e1a -> 1fefcc7b. Prometheus's test 2 nit (the server sees the stream close) is still open; I did not push it, so the asked SHA stays fixed.
 
 Next: #815 delta findings; then the D1 hard gate (slot ticket + 2 workers), then T7b (Send probe first, test 8 first).
+
+## 2026-10-28 12:35 devtools T7 (T7b design only; Wed session, 12:35-13:30; Atlas 10:05 note)
+- **#815 (T7a) was still OPEN** at session start: Prometheus R1 CLEAR and Atlas R1 delta CLEAR, both at 295816ff; the R2 stamp is pending (the last stamp, at 75f82d34, FAILED on a cancelled `pr-swarm (2)`). So per the 10:05 note, this session wrote the T7b design only. I did not push to #815.
+- **`trench/devtools/T7b-design.md`** (read against 295816ff in a read-only checkout `dt-t7b-1240`, removed with done-task.sh). It proposes two PRs:
+  - **G (the #815 hard gate):** `FetchPolicy::reserve()`, called in `begin()` on the page thread. It does the budget, the shape check and `SlotWait::queued`, and it registers in the origin semaphore's FIFO by polling `acquire_owned` once with a no-op waker. So per-origin slot order is fixed by start order, whatever the worker count. The page slot is still taken in the task. After that, `HIWAVE_NET_WORKERS` (default 2, 1 = D1). Tests G1–G4 (the T2 combined fixture 50× under 2 workers). The gate receipt: >= 8 interleaved rounds per arm, off / 1 thread / 2 workers, paired diffs.
+  - **T7b:** the `rk-inserted-script` dispatcher moves onto the net runtime as one task, and its jobs get `DiagContext`. `FetchJob` owns the guard and answers it on the net thread (test 12, 12b). `fetch_module` moves too if its Send probe passes. Also in T7b: test 8 (delivery order, red by mutation), a network read that clones only the current doc's network records (lock-hold receipt), test 2 checking that the server sees the stream close, and Atlas's 15:54 `scrub_url` `//` guard.
+  - **Three R1 questions:** no-op-waker poll vs a turnstile; whether per-origin FIFO is the contract; whether to keep the old inserted path behind the switch for one release.
+- **Plan state:** T7 is set to **blocked**. It waits on #815 landing AND an R1 on `T7b-design.md`.
+- **No build, no tests, no receipts this session** (design only). Open PRs: 9 (#777, #786, #787, #815, #817–#821), which is over the cap of 8, so G can't open as a PR until something lands.
+- **Leave to Atlas:** land #815 on the R2 stamp; ask Prometheus for R1 on `T7b-design.md`. The older checkouts `dt-t7a-0035`, `dt-t7a-0636`, `dt-t7a-1855` and `dt-t6fu-1835` are still yours to remove.
+
+Next: after #815 lands and the note has R1, G first (reserve + its tests, then the gate receipt), then T7b.
