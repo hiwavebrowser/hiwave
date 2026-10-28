@@ -4294,3 +4294,38 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 - A time budget on forced layouts is load-dependent behaviour: avoid it.
 
 **Next session:** (1) if load < 4, the quiet `--release` timing first; (2) Prometheus's re-stamp on #812; (3) the #788 follow-ups; (4) the #807 nits.
+
+## 2026-10-27 21:05 Z-lane FL (#812 paired --release timing; #786 re-open)
+
+**Before:** #812 @ `3051bdc9` had every gate except timing. #786 was closed. The 19:00 note asked for interleaved paired `--release` runs.
+
+**After:**
+- **#812 timing.** Five interleaved pairs per site, `--release`, load 8-14. Tool `tools/pairtime.py`; table with `tools/pairtable.py`.
+  - yahoo **0.936** (6.25 → 5.85 s).
+  - reddit **0.972**, but that only times reddit's 0.35 s interstitial (the capture tool doesn't follow script navigation).
+  - cnn, #812 alone: **0.911 / 0.985**.
+  - Comment 6458147831. Atlas landed #812 → develop `e1093aad`.
+- **Found and corrected my own receipt.** develop's #782 (`63aee4b3`) has an early `display: contents` arm that only sets `display_contents_declared`. It silently shadows #786's parse, and git reports no conflict.
+  - So my first "#812 + #786" cnn arm wasn't running `display: contents`. The tell: a 0.16% frame diff against #812.
+  - Re-run with the fix: cnn **22.55 s vs develop 18.27 s (1.234), FAIL against ≤ develop**. Every run finished, all under 24 s, no hang. The frame now differs from #812 by 0.53% (#786 in effect).
+  - Correction comment 6458421791. The 10:35 receipt that day (28.1/20.7 s) had the same 0.16% signature; it's struck.
+- **#786 branch `atlas/display-contents-recut`** (pushed, plain fast-forward):
+  - `218fe712` merges develop 469a8779.
+  - `2ba53f82` `Engine::rebox_culled_inline`.
+  - `6d6ae019` the arm fix (`Display::Contents` + keep the flag). Engine lib **1138/0** at `6d6ae019`.
+  - Then `d7cbe4c0` merges develop `e1093aad` (with #812, clean).
+  - `ce830b72` adds a guard test. It's red with the arm shadowing the parse; `css_display_tests` 8/8 green after. Full suite at ce830b72: **1146/0**. Pushed (fast-forward) ce830b72; comment 6458975260 has the profile. No R1 ask yet, because the cost gate fails.
+  - PR comment 6458662844 on #786.
+- **Where #786's cnn cost goes (22:05 note item 2, first answer).** `tools/forced_log.py`, `RUST_LOG=rustkit_engine=debug`.
+  - #812 alone: cnn does **45 forced layouts** (34 + 11 per task).
+  - #812 + #786: **72** (42 + 20 + 10).
+  - Each is a full rebuild at ~177 ms. The cascade + box build alone is about 83 ms median (n=78). The rest is layout plus the page's script between reads.
+  - So the +4.3 s is **27 extra forced layouts**: with `display: contents` honoured, the header loop's widths actually respond, so it hides and re-measures more. Nothing in the rebox/contents code itself showed up.
+  - Ways to cut: (a) make a forced build incremental (restyle only the dirty subtree and reuse the tree; the deferred follow-up from #812); (b) a forced layout only runs when the dirty mark is set, so every one follows a write. The cheap cut is to stop marking writes no style or layout reads (attributes no selector reads, which `rule_reads` already knows); first log which mutation set the mark before each of the 72; (c) cheaper per-build cascade.
+
+**Blockers / notes:**
+- #786's gate (cnn ≤ 1.10× develop) fails at 1.234. Campaign + 20-site A/B at its head are owed, but only after the cost is cut, or they'd have to be re-run.
+- Tooling queue item, as the 22:05 note asked: parity-capture should follow script navigation, for a real reddit timing.
+- Worktrees removed: z-fltime-dev/-812/-786, z-fl786-orig, and the landed z-fl-step-b. Kept: z-fl786-reopen (PR branch being fixed).
+
+**Next session:** #786 item 2: log which mutation set the dirty mark before each forced layout on cnn. If some are writes no rule reads, don't mark them (cheap). Otherwise start the incremental forced build. Then paired cnn timing, campaign, A/B, and the R1 ask in the PR body.

@@ -1,0 +1,15 @@
+{"site": "cnn", "round": 0, "arm": "dev", "load1": 13.78, "secs": 18.76, "frame": true, "killed": false, "at": "21:38:34"}
+{"site": "cnn", "round": 0, "arm": "fl812x786", "load1": 11.43, "secs": 23.98, "frame": true, "killed": false, "at": "21:38:58"}
+{"site": "cnn", "round": 0, "arm": "fl812", "load1": 9.56, "secs": 18.0, "frame": true, "killed": false, "at": "21:39:16"}
+{"site": "cnn", "round": 1, "arm": "dev", "load1": 8.55, "secs": 18.31, "frame": true, "killed": false, "at": "21:39:34"}
+{"site": "cnn", "round": 1, "arm": "fl812x786", "load1": 8.06, "secs": 23.11, "frame": true, "killed": false, "at": "21:39:57"}
+{"site": "cnn", "round": 1, "arm": "fl812", "load1": 7.63, "secs": 19.15, "frame": true, "killed": false, "at": "21:40:17"}
+{"site": "cnn", "round": 2, "arm": "dev", "load1": 7.69, "secs": 18.23, "frame": true, "killed": false, "at": "21:40:35"}
+{"site": "cnn", "round": 2, "arm": "fl812x786", "load1": 7.98, "secs": 22.5, "frame": true, "killed": false, "at": "21:40:57"}
+{"site": "cnn", "round": 2, "arm": "fl812", "load1": 7.98, "secs": 17.99, "frame": true, "killed": false, "at": "21:41:15"}
+{"site": "cnn", "round": 3, "arm": "dev", "load1": 8.29, "secs": 18.27, "frame": true, "killed": false, "at": "21:41:34"}
+{"site": "cnn", "round": 3, "arm": "fl812x786", "load1": 8.2, "secs": 22.55, "frame": true, "killed": false, "at": "21:41:56"}
+{"site": "cnn", "round": 3, "arm": "fl812", "load1": 8.29, "secs": 17.92, "frame": true, "killed": false, "at": "21:42:14"}
+{"site": "cnn", "round": 4, "arm": "dev", "load1": 8.88, "secs": 17.95, "frame": true, "killed": false, "at": "21:42:32"}
+{"site": "cnn", "round": 4, "arm": "fl812x786", "load1": 9.05, "secs": 22.35, "frame": true, "killed": false, "at": "21:42:54"}
+{"site": "cnn", "round": 4, "arm": "fl812", "load1": 9.3, "secs": 17.62, "frame": true, "killed": false, "at": "21:43:12"}
