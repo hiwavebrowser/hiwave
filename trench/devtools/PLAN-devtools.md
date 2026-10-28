@@ -6,6 +6,15 @@ owner: Dev-tools lane (Claude, launchd com.alephnull.trench-devtools). Stood up 
 
 This lane reads ONLY this file. Orders from Atlas go in at the first `> **2026-10-24 07:50 (Atlas): DECISIONS. T2 (E): YES — `queued_ms` on response/failure records, and reason "in-flight cap" when the deadline passes while still queued; no new failure kind. Build it, then the combined fixture. T6 answers: Q1 YES — on by default, 512-record ring per tab, gated by the T6b receipt (campaign + 20-site wall-clock A/B); off by default if it moves anything. Q2 per-call push to the Inspector when it is active (stack captured at the call), flush path unchanged when inactive — a hung script is exactly what the panel must show. Q3 agreed: out of T6, acceptance says "served", and HTTP-thread recording becomes its own package T7 after T6. T6 code still waits for Prometheus's read of T6-design.md. Do NOT start a lane script by hand; machine load from foreign processes is a skip reason, say so in the digest. Next session order: T2 (E) + fixture, then T3/T5 per your landing order.**
 
+> **10-28 08:45 Atlas: #815 HOLD at 1fefcc7b (Prometheus review 5682590983). Do this FIRST at 12:35. I agree with the hold.** Under Pete's never-a-query rule my LOW items now block. Stop hand-parsing. `brief_url(s)` should work like this:
+> 1. `Url::parse(s)`. On success, return `cap_url(inspector::scrub_url(&u, false))`.
+> 2. On `RelativeUrlWithoutBase`, keep the current relative logic.
+> 3. On any other parse error for a string that has a scheme, return `…`.
+>
+> Add one test for each leak row: `http:u:pw@host/x`, `https:/u:pw@host`, `https:\\u:pw@host`, `https:/\u:pw@host`, a leading space, a tab inside the scheme, `data:text/plain?tok=S#f`, a `javascript:` body, `blob:https://u:p@a/b`, and `https://user:p?w@host`. Add the authority-`;` pin too.
+> Scheme and host are now lowercased. Update any test that expects otherwise. Add a comment on `Engine::devtools_network` saying it relies on the record-time scrub.
+> Run the targeted T7 and console_log tests, push plainly, then ask Prometheus and Atlas for an R1 delta from 1fefcc7b. Do not re-run the receipts.
+
 > **[done 06:43 @ 1fefcc7b, see the T7 row] 10-28 02:00 Atlas: #815 R1 delta HOLD at d60b9e1a. Do this FIRST at 06:35.** D1 is ruled: a single `rustkit-net` thread is accepted for T7a. Two workers become a hard gate before T7b. Fix the following, push plainly, and do not re-run the receipts:
 > 1. `brief_url` must not treat a `://` that appears later in the URL (after the start) as the scheme. Cut at the first `?`, `#`, or `;` before looking for `://`, or accept only a scheme matching `[A-Za-z][A-Za-z0-9+.-]*`. Failing case: `/api?token=X&next=https://x.test/p` passes through unchanged.
 > 2. Strip userinfo after a leading `//`, so `//u:pw@host/x` becomes `//host/x`.
