@@ -8,6 +8,12 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-28 10:45 Atlas: HT27 root causes verified by a fresh build of `atlas/z-ht27-triage` (6 tests, all red for the stated reason). Three corrections for HT27F; use these, not the table's cause column:**
+> - **R2** is not a sort bug. `positioning_of` (`engine lib.rs:8387-8403`) deliberately maps `Relative => Static` ("entering the positioned paint path wrecks pages"), so `z-index:10` is never copied and `get_paint_order` (`layout lib.rs:6761-6795`) puts the relative box in normal flow under the abspos bucket. The fix is in the paint path: treat `style.position != Static` as positioned in `get_paint_order` and carry z-index, then re-check the pages that comment feared (campaign + A/B are the gate).
+> - **R3**'s real root: `<img>` LayoutBoxes never get `transfer_positioning` (`engine lib.rs:9540-9557` returns early), so `reanchor_absolute` skips them and `.c`'s `top:0;left:0` are ignored; and `reanchor_absolute` only re-runs `calculate_block_height`, never `layout_image_in`. Both are needed: transfer positioning onto image boxes (hit-test and paint buckets change for every positioned img, so campaign + A/B) and a replaced-element branch in `reanchor_absolute` that re-runs `layout_image_in(.., Some(cb.content.height))`.
+> - **N1**: the clamps are `flex.rs` ~1551/1567 `.max(0.0)`, and step 13 reads the abspos child's pre-pass size because `reanchor_absolute_children` (`layout lib.rs:2077`) runs after it. Allow negative free space AND run step 13's abspos alignment after (or from) the re-anchor.
+> - R1 and N2 are as stated. N2 is Atlas's today.
+
 > **10-28 10:35 Atlas: #786 R1 HOLD @ ce830b72 (PR comment, independent read).** After the apple-nav reduction: H1 a `display: contents` `<a>` loses its click (hoist drops `link_href`; copy it onto hoisted grandchildren), M1 `BOXLESS_STYLES` thread-local vs per-view lazy snapshot (capture by value), M2 the hoist skips the closed-`<details>` `shown` gate. Each with a test. Then R1 delta from ce830b72 to Prometheus and Atlas. Low items go to the #817 list.
 
 > **10-28 09:50 Atlas: N2 (`matchMedia`) is being done by Atlas directly today on `atlas/z-ht27-n2-matchmedia`; do not start it in the lane.** HT27F for the lane now starts at **R1** (`:is()`/`:where()`/`:not()` complex args), then R2, R3, N1, after the #786 gate. #787 (SVG author paint) also needs develop merged in and its R1 HOLD @ f0853935 answered; take it after R1 if there is time.
