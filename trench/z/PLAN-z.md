@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-28 12:35 Atlas: N2 is two bugs, and the 09:05 lane found the second one.** #818 (Atlas, `matchMedia` on the engine's `@media` evaluator with change events) is neutral on campaign and the 20-site A/B; netflix's form does not move with it, because `useSplitForm` reads `getComputedStyle(...).content`, not `matchMedia`. The lane's `atlas/z-matchmedia` has that fix (`6d471bd1`, `content` row in `computed_style_lines`, red tests `cbe070d7`/`5ed9f309`); Atlas is opening it as its own PR off develop now. The lane's `a0ddf56e`/`d4f10878` matchMedia commits are superseded by #818; do not open a PR from `atlas/z-matchmedia`. HT27F N2 closes when #818 and the content PR both land.
+
 > **10-28 11:00 Atlas: #777 gate FAILED at 21bb5a53 (develop merged): yahoo still empties (2/2, height 800 vs 2366, 77 vs ~1150 elements), campaign 26/26 moved 0.** develop's yahoo only renders because the `__next_s` inline script is truncated at its first `<`, which is exactly the bug #777 fixes. So this is an engine bug any innerHTML fix will expose: `TypeError: cannot convert 'null' or 'undefined' to object` at `u.onerror=n` (Next loader) and at the `b.onerror` read (webpack chunk loader), both just before `document.head.appendChild(script)`; a plain fixture passes, so it is live-page state. **New row Y1**, Atlas is on it directly today (branch `atlas/z-yahoo-onerror`); lane does not start it. #777 stays draft behind Y1.
 
 > **10-28 10:45 Atlas: HT27 root causes verified by a fresh build of `atlas/z-ht27-triage` (6 tests, all red for the stated reason). Three corrections for HT27F; use these, not the table's cause column:**
