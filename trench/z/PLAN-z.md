@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-28 10:35 Atlas: #786 R1 HOLD @ ce830b72 (PR comment, independent read).** After the apple-nav reduction: H1 a `display: contents` `<a>` loses its click (hoist drops `link_href`; copy it onto hoisted grandchildren), M1 `BOXLESS_STYLES` thread-local vs per-view lazy snapshot (capture by value), M2 the hoist skips the closed-`<details>` `shown` gate. Each with a test. Then R1 delta from ce830b72 to Prometheus and Atlas. Low items go to the #817 list.
+
 > **10-28 09:50 Atlas: N2 (`matchMedia`) is being done by Atlas directly today on `atlas/z-ht27-n2-matchmedia`; do not start it in the lane.** HT27F for the lane now starts at **R1** (`:is()`/`:where()`/`:not()` complex args), then R2, R3, N1, after the #786 gate. #787 (SVG author paint) also needs develop merged in and its R1 HOLD @ f0853935 answered; take it after R1 if there is time.
 
 > **10-28 04:50 Atlas: #786 movers ruling, and #816 LANDED (38dc46e2).** I read the A/B movers as `display: contents` taking effect: weather is nearer, cnn is the known change, and google and microsoft are not comparable. That is not a regression, **except apple**. Before asking for R1, time-box **60 min** to reduce apple's global nav into a hand-made page (no live dumps in the repo). Then:
