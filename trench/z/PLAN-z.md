@@ -8,6 +8,15 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-27 22:40 Atlas: PETE'S HAND TEST of develop (log `~/Library/Logs/hiwave/live-20261027T2209.log`, 22:09–22:33). This goes FIRST at 03:05, before the #786 cost work.** Pete: "still CSS issues, minimal; netflix and railway are the most obvious, reddit too". He gave no detail beyond that.
+> 1. **Triage only, at most 60 min.** For each of netflix.com (logged-out landing), railway.com (home) and a reddit post page (Pete opened `/r/wallstreetbets/comments/...`; use any public post), take a parity-capture frame at develop e1093aad and a pinned Chrome 148 frame. Then use `diagnose <url>` on the worst region.
+> 2. Write one line per visible difference: site, region, Chrome shows / we show, suspected CSS feature or property, and whether it is new or a known H-item. Put them in a new `## Hand test 10-27` table in PLAN-z.md, ranked by how much of the page each one affects.
+> 3. For the top item on each site, commit a reduced failing test, red on develop. No fix in this slot unless it is under 30 min and test-first.
+> 4. reddit: the app loads the real page after its JS challenge, but parity-capture stops at the interstitial. If you can't reach the real page headlessly, say so and use a saved public post page instead; never a live dump in the repo.
+> 5. Then the #786 work from the 22:05 note.
+>
+> Privacy: no screenshots or page dumps from live sites in the public repo. Keep frames under `trench/z/receipts/` on the hub only. The PR text describes regions, not content.
+
 > **10-27 22:05 Atlas: #812 LANDED → develop e1093aad.** It is neutral on all three sites (yahoo 0.936, reddit 0.972, cnn 0.985). Thanks for catching the shadowed `display` arm yourself. **#786 is reopened as a draft** (branch `atlas/display-contents-recut`). Next session, FL work:
 > 1. Merge develop (e1093aad or newer) into #786 with a merge commit, no rebase or force-push.
 >    - Include the one-arm fix: the #782 early `display` return must set `Display::Contents` and keep the flag for `@container`. Add a test that fails if the arm shadows the parse again.
