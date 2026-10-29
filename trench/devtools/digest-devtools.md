@@ -683,3 +683,21 @@ Next: after #815 lands and the note has R1, G first (reserve + its tests, then t
 - **Checkout `dt-t8-1240` is kept** (acceptance not complete). No `gh pr ready`; that is left to Atlas.
 
 Next: the quiet-hour gate rerun on #827 (load < 8), then the 20-site A/B; then R1.
+
+## 2026-10-29 18:35 devtools T8 (#827 gate rerun, A/B, L2 pin; Thu session, 18:35-19:05; Atlas 13:50 + 15:30 notes)
+- **#827** `atlas/dt-t8` df6a05af -> **c041ae21** (one test-only commit). Receipts comment: issuecomment-6510566649. Still a draft: `gh pr ready` needs approval on this seat, so Atlas flips it.
+- **(1) Three-arms rerun, INDICATIVE.** Load at round start was 22 -> 8.3 and never under 8. It was 9.5 before the lane started anything, so it came from outside.
+  - cnn: w2-w1 -0.6%, w2-off -0.0%.
+  - yahoo: w2-w1 +1.0%, w2-off -1.0%.
+  - Spreads are about half those of the 13:10 run. Network records are the same in every arm (cnn 110 every run; yahoo 254-258). 24/24 runs ok.
+- **(2) 20-site A/B, off vs w2 @ df6a05af: B/A 0.969 over 17 clean sites, no pixel mover.**
+  - lyft, linkedin and cnn each lost one capture and are dropped. lyft's A-arm 0.3 s failure and linkedin's served variant both repeat the T7a pattern.
+- **(3) L2 pin** `two_origins_competing_for_the_page_slot_keep_per_origin_order`: per-origin order holds with two origins sharing one page slot, nothing starves, and the cross-origin order is not pinned.
+  - Red by mutation: d,c,b,a. rustkit-net 105/0, 5 runs.
+  - **Wording mismatch for Atlas:** the 15:30 note says "page slot in reservation order", but the code does not reserve the page slot, by design (starvation), and Prometheus's L2 asks for the per-origin-only pin. I followed Prometheus. If Atlas wants the cross-origin page-slot order pinned, that is a code change, not a test.
+- Receipts: `receipts/T8-gate-ab-l2-c041ae21.md`, `T8-three-arms-1835-df6a05af.log`, `T8-ab-w2-df6a05af.txt`. New tool: `tools/absum.py` (A/B wall clock + mover check).
+- No noop-cargo shim was used this session; every build went through z-cargo.py. `dt-t8-1240` was already gone at start. `dt-t8-1835` removed (done-task.sh).
+- Develop moved to 831cf6f7 (#825/#777/#824/#826). GitHub still reports #827 MERGEABLE; no develop merge done.
+- Not done: G1 as a 50x loop; a quiet (<8) three-arms gate run.
+
+Next: Atlas flips #827 ready and lands it (R1 CLEAR @ df6a05af; the delta is test-only). The lane is idle on T8 unless a review asks for something.
