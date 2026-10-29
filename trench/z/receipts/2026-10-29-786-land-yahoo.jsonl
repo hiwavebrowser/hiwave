@@ -1,0 +1,10 @@
+{"site": "yahoo", "round": 0, "arm": "develop", "load1": 9.82, "secs": 5.13, "frame": true, "killed": false, "at": "09:49:38"}
+{"site": "yahoo", "round": 0, "arm": "c786", "load1": 9.35, "secs": 4.82, "frame": true, "killed": false, "at": "09:49:42"}
+{"site": "yahoo", "round": 1, "arm": "develop", "load1": 8.76, "secs": 4.64, "frame": true, "killed": false, "at": "09:49:47"}
+{"site": "yahoo", "round": 1, "arm": "c786", "load1": 8.3, "secs": 6.04, "frame": true, "killed": false, "at": "09:49:53"}
+{"site": "yahoo", "round": 2, "arm": "develop", "load1": 7.96, "secs": 6.81, "frame": true, "killed": false, "at": "09:50:00"}
+{"site": "yahoo", "round": 2, "arm": "c786", "load1": 6.89, "secs": 5.21, "frame": true, "killed": false, "at": "09:50:05"}
+{"site": "yahoo", "round": 3, "arm": "develop", "load1": 6.9, "secs": 5.71, "frame": true, "killed": false, "at": "09:50:11"}
+{"site": "yahoo", "round": 3, "arm": "c786", "load1": 6.66, "secs": 7.15, "frame": true, "killed": false, "at": "09:50:18"}
+{"site": "yahoo", "round": 4, "arm": "develop", "load1": 6.77, "secs": 8.6, "frame": true, "killed": false, "at": "09:50:27"}
+{"site": "yahoo", "round": 4, "arm": "c786", "load1": 6.2, "secs": 7.07, "frame": true, "killed": false, "at": "09:50:34"}

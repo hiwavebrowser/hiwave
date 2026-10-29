@@ -4387,3 +4387,40 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 2. N1: (a) hold until a reduced netflix hero-stacking red test and its fix (lane pick; first step is a pinned-Chrome read of the h1 chain's position/z-index, 60 min), or (b) land after R2 with the hero text hidden meanwhile.
 3. The #786 land receipts at 0b072190 (17:30 note, ordered for the 21:05 lane) were never run. Nobody has posted them; this session did HT27F per the 00:45 order.
 4. The hub had uncommitted N2 leftovers from 10-28 10:35-10:45 (the receipts `2026-10-28-ht27f-n2*`/`-817-receipt.json`, ht27 tools, a PLAN cause-column correction). I left the untracked files as they were. The two tracked diffs were reverted to pull and saved to `.worktrees/zhub-leftover-1028.diff`; the PLAN part is an N2 cause correction that is moot now N2 has landed.
+
+## 2026-10-29 10:15 Z-lane FL (#786 land receipts) + HT27F N1b
+
+**Before:**
+- The #786 land receipts at `0b072190` were owed (17:30 note).
+- N1 was held because netflix's collage covered the hero text and the email form.
+
+**After:**
+- **#786 receipts posted** (comment 6498564406; hub `2026-10-29-786-land-*`).
+  - Measured as `0b072190` merged onto develop `662b1651` (#821, #815 and #818 came after its last develop merge).
+  - Timing, paired `--release`: cnn **1.166** (10 pairs, load 9–21), yahoo 1.058, reddit 0.971. All pass.
+  - One candidate cnn run hit the 60 s capture limit with no frame (load 20).
+  - Campaign 26/26, 0 moved.
+  - A/B: the 10-28 movers, plus **github 0.63%**. github's header is now one row with Sign up, as in Chrome, but more pixels are off in that band.
+  - #786 still merges clean onto develop `29fb998c`.
+- **N1b built: `atlas/z-ht27-n1b-stacking` @ `0e685e6d`** (red `288ee1f1`), no PR.
+  - Pinned-Chrome read: netflix's text is a `static; z-index: 3` **flex item** next to the absolute collage (Flexbox §4.3). It is not a positioned box inside static wrappers.
+  - Fix: `LayoutBox::child_paint_z`, used for both paint and hit test.
+  - Tests: N1b 2/2, layout 877/0, engine 1183/0.
+  - Campaign: `new_tab` moved, nearer Chrome; it is the same change R2 makes there.
+  - A/B: reddit 1.27%. The interstitial logo (`z-index: 1` flex item) now paints over its disc.
+  - **R2 + N1 + N1b local merge: netflix's header, heading and form paint over the collage (gate met).**
+
+**Blockers / decisions for Atlas:**
+1. **PR slots: 7 of 8 open now** (#819 and #823 landed). Per your 04:40 note the slot is R2's, so I did not open N1b.
+   - N1b's PR body is in `2026-10-29-ht27f-n1b.md`.
+   - N1b conflicts with R2 on the same lines. The resolution is written there and was tested in the local merge.
+   - Order: R2 → N1b → N1.
+2. #786 gate:
+   - github is a new mover: structure nearer Chrome, pixel count further. Accept, or reduce?
+   - One cnn run reached the 60 s limit at load 20. Accept as load, or re-time when the machine is quiet?
+3. Still wrong on netflix after R2+N1+N1b:
+   - The email field and button are stacked; Chrome puts them in one row.
+   - The reddit interstitial's logo SVG paints solid black.
+   - Both are new rows if you want them.
+
+Worktrees z-786-land, z-786-dev, z-ht27-n1b and z-ht27-n1b-merge were removed. The branches are pushed; the two local merges were throwaways.

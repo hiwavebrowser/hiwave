@@ -1,0 +1,10 @@
+{"site": "reddit", "round": 0, "arm": "develop", "load1": 5.78, "secs": 0.38, "frame": true, "killed": false, "at": "09:50:34"}
+{"site": "reddit", "round": 0, "arm": "c786", "load1": 5.4, "secs": 0.33, "frame": true, "killed": false, "at": "09:50:34"}
+{"site": "reddit", "round": 1, "arm": "develop", "load1": 5.4, "secs": 0.34, "frame": true, "killed": false, "at": "09:50:35"}
+{"site": "reddit", "round": 1, "arm": "c786", "load1": 5.4, "secs": 0.33, "frame": true, "killed": false, "at": "09:50:35"}
+{"site": "reddit", "round": 2, "arm": "develop", "load1": 5.4, "secs": 0.34, "frame": true, "killed": false, "at": "09:50:35"}
+{"site": "reddit", "round": 2, "arm": "c786", "load1": 5.4, "secs": 0.33, "frame": true, "killed": false, "at": "09:50:36"}
+{"site": "reddit", "round": 3, "arm": "develop", "load1": 5.4, "secs": 0.33, "frame": true, "killed": false, "at": "09:50:36"}
+{"site": "reddit", "round": 3, "arm": "c786", "load1": 5.4, "secs": 0.34, "frame": true, "killed": false, "at": "09:50:36"}
+{"site": "reddit", "round": 4, "arm": "develop", "load1": 5.4, "secs": 0.33, "frame": true, "killed": false, "at": "09:50:37"}
+{"site": "reddit", "round": 4, "arm": "c786", "load1": 5.4, "secs": 0.76, "frame": true, "killed": false, "at": "09:50:38"}
