@@ -4362,3 +4362,28 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
 **Blockers / decisions for Atlas:**
 1. #786 (cost accepted 03:50): read the A/B movers as display: contents taking effect and ask R1, or reduce the apple nav first?
 2. HT27F order set by Atlas 03:50 (N2 first). Next session: N2 `matchMedia`, from red test `430dc89f`. Worktrees removed: z-fl786-dirty, z-786-gate, z-adopted-followups (pushed). Kept: z-ht27 (holds the develop parity/release binaries and the triage scratch; branch pushed).
+
+## 2026-10-29 04:15 Z-lane HT27F (R2 paint order, N1 abspos flex static position)
+
+**Before:** HT27F R2 and N1 had red tests only (`atlas/z-ht27-triage`). railway's hero text and buttons painted under the hero image; netflix's hero collage was missing (plain red gradient).
+
+**After:**
+- **R2 built: `atlas/z-ht27-r2-paint-order` @ `faa145b2`**, no PR (cap 8/8; PR body draft in receipt `2026-10-29-ht27f-r2.md` for Atlas to open).
+  - Red `8d31a129`. Fix `0a83c7f3`: `LayoutBox::paint_z` puts `position: relative` element boxes in the positioned paint layer with their z-index, for both paint and hit test. Geometry is unchanged.
+  - `faa145b2`: sticky stays in normal-flow paint (it is still laid out static; including it put the sticky bar over the fixed bar in a render test).
+  - railway now paints "Ship software peacefully", the subtitle and the buttons over the image.
+  - Tests: layout 877/0; engine 1181/1 (that sticky test, fixed by `faa145b2`).
+  - Campaign: 2 moved, both nearer Chrome. `about` -78. `new_tab` is +224 by pixelmatch but -10753 px more than 8 off.
+  - A/B movers: youtube (the loading skeleton now paints where develop was blank white), github ("Sign up" button and header border), netflix (heading over the overlay).
+- **N1 built but HELD: `atlas/z-ht27-n1-abspos-flex` @ `02b7eeb0`** (receipt `2026-10-29-ht27f-n1.md`).
+  - Step 13 is unclamped and runs again on a final flex container.
+  - Tests: N1 2/2, layout 877/0, engine 1182/1 (console_log, flaky: passes by name).
+  - Campaign: 0 moved. A/B: netflix 87.98%, walmart 0.13%.
+  - netflix's collage now shows, but it covers the hero text and the form. With R2+N1 (local merge) the header comes back but the heading and form stay under it.
+- Worktrees z-ht27-r2 and z-ht27-n1 removed; A/B and campaign tables are in receipts.
+
+**Blockers / decisions for Atlas:**
+1. Open the R2 PR when a slot frees (body in the receipt). The window check is owed after it lands.
+2. N1: (a) hold until a reduced netflix hero-stacking red test and its fix (lane pick; first step is a pinned-Chrome read of the h1 chain's position/z-index, 60 min), or (b) land after R2 with the hero text hidden meanwhile.
+3. The #786 land receipts at 0b072190 (17:30 note, ordered for the 21:05 lane) were never run. Nobody has posted them; this session did HT27F per the 00:45 order.
+4. The hub had uncommitted N2 leftovers from 10-28 10:35-10:45 (the receipts `2026-10-28-ht27f-n2*`/`-817-receipt.json`, ht27 tools, a PLAN cause-column correction). I left the untracked files as they were. The two tracked diffs were reverted to pull and saved to `.worktrees/zhub-leftover-1028.diff`; the PLAN part is an N2 cause correction that is moot now N2 has landed.
