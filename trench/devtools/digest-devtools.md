@@ -652,3 +652,35 @@ Next: #815 delta findings; then the D1 hard gate (slot ticket + 2 workers), then
 - **Leave to Atlas:** land #815 on the R2 stamp; ask Prometheus for R1 on `T7b-design.md`. The older checkouts `dt-t7a-0035`, `dt-t7a-0636`, `dt-t7a-1855` and `dt-t6fu-1835` are still yours to remove.
 
 Next: after #815 lands and the note has R1, G first (reserve + its tests, then the gate receipt), then T7b.
+
+## 2026-10-29 12:35 devtools T8 (slot ticket + 2 workers + T7a carry-overs; Thu session, 12:35-13:25)
+- **Draft PR #827** `atlas/dt-t8` @ **df6a05af** (base develop d16d0f89). Open PRs: 7 (cap 8).
+- **Slot ticket:** `FetchPolicy::reserve` takes the budget, the shape check, `queued` and the origin-FIFO place on the page thread, via one no-op-waker poll of `acquire_owned` under `unconstrained`. `start_live` reserves before it spawns; refusals are recorded there. **Two workers** by default (`HIWAVE_NET_WORKERS`, 1 = T7a). The parity build caught that `rustkit-engine`'s tokio lacked `rt-multi-thread` outside dev-deps (fixed df6a05af).
+- **Also in #827:**
+  - the network read clones only the current doc's network records (2048 ring: 0.89 ms -> 0.51 ms debug; same answer);
+  - T7 test 2 (server sees EOF < 1 s);
+  - T7 test 8 (start-order delivery after a block);
+  - the T7a nits: not-quite-scheme userinfo, control chars, `foo:/;x/a@b`. The `data:` no-comma, `javascript:` and authority-`;` items were already pinned by #815's later deltas.
+- **Red before:**
+  - 4/4 nit tests red on develop;
+  - G2 red by mutation (d,c,b,a);
+  - the slot-ticket pin, test 8 and test 2 red by mutation (one mutation build, reverted).
+- **Evidence:**
+  - suite 1220/0 @ 9f40d798; the later commits by targeted runs (20/0, 155/0);
+  - rustkit-net 104/0;
+  - **campaign 26/26, 1.1078%, every case identical to T7a**.
+  - Receipts: `receipts/T8-receipt-df6a05af.md`, `camp-t8-df6a05af.log`, `T8-three-arms-df6a05af.log`, `T8-three-arms-sum-df6a05af.txt`, `T8-pr-body-df6a05af.md`.
+- **Gate receipt (two heavy tabs, parity, 8 interleaved rounds, off/w1/w2):** every round started at **load 10.2-12.6 (>8)**, so it is indicative, not the gate.
+  - w2-w1 paired median: -0.60 s (-3.5%) cnn, -0.50 s (-5.2%) yahoo; both spreads straddle 0.
+  - w2-off: -3.2% cnn, -2.1% yahoo.
+  - Network records are the same in every arm.
+- **Not done:**
+  - the quiet rerun (tool: `trench/devtools/tools/three_arms.py`, summary `three_arms_sum.py`);
+  - the 20-site A/B w2 vs off;
+  - G1 as a 50x loop (the combined fixture runs once per suite, under 2 workers);
+  - a hiwave-app build;
+  - the `rk-inserted-script` fold (B1a/B1b), which is not in T8's row.
+- **Tooling note:** the campaign ran on the prebuilt parity binary, linked into target/release. parity_test.py's own `cargo build --release` was made a no-op by `~/Repos/.worktrees/dt-t8-noop-cargo/` (`camp.py <wt> <log>`), so no bare cargo ran.
+- **Checkout `dt-t8-1240` is kept** (acceptance not complete). No `gh pr ready`; that is left to Atlas.
+
+Next: the quiet-hour gate rerun on #827 (load < 8), then the 20-site A/B; then R1.

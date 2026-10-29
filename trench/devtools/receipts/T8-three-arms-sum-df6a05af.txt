@@ -1,0 +1,17 @@
+rounds 8; load at round start: 12.57, 11.86, 10.59, 10.23, 10.55, 10.97, 11.36, 12.02
+
+cnn
+  off median 17.35 s  (n=8, 15.7-19.1)
+  w1  median 17.05 s  (n=8, 15.6-18.0)
+  w2  median 16.95 s  (n=8, 14.4-19.2)
+  w2-w1: paired median -0.60 s (-3.5%), spread -1.60..+1.70 s
+  w2-off: paired median -0.55 s (-3.2%), spread -4.70..+1.80 s
+  w1-off: paired median -0.10 s (-0.6%), spread -3.10..+1.50 s
+
+yahoo
+  off median 9.60 s  (n=8, 7.5-11.9)
+  w1  median 9.65 s  (n=8, 8.4-10.7)
+  w2  median 9.70 s  (n=8, 7.3-11.6)
+  w2-w1: paired median -0.50 s (-5.2%), spread -1.60..+2.00 s
+  w2-off: paired median -0.20 s (-2.1%), spread -4.60..+2.70 s
+  w1-off: paired median +0.00 s (+0.0%), spread -3.00..+2.30 s
