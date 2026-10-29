@@ -4424,3 +4424,45 @@ Campaign, all-site A/B and macOS receipt for #727: the receipt is Prometheus's s
    - Both are new rows if you want them.
 
 Worktrees z-786-land, z-786-dev, z-ht27-n1b and z-ht27-n1b-merge were removed. The branches are pushed; the two local merges were throwaways.
+
+## 2026-10-29 16:05 Z-lane 12:05 order (develop check, #777, #824, #825, netflix, RD1)
+
+Note: PLAN-z has no "PETE'S HAND TEST … CONSEQUENCE" line under Rules (the 10-27 hand test is done), so this session followed Atlas's newest order, the 12:05 note.
+
+**(0) develop `d16d0f89` after #786 + #822 (the standing item): PASS.** Fresh checkout; `cargo build -p hiwave-app` clean (warnings only). Tests: layout 881/0, bindings 404/0, engine lib 593/0, headless engine 1215/0 (1079 s).
+
+**(1) #777 yahoo gate: PASS at `64726516`** (`458be228` + develop `d16d0f89`, clean merge, normal push; the server-side update-branch call needs approval on this seat).
+- yahoo `diagnose`, develop vs #777: 2366 px on both; 1179 elements on develop, 1191 and 1214 on #777 (two runs).
+- develop's 2 truncation SyntaxErrors (7730:1:6278) are gone, and so are the 10-28 `onerror` TypeErrors.
+- #777 run 1 had one late TypeError at 7730:52:1849 (t≈30 s, caught by the page's React handler). It was not in run 2: live variance.
+- Campaign 26/26, 0 moved. bindings 412/0, dom 79/0, html 41+49+23/0.
+- Comment 6506508550. **`gh pr ready` needs approval on this seat: Atlas, please flip #777 to ready.**
+
+**(2) #824 railway real-window check: NOT RUN.** `hwdrive preflight` on the lane seat reads screen_capture, accessibility and post_events all false (screen unlocked). This seat can't capture the window, and `driver.py` serves fixture pages only. Said so on #824 (comment 6506527066), with no yes/no. It needs the grant seat.
+
+**(3) #825 (BW1) receipts at `40e82566`: campaign 26/26 with 0 moved, 20-site A/B with no movers.**
+- Measured as `40e82566` + develop `d16d0f89` (a local merge, clean, not pushed); candidate sha256 `d11fd104…`. Tests at the merge: bindings 410/0, dom 80/0, engine lib 593/0, html green.
+- A/B, 20 sites: 16 identical. linkedin, bing and walmart are their known variants. lyft had one develop-arm fetch failure.
+- google was arm-tied 1.53% in the first pass. It is two served page variants (buttons vs suggestion chips; inline script sizes differ). In two reruns each arm showed both variants on its own, so it is not a mover.
+- Comment 6506924938.
+
+**(4) netflix form at develop `d16d0f89`: one row** (email 390.76×52 and button 189.24×56 side by side at y 321). N2 holds. The stacking seen at 10:15 is from the R2+N1+N1b stack (N1's flex change first suspect).
+
+**(5) RD1: done, and not an engine bug on develop.** #826 (N1b @ `0e685e6d`) predates #787 (SVG author paint), so its SVG ignores class fills and paints `currentColor` black. N1b puts the logo above the disc, so it shows.
+- Reduced: an SVG rect with a class fill in a flex item is black on `0e685e6d`, and #ff4500 on develop and on `0e685e6d` + develop.
+- The served interstitial on `0e685e6d` + develop paints the full-colour Snoo.
+- **#826 must merge develop before it lands.**
+
+**New develop defects, reduced (fixtures `tools/rd1/pseudo_probe.py`, `rd1_probe.py`). No rows added; Atlas's call:**
+1. An abspos `::before` with `display:none` still paints its box.
+2. An `animation` whose keyframes set `opacity` (only at 100%) ignores the element's own `opacity:.75` at t=0 and paints at 1. Chrome starts from 0.75.
+   - Together, 1 and 2 make reddit's pulsing disc a solid #d93900 over the logo.
+3. `fill: url(#missing) #ff4500` paints white instead of the fallback colour.
+
+**Receipts (hub):** `2026-10-29-777-gate-*`, `2026-10-29-825-*`, `2026-10-29-rd1-netflix-recheck.md`.
+**Worktrees:** z-dev-d16d0f89, z-777, z-825, z-824-rw and z-rd1-n1b were all removed.
+**Blockers for Atlas:**
+- #777 ready flip.
+- #824's real-window check needs the grant seat.
+- #826 needs develop merged before it lands.
+- Rows for defects 1–3 if you want them.

@@ -1,0 +1,77 @@
+{
+  "schema": "hiwave-page-report/1",
+  "url": "https://www.yahoo.com/",
+  "viewport": [
+    1280.0,
+    800.0
+  ],
+  "scroll": [
+    0.0,
+    0.0
+  ],
+  "document_height": 2366.02001953125,
+  "elements": 1179,
+  "root_styles": [
+    {
+      "element": "html",
+      "overflow_y": null,
+      "position": null
+    },
+    {
+      "element": "body",
+      "overflow_y": "visible",
+      "position": "static"
+    }
+  ],
+  "covering": [
+    {
+      "selector": "div.md:opacity-100.inset-y-0",
+      "position": "absolute",
+      "z_index": "10",
+      "covers_pct": 31.7,
+      "takes_centre": false
+    },
+    {
+      "selector": "div.pointer-events-none.inset-y-0",
+      "position": "absolute",
+      "z_index": null,
+      "covers_pct": 31.7,
+      "takes_centre": false
+    }
+  ],
+  "bands": [
+    {
+      "top": 0.0,
+      "bottom": 800.0,
+      "text": 24,
+      "images": 24
+    },
+    {
+      "top": 800.0,
+      "bottom": 1600.0,
+      "text": 42,
+      "images": 46
+    },
+    {
+      "top": 1600.0,
+      "bottom": 2400.0,
+      "text": 25,
+      "images": 1
+    }
+  ],
+  "ranked": [
+    {
+      "rule": "R5",
+      "line": "the page's own script: uncaught SyntaxError in https://www.yahoo.com/_nca/_next/static/chunks/7730-e665b5f0dad0dda7.js:1:6278 (x2); then 6 fetch/XHR to www.yahoo.com"
+    },
+    {
+      "rule": "R5",
+      "line": "the page's own script: logged Error thrown in https://www.yahoo.com/_nca/_next/static/chunks/87c73c54-e492680491e89db9.js:1:37798; then 6 fetch/XHR to www.yahoo.com"
+    },
+    {
+      "rule": "R4",
+      "line": "no page script ran until t=7.6 s: 33 script body(ies) had arrived 3.0 s or more before (first at t=1.7 s); first layout at t=5.7 s; last answer before it: image at t=7.5 s"
+    }
+  ],
+  "not_checked": []
+}

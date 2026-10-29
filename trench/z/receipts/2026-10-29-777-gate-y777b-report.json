@@ -1,0 +1,75 @@
+{
+  "schema": "hiwave-page-report/1",
+  "url": "https://www.yahoo.com/",
+  "viewport": [
+    1280.0,
+    800.0
+  ],
+  "scroll": [
+    0.0,
+    0.0
+  ],
+  "document_height": 2366.02001953125,
+  "elements": 1214,
+  "root_styles": [
+    {
+      "element": "html",
+      "overflow_y": null,
+      "position": null
+    },
+    {
+      "element": "body",
+      "overflow_y": "visible",
+      "position": "static"
+    }
+  ],
+  "covering": [
+    {
+      "selector": "div.md:opacity-100.inset-y-0",
+      "position": "absolute",
+      "z_index": "10",
+      "covers_pct": 31.7,
+      "takes_centre": false
+    },
+    {
+      "selector": "div.pointer-events-none.inset-y-0",
+      "position": "absolute",
+      "z_index": null,
+      "covers_pct": 31.7,
+      "takes_centre": false
+    }
+  ],
+  "bands": [
+    {
+      "top": 0.0,
+      "bottom": 800.0,
+      "text": 24,
+      "images": 24
+    },
+    {
+      "top": 800.0,
+      "bottom": 1600.0,
+      "text": 41,
+      "images": 47
+    },
+    {
+      "top": 1600.0,
+      "bottom": 2400.0,
+      "text": 25,
+      "images": 1
+    }
+  ],
+  "ranked": [
+    {
+      "rule": "R5",
+      "line": "the page's own script: logged Error thrown in https://www.yahoo.com/_nca/_next/static/chunks/87c73c54-e492680491e89db9.js:1:37798; then 1 fetch/XHR to www.yahoo.com"
+    },
+    {
+      "rule": "R4",
+      "line": "no page script ran until t=6.6 s: 18 script body(ies) had arrived 3.0 s or more before (first at t=1.4 s); first layout at t=5.5 s; last answer before it: image at t=6.6 s"
+    }
+  ],
+  "not_checked": [
+    "R6 shield list/rule: no `blocked_by` field on this build (dev-tools T2)"
+  ]
+}
