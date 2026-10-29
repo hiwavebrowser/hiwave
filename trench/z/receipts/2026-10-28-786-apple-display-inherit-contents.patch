@@ -1,0 +1,20 @@
+diff --git a/crates/rustkit-engine/src/lib.rs b/crates/rustkit-engine/src/lib.rs
+index eeba862b..d666ebab 100644
+--- a/crates/rustkit-engine/src/lib.rs
++++ b/crates/rustkit-engine/src/lib.rs
+@@ -12056,6 +12056,15 @@ impl Engine {
+             "border-right-color" => style.border_right_color = parent.border_right_color,
+             "border-bottom-color" => style.border_bottom_color = parent.border_bottom_color,
+             "border-left-color" => style.border_left_color = parent.border_left_color,
++            "display" => {
++                style.display = if parent.display_contents_declared {
++                    rustkit_css::Display::Contents
++                } else {
++                    parent.display
++                };
++                style.webkit_box = parent.webkit_box;
++                style.display_contents_declared = parent.display_contents_declared;
++            }
+             _ => return false,
+         }
+         true
