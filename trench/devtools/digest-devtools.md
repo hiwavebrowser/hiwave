@@ -678,7 +678,6 @@ Next: after #815 lands and the note has R1, G first (reserve + its tests, then t
   - the quiet rerun (tool: `trench/devtools/tools/three_arms.py`, summary `three_arms_sum.py`);
   - the 20-site A/B w2 vs off;
   - G1 as a 50x loop (the combined fixture runs once per suite, under 2 workers);
-  - a hiwave-app build;
   - the `rk-inserted-script` fold (B1a/B1b), which is not in T8's row.
 - **Tooling note:** the campaign ran on the prebuilt parity binary, linked into target/release. parity_test.py's own `cargo build --release` was made a no-op by `~/Repos/.worktrees/dt-t8-noop-cargo/` (`camp.py <wt> <log>`), so no bare cargo ran.
 - **Checkout `dt-t8-1240` is kept** (acceptance not complete). No `gh pr ready`; that is left to Atlas.

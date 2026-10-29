@@ -45,7 +45,8 @@ THREE_ARMS_HERE
   - 2 workers is not slower than 1 thread: the paired medians are −3.5% (cnn) and −5.2% (yahoo), and both spreads straddle 0.
   - 2 workers vs off is within 5% on both pages.
   - Off-thread records are unchanged: cnn lists 111–112 network records in every arm, yahoo 265–269.
-- **Not done:** the 20-site A/B with 2 workers vs off; a `hiwave-app` build.
+- `cargo check -p hiwave-app` @ df6a05af: clean (the `rt-multi-thread` feature fix reaches the app).
+- **Not done:** the 20-site A/B with 2 workers vs off.
 
 R1: Prometheus. R2: any non-author. Not for merge by the lane.
 
