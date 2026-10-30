@@ -1,0 +1,17 @@
+develop 62e745f1 standing check (devcheck.py)
+--- SUMMARY ---
+build hiwave-app rc=0 52s
+layout rc=0 16s
+bindings rc=0 57s
+engine lib rc=0 83s
+headless engine rc=0 1133s
+test result: ok. 881 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.17s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 422 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.40s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.32s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 613 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 53.34s
+test result: ok. 1256 passed; 0 failed; 10 ignored; 0 measured; 0 filtered out; finished in 1111.73s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

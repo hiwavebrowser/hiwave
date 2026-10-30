@@ -1,0 +1,26 @@
+--- pass sv1 (A develop 62e745f1, B candidate 57e44dd2)
+google       within A 1.92%  within B 0.03%  across 0.03% 0.00% 1.89% 1.92%  failed: 0  secs A,B,A,B 4.1,3.0,2.6,3.1  script records A,B,A,B 13,14,15,13
+youtube      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.3,6.4,6.3,6.6  script records A,B,A,B 42,42,41,42
+facebook     within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 12.4,9.6,11.0,9.3  script records A,B,A,B 60,60,60,60
+instagram    within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 7.5,7.6,7.9,7.6  script records A,B,A,B 54,54,54,54
+wikipedia    within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 8.4,4.9,4.9,4.9  script records A,B,A,B 7,7,7,7
+lyft         within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 13.6,13.0,14.3,14.2  script records A,B,A,B 36,36,36,36
+reddit       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 0.4,0.4,0.4,0.4  script records A,B,A,B 1,1,1,1
+x            within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 11.7,11.7,11.1,16.3  script records A,B,A,B 8,8,8,8
+linkedin     within A 89.87%  within B 89.90%  across 1.55% 89.87% 89.90% 0.00%  failed: 0  secs A,B,A,B 6.6,5.6,7.4,8.7  script records A,B,A,B 6,5,18,18
+yahoo        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 5.8,5.4,6.0,6.3  script records A,B,A,B 55,59,58,58
+bing         within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 10.6,9.7,9.8,10.7  script records A,B,A,B 10,10,7,10
+walmart      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 15.4,9.9,11.6,12.8  script records A,B,A,B 127,124,127,127
+microsoft    within A n/a%  within B n/a%  across n/a% n/a% n/a% 0.00%  failed: 2  secs A,B,A,B 30.1,30.2,24.0,20.5  script records A,B,A,B -,-,276,276
+apple        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 9.1,10.9,13.3,12.8  script records A,B,A,B 15,15,16,16
+netflix      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 10.2,10.6,14.3,10.0  script records A,B,A,B 11,11,11,11
+github       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 17.8,16.6,16.2,16.7  script records A,B,A,B 8,8,8,8
+shopify      within A 0.00%  within B 0.00%  across 2.02% 2.02% 2.02% 2.02%  failed: 0  secs A,B,A,B 8.6,4.0,8.1,6.1  script records A,B,A,B 7,7,7,7
+squarespace  within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 11.8,11.7,13.1,13.8  script records A,B,A,B 29,29,29,29
+cnn          within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 27.7,26.3,29.5,29.1  script records A,B,A,B 14,14,14,14
+weather      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 5.9,6.1,4.7,5.0  script records A,B,A,B 76,76,76,76
+--- pass sv1b (A develop 62e745f1, B candidate 57e44dd2)
+shopify      within A 0.00%  within B 2.02%  across 2.02% 0.00% 2.02% 0.00%  failed: 0  secs A,B,A,B 13.0,11.5,8.7,10.0  script records A,B,A,B 7,7,7,7
+--- pass sv1c (A develop 62e745f1, B candidate 57e44dd2)
+microsoft    within A n/a%  within B 0.00%  across n/a% n/a% 0.00% 0.00%  failed: 1  secs A,B,A,B 30.2,27.3,25.7,27.2  script records A,B,A,B -,276,276,276
+shopify      within A 2.02%  within B 0.00%  across 0.00% 0.00% 2.02% 2.02%  failed: 0  secs A,B,A,B 10.1,11.0,7.0,10.1  script records A,B,A,B 7,7,7,7
