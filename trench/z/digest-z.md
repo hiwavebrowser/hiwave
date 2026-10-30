@@ -4466,3 +4466,48 @@ Note: PLAN-z has no "PETE'S HAND TEST … CONSEQUENCE" line under Rules (the 10-
 - #824's real-window check needs the grant seat.
 - #826 needs develop merged before it lands.
 - Rows for defects 1–3 if you want them.
+
+
+## 2026-10-29 22:45 Z-lane 21:05 order (develop check, N1 re-check, CA1-1, RD2)
+
+Note: PLAN-z still has no "PETE'S HAND TEST … CONSEQUENCE" line under Rules, so this session followed Atlas's 16:35 and 16:55 notes.
+
+**(0) develop `3c6b170e` (after #826 + #827), the standing item: PASS.**
+- Fresh checkout; `cargo build -p hiwave-app` clean.
+- Tests: layout 881/0, bindings 418/0, engine lib 602/0, headless engine 1227/0. The CA1-1 red test was in the tree and is excluded from these counts.
+- One extra headless failure, `console_log::tests::script_places_inserted_scripts_and_imports_drop_the_query_too`. It passes run alone. It is CA1 item 5 (the shared `aliases()` leak), not new.
+
+**(1) N1 netflix re-check: PASS, the form is one row.** I merged N1 onto develop (`56e72902`) and pushed it to `atlas/z-ht27-n1-abspos-flex` as a normal fast-forward. There was one conflict, in the test-module list; I kept both sides.
+- Form measurements: input 390.76×52 and button 189.24×56 at y 321, identical to develop.
+- The poster collage paints, with the heading and form over it.
+- The 10:15 stacking came from the old R2+N1+N1b stack, not from N1.
+- **Owed before N1 lands:** campaign and 20-site A/B at `56e72902`. I opened no PR; that is Atlas's call.
+
+**(2) CA1-1 → PR #828 (draft) @ `f118dc71`.** Red test `d2d38c54`, expected row from pinned Chrome.
+- Cause: `complex_alternatives_hold` checked compound members by tag, classes and id only. So `[data-theme="dark"]` and `:not(.light)` matched every ancestor.
+- Fix: a new `matches_carried`, now shared with `matches_ancestor`.
+- Tests: engine lib 604/0; headless 1229/1 (the console_log flake above).
+- Campaign 26/26, 0 moved. 20-site A/B: no mover.
+
+**(3) RD2 → PR #829 (draft) @ `77619231`.** Red test `0fe2b26f`: on develop all 7 pseudos got a box; Chrome boxes only the 2 controls.
+- Fix: `pseudo_element_box` returns `None` for `display: none`.
+- Tests: engine lib 603/0, headless 1229/0.
+- Campaign 26/26, 0 moved. 20-site A/B: no mover. linkedin was arm-tied on the first pass because its arms were served different pages; the rerun read 0.
+- RD1 probe: the `display:none` case is now white, as in Chrome.
+
+**Not started: RD3 and RD4.** They would not fit before the 2 h cap. RD3 has to synthesise the 0% keyframe from the computed value, in `rustkit-animation` `apply_keyframe`.
+
+**Process note:** I first ran the develop check in the same worktree I then edited, which tainted its engine steps. I stopped it, committed the red test alone and re-ran the engine suites at that commit. Build, layout and bindings had already finished clean on develop and don't depend on the engine. Next time, the standing check gets its own worktree.
+
+**Receipts (hub):**
+- `2026-10-29-dev-3c6b170e-suites.txt`, `2026-10-29-campaign-dev-3c6b170e.log`
+- `2026-10-29-ht27f-n1-recheck-2105.md`
+- `2026-10-29-ca1-1-{ab.txt,campaign-f118dc71.log,pr828.md}`
+- `2026-10-29-rd2-{ab.txt,campaign-77619231.log,pr829.md}`
+
+**Worktrees:** z-ca1-1, z-rd2 and z-n1-recheck were removed. New hub tools: `tools/devcheck.py`, `tools/ht27/nf_form.py`.
+
+**For Atlas:**
+- R1 requests on #828 and #829; flip them to ready (the lane can't).
+- N1: open its PR now that the form holds? Its campaign and A/B are still owed.
+- Open PRs: 4 of 8.

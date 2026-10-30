@@ -1,0 +1,49 @@
+binary /Users/petecopeland/Repos/.worktrees/z-rd2/scratch/pc-rd2-77619231 sha256 8199bdfb8c0ec85caa8f47e17375a88cac3e51838d5c713b5cd994c7b4f970be
+============================================================
+Triple-Verified Parity Test
+============================================================
+Baselines: /Users/petecopeland/Repos/.worktrees/z-rd2/baselines/chrome-148
+Scope: all
+Iterations: 1
+Timestamp: 2026-10-29T22:23:49.515498
+
+  Testing new_tab... ✓ 1.14% (threshold: 15%)
+  Testing about... ✓ 3.68% (threshold: 15%)
+  Testing settings... ✓ 2.09% (threshold: 15%)
+  Testing chrome_rustkit... ✓ 1.07% (threshold: 15%)
+  Testing shelf... ✓ 1.08% (threshold: 15%)
+  Testing article-typography... ✓ 4.79% (threshold: 15%)
+  Testing card-grid... ✓ 1.34% (threshold: 15%)
+  Testing css-selectors... ✓ 1.33% (threshold: 15%)
+  Testing flex-positioning... ✓ 0.63% (threshold: 15%)
+  Testing form-elements... ✓ 0.95% (threshold: 12%)
+  Testing gradient-backgrounds... ✓ 1.01% (threshold: 15%)
+  Testing image-gallery... ✓ 0.52% (threshold: 10%)
+  Testing sticky-scroll... ✓ 0.66% (threshold: 15%)
+  Testing backgrounds... ✓ 1.22% (threshold: 15%)
+  Testing bg-solid... ✓ 0.21% (threshold: 15%)
+  Testing bg-pure... ✓ 0.00% (threshold: 15%)
+  Testing combinators... ✓ 0.65% (threshold: 15%)
+  Testing form-controls... ✓ 3.24% (threshold: 12%)
+  Testing gradients... ✓ 0.14% (threshold: 15%)
+  Testing gradient-no-radius... ✓ 0.52% (threshold: 15%)
+  Testing gradient-radius-only... ✓ 0.34% (threshold: 15%)
+  Testing gpu-gradient-regression... ✓ 0.39% (threshold: 15%)
+  Testing images-intrinsic... ✓ 0.33% (threshold: 10%)
+  Testing pseudo-classes... ✓ 0.43% (threshold: 15%)
+  Testing rounded-corners... ✓ 0.44% (threshold: 15%)
+  Testing specificity... ✓ 0.60% (threshold: 15%)
+
+============================================================
+Summary
+============================================================
+Passed: 26/26
+Failed: 0/26
+Average Diff: 1.1% (26/26 measured)
+
+Results saved to: /Users/petecopeland/Repos/.worktrees/z-rd2/scratch/camp-rd2.json
+
+Worst 3 Cases:
+  article-typography: 4.79%
+  about: 3.68%
+  form-controls: 3.24%

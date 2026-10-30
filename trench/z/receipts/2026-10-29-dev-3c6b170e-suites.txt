@@ -1,0 +1,11 @@
+--- SUMMARY ---
+engine lib rc=101 65s
+headless engine rc=101 1115s
+=== engine lib ===
+test is_complex_argument_tests::a_compound_member_beside_a_complex_one_reads_attributes_and_not ... FAILED
+test result: FAILED. 602 passed; 1 failed; 5 ignored; 0 measured; 0 filtered out; finished in 53.38s
+error: test failed, to rerun pass `-p rustkit-engine --lib`
+=== headless engine ===
+test console_log::tests::script_places_inserted_scripts_and_imports_drop_the_query_too ... FAILED
+test is_complex_argument_tests::a_compound_member_beside_a_complex_one_reads_attributes_and_not ... FAILED
+test result: FAILED. 1227 passed; 2 failed; 10 ignored; 0 measured; 0 filtered out; finished in 1097.15s
