@@ -1,0 +1,17 @@
+develop 9bb7bb40 standing check (devcheck.py), cargo output trimmed to the summary
+--- SUMMARY ---
+build hiwave-app rc=0 54s
+layout rc=0 16s
+bindings rc=0 57s
+engine lib rc=0 83s
+headless engine rc=0 1119s
+test result: ok. 881 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.22s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 422 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.47s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.32s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 609 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 53.51s
+test result: ok. 1238 passed; 0 failed; 10 ignored; 0 measured; 0 filtered out; finished in 1098.08s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

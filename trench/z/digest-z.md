@@ -4511,3 +4511,52 @@ Note: PLAN-z still has no "PETE'S HAND TEST … CONSEQUENCE" line under Rules, s
 - R1 requests on #828 and #829; flip them to ready (the lane can't).
 - N1: open its PR now that the form holds? Its campaign and A/B are still owed.
 - Open PRs: 4 of 8.
+
+## 2026-10-30 04:05 Z-lane 03:05 order (develop check, N1, CA1-5, RD3, RD4)
+
+Note: PLAN-z still has no "PETE'S HAND TEST … CONSEQUENCE" line under Rules, so this session followed Atlas's 23:00 order (with develop at 9bb7bb40 from the 01:30 note).
+
+**(0) develop `9bb7bb40`, the standing check: PASS.**
+- Fresh checkout; `cargo build -p hiwave-app` is clean.
+- Tests: layout 881/0, bindings 422/0, engine lib 609/0, headless engine 1238/0.
+- The new stop-navigation pin (3 s local server) passed at load about 6.
+
+**(1) N1 → PR #830 (draft) @ `78f12de6`.** I merged develop `9bb7bb40` into `atlas/z-ht27-n1-abspos-flex`; the merge was clean.
+- netflix at the head: the poster collage paints behind, with the header, heading and form over it. The form is one row (input 390.76×52, button 189.24×56 at y 321).
+- Campaign 26/26, 0 moved.
+- 20-site A/B:
+  - netflix 87.85% (the fix).
+  - walmart 0.17%, stable in both arms: the header search button moves from under the box to inside it at the right end, as walmart has it. Same abspos-in-flex static position.
+  - lyft 0.01%.
+  - The rest is in-arm noise or 0.00%.
+- R1 asked in the body.
+
+**(2) CA1-5 → PR #831 (draft) @ `fa333bd0`.**
+- Red `8243e6a9`: 2 tests. One got the other thread's URL; one got a stale label after `force_for_test`.
+- Fix: a port of Castor's `12464a45`, plus `#[cfg(test)]` on the alias statics as Prometheus asked. The shipped map is unchanged.
+- Tests: headless engine 1240/0 at `--test-threads=8`, engine lib 611/0.
+- No campaign or A/B: nothing on the paint, fetch or script path changed.
+
+**(3) RD3: BLOCKED, with a decision packet in the row.** The row's cause is wrong. The engine runs no keyframe animations; `@keyframes` is parsed and dropped. `group_opacity` (layout lib.rs:9084) deliberately paints any box that names an animation at opacity 1, to protect the fade-in idiom, so a fix in `rustkit-animation`'s `apply_keyframe` would change nothing on screen. Options (a) to (c) are in the row; the lane's pick is (b), a static "settled" frame.
+
+**(4) RD4 → PR #832 (draft) @ `cbab4a15`.**
+- Red `cafa2b30`.
+- Fix: `Paint::Url` carries its fallback (a colour, `currentColor` or `none`).
+- Tests: rustkit-svg 50/0. RD1 probe `url_missing_fallback` goes from white to #ff4500.
+- Campaign 26/26, 0 moved. 20-site A/B: no mover.
+- One behaviour change: a stroke `url()` with a fallback now paints the fallback colour, because stroke gradients aren't painted. It is said in the body.
+
+**Receipts (hub):**
+- `2026-10-30-dev-9bb7bb40-suites.txt`, `2026-10-30-campaign-dev-9bb7bb40.log`
+- `2026-10-30-ht27f-n1-{ab.txt,campaign-78f12de6.log,pr.md}`
+- `2026-10-30-ca1-5-{red.txt,suite-fa333bd0.txt,pr.md}`
+- `2026-10-30-rd4-{ab.txt,campaign-cbab4a15.log,pr.md}`
+
+Frames are private, under `renders-private/ht27f-n1-pr/`.
+
+**Worktrees:** z-dev-9bb7bb40, z-n1, z-ca1-5 and z-rd4 were all removed.
+
+**For Atlas:**
+- R1 asks on #830, #831 and #832; flip them to ready (the lane can't).
+- RD3 needs a pick: (a), (b) or (c).
+- Open PRs: #817, #830, #831, #832 (4 of 8).

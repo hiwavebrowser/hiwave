@@ -1,0 +1,44 @@
+test console_log::tests::brief_relative_scheme_relative_keeps_the_port_and_cuts_the_rest ... ok
+test console_log::tests::brief_relative_backslash_slash_drops_the_userinfo ... ok
+test console_log::tests::brief_relative_slash_backslash_drops_the_userinfo ... ok
+test console_log::tests::brief_place_keeps_only_numbered_engine_labels ... ok
+test console_log::tests::brief_relative_plain_paths_stay_as_the_page_wrote_them ... ok
+test console_log::tests::brief_relative_maps_control_characters_so_a_line_cannot_be_forged ... ok
+test console_log::tests::brief_relative_prints_nothing_of_a_userinfo_before_the_first_slash ... ok
+test console_log::tests::brief_relative_prints_nothing_of_a_not_quite_scheme_with_userinfo ... ok
+test console_log::tests::brief_relative_with_a_leading_space_drops_the_userinfo ... ok
+test console_log::tests::brief_relative_two_backslashes_drop_the_userinfo ... ok
+test console_log::tests::brief_relative_with_a_leading_tab_drops_the_userinfo ... ok
+test console_log::tests::brief_relative_with_a_tab_between_the_slashes_drops_the_userinfo ... ok
+test console_log::tests::brief_url_blob_url_keeps_only_its_origin ... ok
+test console_log::tests::brief_url_cuts_semicolon_params_in_the_path_and_keeps_an_authority_semicolon ... ok
+test console_log::tests::a_host_stack_line_names_the_depth_only_while_forced_on ... ok
+test console_log::tests::an_interrupt_line_names_the_site_and_turn_only_while_forced_on ... ok
+test console_log::tests::brief_url_data_url_with_a_query_in_its_mime_prints_no_query ... ok
+test console_log::tests::brief_url_http_with_no_slashes_drops_the_userinfo ... ok
+test console_log::tests::brief_url_https_with_a_slash_and_backslash_drops_the_userinfo ... ok
+test console_log::tests::brief_url_https_with_backslashes_drops_the_userinfo_and_query ... ok
+test console_log::tests::brief_url_https_with_one_slash_drops_the_userinfo ... ok
+test console_log::tests::brief_url_javascript_url_keeps_only_its_scheme ... ok
+test console_log::tests::brief_url_javascript_url_with_an_authority_keeps_only_its_scheme ... ok
+test console_log::tests::brief_url_lowercases_the_scheme_and_host_only ... ok
+test console_log::tests::brief_url_prints_nothing_of_a_schemed_string_that_does_not_parse ... ok
+test console_log::tests::brief_url_prints_nothing_of_a_schemed_string_the_parser_had_to_trim_first ... ok
+test console_log::tests::brief_url_reduces_a_data_url_to_its_mime_type ... ok
+test console_log::tests::brief_url_strips_userinfo_after_a_leading_double_slash ... ok
+test console_log::tests::brief_url_takes_a_scheme_only_at_the_start ... ok
+test console_log::tests::brief_url_with_a_tab_in_the_scheme_is_still_absolute ... ok
+test console_log::tests::brief_url_with_a_leading_space_is_still_absolute ... ok
+test console_log::tests::brief_url_drops_the_query_and_fragment ... ok
+test console_log::tests::a_label_recorded_on_another_test_thread_does_not_resolve_here ... FAILED
+test console_log::tests::scrub_url_keeps_a_hostless_path_a_path_when_its_params_are_cut ... ok
+test console_log::tests::forcing_the_switch_starts_with_no_labels ... FAILED
+test console_log::tests::script_places_inserted_scripts_and_imports_drop_the_query_too ... ok
+test console_log::tests::a_line_is_written_only_while_the_switch_is_forced_on ... ok
+thread 'console_log::tests::a_label_recorded_on_another_test_thread_does_not_resolve_here' (405291141) panicked at crates/rustkit-engine/src/console_log.rs:516:9:
+  left: "https://theirs.example/b.js"
+ right: "https://mine.example/a.js"
+thread 'console_log::tests::forcing_the_switch_starts_with_no_labels' (405291175) panicked at crates/rustkit-engine/src/console_log.rs:525:9:
+  left: "https://old.example/a.js"
+ right: "inserted#90002"
+test result: FAILED. 35 passed; 2 failed; 0 ignored; 0 measured; 579 filtered out; finished in 0.01s
