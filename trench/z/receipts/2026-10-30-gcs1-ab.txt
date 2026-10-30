@@ -1,0 +1,30 @@
+--- pass gcs1 (A develop 62e745f1, B candidate 0b85919b)
+google       within A 0.00%  within B 0.00%  across 1.89% 1.89% 1.89% 1.89%  failed: 0  secs A,B,A,B 3.2,3.3,2.6,3.1  script records A,B,A,B 14,15,14,14
+youtube      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 5.5,6.6,6.6,8.7  script records A,B,A,B 42,41,41,43
+facebook     within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 11.7,11.4,10.6,10.2  script records A,B,A,B 60,60,60,60
+instagram    within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 9.8,9.4,9.4,10.8  script records A,B,A,B 54,54,54,57
+wikipedia    within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 5.0,5.2,5.2,5.0  script records A,B,A,B 7,7,7,7
+lyft         within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 13.9,13.2,13.5,17.1  script records A,B,A,B 36,36,36,36
+reddit       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 2.5,0.4,0.4,0.4  script records A,B,A,B 1,1,1,1
+x            within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 11.7,11.8,11.1,11.3  script records A,B,A,B 8,8,8,8
+linkedin     within A 89.87%  within B 89.90%  across 2.96% 89.87% 89.90% 0.00%  failed: 0  secs A,B,A,B 5.6,5.5,7.8,8.2  script records A,B,A,B 6,5,18,18
+yahoo        within A 0.00%  within B 27.66%  across 0.00% 27.66% 0.00% 27.66%  failed: 0  secs A,B,A,B 6.6,6.7,7.4,6.6  script records A,B,A,B 57,57,55,57
+bing         within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 10.8,10.1,10.8,10.7  script records A,B,A,B 10,10,10,10
+walmart      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 8.9,8.9,9.5,7.6  script records A,B,A,B 124,124,124,124
+microsoft    within A n/a%  within B n/a%  across n/a% n/a% n/a% n/a%  failed: 4  secs A,B,A,B 30.1,30.2,30.1,30.6  script records A,B,A,B -,-,-,-
+apple        within A n/a%  within B 0.00%  across n/a% n/a% 0.00% 0.00%  failed: 1  secs A,B,A,B 31.0,10.4,15.8,13.9  script records A,B,A,B -,16,15,16
+netflix      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 14.7,12.4,10.2,10.6  script records A,B,A,B 11,11,11,11
+github       within A 0.00%  within B 18.87%  across 18.87% 0.00% 18.87% 0.00%  failed: 0  secs A,B,A,B 25.3,20.0,20.9,21.1  script records A,B,A,B 8,8,8,8
+shopify      within A 2.02%  within B 2.02%  across 2.02% 0.00% 0.00% 2.02%  failed: 0  secs A,B,A,B 6.2,9.8,9.5,5.5  script records A,B,A,B 7,7,7,7
+squarespace  within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 14.2,13.6,14.5,18.0  script records A,B,A,B 29,29,29,29
+cnn          within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 26.8,26.7,28.0,27.7  script records A,B,A,B 14,14,14,14
+weather      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.2,6.8,4.5,4.9  script records A,B,A,B 72,72,72,72
+--- pass gcs1b (A develop 62e745f1, B candidate 0b85919b)
+google       within A 0.00%  within B 1.89%  across 1.89% 0.00% 1.89% 0.00%  failed: 0  secs A,B,A,B 2.6,3.0,2.7,2.7  script records A,B,A,B 14,14,14,14
+yahoo        within A 31.20%  within B 38.81%  across 42.79% 31.20% 38.81% 0.00%  failed: 0  secs A,B,A,B 6.9,5.6,7.5,6.6  script records A,B,A,B 57,53,76,57
+microsoft    within A n/a%  within B n/a%  across n/a% n/a% n/a% 0.00%  failed: 2  secs A,B,A,B 30.2,30.1,29.7,24.3  script records A,B,A,B -,-,276,276
+apple        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 11.0,11.4,10.7,10.5  script records A,B,A,B 16,16,16,15
+github       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 21.6,23.2,22.2,20.3  script records A,B,A,B 8,8,8,8
+--- pass gcs1c (A develop 62e745f1, B candidate 0b85919b)
+google       within A 0.00%  within B 1.89%  across 1.89% 0.00% 1.89% 0.00%  failed: 0  secs A,B,A,B 3.0,2.9,2.6,2.6  script records A,B,A,B 14,15,14,14
+github       within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 22.3,20.5,22.1,20.7  script records A,B,A,B 8,8,8,8
