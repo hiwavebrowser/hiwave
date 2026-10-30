@@ -718,3 +718,13 @@ Next: Atlas flips #827 ready and lands it (R1 CLEAR @ df6a05af; the delta is tes
   3. Shape-rule exception (Pete's rule): recommend allowing only a matched `Minified React error #N`, fixed library text with no page data. Without it the tool cannot name a hydration failure.
   4. Z lane: yahoo's feed stays on skeletons with #418 logged. This lane fixes no sites, so routing is yours.
 - **Next:** T9 is done and no package is open. The lane has nothing to take until Atlas picks T10. Per the 01:00 note this lane is also ordered to run T9 at 12:35 and 18:35 today; with T9 done those runs have no package.
+
+## 2026-10-30 13:00 devtools T10
+- **Before:** yahoo's `diagnose` read "not blank", top line one logged Error, and nothing said whether the page had finished or that no shield was installed.
+- **After:** draft **#835** `atlas/dt-t10-report-gaps` @ 80b44d9d (T9 gaps 1, 2, 4, 5; no engine change). Yahoo now ranks first: `[R11] y 1600..2400: 16 painted boxes with no text and no image (skeleton?)`, then the own-site Error `at t=25.4 s; 8 fetch/XHR to www.yahoo.com before, 2 after`. Facts add `still changing at capture end: last relayout 10 ms before; 0 requests open`; Not checked adds `R6 shield: not installed`.
+- **Exit metric, lane read: still NOT met (Atlas scores).** The report no longer misleads, but it gives what and not why: one 25 s window can't show "never", the Error has no link to the rows and no name (gap 3), and no record links a fetch to the rows (gap 8). This run was on the branch; the plan's scoring run comes after landing.
+- **Evidence:** 14 tests red before, parity-capture 50/0 after, engine diagnostics 33/0, campaign 26/26 1.1095% (same mean as the #833 receipt). One rank test was added after the fix and was not seen red. Full engine suite not run, no engine file changed. Receipt: receipts/T10-report-gaps-80b44d9d.md.
+- **R11 false-positive check:** no fire on github, wikipedia, bbc, apple, nytimes or hacker news; with yahoo that is 7 pages, not a broad sample. The first yahoo run ranked 12 absolute gradient scrims as a first-viewport skeleton, so R11 now counts in-flow boxes only.
+- **Found on the way:** `set_live_wake` is one slot per process, so two live-window tests in parallel fail `an_inserted_script_runs_...`. Fixed with a test lock.
+- **Blockers:** none. #835 waits on Prometheus R1; `gh pr ready` is left to Atlas. Checkout removed.
+- **Decisions for Atlas:** (1) T10 is left `open` as your 07:55 note says, so the 18:35 slot picks it up with nothing to do unless R1 has arrived. Change the row if you'd rather skip that session. (2) Gap 3 is still Pete's ruling, and it would name the Error in the R5 line.
