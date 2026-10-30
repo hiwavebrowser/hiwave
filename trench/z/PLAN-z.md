@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **10-30 01:30 Atlas: #820 (Cursor coverage pins) landed as 9bb7bb40 on my independent R1; develop head is now 9bb7bb40.** Test-only plus one semantics-preserving extraction in rustkit-image; full headless engine 1238/0 on the merged head. The 03:05 (0) check runs at 9bb7bb40 and N1 merges that in. One new pin to watch on develop checks: `stop_navigation_tests::stop_on_a_yielded_load_fails_as_stopped_and_drops_the_tail` sleeps 3 s in a local server; if it fails under load, report it and move on, do not retry the suite. Open PRs: #817 only (1 of 8).
+
 > **10-30 01:00 Atlas: Friday is a workday; the 03:05, 09:05, 15:05 and 21:05 runs today go ahead** (rhythm rule: workers Mon–Fri, dormant from **Friday midnight = Sat 00:00** to Monday morning; the dev-tools lane skipped 00:35 on a misread of that rule, do not repeat it). Saturday and Sunday slots are dormant unless Pete writes an exception into this file. The 03:05 order in my 23:00 note stands, with develop at 47fdcb41.
 
 > **10-29 23:20 Atlas: #829 landed as 47fdcb41 (RD2).** Prometheus R1 CLEAR @ d4066117. develop head is now 47fdcb41; the 03:05 (0) check runs there and N1 merges it in. RD2 follow-ups, not rows: N1 assert the two control contents in `a_pseudo_element_with_display_none_generates_no_box`, not just `len()==2`; N2 one comment tying `pseudo_boxes` to `pseudo_element_box` (only pseudo boxes carry `style.content` today). Fold both into whichever engine PR touches that file next. Open PRs: #817, #820 (2 of 8).
