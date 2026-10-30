@@ -1,0 +1,102 @@
+// T9 G1 loop tests, not on any branch unless they find something.
+// ---- script_net_t7_tests.rs
+
+#[test]
+fn fifty_rounds_on_one_policy_leak_no_slot_and_no_record() {
+    // T9 G1: both caps at 1, so one permit or reservation that outlives its
+    // request stops the next round. Each round finishes one request and drops
+    // others at every stage: queued behind the slot, and just started.
+    let mut rig = rig();
+    rig.policy = Arc::new(FetchPolicy::with_limits(
+        Url::parse(&format!("http://127.0.0.1:{}/", rig.port)).unwrap(),
+        None,
+        rustkit_net::policy::FetchLimits {
+            max_in_flight_per_origin: 1,
+            max_in_flight_per_page: 1,
+            ..Default::default()
+        },
+    ));
+    let mut id = 0;
+    for round in 0..50u64 {
+        let before = rig.terminals().len();
+        id += 1;
+        let first = rig.start(id, "/hello", 0);
+        id += 1;
+        let queued = rig.start(id, "/hello", 0);
+        id += 1;
+        let last = rig.start(id, "/hello", 0);
+        drop(queued);
+        std::thread::sleep(Duration::from_micros((round % 12) * 250));
+        drop(first);
+        let (_, outcome) = rig.rt.block_on(last);
+        assert!(matches!(outcome, NetDelivery::Response { status: 200, .. }), "round {round}: {outcome:?}");
+        let settled = rig.wait_for(Duration::from_secs(5), |rig| {
+            let t = rig.terminals();
+            t.len() == before + 3 && t.iter().all(|(_, k)| *k == 1)
+        });
+        assert!(settled, "round {round}: {:?}", rig.terminals());
+    }
+}
+// ---- error_page_script_tests.rs
+
+/// T9 G1: fifty loads on one view, each abandoning a slow fetch. Every load
+/// writes the same requests, and the last is served as the first was.
+#[test]
+fn fifty_loads_on_one_view_keep_their_record_counts() {
+    fn site(path: &str, _: &str) -> (u16, &'static str, Vec<(&'static str, &'static str)>, String) {
+        match path {
+            "/slow" => {
+                std::thread::sleep(std::time::Duration::from_millis(400));
+                (200, "text/plain", vec![], "slow".into())
+            }
+            "/i.js" => (200, "text/javascript", vec![], "window.inserted = 1;".into()),
+            "/" => (
+                200,
+                "text/html",
+                vec![],
+                r#"<p>page</p><script>
+window.answered = 0;
+['/a', '/b', '/c', '/d'].forEach(function (u) {
+  fetch(u).then(function () { window.answered++; });
+});
+fetch('/slow');
+var s = document.createElement('script');
+s.src = '/i.js';
+document.head.appendChild(s);
+</script>"#
+                    .into(),
+            ),
+            _ => (200, "text/plain", vec![], "ok".into()),
+        }
+    }
+    let server = serve(site);
+    let inspector = InspectorConfig { buffer: true, capacity: 8192, ..InspectorConfig::tab() };
+    let mut engine = Engine::new(EngineConfig { inspector, ..EngineConfig::default() }).expect("engine");
+    let view = engine
+        .create_headless_view(Bounds { x: 0, y: 0, width: 300, height: 200 })
+        .expect("view");
+    let rt = tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
+    for round in 0..50 {
+        rt.block_on(engine.load_url(view, server.url("/"))).expect("load");
+        let started = std::time::Instant::now();
+        while text(&mut engine, view, "String(window.answered)") != r#"String("4")"#
+            || text(&mut engine, view, "String(window.inserted)") != r#"String("1")"#
+        {
+            assert!(started.elapsed().as_secs() < 20, "round {round}: page never finished");
+            rt.block_on(engine.pump_live(view, 10));
+            std::thread::sleep(std::time::Duration::from_millis(5));
+        }
+    }
+    // The next navigation cancels the last slow fetch.
+    rt.block_on(engine.load_url(view, server.url("/end"))).expect("load");
+    std::thread::sleep(std::time::Duration::from_millis(100));
+    let records = engine.inspector(view).expect("inspector").snapshot_since(0).records;
+    assert_eq!(records.iter().map(|r| r.seq).min(), Some(0), "the ring dropped records: the count would lie");
+    for doc in 1..=50u32 {
+        let of_doc = || records.iter().filter(|r| r.doc == doc);
+        let requests = of_doc().filter(|r| matches!(r.event, InspectorEvent::Request { .. })).count();
+        let answers = of_doc().filter(|r| matches!(r.event, InspectorEvent::Response { .. })).count();
+        assert_eq!(requests, 7, "doc {doc}: document, 5 fetches, 1 inserted script");
+        assert!((6..=7).contains(&answers), "doc {doc}: {answers} responses");
+    }
+}

@@ -706,3 +706,15 @@ Next: Atlas flips #827 ready and lands it (R1 CLEAR @ df6a05af; the delta is tes
 - Session started Fri 00:35 ET. HiWave canon: every LLM seat is dormant Fri 00:00 -> Mon 06:00. The only lane exception (10-25 01:50 note, Pete's 10-23 order) ran "through Mon 06:00" of last weekend and has not been renewed in this plan, and the 10-29 19:35 T9 order does not name the weekend.
 - Nothing started: no checkout, no build, no PR. T9 stays **open** (not set in-progress).
 - **Decision for Atlas:** if T9 (or the G1 50x loop, which has no model cost once scripted) should run this weekend, write the exception into the plan; otherwise the lane resumes T9 at Mon 06:35.
+
+## 2026-10-30 06:35 devtools T9 (exit-metric scoring run + G1; Fri session, 06:35-06:50; Atlas 10-30 01:00 note)
+- **Before -> after:** exit metric unscored -> **scored by the lane as NOT met at develop 702154ef.** Atlas has the final score. No PR, no engine change.
+- **Result:** `diagnose` ran 3/3 in 31-33 s and was read in under a minute per run, but its output says "not blank" (800..1600 holds 56-60 text and 36-40 image boxes). A hand check outside the score shows "For You" still grey skeleton rows at 25 s and at 70 s, the footer painted over them, and no failed request in the 70 s run. The "logged Error" on the top line is React #418 (hydration failure), shape-hidden in the report. #418 causing the skeletons is **not established**; no record links them. The frames used a 2400 px viewport; the diagnose runs used 800.
+- **G1:** no leak. Two 50x loop tests pass: one policy with both caps at 1 (red by mutation at round 0), and 50 real loads on one view with stable counts (not mutation-tested). One debug pass each, and they stand in for a "T8 fixture" that is not a single named fixture. Text in `receipts/T9-g1-loop-tests.rs.txt`, on no branch.
+- **Not run:** `scripts/receipt.py`, campaign and full suite; no code changed.
+- **Decisions for Atlas** (full gap list in `receipts/T9-yahoo-exit-metric-702154ef.md`):
+  1. Exit metric: recommend keeping it and scoring against "skeletons that never fill"; unmet until `diagnose` says so.
+  2. T10: recommend one `report.rs` PR for placeholder boxes in bands, the misleading R5 "then N fetch" clause (read 2/1/0 with 8-10 fetches before the error), a "still changing at capture end" line, and "shield not installed" under Not checked. Then overlap reporting and own-site string `console.error`. A data-to-DOM link gets a design note only if those leave the question open.
+  3. Shape-rule exception (Pete's rule): recommend allowing only a matched `Minified React error #N`, fixed library text with no page data. Without it the tool cannot name a hydration failure.
+  4. Z lane: yahoo's feed stays on skeletons with #418 logged. This lane fixes no sites, so routing is yours.
+- **Next:** T9 is done and no package is open. The lane has nothing to take until Atlas picks T10. Per the 01:00 note this lane is also ordered to run T9 at 12:35 and 18:35 today; with T9 done those runs have no package.
