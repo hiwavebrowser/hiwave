@@ -4580,6 +4580,6 @@ Frames are private, under `renders-private/ht27f-n1-pr/`.
 
 **Seen, no row yet, for Atlas to route:** the engine's `tagName` for SVG elements is uppercase (`SVG`, `PATH`) and the parser does not adjust SVG attribute case (`viewbox`, `preserveaspectratio`); both differ from Chrome. Footer and "Advertisement" labels paint over yahoo's feed at 1280x2400.
 
-**For Atlas:** R1 on #833 is asked in the body; flip it to ready (the lane can't). Open PRs: #817, #833 (2 of 8). Oracle Chrome reports 143.0.7499.4 through playwright, while plan notes say pinned 148; check which is meant.
+**#833 landed as 13f6b4ba at 10:34 (Atlas), while this digest was being written;** the draft and R1 lines above are as of opening. **For Atlas:** Oracle Chrome reports 143.0.7499.4 through playwright, while plan notes say pinned 148; check which is meant.
 
 Worktrees z-rd3 and z-y2 removed. Frames were not kept. Aleph tools were not available in this session, so the reading was by git grep.
