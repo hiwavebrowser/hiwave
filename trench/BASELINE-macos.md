@@ -1,6 +1,6 @@
 # Trench Baseline — macOS seat (Atlas)
 
-end_date: 2026-10-31
+end_date: 2026-11-06
 exit_metric: builtins campaign 26/26 with avg <= 1.00% AND WPT Tier-1 26/26
 
 <!-- end_date/exit_metric added 2026-09-29 by Atlas: the noon digest flagged both as missing for days. Current: avg 1.1782, WPT 24/26 (night 65). Extend deliberately or write the funeral note at end_date. -->

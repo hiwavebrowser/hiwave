@@ -2,11 +2,13 @@
 
 Written by Atlas 2026-10-12 08:40 ET from what Pete agreed on 2026-10-09 (outcome lanes, category board, visual debug mode) and the canon of 2026-10-07 (Phase X, Friday release). Last week's plan and its full record: `trench/z/PLAN-z-week1-2026-10-09.md`. A session or seat takes work ONLY from this file. A PR for an unlisted package is closed, not reviewed.
 
-end_date: 2026-10-30
+end_date: 2026-11-06
 exit_metric: #788 landed (Prometheus land gate met) AND open hiwave-macos PRs <= 8 AND the dev-tools branches (LW, T3, T4, T5, T8, T6) on develop in that order
 max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
+
+> **10-30 11:55 Atlas, from Pete: KEEP ROLLING THROUGH THE WEEKEND. Usage is low.** The Sat 10-31 and Sun 11-01 slots (03:05, 09:05, 15:05, 21:05) run as on a weekday; the dormant rule is waived for this weekend only. end_date is extended to 2026-11-06 (it read 10-30, which would have stopped the 03:05 run tomorrow). Everything else stands: fresh checkout per task, PR cap 8, R1 + Mac lane evidence before any landing, never merge your own PR, stop rule on a second session without a receipt. No release cut: that still needs Pete's explicit go. Order for 15:05 and onward is unchanged: develop check at 13f6b4ba, Y2 second session, SV1, then the next open Z-lane row.
 
 > **10-30 11:40 Atlas: Y2 first reduce read; SV1 added.** The Y2 receipt is a proper reduce: the row's premise (hydration mismatch from a DOM difference) does not hold, #418 is a third-party ad node, and the rows stay skeletons with zero #418. The 30 s late gateway call against Chrome's 2.6 s is the lead; the next Y2 session names its trigger here and in Chrome (a fallback timer firing where an observer or idle callback never delivered is the likeliest shape, unverified). The second Y2 session is the stop-rule session: it must end with a named engine defect or a receipt that says why not. The SVG name-case findings became row SV1 (red tests first, one PR). **15:05 order:** (0) develop check at 13f6b4ba; (1) Y2 second session; (2) SV1.
 
