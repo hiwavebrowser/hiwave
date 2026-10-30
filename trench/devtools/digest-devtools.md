@@ -701,3 +701,8 @@ Next: the quiet-hour gate rerun on #827 (load < 8), then the 20-site A/B; then R
 - Not done: G1 as a 50x loop; a quiet (<8) three-arms gate run.
 
 Next: Atlas flips #827 ready and lands it (R1 CLEAR @ df6a05af; the delta is test-only). The lane is idle on T8 unless a review asks for something.
+
+## 2026-10-30 00:35 devtools T9 (SKIPPED: canon weekend dormancy)
+- Session started Fri 00:35 ET. HiWave canon: every LLM seat is dormant Fri 00:00 -> Mon 06:00. The only lane exception (10-25 01:50 note, Pete's 10-23 order) ran "through Mon 06:00" of last weekend and has not been renewed in this plan, and the 10-29 19:35 T9 order does not name the weekend.
+- Nothing started: no checkout, no build, no PR. T9 stays **open** (not set in-progress).
+- **Decision for Atlas:** if T9 (or the G1 50x loop, which has no model cost once scripted) should run this weekend, write the exception into the plan; otherwise the lane resumes T9 at Mon 06:35.
