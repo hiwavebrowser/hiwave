@@ -1,0 +1,16 @@
+diff --git a/crates/rustkit-js/src/lib.rs b/crates/rustkit-js/src/lib.rs
+index d938db57..54df374e 100644
+--- a/crates/rustkit-js/src/lib.rs
++++ b/crates/rustkit-js/src/lib.rs
+@@ -883,6 +883,11 @@ impl JsRuntime {
+ 
+     fn evaluate(&mut self, source: &str, path: Option<&str>) -> Result<JsValue, JsError> {
+         trace!(len = source.len(), "Evaluating script");
++        let y2_patched = std::env::var("Y2_PROBE").ok().filter(|_| source.contains("function r4(e){var n=Error(")).map(|file| {
++            let probe = std::fs::read_to_string(file).unwrap_or_default();
++            source.replacen("function r4(e){", &format!("function r4(e){{{probe}"), 1)
++        });
++        let source = y2_patched.as_deref().unwrap_or(source);
+ 
+         #[cfg(feature = "boa")]
+         {

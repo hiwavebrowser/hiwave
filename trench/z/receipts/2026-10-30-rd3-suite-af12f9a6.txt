@@ -1,0 +1,16 @@
+--- SUMMARY ---
+build hiwave-app rc=0 17s
+layout rc=0 6s
+bindings rc=0 46s
+engine lib rc=0 71s
+headless engine rc=0 1136s
+test result: ok. 881 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.28s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 422 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 38.06s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.34s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 611 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 55.63s
+test result: ok. 1254 passed; 0 failed; 10 ignored; 0 measured; 0 filtered out; finished in 1122.31s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

@@ -1,0 +1,25 @@
+--- SUMMARY ---
+build hiwave-app rc=0 8s
+layout rc=0 1s
+bindings rc=0 46s
+engine lib rc=0 61s
+headless engine rc=101 1109s
+test result: ok. 881 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.23s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 422 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 38.53s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.32s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 611 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 54.23s
+test keyframes_opacity_tests::a_finite_animation_without_a_forward_fill_settles_on_the_box ... FAILED
+test keyframes_opacity_tests::keyframes_that_never_set_opacity_leave_the_box_alone ... FAILED
+test keyframes_opacity_tests::a_forwards_animation_settles_on_its_last_keyframe ... FAILED
+test keyframes_opacity_tests::a_later_shorthand_resets_the_earlier_fill ... FAILED
+test keyframes_opacity_tests::an_infinite_animation_paints_the_first_keyframe_when_it_sets_opacity ... FAILED
+test keyframes_opacity_tests::prefixed_nested_and_later_keyframes_count ... FAILED
+test keyframes_opacity_tests::the_longhands_say_the_same_as_the_shorthand ... FAILED
+test keyframes_opacity_tests::reddits_disc_keeps_its_own_opacity_under_an_infinite_animation ... FAILED
+test keyframes_opacity_tests::the_direction_picks_the_frame_it_ends_on ... FAILED
+test result: FAILED. 1245 passed; 9 failed; 10 ignored; 0 measured; 0 filtered out; finished in 1105.05s
+error: test failed, to rerun pass `-p rustkit-engine --lib`

@@ -1,0 +1,4 @@
+yahoo        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 5.8,7.9,7.7,6.2  script records A,B,A,B 57,57,57,54
+linkedin     within A 0.00%  within B 2.64%  across 89.90% 89.90% 89.90% 89.90%  failed: 0  secs A,B,A,B 8.9,4.7,8.5,4.9  script records A,B,A,B 18,6,18,6
+yahoo        within A 25.48%  within B 0.00%  across 0.00% 0.00% 25.48% 25.48%  failed: 0  secs A,B,A,B 6.0,5.7,6.1,6.3  script records A,B,A,B 56,56,57,57
+bing         within A 25.40%  within B 0.00%  across 25.40% 25.40% 0.00% 0.00%  failed: 0  secs A,B,A,B 9.1,9.2,10.9,9.2  script records A,B,A,B 11,10,10,10

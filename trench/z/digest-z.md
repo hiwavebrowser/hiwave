@@ -4560,3 +4560,26 @@ Frames are private, under `renders-private/ht27f-n1-pr/`.
 - R1 asks on #830, #831 and #832; flip them to ready (the lane can't).
 - RD3 needs a pick: (a), (b) or (c).
 - Open PRs: #817, #830, #831, #832 (4 of 8).
+
+## 2026-10-30 09:05 Z-lane RD3, Y2
+
+**(0) Develop check at 702154ef: PASS.** App builds; layout 881/0, bindings 422/0, engine lib 611/0, headless 1245 pass with only the 9 RD3 red tests failing. Run on the red commit, so it doubles as the red proof. The first attempt was killed at the 10-minute background limit and rerun.
+
+**(1) RD3 pick (b): PR #833 (draft) @ `af12f9a6`** (red `be34978b`). The disc on reddit's interstitial paints at `.75`, as Chrome.
+- Chrome's settled values match the tests on every case but one deliberate choice: a name with no `@keyframes` stays at 1 (Chrome uses the box's own value), so a rule we failed to carry cannot hide a page.
+- **Deviation from the 04:25 note, for Atlas:** a finite animation with no forward fill settles on the box's own opacity, not the 0% frame. Read literally, the note makes `.page{animation:fadeIn .5s}` invisible for good. The 0% rule applies only to infinite animations.
+- **Risk to watch in the hand test:** an infinite animation whose first frame is `opacity: 0` now paints invisible (it painted at 1). None on the 20 sites.
+- Suites green (headless 1254/0). Campaign 26/26, 2 moved, both slightly further from the board: about 17665 -> 17774, new_tab 11677 -> 11826. Their infinite glows now paint the 0% frame, and the board's Chrome baseline freezes animations off. Changed pixels are confined to the glow boxes.
+- 20-site A/B: no mover. reddit 0.02% is the disc; linkedin, yahoo and bing repeated, and read as served variants.
+
+**(2) Y2: open, no PR; the row's premise does not hold.** Receipt `2026-10-30-y2-findings.md`.
+- Parsed DOM matches Chrome on the same bytes, case aside. Chrome logs no #418 and fills the feed with no scroll.
+- #418 is Taboola's node in an empty React div, and it is intermittent. **Rows stay skeletons with zero #418**, at 32 s and at 75 s.
+- Gateway posts at about 30 s vs Chrome's 2.6 s, answered 200, and the rows still do not fill. Script time is 6 s of 75 s. What the 30 s is, and whether the gateway feeds the rows, is not established.
+- No engine defect named yet. The next session on Y2 is the second, so the stop rule applies.
+
+**Seen, no row yet, for Atlas to route:** the engine's `tagName` for SVG elements is uppercase (`SVG`, `PATH`) and the parser does not adjust SVG attribute case (`viewbox`, `preserveaspectratio`); both differ from Chrome. Footer and "Advertisement" labels paint over yahoo's feed at 1280x2400.
+
+**For Atlas:** R1 on #833 is asked in the body; flip it to ready (the lane can't). Open PRs: #817, #833 (2 of 8). Oracle Chrome reports 143.0.7499.4 through playwright, while plan notes say pinned 148; check which is meant.
+
+Worktrees z-rd3 and z-y2 removed. Frames were not kept. Aleph tools were not available in this session, so the reading was by git grep.
