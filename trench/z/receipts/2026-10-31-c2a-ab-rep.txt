@@ -1,0 +1,10 @@
+google       within A 0.00%  within B 8.92%  across 0.00% 8.92% 0.00% 8.92%  failed: 0  secs A,B,A,B 3.3,2.9,2.9,3.0  script records A,B,A,B 16,15,16,14
+lyft         within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 12.8,13.9,12.3,12.0  script records A,B,A,B 36,36,36,36
+linkedin     within A 89.87%  within B 89.90%  across 89.90% 0.00% 2.96% 89.87%  failed: 0  secs A,B,A,B 8.1,4.8,5.2,10.0  script records A,B,A,B 18,6,6,18
+yahoo        within A 0.30%  within B 0.00%  across 0.30% 0.30% 0.00% 0.00%  failed: 0  secs A,B,A,B 4.2,7.4,6.1,4.5  script records A,B,A,B 57,76,74,57
+shopify      within A 0.00%  within B 2.02%  across 2.02% 0.00% 2.02% 0.00%  failed: 0  secs A,B,A,B 9.0,5.5,11.4,9.1  script records A,B,A,B 7,7,7,7
+google       within A 1.66%  within B 1.66%  across 0.01% 1.66% 1.66% 0.00%  failed: 0  secs A,B,A,B 5.3,2.8,2.9,2.9  script records A,B,A,B 15,15,15,15
+lyft         within A n/a%  within B 0.00%  across 0.00% 0.00% n/a% n/a%  failed: 1  secs A,B,A,B 12.1,11.2,0.3,11.8  script records A,B,A,B 36,36,-,36
+linkedin     within A 89.87%  within B 89.90%  across 89.90% 0.00% 1.55% 89.87%  failed: 0  secs A,B,A,B 8.2,5.4,5.3,7.9  script records A,B,A,B 18,6,6,18
+yahoo        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.5,6.0,5.2,5.0  script records A,B,A,B 56,57,57,57
+shopify      within A 2.02%  within B 0.00%  across 2.02% 2.02% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.0,9.8,8.5,9.4  script records A,B,A,B 7,7,7,7

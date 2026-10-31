@@ -1,0 +1,4 @@
+google       within A 8.47%  within B 8.47%  across 8.47% 0.00% 0.00% 8.47%  failed: 0  secs A,B,A,B 3.3,3.0,4.3,3.3  script records A,B,A,B 14,15,15,14
+google       within A 0.00%  within B 8.47%  across 0.00% 8.47% 0.00% 8.47%  failed: 0  secs A,B,A,B 2.8,2.8,2.9,3.0  script records A,B,A,B 15,15,15,14
+google       within A 8.92%  within B 0.00%  across 8.92% 8.92% 0.00% 0.00%  failed: 0  secs A,B,A,B 3.0,3.2,3.6,2.7  script records A,B,A,B 14,15,15,15
+google       within A 8.92%  within B 0.00%  across 10.57% 10.57% 1.66% 1.66%  failed: 0  secs A,B,A,B 3.1,3.0,3.1,3.1  script records A,B,A,B 14,15,15,15
