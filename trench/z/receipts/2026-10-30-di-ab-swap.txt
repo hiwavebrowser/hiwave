@@ -1,0 +1,1 @@
+google       within A 0.00%  within B 1.89%  across 0.00% 1.89% 0.00% 1.89%  failed: 0  secs A,B,A,B 2.7,2.8,2.7,2.6  script records A,B,A,B 14,14,14,14

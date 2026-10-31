@@ -1,0 +1,1 @@
+linkedin     within A 89.90%  within B 89.90%  across 89.90% 2.64% 0.00% 89.90%  failed: 0  secs A,B,A,B 4.8,7.8,8.1,5.2  script records A,B,A,B 6,18,18,6

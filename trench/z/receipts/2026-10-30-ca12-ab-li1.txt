@@ -1,0 +1,1 @@
+linkedin     within A n/a%  within B n/a%  across n/a% n/a% n/a% 2.96%  failed: 2  secs A,B,A,B 30.2,30.2,5.3,5.4  script records A,B,A,B -,-,6,6
