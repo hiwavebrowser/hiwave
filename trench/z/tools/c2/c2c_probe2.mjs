@@ -4,7 +4,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(process.argv[2] + '/');
 const { chromium } = require('playwright');
 const html = `<!doctype html><style>body{margin:0;height:3000px}
-#s{overflow:auto;width:200px;height:100px;margin-top:1000px}
+#sp0{height:1000px}
+#s{overflow:auto;width:200px;height:100px}
 #s-gap{height:300px}
 #s-t{height:20px}
 #s-ab{position:absolute;left:10px;top:1800px;width:20px;height:20px}
@@ -17,7 +18,7 @@ const html = `<!doctype html><style>body{margin:0;height:3000px}
 #after{height:20px}
 #tr{transform:translateY(50px);height:20px}
 </style><body>
-<div id=s><div id=s-gap></div><div id=s-t></div><div id=s-ab></div><div id=s-fx></div><div style="height:100px"></div></div>
+<div id=sp0></div><div id=s><div id=s-gap></div><div id=s-t></div><div id=s-ab></div><div id=s-fx></div><div style="height:100px"></div></div>
 <div id=f><div id=f-gap></div><div id=f-t></div></div>
 <div id=under></div>
 <a name=named id=nm>named</a>

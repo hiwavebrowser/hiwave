@@ -1,0 +1,1 @@
+shopify      within A 2.02%  within B 2.02%  across 0.00% 2.02% 2.02% 0.00%  failed: 0  secs A,B,A,B 10.2,10.9,5.7,5.1  script records A,B,A,B 7,7,7,7
