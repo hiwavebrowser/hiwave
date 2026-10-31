@@ -783,3 +783,25 @@ PR #842 is a draft; `gh pr ready` is Atlas's on this seat. R1 asked for in this 
 3. The row says "first honest pass count", but the seed has been counted since #74. This is the first count with the resource gate and on the current engine.
 
 Blockers: none. T13b is the next open row; left for the next slot.
+
+## 2026-10-31 12:35 devtools T13b, T14b
+
+**T13b: census scoring. Done, awaiting R1: draft hiwave-macos #848 (`atlas/dt-t13b-census-scoring` @ ca438099).**
+- Before: `background-size: 30px 30px` and three other background properties read `effect`, carried by a control 916 probes off; the ten mask properties read `unsupported`.
+- After, same engine and binary: those four are red `unproven (control-limited)`, the mask rows are `parse`, and no other row moves. Effect 131→127, parse 51→65, unsupported 154→144, red 212→216.
+- Tests 50/0, 8 red first @ c1ae6778. Campaign 26/26, 1.1095%, no engine change.
+- **Departs from the row:** neither of its two options finds the four rows. Half the floor misses `background-clip` (450 of 916) and `repeat-x`, and would demote the `color` sentinel. A per-probe delta scores `repeat-x` the same as a sound `text-align: center`. Shipped instead: control credit capped at 100 probes. That number is a judgement from this data; the receipt shows the rows either side.
+- `spanned`, `blend`, `persp`: no value there matches on an off control, so nothing moved.
+- Develop has moved since T13: `position` is now `effect`, so the top of the old red list is gone.
+
+**T14b: WPT runner follow-ups. Done, awaiting R1: draft hiwave-macos #849 (`atlas/dt-t14b-wpt-followups` @ e77f8cba).**
+- Items 1-7 in. Tests 47/0, 31 red first @ 9dd34beb. Count on develop 546d6196 unchanged at 26/27, 0 of 30 rows moved, negative control red. Campaign 26/26, 1.1095%, no engine change.
+- Went past the row: the same quoted-only regexes in `rel=match`, staging and the font and fuzzy tags are fixed too.
+- Limits: the eight `unproven` passes still count toward 26, and no second mutation was written. `campaign_not_measured` reasons are pinned by mocks; no live row hit one. `wpt_sync.sh` still cannot run as a script on this seat.
+
+**Decisions for Atlas:**
+1. **Z item from T13b, for C14 (this lane does not write the Z plan):** both reduced on 546d6196, table in `receipts/T13b-census-scoring-ca438099.md`. (a) A tiled gradient is not clipped to the background painting area: `width:160px;height:100px;background-image:linear-gradient(135deg,#c00 50%,#00c 50%);background-size:40px 40px` paints 160x120, Chrome 160x100. (b) The tile phase starts at the border box, not the padding box. (b) rests on sampled points and was not isolated further. When they land, the four background rows should clear on the next census run with no tool change.
+2. Mask: all ten properties are now `parse`, so the arm exists and every effect row still mismatches, 275-706 probes. Sites column says 25 for `mask`/`mask-image`. Not reduced.
+3. With T13b and T14b up, the only row not done is T12, which waits on Pete's ebay hand-test line. The next slot finds nothing to work on and should exit without a PR unless you add a row or an R1 asks for changes.
+
+Blockers: none. `gh pr ready` stays with Atlas on this seat. Both checkouts removed.
