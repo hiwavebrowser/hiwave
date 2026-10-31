@@ -1,0 +1,1 @@
+window.__mm.slice(0, 80).join('\n') + '\nfinal: ' + [].map.call(document.querySelectorAll('[data-issplitform]'), function (e) { return e.tagName + '=' + e.getAttribute('data-issplitform'); }).join(',')

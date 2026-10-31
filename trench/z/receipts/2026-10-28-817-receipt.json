@@ -1,0 +1,52 @@
+{
+ "base_sha": "38dc46e2",
+ "binary": "scratch/pc-cand-1db1c666",
+ "binary_mtime_utc": "2026-10-28T13:18:07.428026Z",
+ "binary_sha256": "29d50fe00bf5111f797f76f24b225a8f05d69f88914ea3ca840c20a491e29069",
+ "branch": "atlas/z-display-inherit",
+ "campaign": {
+  "cases": 26,
+  "failed": 0,
+  "file": "scratch/camp-cand.json",
+  "mean_diff_pct": 1.1078,
+  "passed": 26,
+  "sha256": "23922c6e18629b79c53871645a0e593585e57b93cb7d4fb1d67b81a20fd8278b",
+  "timestamp": "2026-10-28T09:19:22.339447"
+ },
+ "candidate_sha": "1db1c666c1bff3fc62b377a003cf742d265e20ef",
+ "cargo": "cargo 1.91.0 (ea2d97820 2025-10-10)",
+ "cargo_lock_sha256": "45b66585b4e1b9edd2288f242beb611d830a021f02fb81a571f534cfbe131294",
+ "chrome_version": null,
+ "cpu": "arm",
+ "dirty_state": false,
+ "effective_engine_flags": {},
+ "features": "headless",
+ "host": null,
+ "note": "candidate atlas/z-display-inherit @ 1db1c666; base develop 38dc46e2 (develop arm built from the red commit 3baab71a, whose engine code is develop: the new test module is cfg(test)); A/B by trench/z/tools/ab5.py at load 14-16; reduced pages checked in Chrome 148.0.7778.216",
+ "os": "macOS-26.5.2-arm64-arm-64bit",
+ "profile": "parity",
+ "raw_runs": [
+  {
+   "bytes": 596771,
+   "file": "scratch/camp-dev.json",
+   "sha256": "6ce3ea9b9effe9ff77862107b5ee3368bc004bb1cbcc64eb6fbb0bf8f4d6314d"
+  },
+  {
+   "bytes": 3070,
+   "file": "scratch/ab-di.txt",
+   "sha256": "aa20d8177c6b5d59dc6679a8ec7e621290ae18b7444c97fb37b7f090c79ed6ad"
+  },
+  {
+   "bytes": 313,
+   "file": "scratch/ab-di-swap.txt",
+   "sha256": "8a2d6aec4dea774ce9cccb76f4b03ad03c539a28cde67d335ef224f1aadc3757"
+  }
+ ],
+ "repo": "https://github.com/hiwavebrowser/hiwave-macos.git",
+ "rustflags": null,
+ "sccache": true,
+ "target": "aarch64-apple-darwin",
+ "toolchain": "rustc 1.91.0 (f8297e351 2025-10-28)",
+ "utc": "2026-10-28T13:34:21.750161Z",
+ "work_package": "HT27F-DI"
+}

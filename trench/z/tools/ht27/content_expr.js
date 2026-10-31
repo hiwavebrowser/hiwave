@@ -1,0 +1,1 @@
+[].map.call(document.querySelectorAll('[data-uia="email-form"]'), function (f) { var cs = getComputedStyle(f); return 'form content=' + JSON.stringify(cs.content) + ' w=' + f.getBoundingClientRect().width; }).join(' | ')

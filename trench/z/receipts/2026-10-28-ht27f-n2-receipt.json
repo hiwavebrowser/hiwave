@@ -1,0 +1,47 @@
+{
+ "base_sha": "38dc46e2",
+ "binary": "scratch/pc-cand-6d471bd1",
+ "binary_mtime_utc": "2026-10-28T14:13:59.240898Z",
+ "binary_sha256": "ba24c6c0e6007e77f18ffc0a922c8da452bed93f328e6b195439ee39e793aaa6",
+ "branch": "atlas/z-matchmedia",
+ "campaign": {
+  "cases": 26,
+  "failed": 0,
+  "file": "scratch/camp-cand.json",
+  "mean_diff_pct": 1.1078,
+  "passed": 26,
+  "sha256": "66ef9fcfc62040d07eac3de748a0da5dafad498655070378cc02cbd556afa4cd",
+  "timestamp": "2026-10-28T10:15:30.229009"
+ },
+ "candidate_sha": "6d471bd16252783980d6a950a8483b7253e4ee6c",
+ "cargo": "cargo 1.91.0 (ea2d97820 2025-10-10)",
+ "cargo_lock_sha256": "9f8b25a14c995ce926003a4c8b723fbd01808da7bd3f29345168f31f351da673",
+ "chrome_version": null,
+ "cpu": "arm",
+ "dirty_state": false,
+ "effective_engine_flags": {},
+ "features": "headless",
+ "host": null,
+ "note": "candidate atlas/z-matchmedia @ 6d471bd1; base develop 38dc46e2 (develop arm built from the red commit a0ddf56e, engine and bindings code = develop); A/B by trench/z/tools/ab5.py at load 15-36 (the engine suite ran alongside): five sites timed out, rerun owed; reduced pages pinned in Chrome 148.0.7778.216",
+ "os": "macOS-26.5.2-arm64-arm-64bit",
+ "profile": "parity",
+ "raw_runs": [
+  {
+   "bytes": 596381,
+   "file": "scratch/camp-dev.json",
+   "sha256": "010a94d99afae441bc38d744d309242331ca92bb92fde4f77da40694aea6d386"
+  },
+  {
+   "bytes": 3055,
+   "file": "scratch/ab-mm.txt",
+   "sha256": "1d00809904c3bfed8b56fac7617b96c677123525b26f1ab0f29c4ded03662515"
+  }
+ ],
+ "repo": "https://github.com/hiwavebrowser/hiwave-macos.git",
+ "rustflags": null,
+ "sccache": true,
+ "target": "aarch64-apple-darwin",
+ "toolchain": "rustc 1.91.0 (f8297e351 2025-10-28)",
+ "utc": "2026-10-28T14:34:33.456112Z",
+ "work_package": "HT27F-N2"
+}
