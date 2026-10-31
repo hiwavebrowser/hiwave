@@ -743,3 +743,19 @@ Next: Atlas flips #827 ready and lands it (R1 CLEAR @ df6a05af; the delta is tes
 - **T12 evidence:** 6 tests red over no-op stubs, double-charge guard red by mutation (the nested-bucket sum check not seen failing on a double charge); engine 1269/0/10 ignored; hiwave-app check clean; campaign 26/26 1.1095%. Unexplained: about 700 ms of `other` on a tiny page in a debug test build. Receipt: receipts/T12-hold-buckets-b380863c.md.
 - **Blockers:** none. Atlas landed #838 at 19:50 (develop 8d66ff41) while this session was closing. #839 waits on R1 and its base is now behind that; `gh pr ready` is left to Atlas. Both checkouts removed.
 - **Decisions for Atlas:** (1) T12's ebay line needs Pete's next hand-test, on a build with #839 in it, so landing #839 before the weekend hand-test gets that line; I recommend it once R1 clears. (2) With T11 and T12 up there is no further open row after the microsoft line. Gap 8 (data-to-DOM link, design note) and Pete's gap 3 ruling are what is left of the exit metric, and the first needs your pick.
+
+## 2026-10-31 01:05 devtools T13
+Before: no per-property CSS census. After: draft #842 `atlas/dt-t13-css-census` @ cb0188c9, base develop 1de44430, one command (`cargo run --profile parity -p css-census`), report in `docs/census/CSS_PROPERTY_CENSUS_2026-10-31.md` + `.json`, oracle Chromium 143.0.7499.4.
+Result: 344 properties, 415 values. Effect 130, computed 9, parse 51, unsupported 154. Red 213 (164 visual, 49 non-visual reads). Not exercised 28 values, not visual 50.
+Evidence: tool tests red first (32 of 38 against stubs, then 3 more), now 41/0; campaign 26/26 1.1095%, no engine change; two runs byte-identical; fresh `new-task.sh` checkout with node_modules removed, so `npm ci` ran. Not a bare `git clone` (needs approval on this seat), and that checkout's target is seeded.
+
+Decisions for Atlas (red list, for the Z C rows; no fixes in this row):
+1. `position: relative` offsets do nothing: `positioning_of` maps Relative to Static (rustkit-engine lib.rs:8556), in every form tried. 61 of 67 sites use relative positioning; only those setting an offset show it. Top of the list.
+2. A leading `;` drops the next declaration: `#p{;width:200px}` reads the earlier rule's 120px, Chrome 200px. Seen once, not reduced further.
+3. `getBoundingClientRect` ignores transform, translate, rotate and scale (0 off probes, geometry miss): paint right, rect wrong. Those rows are red on geometry alone.
+4. `object-fit: cover` on an SVG image paints past the box. Raster not tried.
+5. The bg context's control is off by 916 probes: background painted about 20 px below the border box with padding + dashed border + tiled gradient. Not reduced. `bg` rows are unproven until it is fixed, because the control's noise is credited (`background-size: 30px 30px` reads match with 915 off).
+6. Prevalence: the technique census covers only 18 of the 344 properties; the rest show `?` and sort by 26-case corpus count. So the order below those 18 is not top-100 prevalence. Say if you want a per-property top-100 crawl; I did not add one.
+
+T13 is 344 properties, not the row's ~250. T14 not started: this session took one package; it is first open for the next slot.
+PR #842 is a draft; `gh pr ready` is Atlas's on this seat. R1 asked for in this digest.
