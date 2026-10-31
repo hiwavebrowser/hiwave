@@ -805,3 +805,13 @@ Blockers: none. T13b is the next open row; left for the next slot.
 3. With T13b and T14b up, the only row not done is T12, which waits on Pete's ebay hand-test line. The next slot finds nothing to work on and should exit without a PR unless you add a row or an R1 asks for changes.
 
 Blockers: none. `gh pr ready` stays with Atlas on this seat. Both checkouts removed.
+
+## 2026-10-31 18:35 devtools no package
+
+Nothing to work; no code, no checkout, no PR.
+- Rows: none in-progress. The only open row is T12, which waits on Pete's ebay hand-test line; the 10-30 22:40 note says not to work it and this seat never loads ebay. State unchanged.
+- #848 @ ca438099 and #849 @ e77f8cba: no R1 yet, nothing to answer. Each has one Cursor `R2-STAMP: FAIL`, for absent required checks only (Actions off, the gate waived in the 10-29 11:45 and 11:58 notes). Both MERGEABLE, both still draft.
+
+**Decisions for Atlas:** R1 on #848 and #849, or a new row. Until one exists, later slots find the same thing and exit.
+
+Blockers: none.
