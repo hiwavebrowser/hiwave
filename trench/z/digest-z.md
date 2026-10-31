@@ -4669,3 +4669,28 @@ Worktrees z-di, z-ca1-2 and z-dev-c25c1d71 removed; z-c2 removed after its push.
 **Receipts (hub):** `2026-10-31-c2a-{pr.md,ab.txt,ab-rep.txt,ab-swap.txt,suite.txt}`, `2026-10-31-c2b-{pr.md,suite.txt}`, `2026-10-31-campaign-{dev-3bc6a2fb,c2a-77457291,c2b-45292397}.json`. Probes and wrappers: `tools/c2/`.
 
 Worktrees z-c2, z-c2b and z-dev-3bc6a2fb removed. No frames kept. Aleph tools were not available in this session, so the reading was by git grep. The comparison Chrome is the oracle's 143.0.7499.4; the campaign is against its usual pinned baselines.
+
+## 2026-10-31 16:45 Z-lane C2 (c)
+
+**(0) Develop check at 546d6196: PASS.** App builds; layout 881/0, bindings 428/0, engine lib 618/0, headless 1336/0. Receipt `2026-10-31-dev-546d6196-suites.txt`.
+
+**(1) C2(c) -> PR #850 (draft) @ `f490aa7a`** (red `e63af36a`, 18 of 19 failing). Before: `scrollIntoView` moved only the window, a fragment moved only the window's y, and assigning `location.hash` did nothing. After: each enclosing scroller moves, innermost first, then the window, as in Chromium 143, from every fragment route; a page loaded with a fragment opens there.
+- Beyond the row's wording: `location.hash` is now a working setter, so pages that assign it navigate and hear `hashchange` for the first time. Two extent residuals from the (a) R1 are fixed, which moves `scrollHeight`/`scrollWidth` on scrollers with end padding and around clipped content. A fragment's `scroll` event now comes from a timer, so one existing test changed to pump first.
+- Headless 1356/0 at the head, app build rc=0. Layout 881/0, bindings 428/0, engine lib 618/0 at `0828c4c1`; the head changes one test after it. hiwave-app's own tests were not run.
+- The first full run at `0828c4c1` was 1355/1: that existing test, found only by the full suite. The window-x expectations, a fixture spacer and one replacement test changed after the red run, so they have no red run of their own; the PR says which.
+- Campaign 26/26, 0 moved. 20-site A/B: no mover, and a regression guard only, since captures rarely scroll to anything. shopify differed on all four cross pairs at first; swapped and repeated twice, develop's own arm shows the same split. google and linkedin repeated as noise too; bing showed inside both arms and was not repeated; lyft had one failed capture on the candidate's arm and four clean on the repeat.
+
+**Not proven, for Atlas:**
+- **No real-window run.** The lane has no input grant. Try a link click into a nested scroller and opening a URL with a fragment.
+- **The load-time fragment scroll is new behaviour on real pages**, covered by engine tests and not by any capture. It is skipped if the window has already moved, and a late layout does not re-apply it, where Chromium's anchor does.
+
+**For Atlas:** flip #850 ready and ask R1. Open PRs: #847, #848, #849, #850 (4 of 8). C2 stays first in table order: next slice (d).
+
+**Found, no row yet (the one to read):**
+- **An absolute box with no positioned ancestor is placed from its static parent, not the initial containing block.** Untouched develop paints `top:300px` under a parent at y=200 at rows 500-519; Chromium's measured shape reads 1800 where the engine reads 2800, for plain, `auto` and `hidden` parents. It looks broad and the campaign and A/B never named it. The cause in layout is not traced. I first called this margin collapse in my session notes, and a spacer disproved that.
+
+**Seen, on the C2 row:** the window has no horizontal extent; `scroll-margin`/`scroll-padding` are unparsed, so a sticky header covers a fragment's target; in-flow `margin-bottom` is missing from a scroller's extent.
+
+**Receipts (hub):** `2026-10-31-c2c-{pr.md,ab.txt,ab-swap.txt,ab-shop.txt,ab-shop2.txt,suite.txt}`, `2026-10-31-campaign-{dev-546d6196,c2c-f490aa7a}.json`. Probes and wrappers: `tools/c2/c2c_*`.
+
+Worktrees z-c2c and z-dev-546d6196 removed. No frames kept. Aleph tools were not available in this session, so the reading was by git grep. The comparison Chrome is the oracle's 143.0.7499.4; the campaign is against its usual pinned baselines.
