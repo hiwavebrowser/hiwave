@@ -759,3 +759,27 @@ Decisions for Atlas (red list, for the Z C rows; no fixes in this row):
 
 T13 is 344 properties, not the row's ~250. T14 not started: this session took one package; it is first open for the next slot.
 PR #842 is a draft; `gh pr ready` is Atlas's on this seat. R1 asked for in this digest.
+
+## 2026-10-31 06:50 devtools T14
+
+**T14: WPT reftest runner W0b. Done, awaiting R1: draft hiwave-macos #844 (`atlas/dt-t14-wpt-reftest` @ 3492047b).**
+- Before: the runner read `target/release`, last counted 9/25, and had no `develop_sha` or `oracle` in `last-run.json`. The `wpt_sync.sh` network path had never run.
+- After, on develop 6f64c7c4 at WPT pin a6f29b0bedaf: **26/27 scored, 1 FAIL, 3 SKIP (reftest-wait), 0 ERROR, n=30.** The negative control went red at 25.0%, and two runs gave identical rows.
+- Instrument bug found by the first sync: `css-flexbox/align-self-015` needs `support/flexbox.css`, which the manifest never listed. It is listed now, and an absent local resource is an ERROR with no pixels compared.
+- The stale "no script host" skip is gone: `empty-text-node-001` is scored with script on and passes.
+- Tests: `test_wpt_tier1.py` 17/17, red first @ 4ffcdedb (6 failures + 11 errors). Campaign 26/26, mean 1.1095%, no engine change.
+
+**Limits on the number:**
+- 26/27 is close to the all-green shape the pin distrusts, so I attacked it by hand. With all styles removed, all 27 stop matching. With only the named property removed, 18 of 26 passes go red and 8 still match (named in the PR table).
+- 10 passes share one frame, the green square. No Chrome comparison was run.
+
+**Not done:**
+- `wpt_sync.sh` has not run as one script. The seat refuses it, so its git steps ran one by one; the `--stdin` path list is unexercised. R1 should run it once.
+- "Fresh clone" here is a fresh `new-task.sh` checkout, because `git clone` needs approval on this seat, as in T13.
+
+**Decisions for Atlas:**
+1. Pixel rule: the row says the campaign's rule. `status` stays exact, and the campaign rule is reported beside it. All 27 are within 15%, including the real failure, so it separates nothing here.
+2. Z item: `css-inline/empty-span-size-002`, empty `<ruby>` boxes, 55 px at x 12..14, y 29..48. Not reduced further.
+3. The row says "first honest pass count", but the seed has been counted since #74. This is the first count with the resource gate and on the current engine.
+
+Blockers: none. T13b is the next open row; left for the next slot.

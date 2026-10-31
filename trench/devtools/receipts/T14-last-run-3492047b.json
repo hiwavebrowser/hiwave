@@ -1,0 +1,402 @@
+{
+  "schema": 1,
+  "wpt_pin": "a6f29b0bedaf3f1edba7b6739127fe8e713bfcb3",
+  "hiwave_git_sha": "3492047b535bb296582cd3047d28d64d3ddf9e27",
+  "develop_sha": "6f64c7c4dbe1974642ea5fcb6ddf4ef0783ac040",
+  "oracle": {
+    "kind": "reftest: test frame vs reference frame, both through parity-capture",
+    "status_rule": {
+      "name": "exact RGB match",
+      "max_diff_pct": 0.0
+    },
+    "campaign_rule": {
+      "name": "pixelmatch, reported only, never sets a status",
+      "pixelmatch_threshold": 0.1,
+      "threshold_pct": 15
+    }
+  },
+  "capture_binary": "target/parity/parity-capture",
+  "runner": "scripts/wpt_tier1.py",
+  "viewport": {
+    "width": 800,
+    "height": 600
+  },
+  "wpt_max_diff_pct": 0.0,
+  "ts": "2026-10-31T10:43:34.372189+00:00",
+  "n": 30,
+  "pass": 26,
+  "fail": 1,
+  "skip": 3,
+  "error": 0,
+  "rate": 0.963,
+  "campaign_rule_counts": {
+    "within": 27,
+    "over": 0,
+    "not_measured": 0
+  },
+  "attribution": {
+    "_comment": "Fails grouped by a named engine capability gap. Attribution only \u2014 these cases stay in the denominator. A gap here is a lane, not an excuse.",
+    "blocked_fails": {},
+    "suspect_passes": {
+      "_comment": "PASSes on tests that declare a web font. Before n33 the font never loaded, so these were the dangerous direction (a green case not measuring its own assertion); since n33 the face loads (TTF/OTF) and a PASS here is measured in the declared font. Kept as the same field for trendline continuity.",
+      "ids": [
+        "css-flexbox/align-items-baseline-overflow-non-visible",
+        "css-inline/br-font-size",
+        "css-inline/br-line-height",
+        "css-text/line-break/line-break-anywhere-004",
+        "css-text/line-break/line-break-anywhere-005",
+        "css-text/line-break/line-break-anywhere-006",
+        "css-text/line-break/line-break-anywhere-007",
+        "css-text/overflow-wrap/overflow-wrap-001",
+        "css-text/overflow-wrap/overflow-wrap-002",
+        "css-text/overflow-wrap/overflow-wrap-004",
+        "css-text/overflow-wrap/overflow-wrap-anywhere-001",
+        "css-text/overflow-wrap/overflow-wrap-anywhere-002",
+        "css-text/overflow-wrap/overflow-wrap-anywhere-003",
+        "css-text/overflow-wrap/overflow-wrap-anywhere-004",
+        "css-text/overflow-wrap/overflow-wrap-anywhere-005",
+        "css-text/word-break/word-break-break-all-010",
+        "css-text/word-break/word-break-break-all-011",
+        "css-text/word-break/word-break-break-all-012"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-001",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-002",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-004",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-anywhere-011",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/word-break/break-word-overflow-wrap-interactions",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-inline/br-font-size",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "A"
+    },
+    {
+      "id": "css-inline/br-line-height",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "A"
+    },
+    {
+      "id": "css-inline/empty-span-height",
+      "status": "SKIP",
+      "reason": "reftest-wait: the capture path does not watch for the completion signal",
+      "diff_pct": null,
+      "diff_pixels": null,
+      "campaign_diff_pct": null,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "B"
+    },
+    {
+      "id": "css-inline/empty-span-scroll",
+      "status": "SKIP",
+      "reason": "reftest-wait: the capture path does not watch for the completion signal",
+      "diff_pct": null,
+      "diff_pixels": null,
+      "campaign_diff_pct": null,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "B"
+    },
+    {
+      "id": "css-inline/empty-span-size-001",
+      "status": "SKIP",
+      "reason": "reftest-wait: the capture path does not watch for the completion signal",
+      "diff_pct": null,
+      "diff_pixels": null,
+      "campaign_diff_pct": null,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "B"
+    },
+    {
+      "id": "css-inline/empty-span-size-002",
+      "status": "FAIL",
+      "reason": null,
+      "diff_pct": 0.0115,
+      "diff_pixels": 55,
+      "campaign_diff_pct": 0.0115,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "B"
+    },
+    {
+      "id": "css-inline/empty-text-node-001",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "B2"
+    },
+    {
+      "id": "css-flexbox/align-self-015",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "flex"
+    },
+    {
+      "id": "css-flexbox/align-items-baseline-overflow-non-visible",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "flex"
+    },
+    {
+      "id": "css-text/line-break/line-break-anywhere-001",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-anywhere-001",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/word-break/break-boundary-2-chars-001",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/line-break/line-break-anywhere-002",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-anywhere-002",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/word-break/break-boundary-2-chars-002",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": null,
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/line-break/line-break-anywhere-004",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-anywhere-003",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/word-break/word-break-break-all-010",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/line-break/line-break-anywhere-005",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-anywhere-004",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/word-break/word-break-break-all-011",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/line-break/line-break-anywhere-006",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/overflow-wrap/overflow-wrap-anywhere-005",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/word-break/word-break-break-all-012",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    },
+    {
+      "id": "css-text/line-break/line-break-anywhere-007",
+      "status": "PASS",
+      "reason": null,
+      "diff_pct": 0.0,
+      "diff_pixels": 0,
+      "campaign_diff_pct": 0,
+      "rel_match": "ok",
+      "blocked_by": "declares a web font (loads since n33: TTF/OTF; WOFF/WOFF2 not yet)",
+      "maps_to": "slice-0"
+    }
+  ],
+  "honesty": {
+    "all_green": false,
+    "all_green_suspect": false,
+    "negative_control": "FAIL as required (checked every run; run aborts otherwise)",
+    "note": "Not suspect: this run contains red (1 FAIL, 0 ERROR), so the oracle demonstrably distinguishes pass from fail on real cases. A run with pass==n and fail==0 and error==0 would flip this field."
+  }
+}
