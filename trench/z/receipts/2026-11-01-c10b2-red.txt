@@ -1,0 +1,9 @@
+C10(b2) red: transform_parse_tests at 32212297 (tests only, on the C10(b) head 9551f252), rustkit-engine --lib --features headless.
+test result: FAILED. 2 passed; 12 failed; 2 ignored; 0 measured; 1370 filtered out
+Failing:
+translate3d_flattens, a_rotation_about_z_is_a_rotation, perspective_alone_moves_nothing, a_percentage_scales,
+scale3d_drops_its_depth, matrix3d_flattens, a_rotation_about_x_or_y_foreshortens, function_names_ignore_case,
+translate_z_is_a_transform_that_moves_nothing, a_bad_value_refuses_the_whole_declaration,
+a_refused_value_leaves_the_box_alone, the_box_reads_the_flattened_rect
+Passing (controls): zero_needs_no_unit, calc_in_a_translate
+Ignored: font_and_viewport_units_in_a_translate, perspective_with_depth

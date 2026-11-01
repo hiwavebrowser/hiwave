@@ -1,0 +1,11 @@
+C10(b) red: transform_rect_tests at f4f29b9f (tests only, on develop 546d6196), rustkit-engine --lib --features headless.
+test result: FAILED. 3 passed; 18 failed; 0 ignored; 0 measured; 1349 filtered out
+Failing:
+a_percentage_is_of_the_box, a_rotation_reads_as_its_bounding_box, a_scroll_inside_a_transform_is_scaled_by_it,
+a_transform_holds_absolute_and_fixed_boxes, a_transform_inside_a_scroll_is_moved_by_it,
+an_absolute_box_held_by_a_transformed_scroller_scrolls_with_it, get_client_rects_answers_the_same,
+it_applies_to_an_inline_block_and_a_flex_item, matrix_and_skew, scale_is_about_the_centre, the_individual_properties,
+the_origin_moves_a_scale, the_rect_is_of_the_border_box, the_window_scroll_comes_off_after_the_transform,
+transforms_multiply_down_the_tree, translate3d_with_no_depth, translate_moves_the_rect,
+what_is_inside_moves_with_it_and_what_follows_does_not
+Passing (controls): a_transform_does_not_apply_to_a_plain_inline, no_transform_is_no_change, offsets_and_sizes_stay_where_layout_put_the_box

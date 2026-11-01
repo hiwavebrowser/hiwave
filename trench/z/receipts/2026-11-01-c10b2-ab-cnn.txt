@@ -1,0 +1,1 @@
+cnn          within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 31.4,30.4,30.5,34.4  script records A,B,A,B 13,13,13,13
