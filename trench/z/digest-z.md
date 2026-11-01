@@ -4786,3 +4786,25 @@ Worktrees z-c10b, z-c10b2 and z-base-546d6196 removed. No frames kept. Aleph too
 **Receipts (hub):** `2026-11-01-c10fix-*`, `2026-11-01-tcalc-*`, `2026-11-01-c2d2-ab*`, `2026-11-01-campaign-{c10fix-2095df23,tcalc-515f1b1e,c2d3-42fc0c49}.json`. Probes: `tools/c10/{c10fix,c10b2_r1,c10b2_var,translate_calc}_probe.mjs`, `tools/c2/{c2d_r1_probe,c2d_r1_probe2,held_probe,c2d_shop_chrome,c2d_shop_chrome2}.mjs`.
 
 Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-calc and z-base-cae49416 kept for the sweep: pushed, acceptance not complete; the next slot starts from fresh checkouts. No frames in the repo. Aleph tools were not available in this session. The comparison Chrome is the oracle's 143.0.7499.4.
+
+## 2026-11-01 17:06 Z-lane C10 #855 z part, #851 held rule and gates, #853 gates
+
+**(1) #855 LANDED by Atlas -> develop `525f6ec0`.** Before: the z part of `translate` took `%`, `auto`, `fit-content`. After: refused, as in Chromium 143, also inside `calc`/`min`/`max`/`clamp`, and a bare non-zero number too (my test caught that one). Red `a6d71353`, fix `b5cc8df8`. Headless 1393/0, app debug build rc=0, campaign 26/26 0 moved. A/B not rerun at this head.
+
+**(2) #851 @ `68f4cf7b` (draft, merges develop `525f6ec0`).** `held` now keys on a containing block for fixed boxes: transform, filter, `will-change`, `contain`. Red `b3baf512` (3 of 75 failing), fix `bbf114fe`, 75/0 after. One change beyond the order: such a box inside a scroller now carries its fixed and absolute children with the scroller (Chromium `held2_probe.mjs`).
+- **The shopify hold is cleared in a capture:** the header paints and the two black columns are gone. Frames at this seat, `renders-private/2026-11-01-851-shopify/`, not committed.
+- Campaign 26/26, 0 moved against `525f6ec0`. Layout 881/0, bindings 428/0, engine lib 618/0, app debug build rc=0. Headless suite: see the line below.
+- 20-site A/B: shopify is the one mover, the header, 0.81% to 2.83% across on every pair in two runs (its hero video also varies within an arm). linkedin and bing vary inside one arm, and move between arms from run to run. cnn at the 90 s limit 0.03% at most. lyft refused one capture, in the second slot.
+
+**(3) #853 @ `b27f19fa` (draft, merges develop `525f6ec0`).** Gates posted, measured at `b6e3089b` (one merge earlier): headless 1411/0, layout 881/0, bindings 428/0, engine lib 618/0, app debug build rc=0, campaign 26/26 0 moved, A/B no mover. At `b27f19fa` only the tests named `transform` (79/0) and the census guard. **Atlas: send it to re-review.**
+
+**Not done:**
+- No real window on #851 or #853; the lane has no input grant. Atlas's dropdown page needs a rerun on #851's build, since the panel did not paint on #855's.
+- `perspective`, `backdrop-filter`, `transform-style`, `content-visibility` still do not set `held`, though Chromium holds for all four. Not in the order.
+- Where layout places a fixed box under its containing block is still row C10 (m): this slot changes rects and scrolling only.
+- #855 findings 2, 4, 5 and Atlas's C10 (3) items not touched. A bare number as x or y in `translate` not checked. A `calc()` with a percentage still passes `depth()` for `translate3d` on #853.
+- No standing develop check on its own; the base campaign at `92342645` and `525f6ec0` is the only develop evidence. Aleph tools were not available in this session, so the reading was by grep.
+
+**Slip:** I wrote a new `tools/c2/ppm2png.py` over the existing tracked one; restored from git before any commit.
+
+**Receipts (hub):** `2026-11-01-{tcalc2,c10b2g,c2dg}-*`, `2026-11-01-campaign-{tcalc2-b5cc8df8,c10b2g-b6e3089b,c2dg-68f4cf7b}.json`. Probes: `tools/c10/translate_z_probe.mjs`, `tools/c2/held2_probe.mjs`. Worktrees z-c10-tcalc2, z-c10b2-g, z-base-92342645 removed. The comparison Chrome is the oracle's 143.0.7499.4. Open hiwave-macos PRs: #847, #851, #853 (3 of 8).

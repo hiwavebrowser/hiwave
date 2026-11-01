@@ -1,0 +1,5 @@
+=== build hiwave-app ===
+build hiwave-app rc=0 37s
+=== headless engine ===
+test result: ok. 1393 passed; 0 failed; 14 ignored; 0 measured; 0 filtered out; finished in 1270.03s
+headless engine rc=0 1278s

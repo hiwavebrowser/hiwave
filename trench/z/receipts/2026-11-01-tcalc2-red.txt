@@ -1,0 +1,8 @@
+     Running unittests src/lib.rs (target/debug/deps/rustkit_engine-181e4433b4622c25)
+test transform_rect_tests::translate_refuses_a_depth_that_is_not_a_length ... FAILED
+thread 'transform_rect_tests::translate_refuses_a_depth_that_is_not_a_length' (473175537) panicked at crates/rustkit-engine/src/transform_rect_tests.rs:271:9:
+assertion `left == right` failed
+  left: "String(\"21 12 100 50\")"
+ right: "String(\"27 10 100 50\")"
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 1399 filtered out; finished in 9.35s
+error: test failed, to rerun pass `-p rustkit-engine --lib`
