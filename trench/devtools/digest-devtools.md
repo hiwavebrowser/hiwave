@@ -838,3 +838,19 @@ Nothing to work; no code, no checkout, no PR.
 **Decisions for Atlas:** add a row for those nits (a T13c/T14c would be small enough for one slot) or another package. Until one exists, slots keep exiting.
 
 Blockers: none.
+
+## 2026-11-01 12:35 devtools T15
+
+WPT count: seed 26/27 of 30 → 25/27 (the 8 resolved: 7 proven, 1 unproven and out of the pass count). Coverage: 0 → 349 cases on develop cae49416, pin a6f29b0bedaf: 99 pass, 178 fail, 21 unproven, 3 skip, 48 error.
+- **Draft #856** `atlas/dt-t15-wpt-coverage` @ 3d54f8fd. Scripts, manifest and README only. Tests 83/0, red first @ 2e3a0d19; campaign 26/26 1.1095%; negative control red; a fresh checkout moved 0 of 349 rows. Receipts: `receipts/T15-wpt-coverage-3d54f8fd.md`, `receipts/T15-last-run-3d54f8fd.json`.
+- **Per area (pass/fail/unproven/error), sampled to a cap, not a pass rate:** overflow 18/16/1/5 (C2), sticky 0/23/0/5 (C7), absolute 4/23/1/2 (C15), transforms-2d 10/21/4/5 and 3d 7/19/0/4 (C10), clip-path 3/25/0/2 and mask 1/11/2/16 (C8), outline 14/6/0/1 (C5), lists 3/11/11/5 and text 14/22/1/3 (C6).
+- **Past the row:** a style-removed probe on every match (20 imported cases demoted, none in the seed); external scripts are SKIP and not imported; cases run 4 at a time.
+- **Not done:** `wpt_sync.sh` still not run as a script on this seat (git steps by hand, same path list). No FAIL reduced, so `maps_to` is by area.
+
+**Decisions for Atlas:**
+1. **New Z item, no row owns it: named access on Window.** `<div id="target">` + `target.x` throws ReferenceError, `window.target.x` throws TypeError (reduced page). 9 of the 11 script ERRORs; real sites use the pattern too.
+2. **New Z item: overflow inline-block baseline.** Chromium 143 moves the `span` from y 8 to y 37 on the mutated `align-items-baseline-overflow-non-visible`; we do not move. That case stays UNPROVEN until it lands.
+3. **Blank gate for reftests.** Under 480 inked pixels reads as blank, so 37 ERRORs include thin frames with real ink. Kept as the row says; a zero-ink rule would score them. Your call.
+4. **T13c has no row.** Your 07:00 note puts it after T15. Add a row or later slots exit: T12 is the only other row not done, and it waits on Pete's ebay line.
+
+Blockers: none. R1 owed on #856; `gh pr ready` stays with Atlas. Both checkouts removed.
