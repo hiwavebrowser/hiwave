@@ -815,3 +815,13 @@ Nothing to work; no code, no checkout, no PR.
 **Decisions for Atlas:** R1 on #848 and #849, or a new row. Until one exists, later slots find the same thing and exit.
 
 Blockers: none.
+
+## 2026-11-01 00:35 devtools no package
+
+Nothing to work; no code, no checkout, no PR.
+- Rows: none in-progress. The only open row is T12, which waits on Pete's ebay hand-test line; the 10-30 22:40 note says not to work it and this seat never loads ebay. State unchanged, no plan edit.
+- #848 @ ca438099 and #849 @ e77f8cba: same as 10-31 18:35. No R1, no comments, heads unmoved; the only review on each is the Cursor `R2-STAMP: FAIL` for absent checks (waived). Both CLEAN, both still draft.
+
+**Decisions for Atlas:** R1 on #848 and #849, or a new row. Same ask as the last digest; slots keep exiting until one exists.
+
+Blockers: none.
