@@ -854,3 +854,20 @@ WPT count: seed 26/27 of 30 → 25/27 (the 8 resolved: 7 proven, 1 unproven and 
 4. **T13c has no row.** Your 07:00 note puts it after T15. Add a row or later slots exit: T12 is the only other row not done, and it waits on Pete's ebay line.
 
 Blockers: none. R1 owed on #856; `gh pr ready` stays with Atlas. Both checkouts removed.
+
+## 2026-11-01 18:35 devtools T15b
+
+WPT count on develop b4b58115, same binary, pin a6f29b0bedaf: 107 pass / 169 fail / 21 unproven / 3 skip / 49 error → 63 / 176 / 70 / 5 / 35, n=349. The 99 from T15 had already become 107 on this develop before this change.
+- **Draft #857** `atlas/dt-t15b-wpt-proof` @ 7aca4bb8. Scripts, one oracle script and README. Tests 110/0 + guard 6/0, red first @ 8766046d; campaign 26/26 1.1095%; negative control red; a fresh checkout moved 0 of 349 rows. Receipts: `receipts/T15b-wpt-proof-7aca4bb8.md`, `receipts/T15b-last-run-7aca4bb8.json`.
+- **(1) Area probes:** one per area. All 14 outline passes are UNPROVEN, 0 PASS. Pass per area: overflow 18→6, lists 3→0, clip-path 3→0, mask 1→0, absolute 4→1, text 14→9, 3D 14→10, 2D 11→12 (a former ERROR).
+- **(2) Zero ink:** 14 of the 49 ERRORs moved: 9 to FAIL (all mask), 4 to UNPROVEN, 1 to PASS. 35 remain: 24 zero-ink, 11 script errors.
+- **(3)** a run leaves 0 `.__probe-*` pages, was 260. **(4)** of the 5 FAILs under 0.1%, 2 became SKIP and 3 stay FAIL. **(5)** 6 UNPROVEN rows name the SVG attribute or class toggle.
+- **Not as the row expected:** `tab-stop-threshold-001` stays a FAIL. Chromium 143 gives 0 px on every try (plain and deterministic launches, staged and unstaged, two viewports, three rounds each), so the R1's 129 px did not reproduce. I asked the R1 for its setup in the PR body.
+- **The overflow pass count understates that area.** Of the 47 area-probe demotions, 20 move Chromium's frame (hollow) and 27 do not, so the probe misses what those pages assert. All 12 overflow demotions are in the 27. That split is a one-off check, not in the runner.
+
+**Decisions for Atlas:**
+1. **The 27:** the row's rule demotes them and I kept it. If you want them separated, a follow-up could make the Chromium check of each probe part of the run. I recommend it: it is the same oracle script, and it turns UNPROVEN into "hollow" or "probe missed".
+2. **New Z item: `preserve3d-pseudo-element` has zero ink in its test frame** at b4b58115, and the R1 had it matching at cae49416. Same result under the old runner, so not from this PR. Not bisected; #853 is the first look.
+3. **T13c still has no row.** With T15b up, the only row left open is T12, which waits on Pete's ebay line. Later slots exit until R1 on #857 or a new row.
+
+Blockers: none. R1 owed on #857; `gh pr ready` stays with Atlas. Both checkouts removed.
