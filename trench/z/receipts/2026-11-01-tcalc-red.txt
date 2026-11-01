@@ -1,0 +1,1566 @@
+   Compiling proc-macro2 v1.0.104
+   Compiling unicode-ident v1.0.22
+   Compiling quote v1.0.47
+   Compiling libc v0.2.179
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.229
+   Compiling once_cell v1.21.4
+   Compiling equivalent v1.0.2
+   Compiling core-foundation-sys v0.8.7
+   Compiling smallvec v1.15.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling allocator-api2 v0.2.21
+   Compiling pin-project-lite v0.2.16
+   Compiling foldhash v0.2.0
+   Compiling writeable v0.6.4
+   Compiling log v0.4.29
+   Compiling crossbeam-utils v0.8.21
+   Compiling bitflags v1.3.2
+   Compiling thiserror v1.0.69
+   Compiling litemap v0.8.1
+   Compiling serde v1.0.229
+   Compiling arrayvec v0.7.8
+   Compiling hashbrown v0.17.1
+   Compiling itoa v1.0.18
+   Compiling memchr v2.7.6
+   Compiling foreign-types-shared v0.3.1
+   Compiling tracing-core v0.1.36
+   Compiling parking_lot_core v0.9.12
+   Compiling icu_properties_data v2.3.0
+   Compiling utf8_iter v1.0.4
+   Compiling futures-core v0.3.31
+   Compiling cfg_aliases v0.1.1
+   Compiling scopeguard v1.2.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling indexmap v2.14.2
+   Compiling block v0.1.6
+   Compiling lock_api v0.4.14
+   Compiling bytes v1.11.0
+   Compiling simd-adler32 v0.3.8
+   Compiling write16 v1.0.0
+   Compiling siphasher v1.0.1
+   Compiling paste v1.0.15
+   Compiling utf16_iter v1.0.5
+   Compiling core-foundation v0.9.4
+   Compiling malloc_buf v0.0.6
+   Compiling syn v2.0.113
+   Compiling syn v3.0.6
+   Compiling socket2 v0.6.1
+   Compiling mio v1.1.1
+   Compiling objc v0.2.7
+   Compiling termcolor v1.4.1
+   Compiling core-graphics-types v0.1.3
+   Compiling bit-vec v0.8.0
+   Compiling futures-io v0.3.31
+   Compiling autocfg v1.5.0
+   Compiling unicode-width v0.1.14
+   Compiling static_assertions v1.1.0
+   Compiling bitflags v2.13.2
+   Compiling adler2 v2.0.1
+   Compiling bit-set v0.8.0
+   Compiling heck v0.5.0
+   Compiling rustc-hash v1.1.0
+   Compiling miniz_oxide v0.8.9
+   Compiling num-traits v0.2.19
+   Compiling zmij v1.0.9
+   Compiling futures-sink v0.3.31
+   Compiling hexf-parse v0.2.1
+   Compiling codespan-reporting v0.11.1
+   Compiling unicode-xid v0.2.6
+   Compiling crc32fast v1.5.0
+   Compiling parking_lot v0.12.5
+   Compiling cfg_aliases v0.2.1
+   Compiling serde_json v1.0.151
+   Compiling rustversion v1.0.22
+   Compiling percent-encoding v2.3.2
+   Compiling raw-window-handle v0.6.2
+   Compiling jobserver v0.1.34
+   Compiling libloading v0.8.9
+   Compiling form_urlencoded v1.2.2
+   Compiling either v1.15.0
+   Compiling slab v0.4.11
+   Compiling shlex v1.3.0
+   Compiling profiling v1.0.17
+   Compiling find-msvc-tools v0.1.6
+   Compiling futures-channel v0.3.31
+   Compiling crossbeam-epoch v0.9.18
+   Compiling naga v23.1.0
+   Compiling futures-task v0.3.31
+   Compiling rayon-core v1.13.0
+   Compiling cc v1.2.51
+   Compiling flate2 v1.1.5
+   Compiling litrs v1.0.0
+   Compiling pin-utils v0.1.0
+   Compiling wgpu-hal v23.0.1
+   Compiling crossbeam-deque v0.8.6
+   Compiling fs_extra v1.3.0
+   Compiling pkg-config v0.3.32
+   Compiling dunce v1.0.5
+   Compiling thiserror v2.0.21
+   Compiling document-features v0.2.12
+   Compiling wgpu-types v23.0.0
+   Compiling fdeflate v0.3.7
+   Compiling wgpu-core v23.0.1
+   Compiling zerocopy v0.8.31
+   Compiling lazy_static v1.5.0
+   Compiling version_check v0.9.5
+   Compiling cmake v0.1.58
+   Compiling phf_shared v0.14.0
+   Compiling wgpu v23.0.1
+   Compiling ahash v0.8.12
+   Compiling png v0.17.16
+   Compiling fastrand v2.3.0
+   Compiling aws-lc-sys v0.45.0
+   Compiling rayon v1.11.0
+   Compiling color_quant v1.1.0
+   Compiling quick-error v2.0.1
+   Compiling weezl v0.1.12
+   Compiling base64 v0.22.1
+   Compiling foldhash v0.1.5
+   Compiling byteorder-lite v0.1.0
+   Compiling libm v0.2.16
+   Compiling phf_generator v0.14.0
+   Compiling hashbrown v0.15.5
+   Compiling image-webp v0.2.4
+   Compiling gif v0.13.3
+   Compiling synstructure v0.13.2
+   Compiling displaydoc v0.2.5
+   Compiling synstructure v0.14.0
+   Compiling zerovec-derive v0.11.6
+   Compiling thiserror-impl v1.0.69
+   Compiling serde_derive v1.0.229
+   Compiling foreign-types-macros v0.2.3
+   Compiling tracing-attributes v0.1.31
+   Compiling zerofrom-derive v0.1.6
+   Compiling tokio-macros v2.6.0
+   Compiling futures-macro v0.3.31
+   Compiling thiserror-impl v2.0.21
+   Compiling foreign-types v0.5.0
+   Compiling yoke-derive v0.8.4
+   Compiling tokio v1.49.0
+   Compiling metal v0.29.0
+   Compiling futures-util v0.3.31
+   Compiling zerofrom v0.1.6
+   Compiling core-graphics v0.23.2
+   Compiling tracing v0.1.44
+   Compiling jpeg-decoder v0.3.2
+   Compiling cow-utils v0.1.3
+   Compiling pastey v0.2.3
+   Compiling yoke v0.8.3
+   Compiling rustc-hash v2.1.3
+   Compiling ryu-js v1.0.3
+   Compiling winnow v0.7.14
+   Compiling fast-float2 v0.2.4
+   Compiling icu_locale_fallback_data v2.3.0
+   Compiling parking v2.2.1
+   Compiling aws-lc-rs v1.18.1
+   Compiling zeroize v1.8.2
+   Compiling rustkit-codecs v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-codecs)
+   Compiling boa_string v0.22.0
+   Compiling futures-executor v0.3.31
+   Compiling futures v0.3.31
+   Compiling boa_macros v0.22.0
+   Compiling lru v0.12.5
+   Compiling toml_parser v1.0.6+spec-1.1.0
+   Compiling phf_macros v0.14.0
+   Compiling strum_macros v0.26.4
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling naga v24.0.0
+   Compiling phf_shared v0.11.3
+   Compiling thin-vec v0.2.20
+   Compiling urlencoding v2.1.3
+   Compiling toml_datetime v0.7.5+spec-1.1.0
+   Compiling semver v1.0.27
+   Compiling new_debug_unreachable v1.0.6
+   Compiling precomputed-hash v0.1.1
+   Compiling icu_calendar_data v2.3.0
+   Compiling toml_edit v0.23.10+spec-1.0.0
+   Compiling core_maths v0.1.1
+   Compiling string_cache v0.8.9
+   Compiling rustc_version v0.4.1
+   Compiling phf v0.14.0
+   Compiling boa_gc v0.22.0
+   Compiling rustkit-html v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-html)
+   Compiling hashbrown v0.14.5
+   Compiling strum v0.26.3
+   Compiling rustls-pki-types v1.13.2
+   Compiling rustkit-cssparser v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-cssparser)
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.4
+   Compiling strum_macros v0.28.0
+   Compiling bytemuck_derive v1.10.2
+   Compiling num-integer v0.1.47
+   Compiling icu_locale_core v2.3.0
+   Compiling wgpu-hal v24.0.4
+   Compiling icu_collections v2.3.0
+   Compiling concurrent-queue v2.5.0
+   Compiling regex-syntax v0.8.8
+   Compiling rand_core v0.10.1
+   Compiling getrandom v0.4.3
+   Compiling object v0.37.3
+   Compiling num-bigint v0.5.1
+   Compiling boa_interner v0.22.0
+   Compiling bytemuck v1.25.2
+   Compiling event-listener v5.4.1
+   Compiling rustkit-css v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-css)
+   Compiling strum v0.28.0
+   Compiling proc-macro-crate v3.4.0
+   Compiling float16 v0.1.7
+   Compiling icu_provider v2.3.1
+   Compiling calendrical_calculations v0.2.4
+   Compiling core-text v20.1.0
+   Compiling metal v0.31.0
+   Compiling regex-automata v0.4.13
+   Compiling pin-project-internal v1.1.13
+   Compiling equator-macro v0.4.2
+   Compiling wgpu-core v24.0.5
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_locale_fallback v2.3.0
+   Compiling wgpu-types v24.0.0
+   Compiling iana-time-zone v0.1.64
+   Compiling unicode-linebreak v0.1.5
+   Compiling gimli v0.32.3
+   Compiling rustls v0.23.35
+   Compiling unicode-segmentation v1.12.0
+   Compiling untrusted v0.9.0
+   Compiling time-core v0.1.9
+   Compiling objc-sys v0.3.5
+   Compiling portable-atomic v1.15.0
+   Compiling num-conv v0.2.2
+   Compiling unicode-bidi v0.3.18
+   Compiling time-macros v0.2.32
+   Compiling idna_adapter v1.2.1
+   Compiling idna v1.1.0
+   Compiling futures-lite v2.6.1
+   Compiling rustkit-text v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-text)
+   Compiling chrono v0.4.42
+   Compiling pin-project v1.1.13
+   Compiling url v2.5.7
+   Compiling icu_calendar v2.3.0
+   Compiling equator v0.4.2
+   Compiling matchers v0.2.0
+   Compiling addr2line v0.25.1
+   Compiling boa_ast v0.22.0
+   Compiling num_enum_derive v0.7.6
+   Compiling event-listener-strategy v0.5.4
+   Compiling chacha20 v0.10.2
+   Compiling timezone_provider v0.2.6
+   Compiling tracing-serde v0.2.0
+   Compiling dynify-macros v0.1.2
+   Compiling sharded-slab v0.1.7
+   Compiling wgpu v24.0.5
+   Compiling crossbeam-channel v0.5.15
+   Compiling security-framework-sys v2.17.0
+   Compiling core-foundation v0.10.1
+   Compiling num_threads v0.1.7
+   Compiling tracing-log v0.2.0
+   Compiling regress v0.12.0
+   Compiling thread_local v1.1.9
+   Compiling ixdtf v0.6.6
+   Compiling unicase v2.8.1
+   Compiling deranged v0.5.8
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling fixedbitset v0.5.7
+   Compiling rustc-demangle v0.1.26
+   Compiling subtle v2.6.1
+   Compiling powerfmt v0.2.0
+   Compiling nu-ansi-term v0.50.3
+   Compiling futures-concurrency v7.7.1
+   Compiling alloc-stdlib v0.3.0
+   Compiling temporal_rs v0.2.6
+   Compiling mime_guess v2.0.5
+   Compiling security-framework v3.7.0
+   Compiling tracing-subscriber v0.3.22
+   Compiling rustkit-core v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-core)
+   Compiling time v0.3.55
+   Compiling dynify v0.1.2
+   Compiling rand v0.10.3
+   Compiling backtrace v0.3.76
+   Compiling num_enum v0.7.6
+   Compiling async-channel v2.5.0
+   Compiling aligned-vec v0.6.4
+   Compiling dashmap v6.2.1
+   Compiling tokio-util v0.7.17
+   Compiling itertools v0.15.0
+   Compiling cocoa-foundation v0.1.2
+   Compiling http v1.4.0
+   Compiling small_btree v0.1.0
+   Compiling tap v1.0.1
+   Compiling oneshot v0.2.1
+   Compiling psl-types v2.0.11
+   Compiling tag_ptr v0.1.0
+   Compiling xsum v0.1.6
+   Compiling fnv v1.0.7
+   Compiling intrusive-collections v0.10.3
+   Compiling atomic-waker v1.1.2
+   Compiling objc2-encode v4.1.0
+   Compiling cocoa v0.25.0
+   Compiling psl v2.1.175
+   Compiling rustkit-common v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-common)
+   Compiling boa_parser v0.22.0
+   Compiling h2 v0.4.12
+   Compiling objc2 v0.5.2
+   Compiling rustls-native-certs v0.8.4
+   Compiling brotli-decompressor v6.1.0
+   Compiling mime v0.3.17
+   Compiling httpdate v1.0.3
+   Compiling num_cpus v1.17.0
+   Compiling pollster v0.4.0
+   Compiling boa_engine v0.22.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/third_party/boa_engine)
+   Compiling rustkit-viewhost v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-viewhost)
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:125:55
+    |
+125 |                 let wpt: cocoa::foundation::NSPoint = msg_send![event, locationInWindow];
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:127:21
+    |
+127 |                     msg_send![this, convertPoint: wpt fromView: nil];
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:128:56
+    |
+128 |                 let frame: cocoa::foundation::NSRect = msg_send![this, frame];
+    |                                                        ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:165:29
+    |
+165 |                 let _: () = msg_send![super(this, superclass), updateTrackingAreas];
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:166:33
+    |
+166 |                 let areas: id = msg_send![this, trackingAreas];
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:167:36
+    |
+167 |                 let count: usize = msg_send![areas, count];
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:175:32
+    |
+175 |                 let area: id = msg_send![Class::get("NSTrackingArea").expect("NSTrackingArea class"), alloc];
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:176:32
+    |
+176 |                   let area: id = msg_send![area,
+    |  ________________________________^
+177 | |                     initWithRect: zero
+178 | |                     options: MOUSE_ENTERED_AND_EXITED | MOUSE_MOVED | ACTIVE_ALWAYS | IN_VISIBLE_RECT
+179 | |                     owner: this as *const Object as id
+180 | |                     userInfo: nil];
+    | |__________________________________^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:181:29
+    |
+181 |                 let _: () = msg_send![this, addTrackingArea: area];
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:182:29
+    |
+182 |                 let _: () = msg_send![area, release];
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:187:55
+    |
+187 |                 let wpt: cocoa::foundation::NSPoint = msg_send![event, locationInWindow];
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:189:21
+    |
+189 |                     msg_send![this, convertPoint: wpt fromView: nil];
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:190:56
+    |
+190 |                 let frame: cocoa::foundation::NSRect = msg_send![this, frame];
+    |                                                        ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:191:35
+    |
+191 |                 let raw_dx: f64 = msg_send![event, scrollingDeltaX];
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:192:35
+    |
+192 |                 let raw_dy: f64 = msg_send![event, scrollingDeltaY];
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:193:37
+    |
+193 |                 let precise: bool = msg_send![event, hasPreciseScrollingDeltas];
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:222:33
+    |
+222 |                 let chars: id = msg_send![event, characters];
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:224:61
+    |
+224 |                     let utf8: *const std::os::raw::c_char = msg_send![chars, UTF8String];
+    |                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:233:36
+    |
+233 |                 let keycode: u16 = msg_send![event, keyCode];
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:234:34
+    |
+234 |                 let flags: u64 = msg_send![event, modifierFlags];
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:265:17
+    |
+265 |                 sel!(acceptsFirstMouse:),
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:269:17
+    |
+269 |                 sel!(acceptsFirstResponder),
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:272:29
+    |
+272 |             decl.add_method(sel!(keyDown:), key_down as extern "C" fn(&Object, Sel, id));
+    |                             ^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:273:29
+    |
+273 |             decl.add_method(sel!(keyUp:), key_up as extern "C" fn(&Object, Sel, id));
+    |                             ^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:275:17
+    |
+275 |                 sel!(mouseDown:),
+    |                 ^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:278:29
+    |
+278 |             decl.add_method(sel!(mouseUp:), mouse_up as extern "C" fn(&Object, Sel, id));
+    |                             ^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:279:29
+    |
+279 |             decl.add_method(sel!(mouseMoved:), mouse_moved as extern "C" fn(&Object, Sel, id));
+    |                             ^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:280:29
+    |
+280 |             decl.add_method(sel!(mouseDragged:), mouse_moved as extern "C" fn(&Object, Sel, id));
+    |                             ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:281:29
+    |
+281 |             decl.add_method(sel!(mouseExited:), mouse_exited as extern "C" fn(&Object, Sel, id));
+    |                             ^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:282:29
+    |
+282 |             decl.add_method(sel!(scrollWheel:), scroll_wheel as extern "C" fn(&Object, Sel, id));
+    |                             ^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:284:17
+    |
+284 |                 sel!(updateTrackingAreas),
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `sel` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:341:38
+    |
+341 |         let ns_window: id = unsafe { msg_send![ns_view, window] };
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:348:41
+    |
+348 |         let content_view: id = unsafe { msg_send![ns_window, contentView] };
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:356:64
+    |
+356 |         let parent_frame: cocoa::foundation::NSRect = unsafe { msg_send![content_view, frame] };
+    |                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:368:28
+    |
+368 |             let view: id = msg_send![view_class, alloc];
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:369:13
+    |
+369 |             msg_send![view, initWithFrame: frame]
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:387:25
+    |
+387 |             let _: () = msg_send![view, setWantsLayer: wants_layer];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:392:25
+    |
+392 |             let _: () = msg_send![content_view, addSubview: view];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:398:30
+    |
+398 |             let scale: f64 = msg_send![ns_window, backingScaleFactor];
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:457:35
+    |
+457 |         let window: id = unsafe { msg_send![view, window] };
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:465:35
+    |
+465 |             let is_hidden: bool = msg_send![view, isHidden];
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:466:33
+    |
+466 |             let superview: id = msg_send![view, superview];
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:468:52
+    |
+468 |             let frame: cocoa::foundation::NSRect = msg_send![view, frame];
+    |                                                    ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:518:33
+    |
+518 |             let superview: id = msg_send![view, superview];
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:520:63
+    |
+520 |                 let parent_frame: cocoa::foundation::NSRect = msg_send![superview, frame];
+    |                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:524:34
+    |
+524 |                 let window: id = msg_send![view, window];
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:526:44
+    |
+526 |                     let content_view: id = msg_send![window, contentView];
+    |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:528:72
+    |
+528 |                         let content_frame: cocoa::foundation::NSRect = msg_send![content_view, frame];
+    |                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:540:25
+    |
+540 |             let _: () = msg_send![view, setFrame: frame];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:541:29
+    |
+541 |             let layer: id = msg_send![view, layer];
+    |                             ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:544:29
+    |
+544 |                 let _: () = msg_send![layer, setMasksToBounds: masks];
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:595:25
+    |
+595 |             let _: () = msg_send![view, setHidden: hidden];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:636:30
+    |
+636 |             let window: id = msg_send![view, window];
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:638:29
+    |
+638 |                 let _: () = msg_send![window, makeFirstResponder: view];
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/macos.rs:683:25
+    |
+683 |             let _: () = msg_send![view, removeFromSuperview];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:314:25
+    |
+314 |         let layer: id = msg_send![view, layer];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:317:25
+    |
+317 |             let _: () = msg_send![layer, setMasksToBounds: masks];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:331:29
+    |
+331 |         let superview: id = msg_send![view, superview];
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:333:53
+    |
+333 |             let parent: cocoa::foundation::NSRect = msg_send![superview, frame];
+    |                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:341:25
+    |
+341 |             let _: () = msg_send![view, setFrame: frame];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:357:48
+    |
+357 |         let frame: cocoa::foundation::NSRect = msg_send![view, frame];
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:784:38
+    |
+784 |         let ns_window: id = unsafe { msg_send![ns_view, window] };
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:790:41
+    |
+790 |         let content_view: id = unsafe { msg_send![ns_window, contentView] };
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:799:59
+    |
+799 |             let parent_frame: cocoa::foundation::NSRect = msg_send![content_view, frame];
+    |                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:826:28
+    |
+826 |             let view: id = msg_send![view_class, alloc];
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:831:13
+    |
+831 |             msg_send![view, initWithFrame: frame]
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:850:25
+    |
+850 |             let _: () = msg_send![view, setWantsLayer: wants_layer];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:856:25
+    |
+856 |             let _: () = msg_send![content_view, addSubview: view];
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:861:30
+    |
+861 |             let scale: f64 = msg_send![ns_window, backingScaleFactor];
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:960:37
+    |
+960 |                 let superview: id = msg_send![view, superview];
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:964:61
+    |
+964 |                     let parent: cocoa::foundation::NSRect = msg_send![superview, frame];
+    |                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+   --> crates/rustkit-viewhost/src/lib.rs:972:33
+    |
+972 |                     let _: () = msg_send![view, setFrame: frame];
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: no expected values for `feature`
+    = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+    = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+    --> crates/rustkit-viewhost/src/lib.rs:1072:34
+     |
+1072 |                 let window: id = msg_send![view, window];
+     |                                  ^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: no expected values for `feature`
+     = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+     = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+     = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+     = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+     = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+    --> crates/rustkit-viewhost/src/lib.rs:1074:33
+     |
+1074 |                     let _: () = msg_send![window, makeFirstResponder: view];
+     |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: no expected values for `feature`
+     = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+     = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+     = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+     = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+     = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+    --> crates/rustkit-viewhost/src/lib.rs:1799:35
+     |
+1799 |         let window: id = unsafe { msg_send![view, window] };
+     |                                   ^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: no expected values for `feature`
+     = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+     = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+     = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+     = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+     = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: `extern` fn uses type `PointerInput`, which is not FFI-safe
+   --> crates/rustkit-viewhost/src/macos.rs:118:75
+    |
+118 |         extern "C" fn record(this: &Object, event: id, down: bool, input: PointerInput) {
+    |                                                                           ^^^^^^^^^^^^ not FFI-safe
+    |
+    = help: consider adding a `#[repr(C)]`, `#[repr(transparent)]`, or integer `#[repr(...)]` attribute to this enum
+    = note: enum has no representation hint
+note: the type is defined here
+   --> crates/rustkit-viewhost/src/input_queue.rs:30:1
+    |
+ 30 | pub enum PointerInput {
+    | ^^^^^^^^^^^^^^^^^^^^^
+    = note: `#[warn(improper_ctypes_definitions)]` on by default
+
+warning: `rustkit-viewhost` (lib) generated 76 warnings
+   Compiling rustkit-image v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-image)
+   Compiling rustkit-dom v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-dom)
+   Compiling rustkit-layout v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-layout)
+   Compiling rustkit-svg v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-svg)
+   Compiling rustkit-renderer v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-renderer)
+warning: fields `rect`, `angle_rad`, `stops`, `repeating`, and `border_radius` are never read
+   --> crates/rustkit-renderer/src/lib.rs:528:5
+    |
+527 | struct QueuedLinearGradient {
+    |        -------------------- fields in this struct
+528 |     rect: Rect,
+    |     ^^^^
+529 |     angle_rad: f32,
+    |     ^^^^^^^^^
+530 |     stops: Vec<(f32, rustkit_css::ColorF32)>,
+    |     ^^^^^
+531 |     repeating: bool,
+    |     ^^^^^^^^^
+532 |     border_radius: rustkit_layout::BorderRadius,
+    |     ^^^^^^^^^^^^^
+    |
+    = note: `QueuedLinearGradient` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: multiple fields are never read
+   --> crates/rustkit-renderer/src/lib.rs:538:5
+    |
+537 | struct QueuedRadialGradient {
+    |        -------------------- fields in this struct
+538 |     rect: Rect,
+    |     ^^^^
+539 |     /// X radius in pixels
+540 |     rx: f32,
+    |     ^^
+541 |     /// Y radius in pixels
+542 |     ry: f32,
+    |     ^^
+543 |     /// Center position (0-1 normalized within rect)
+544 |     center: (f32, f32),
+    |     ^^^^^^
+545 |     stops: Vec<(f32, rustkit_css::ColorF32)>,
+    |     ^^^^^
+546 |     repeating: bool,
+    |     ^^^^^^^^^
+547 |     border_radius: rustkit_layout::BorderRadius,
+    |     ^^^^^^^^^^^^^
+    |
+    = note: `QueuedRadialGradient` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: fields `rect`, `from_angle_rad`, `center`, `stops`, `repeating`, and `border_radius` are never read
+   --> crates/rustkit-renderer/src/lib.rs:553:5
+    |
+552 | struct QueuedConicGradient {
+    |        ------------------- fields in this struct
+553 |     rect: Rect,
+    |     ^^^^
+554 |     /// Starting angle in radians
+555 |     from_angle_rad: f32,
+    |     ^^^^^^^^^^^^^^
+556 |     /// Center position (0-1 normalized within rect)
+557 |     center: (f32, f32),
+    |     ^^^^^^
+558 |     stops: Vec<(f32, rustkit_css::ColorF32)>,
+    |     ^^^^^
+559 |     repeating: bool,
+    |     ^^^^^^^^^
+560 |     border_radius: rustkit_layout::BorderRadius,
+    |     ^^^^^^^^^^^^^
+    |
+    = note: `QueuedConicGradient` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: methods `run_color_filter_compute` and `render_linear_gradient_gpu` are never used
+    --> crates/rustkit-renderer/src/lib.rs:1336:8
+     |
+ 563 | impl Renderer {
+     | ------------- methods in this implementation
+...
+1336 |     fn run_color_filter_compute(
+     |        ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+4010 |     fn render_linear_gradient_gpu(
+     |        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Compiling rustkit-compositor v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-compositor)
+warning: `rustkit-renderer` (lib) generated 4 warnings
+   Compiling rustls-webpki v0.103.8
+   Compiling rustkit-js v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-js)
+warning: methods `register_module` and `get_module` are never used
+  --> crates/rustkit-js/src/module.rs:71:12
+   |
+57 | impl HostModuleLoader {
+   | --------------------- methods in this implementation
+...
+71 |     pub fn register_module(&self, specifier: &str, module: Module) {
+   |            ^^^^^^^^^^^^^^^
+...
+75 |     pub fn get_module(&self, specifier: &str) -> Option<Module> {
+   |            ^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+   Compiling rustkit-bindings v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-bindings)
+   Compiling tokio-rustls v0.26.4
+warning: `rustkit-js` (lib) generated 1 warning
+   Compiling rustkit-http v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-http)
+   Compiling rustkit-net v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-net)
+   Compiling rustkit-engine v0.1.0 (/Users/petecopeland/Repos/.worktrees/z-c10-translate-calc/crates/rustkit-engine)
+warning: unused import: `FontLoader`
+   --> crates/rustkit-engine/src/lib.rs:278:5
+    |
+278 |     FontLoader,
+    |     ^^^^^^^^^^
+    |
+    = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+    --> crates/rustkit-engine/src/lib.rs:6344:13
+     |
+6344 |         let mut pump = |timers: Option<(u64, u32)>, requests: bool| {
+     |             ----^^^^
+     |             |
+     |             help: remove this `mut`
+     |
+     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::future::Future`
+   --> crates/rustkit-engine/src/script_net_t7_tests.rs:127:9
+    |
+127 |     use std::future::Future as _;
+    |         ^^^^^^^^^^^^^^^^^^^
+
+warning: function cannot return without recursing
+    --> crates/rustkit-engine/src/content_thread.rs:2258:5
+     |
+2258 |     fn smash(depth: usize) -> usize {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ cannot return without recursing
+2259 |         let frame = [0u8; 4096];
+2260 |         let next = smash(depth + 1);
+     |                    ---------------- recursive call site
+     |
+     = help: a `loop` may express intention better if this is on purpose
+     = note: `#[warn(unconditional_recursion)]` on by default
+
+warning: variable does not need to be mutable
+   --> crates/rustkit-engine/src/css_display_tests.rs:501:10
+    |
+501 |     let (mut engine, view) = loaded(concat!(
+    |          ----^^^^^^
+    |          |
+    |          help: remove this `mut`
+
+warning: variable does not need to be mutable
+     --> crates/rustkit-engine/src/lib.rs:30723:13
+      |
+30723 |         let mut click = |engine: &mut Engine, name: &str| {
+      |             ----^^^^^
+      |             |
+      |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+     --> crates/rustkit-engine/src/lib.rs:30770:13
+      |
+30770 |         let mut press_release = |engine: &mut Engine, name: &str| {
+      |             ----^^^^^^^^^^^^^
+      |             |
+      |             help: remove this `mut`
+
+warning: field `view_focused` is never read
+   --> crates/rustkit-engine/src/lib.rs:962:5
+    |
+865 | struct ViewState {
+    |        --------- field in this struct
+...
+962 |     view_focused: bool,
+    |     ^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated function `serialize_svg_subtree` is never used
+     --> crates/rustkit-engine/src/lib.rs:14533:8
+      |
+14414 | impl Engine {
+      | ----------- associated function in this implementation
+...
+14533 |     fn serialize_svg_subtree(node: &Node) -> String {
+      |        ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `active` is never used
+   --> crates/rustkit-engine/src/container_query.rs:194:15
+    |
+194 | pub(crate) fn active() -> bool {
+    |               ^^^^^^
+
+warning: `rustkit-engine` (lib test) generated 10 warnings (run `cargo fix --lib -p rustkit-engine --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 51.29s
+     Running unittests src/lib.rs (target/debug/deps/rustkit_engine-181e4433b4622c25)
+
+running 25 tests
+test transform_rect_tests::a_transform_holds_fixed_boxes ... ignored, layout: a fixed box under a transform is placed from the viewport
+test transform_rect_tests::an_absolute_box_held_by_a_transformed_scroller_scrolls_with_it ... ok
+test transform_rect_tests::a_percentage_is_of_the_box ... ok
+test transform_rect_tests::get_client_rects_answers_the_same ... ok
+test transform_rect_tests::matrix_and_skew ... ok
+test transform_rect_tests::it_applies_to_an_inline_block_and_a_flex_item ... ok
+test transform_rect_tests::offsets_and_sizes_stay_where_layout_put_the_box ... ok
+test transform_rect_tests::the_rect_is_of_the_border_box ... ok
+test transform_rect_tests::the_individual_properties ... ok
+test transform_rect_tests::a_transform_does_not_apply_to_a_plain_inline ... ok
+test transform_rect_tests::a_rotation_reads_as_its_bounding_box ... ok
+test transform_rect_tests::the_origin_moves_a_scale ... ok
+test transform_rect_tests::translate_flattens_a_depth ... FAILED
+test transform_rect_tests::the_window_scroll_comes_off_after_the_transform ... ok
+test transform_rect_tests::scale_is_about_the_centre ... ok
+test transform_rect_tests::transforms_multiply_down_the_tree ... ok
+test transform_rect_tests::a_transform_holds_absolute_boxes ... ok
+test transform_rect_tests::what_is_inside_moves_with_it_and_what_follows_does_not ... ok
+test transform_rect_tests::a_scroll_inside_a_transform_is_scaled_by_it ... ok
+test transform_rect_tests::translate_takes_a_function_with_spaces_in_it ... FAILED
+test transform_rect_tests::translate_moves_the_rect ... ok
+test transform_rect_tests::a_panel_slides_out_of_its_clipping_wrapper ... FAILED
+test transform_rect_tests::translate_takes_three_values_at_most ... ok
+test transform_rect_tests::a_transform_inside_a_scroll_is_moved_by_it ... ok
+test transform_rect_tests::no_transform_is_no_change ... ok
+
+failures:
+
+---- transform_rect_tests::translate_flattens_a_depth stdout ----
+
+thread 'transform_rect_tests::translate_flattens_a_depth' (467819636) panicked at crates/rustkit-engine/src/transform_rect_tests.rs:251:5:
+assertion `left == right` failed
+  left: "String(\"27 10 100 50\")"
+ right: "String(\"21 12 100 50\")"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- transform_rect_tests::translate_takes_a_function_with_spaces_in_it stdout ----
+
+thread 'transform_rect_tests::translate_takes_a_function_with_spaces_in_it' (467820362) panicked at crates/rustkit-engine/src/transform_rect_tests.rs:240:5:
+assertion `left == right` failed
+  left: "String(\"27 10 100 50\")"
+ right: "String(\"20 -41 100 50\")"
+
+---- transform_rect_tests::a_panel_slides_out_of_its_clipping_wrapper stdout ----
+
+thread 'transform_rect_tests::a_panel_slides_out_of_its_clipping_wrapper' (467816499) panicked at crates/rustkit-engine/src/transform_rect_tests.rs:273:5:
+assertion `left == right` failed
+  left: "String(\"0 200\")"
+ right: "String(\"-201 200\")"
+
+
+failures:
+    transform_rect_tests::a_panel_slides_out_of_its_clipping_wrapper
+    transform_rect_tests::translate_flattens_a_depth
+    transform_rect_tests::translate_takes_a_function_with_spaces_in_it
+
+test result: FAILED. 21 passed; 3 failed; 1 ignored; 0 measured; 1374 filtered out; finished in 22.74s
+
+error: test failed, to rerun pass `-p rustkit-engine --lib`

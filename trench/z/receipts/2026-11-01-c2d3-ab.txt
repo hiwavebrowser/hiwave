@@ -1,0 +1,5 @@
+yahoo        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 6.6,6.9,6.7,7.8  script records A,B,A,B 57,57,57,57
+apple        within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 12.2,11.2,9.5,10.2  script records A,B,A,B 15,15,15,15
+netflix      within A 0.00%  within B 4.26%  across 4.26% 0.00% 4.26% 0.00%  failed: 0  secs A,B,A,B 10.3,10.4,12.9,12.1  script records A,B,A,B 11,11,11,11
+github       within A 4.50%  within B 0.00%  across 4.50% 4.50% 0.00% 0.00%  failed: 0  secs A,B,A,B 15.9,22.1,18.1,19.2  script records A,B,A,B 8,8,8,8
+shopify      within A 2.02%  within B 0.00%  across 2.83% 2.83% 0.81% 0.81%  failed: 0  secs A,B,A,B 10.0,5.8,5.3,5.6  script records A,B,A,B 7,7,7,7
