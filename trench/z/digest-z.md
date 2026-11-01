@@ -4694,3 +4694,28 @@ Worktrees z-c2, z-c2b and z-dev-3bc6a2fb removed. No frames kept. Aleph tools we
 **Receipts (hub):** `2026-10-31-c2c-{pr.md,ab.txt,ab-swap.txt,ab-shop.txt,ab-shop2.txt,suite.txt}`, `2026-10-31-campaign-{dev-546d6196,c2c-f490aa7a}.json`. Probes and wrappers: `tools/c2/c2c_*`.
 
 Worktrees z-c2c and z-dev-546d6196 removed. No frames kept. Aleph tools were not available in this session, so the reading was by git grep. The comparison Chrome is the oracle's 143.0.7499.4; the campaign is against its usual pinned baselines.
+
+## 2026-10-31 22:25 Z-lane C2 (d)
+
+**C2(d) -> PR #851 (draft) @ `52fb7158`**, stacked on #850 (`atlas/z-c2d-sticky`; final tests 23 of 25 red on the unfixed base `f490aa7a`, the two passes are controls). Before: `position: sticky` was laid out as static and nothing moved it, under a scroller or under the window. After: it sticks to its nearest scroller, or the window, as Chromium 143 on five probe pages (insets, percentages, containing block, margins, both insets, nested, under a fixed box, under a transform), in rects, `offsetTop`, hit tests and paint.
+- **The row asked for scrollers only. The window is in too**, because there was no window behaviour to correct. A window scroll does not rebuild the list: the rule travels in a new `PushWindowSticky` command and the renderer works it out per frame.
+- **Beyond the row:** `getBoundingClientRect` of a fixed box and everything in it no longer subtracts the window's scroll (develop reads -493 where Chromium reads 7), and `elementFromPoint` reads the current window scroll, not a copy that went stale after `scrollTo`. Sticky now paints as positioned, so a stuck bar covers an earlier fixed bar; one existing test changed for that, and Chromium does the same.
+- Headless 1380/1 at `13d74508`, the one failure being that test, which passes by name at the head (the head changes only that test; the full suite was not repeated). Layout 881/0, bindings 428/0, engine lib 618/0, css 88/0, renderer 149/0, app build rc=0. hiwave-app's own tests were not run.
+- Campaign 26/26, 0 moved. 20-site A/B: no mover, a regression guard only, since captures sit at scroll 0. shopify differed 3.65-5.52% across arms, but also 2.02% base against base and 1.87% candidate against candidate, so the page varies by run; that does not rule out a small real change there. linkedin moved inside one arm, bing inside both (not repeated), cnn is clean at a 90 s limit.
+- No develop check: develop is still `546d6196`, which passed at 16:45.
+
+**Not proven, for Atlas:**
+- **No real-window run.** The lane has no input grant. Try a sticky site header on a wheel scroll and a sticky table header in a scrolling box. This is the slice most likely to change how sites feel: every sticky page now behaves differently once scrolled, and no capture or A/B sees that.
+- **Cost not timed:** one extra tree walk per layout, one transform per sticky box per frame.
+- **Sticky in flex and grid (C7) is not tested.** The rule ignores the parent's display, so it may already work; C7's pins will say.
+
+**For Atlas:** flip #850 ready and ask R1, then #851 after it. Open PRs: #847, #848, #849, #850, #851 (5 of 8). **All four C2 slices now have PRs, so the lane has nothing left on this row until review; the next slot takes C10, the next open row in table order.** #851's diff against develop includes #850 until that lands.
+
+**Found, no row yet:**
+- A sticky box does not create a stacking context, where Chromium's does, so a `z-index` inside it is not contained.
+- An inline sticky box has no test, and the hit test may miss it once moved if an anonymous line box around it no longer contains the point.
+- The abspos bug from the 16:45 note is still open and still unplaced. It hit this session's first test pages: a `margin-top` collapsing through `body` moved every absolute box by 400.
+
+**Receipts (hub):** `2026-10-31-c2d-{pr.md,ab.txt,ab-swap.txt,ab-shop.txt,ab-shop2.txt,ab-cnn.txt,red.txt,suite.txt}`, `2026-10-31-campaign-{base-f490aa7a,c2d-52fb7158}.json`. Probes: `tools/c2/c2d_probe{,2,3,4,5}.mjs`.
+
+Worktrees z-c2d and z-base-f490aa7a removed. No frames kept. Aleph tools were not available in this session, so the reading was by git grep. The comparison Chrome is the oracle's 143.0.7499.4; the campaign is against its usual pinned baselines.

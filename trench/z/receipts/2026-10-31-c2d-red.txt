@@ -1,0 +1,28 @@
+base f490aa7a + the head's test file
+error: test failed, to rerun pass `-p rustkit-engine --lib`
+test result: FAILED. 2 passed; 23 failed; 0 ignored; 0 measured; 1369 filtered out; finished in 19.24s
+test sticky_scroll_tests::a_bottom_inset_holds_it_up_until_its_place_comes ... FAILED
+test sticky_scroll_tests::a_box_sticks_in_its_scrollers_paint ... FAILED
+test sticky_scroll_tests::a_box_sticks_in_the_windows_paint ... FAILED
+test sticky_scroll_tests::a_box_taller_than_the_scrollport_keeps_its_top ... FAILED
+test sticky_scroll_tests::a_fixed_box_in_a_stuck_box_stays_put ... FAILED
+test sticky_scroll_tests::a_percent_inset_is_of_the_scrollport ... FAILED
+test sticky_scroll_tests::a_right_inset_with_no_room_changes_nothing ... FAILED
+test sticky_scroll_tests::a_sticky_box_in_a_sticky_box ... FAILED
+test sticky_scroll_tests::a_transform_above_moves_it_after_the_rule ... FAILED
+test sticky_scroll_tests::a_window_scroll_does_not_build_the_list_again ... ok
+test sticky_scroll_tests::after_a_window_scroll_a_click_finds_the_stuck_box ... FAILED
+test sticky_scroll_tests::an_absolute_box_takes_its_sticky_child_past_a_static_scroller ... FAILED
+test sticky_scroll_tests::both_insets_apply_only_to_a_box_that_fits_between_them ... FAILED
+test sticky_scroll_tests::clip_is_not_a_scroller ... ok
+test sticky_scroll_tests::it_follows_its_scroller_then_sticks_at_the_edge ... FAILED
+test sticky_scroll_tests::it_stays_in_its_containing_block_and_keeps_its_margin ... FAILED
+test sticky_scroll_tests::it_sticks_across_too ... FAILED
+test sticky_scroll_tests::it_sticks_to_the_window_with_no_scroller ... FAILED
+test sticky_scroll_tests::the_containing_block_is_its_content_box ... FAILED
+test sticky_scroll_tests::the_hit_test_finds_it_where_it_is ... FAILED
+test sticky_scroll_tests::the_inset_is_kept_from_the_edge ... FAILED
+test sticky_scroll_tests::the_nearest_scroller_is_the_one_that_counts_even_when_hidden ... FAILED
+test sticky_scroll_tests::the_scrollers_padding_narrows_the_scrollport ... FAILED
+test sticky_scroll_tests::under_a_fixed_box_the_window_does_not_move_it_but_the_inset_holds ... FAILED
+test sticky_scroll_tests::what_is_inside_goes_with_it ... FAILED

@@ -1,0 +1,2 @@
+linkedin     within A 2.64%  within B 89.90%  across 0.00% 89.90% 2.64% 89.90%  failed: 0  secs A,B,A,B 6.0,7.2,6.7,8.4  script records A,B,A,B 6,6,6,18
+shopify      within A 0.00%  within B 0.00%  across 5.52% 5.52% 5.52% 5.52%  failed: 0  secs A,B,A,B 7.9,10.2,6.5,10.1  script records A,B,A,B 7,7,7,7

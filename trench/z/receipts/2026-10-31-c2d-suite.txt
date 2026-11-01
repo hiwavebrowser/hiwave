@@ -1,0 +1,29 @@
+at 13d74508
+=== rustkit-css ===
+test result: ok. 88 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+rustkit-css rc=0
+=== rustkit-renderer ===
+test result: ok. 149 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 29.49s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+rustkit-renderer rc=0
+=== layout ===
+test result: ok. 881 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.25s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+layout rc=0
+=== bindings ===
+test result: ok. 428 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 57.49s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bindings rc=0
+=== engine lib ===
+test result: ok. 618 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 57.47s
+engine lib rc=0
+=== build hiwave-app ===
+build hiwave-app rc=0 43s
+=== headless engine ===
+test render_no_clone_tests::fixed_sticky_images_and_iframes_draw_the_same_under_scroll ... FAILED
+test result: FAILED. 1380 passed; 1 failed; 13 ignored; 0 measured; 0 filtered out; finished in 1223.09s
+headless engine rc=101 1231s
