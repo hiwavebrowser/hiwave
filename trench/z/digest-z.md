@@ -4793,7 +4793,7 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 
 **(2) #851 @ `68f4cf7b` (draft, merges develop `525f6ec0`).** `held` now keys on a containing block for fixed boxes: transform, filter, `will-change`, `contain`. Red `b3baf512` (3 of 75 failing), fix `bbf114fe`, 75/0 after. One change beyond the order: such a box inside a scroller now carries its fixed and absolute children with the scroller (Chromium `held2_probe.mjs`).
 - **The shopify hold is cleared in a capture:** the header paints and the two black columns are gone. Frames at this seat, `renders-private/2026-11-01-851-shopify/`, not committed.
-- Campaign 26/26, 0 moved against `525f6ec0`. Layout 881/0, bindings 428/0, engine lib 618/0, app debug build rc=0. Headless suite: see the line below.
+- Campaign 26/26, 0 moved against `525f6ec0`. Layout 881/0, bindings 428/0, engine lib 618/0, app debug build rc=0. Headless 1436/0, finished 17:07, two minutes past the cap.
 - 20-site A/B: shopify is the one mover, the header, 0.81% to 2.83% across on every pair in two runs (its hero video also varies within an arm). linkedin and bing vary inside one arm, and move between arms from run to run. cnn at the 90 s limit 0.03% at most. lyft refused one capture, in the second slot.
 
 **(3) #853 @ `b27f19fa` (draft, merges develop `525f6ec0`).** Gates posted, measured at `b6e3089b` (one merge earlier): headless 1411/0, layout 881/0, bindings 428/0, engine lib 618/0, app debug build rc=0, campaign 26/26 0 moved, A/B no mover. At `b27f19fa` only the tests named `transform` (79/0) and the census guard. **Atlas: send it to re-review.**
@@ -4807,4 +4807,4 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 
 **Slip:** I wrote a new `tools/c2/ppm2png.py` over the existing tracked one; restored from git before any commit.
 
-**Receipts (hub):** `2026-11-01-{tcalc2,c10b2g,c2dg}-*`, `2026-11-01-campaign-{tcalc2-b5cc8df8,c10b2g-b6e3089b,c2dg-68f4cf7b}.json`. Probes: `tools/c10/translate_z_probe.mjs`, `tools/c2/held2_probe.mjs`. Worktrees z-c10-tcalc2, z-c10b2-g, z-base-92342645 removed. The comparison Chrome is the oracle's 143.0.7499.4. Open hiwave-macos PRs: #847, #851, #853 (3 of 8).
+**Receipts (hub):** `2026-11-01-{tcalc2,c10b2g,c2dg}-*`, `2026-11-01-campaign-{tcalc2-b5cc8df8,c10b2g-b6e3089b,c2dg-68f4cf7b}.json`. Probes: `tools/c10/translate_z_probe.mjs`, `tools/c2/held2_probe.mjs`. Worktrees z-c10-tcalc2, z-c10b2-g, z-c2d-g, z-base-92342645, z-base-525f6ec0 removed. The comparison Chrome is the oracle's 143.0.7499.4. Open hiwave-macos PRs: #847, #851, #853 (3 of 8).

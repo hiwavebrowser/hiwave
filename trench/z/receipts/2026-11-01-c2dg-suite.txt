@@ -15,3 +15,5 @@ engine lib rc=0
 === build hiwave-app ===
 build hiwave-app rc=0 49s
 === headless engine ===
+test result: ok. 1436 passed; 0 failed; 14 ignored; 0 measured; 0 filtered out; finished in 1383.10s
+headless engine rc=0 1392s
