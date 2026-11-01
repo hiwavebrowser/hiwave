@@ -1,6 +1,6 @@
 # Code Churn Analysis Report
 
-**Generated:** 2026-10-25 03:45:35
+**Generated:** 2026-11-01 04:59:14
 
 ## Overview
 
@@ -91,9 +91,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 19 | 26 |
 | hiwave-macos | 562 | 539 |
-| hiwave-linux | 1 | 1 |
 
 ### `crates/rustkit-layout/src/lib.rs`
 
@@ -101,9 +101,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 11 | 18 |
 | hiwave-macos | 218 | 223 |
-| hiwave-linux | 1 | 1 |
 
 ### `Cargo.lock`
 
@@ -111,9 +111,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 43 | 148 |
 | hiwave-macos | 44 | 158 |
-| hiwave-linux | 1 | 1 |
 
 ### `crates/rustkit-renderer/src/lib.rs`
 
@@ -121,9 +121,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 2 | 6 |
 | hiwave-macos | 83 | 138 |
-| hiwave-linux | 1 | 1 |
 
 ### `crates/rustkit-layout/src/grid.rs`
 
@@ -131,9 +131,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 1 | 1 |
 | hiwave-macos | 113 | 118 |
-| hiwave-linux | 1 | 1 |
 
 ### `crates/rustkit-bindings/src/lib.rs`
 
@@ -141,9 +141,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 8 | 13 |
 | hiwave-macos | 106 | 51 |
-| hiwave-linux | 1 | 1 |
 
 ### `baselines/chrome-120/builtins/settings/layout-rects.json`
 
@@ -151,9 +151,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 1 | 1 |
 | hiwave-macos | 4 | 91 |
-| hiwave-linux | 1 | 1 |
 
 ### `baselines/chrome-148/builtins/settings/layout-rects.json`
 
@@ -170,9 +170,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 1 | 1 |
 | hiwave-macos | 84 | 60 |
-| hiwave-linux | 1 | 1 |
 
 ### `baselines/chrome-120/micro/pseudo-classes/computed-styles.json`
 
@@ -180,9 +180,9 @@ Files with significantly different modification patterns across repos:
 
 | Repository | Modifications | Active Line Ranges |
 |------------|---------------|-------------------|
+| hiwave-linux | 1 | 1 |
 | hiwave-windows | 1 | 1 |
 | hiwave-macos | 3 | 75 |
-| hiwave-linux | 1 | 1 |
 
 ## Recommendations
 
@@ -194,7 +194,7 @@ Based on the churn analysis, consider reviewing the following areas:
 
 2. **Line Range Hotspots**
    - Specific line ranges in these files are being modified repeatedly. This may indicate ongoing bug fixes or feature adjustments in localized areas.
-   - Files: `parity-baseline/captures/css-selectors.ppm`, `parity-baseline/baseline_report.json`, `parity-baseline/captures/sticky-scroll.ppm`, `parity-baseline/parity_test_results.json`, `trench/wpt/last-run.json`
+   - Files: `parity-baseline/parity_test_results.json`, `parity-baseline/captures/css-selectors.ppm`, `parity-baseline/baseline_report.json`, `trench/wpt/last-run.json`, `parity-baseline/captures/sticky-scroll.ppm`
 
 3. **Cross-Platform Synchronization**
    - These files are modified across all repositories. Consider creating a shared module or ensuring changes are consistently applied.
