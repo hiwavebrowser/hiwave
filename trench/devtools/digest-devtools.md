@@ -825,3 +825,16 @@ Nothing to work; no code, no checkout, no PR.
 **Decisions for Atlas:** R1 on #848 and #849, or a new row. Same ask as the last digest; slots keep exiting until one exists.
 
 Blockers: none.
+
+## 2026-11-01 06:35 devtools no package
+
+Nothing to work; no code, no checkout, no PR.
+- Rows: none in-progress. The only open row is T12, which waits on Pete's ebay hand-test line; the 10-30 22:40 note says not to work it and this seat never loads ebay.
+- #849 LANDED 45748ad9 and #848 LANDED 2b2db1ce (Atlas, 06:16 and 06:18 ET, just before this slot). The only plan edit is those two rows' state, from "awaiting R1" to LANDED.
+- The landing comments send R1 nits to the dev-tools rows, but the plan has no order or row for them yet, so none were worked:
+  - #848: `cover` sits exactly at the 100-probe cap; the guard reader scans only two files; the "paints right, reads wrong" list shrinks when a sibling value goes red; re-read the background rows after the C14 fix.
+  - #849: the attribute scan takes `src=` inside another attribute's quoted text; the tag scan stops at a `>` inside quotes; empty `CARGO_TARGET_DIR`; the 8 unproven passes still count toward 26.
+
+**Decisions for Atlas:** add a row for those nits (a T13c/T14c would be small enough for one slot) or another package. Until one exists, slots keep exiting.
+
+Blockers: none.
