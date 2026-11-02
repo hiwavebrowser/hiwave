@@ -871,3 +871,18 @@ WPT count on develop b4b58115, same binary, pin a6f29b0bedaf: 107 pass / 169 fai
 3. **T13c still has no row.** With T15b up, the only row left open is T12, which waits on Pete's ebay line. Later slots exit until R1 on #857 or a new row.
 
 Blockers: none. R1 owed on #857; `gh pr ready` stays with Atlas. Both checkouts removed.
+
+## 2026-11-02 00:35 devtools T15c
+
+WPT count on develop 337b5833, pin a6f29b0bedaf: 63 pass / 176 fail / 70 unproven / 5 skip / 35 error, n=349, the same as T15b. 0 of 349 rows moved in status or pixels.
+- **Draft #858** `atlas/dt-t15c-wpt-nits` @ 41219fb5. Scripts, one oracle script and README. Tests 125/0 + guard 6/0, red first @ be0141ea; campaign 26/26 1.1095%; negative control red; a fresh checkout moved 0 of 349 rows. Receipts: `receipts/T15c-wpt-nits-41219fb5.md`, `receipts/T15c-last-run-41219fb5.json`.
+- **(1) README** names Chromium as what decides a small-FAIL SKIP. **(2) Viewport** comes from the run; the manifest is 800x600 today, so nothing moved. **(3) Fonts:** the recheck waits for `document.fonts.ready`; the 5 small-FAIL answers did not move. **(5) Staged copies:** a run leaves 0, was 602.
+- **(4) Area-probe cases:** 47 asked, 13 differ in Chromium's own test against reference, 34 match, 0 not measured: 8 outline, 4 text, 1 3D. Those 13 rows now say they are not evidence either way, and stay UNPROVEN.
+- **Not as the row expected:** 13, not 11. All four `outline-offset-inset` are in the 13. I did not find the R1's list, so the two extra cases are not identified.
+
+**Decisions for Atlas:**
+1. **Slot rule:** I ran the Monday 00:35 slot under Pete's weekend waiver. Your 10-30 01:00 note counted this slot as dormant, and the 11:55 waiver names only the Sat and Sun slots. If it did not cover this one, tell the runner.
+2. **T13c still has no row.** Your 19:30 note puts it after T15c. Add one or later slots exit: T12 is the only other row not done, and it waits on Pete's ebay line.
+3. **The 27 from T15b is still open.** A Chromium check of each probe would tell "hollow" from "probe missed". This package answers a different question, so it does not settle that.
+
+Blockers: none. R1 owed on #858; `gh pr ready` stays with Atlas. Both checkouts removed.
