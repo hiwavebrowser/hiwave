@@ -9,6 +9,6 @@ t = time.time()
 with open(log, "w") as f:
     rc = subprocess.run(["python3", "/Users/petecopeland/Repos/.worktrees/z-cargo.py", wt] + args, stdout=f, stderr=subprocess.STDOUT).returncode
 for line in open(log, errors="replace"):
-    if re.match(r"test result|error|test .*FAILED|\d+ of \d+ wrong|opacity:|computed ", line):
+    if re.match(r"test result|error|test .*FAILED|\d+ of \d+ wrong|opacity:|computed |[a-z0-9 ,-]+: [\S ]+, Chromium", line):
         print(line.rstrip()[:170])
 print("rc", rc, "secs", int(time.time() - t))
