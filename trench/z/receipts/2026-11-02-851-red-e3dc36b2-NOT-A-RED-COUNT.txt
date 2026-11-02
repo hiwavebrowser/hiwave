@@ -1,0 +1,21 @@
+e3dc36b2, sticky_scroll_tests, load 40-110. NOT a red count: the environment failed most of it.
+
+through z-cargo, parallel:
+guard 25
+tls 9
+assert 2
+  a_view_transition_name_makes_a_context | 4 of 9 wrong: / view-transition-name:vt: h, Chromium m
+  will_change_of_a_mask_image_or_transition_name_makes_a_context | 5 of 8 wrong: / will-change:mask-image: h, Chromium m
+test result: FAILED. 12 passed; 36 failed; 0 ignored; 0 measured; 1439 filtered out; finished in 1150.69s
+
+built binary, one thread:
+guard 0
+tls 48
+assert 0
+test result: FAILED. 0 passed; 48 failed; 0 ignored; 0 measured; 1439 filtered out; finished in 899.83s
+
+built binary, one thread, filter makes_a_context:
+guard 0
+tls 4
+assert 0
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 1483 filtered out; finished in 87.32s

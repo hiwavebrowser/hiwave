@@ -4828,3 +4828,25 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 **Note on the brief:** it says to obey a 'PETE'S HAND TEST' CONSEQUENCE line under Rules. PLAN-z.md has no such line today; the Rules section has only the general hand-test rule. I followed the plan's latest order. It also names I0/D0/D1/B0, which the 10-30 CSS-week note parks until 11-07.
 
 **Receipts (hub):** `2026-11-01-c2dh-{suite-first.txt,suite-rerun.txt,crates.txt,ab.txt}`, `2026-11-01-campaign-c2dh-a38195be.json`. Probe: `tools/c2/sticky_ctx_probe.mjs`. Worktrees z-c2d-hit and z-base-337b5833 removed, with the frames in them. The comparison Chrome is the oracle's 143.0.7499.4; Aleph tools were not available in this session, so the reading was by grep. Open hiwave-macos PRs: #847, #851 (2 of 8).
+
+## 2026-11-02 10:50 Z-lane C2 #851 gates at 2efc47f6: NOT DONE, C2 blocked by the stop rule
+
+**Before -> after: nothing changed on #851.** Head is still `2efc47f6`, draft, no gates posted, nothing pushed. No receipt exists at this head.
+
+**What ran:**
+- Head already holds develop `afa159da` (merge: already up to date).
+- I read the fix diff against the 23:55 order. Items (1), (2), (3) and the (4) arms are there, and the `isolation:isolate` root case is in the 48 tests. `opacity:99%` is not touched and I did not add it to the C12 row. Read only: no green run backs it.
+- Census pins: `2efc47f6` pass, `e3dc36b2` fail 2 (`census measured gaps`, `bucket paint has 12 declarations`), as the order wants.
+- Red at `e3dc36b2` did NOT confirm 6 of 48. Through z-cargo: 12 passed, 36 failed, of which 25 are GPU guard timeouts, 9 are the root-store error below, and 2 are real asserts (`a_view_transition_name_makes_a_context` 4 of 9 wrong, `will_change_of_a_mask_image_or_transition_name_makes_a_context` 5 of 8 wrong). The built binary on one thread: 0 of 48 pass, every one the root-store error; a retry at 10:46 on 4 tests, the same.
+
+**Not run:** green at the head, layout, bindings, engine lib, headless suite, app build, campaign, 20-site A/B. I stopped the sequence at about 10:50 during the green compile: the red compile had taken 47 min, so it could not finish and run by the 11:08 cap.
+
+**Blockers:**
+1. `TLS error: no usable platform root certificates (... first error: failed to load system trust settings: I/O error.)`, from `load_native_certs` in `rustkit-http`, at engine creation. Cause not found. `security dump-trust-settings` needs approval on this seat, so I could not test the keychain outside the engine. The code's own comment calls this "keychain busy under load", which fits but is not shown. It fails tests that use no network, so **a suite run in this state reads as a mass regression and says nothing about the PR.**
+2. Load 40 to 110 all session. What is driving it was not identified.
+
+**Decision packet (C2 blocked, second session on #851 with no receipt): Atlas, reopen C2 for one slot on a quieter machine (my recommendation, the code is finished and only gates are owed), or run the gates yourself; either way run one sticky test first and start the gates only if it gets past the root-store error.**
+
+**C10 not started:** about 20 min left, and no engine build fits in that at this load. It is next in table order.
+
+**Tools:** `tools/c2/finish_851.py` (the full sequence), `serial_bin.py`, `classify_log.py` (failures by cause, not count). Receipt: `receipts/2026-11-02-851-red-e3dc36b2-NOT-A-RED-COUNT.txt`. Worktrees `z-c2d-finish` and `z-c2d-red` kept for the sweep: acceptance not passed. Left uncommitted: `tools/c2/ctx_z_fix.py`, `r1_850.mjs`, `r1b.mjs`, from before this session. Aleph and Null were not available in this session, and the Null MCP failed to connect. Open hiwave-macos PRs: #847, #851 (2 of 8).
