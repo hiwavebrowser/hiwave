@@ -1,25 +1,25 @@
 {
-  "timestamp": "2026-10-29T15:44:02.511654",
+  "timestamp": "2026-11-02T17:48:07.680265",
   "input_dir": "all-results",
   "platforms_found": [
     "macos"
   ],
   "overall": {
-    "visual_parity": 98.84,
+    "visual_parity": 98.89,
     "pass_rate": 100.0,
-    "total_tests": 19,
-    "total_passed": 19,
+    "total_tests": 26,
+    "total_passed": 26,
     "platform_count": 1
   },
   "by_platform": {
     "macos": {
-      "visual_parity": 98.84,
-      "avg_diff_pct": 1.16,
+      "visual_parity": 98.89,
+      "avg_diff_pct": 1.11,
       "pass_rate": 100.0,
-      "tests_passed": 19,
+      "tests_passed": 26,
       "tests_failed": 0,
-      "tests_total": 19,
-      "tests_stable": 19
+      "tests_total": 26,
+      "tests_stable": 26
     }
   },
   "detailed_results": {
@@ -38,9 +38,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/new_tab/1280x800/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/new_tab/1280x800/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/new_tab/1280x800/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/new_tab/1280x800/iter-2/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/new_tab/1280x800/iter-2/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/new_tab/1280x800/iter-2/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 79.63251953124998,
           "gradient_interpolation": 9.74609375
@@ -293,9 +293,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/shelf/1280x120/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/shelf/1280x120/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/shelf/1280x120/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/shelf/1280x120/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/shelf/1280x120/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/shelf/1280x120/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 67.58072916666667,
           "form_control": 32.35286458333333,
@@ -474,9 +474,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/form-elements/800x600/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/form-elements/800x600/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/form-elements/800x600/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/form-elements/800x600/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/form-elements/800x600/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/form-elements/800x600/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 74.46249999999998,
           "form_control": 19.8
@@ -729,9 +729,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/combinators/800x800/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/combinators/800x800/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/combinators/800x800/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/combinators/800x800/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/combinators/800x800/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/combinators/800x800/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 94.21093749999996
         },
@@ -983,9 +983,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/gradient-radius-only/800x600/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/gradient-radius-only/800x600/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/gradient-radius-only/800x600/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/gradient-radius-only/800x600/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/gradient-radius-only/800x600/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/gradient-radius-only/800x600/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 99.66
         },
@@ -1237,9 +1237,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/bg-pure/800x600/iter-2/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/bg-pure/800x600/iter-2/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-3/bg-pure/800x600/iter-2/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/bg-pure/800x600/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/bg-pure/800x600/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-3/bg-pure/800x600/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 83.43749999999996
         },
@@ -1491,9 +1491,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/form-controls/800x1200/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/form-controls/800x1200/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/form-controls/800x1200/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/form-controls/800x1200/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/form-controls/800x1200/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/form-controls/800x1200/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 73.67114583333333
         },
@@ -1745,9 +1745,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/settings/1024x768/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/settings/1024x768/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/settings/1024x768/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/settings/1024x768/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/settings/1024x768/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/settings/1024x768/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "gradient_interpolation": 37.42624918619792,
           "text_metrics": 38.871892293294266
@@ -2000,9 +2000,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/backgrounds/900x1000/iter-2/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/backgrounds/900x1000/iter-2/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/backgrounds/900x1000/iter-2/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/backgrounds/900x1000/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/backgrounds/900x1000/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/backgrounds/900x1000/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 68.91555555555557,
           "gradient_interpolation": 17.10222222222222
@@ -2255,9 +2255,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/chrome_rustkit/1280x100/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/chrome_rustkit/1280x100/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/chrome_rustkit/1280x100/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/chrome_rustkit/1280x100/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/chrome_rustkit/1280x100/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/chrome_rustkit/1280x100/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 94.65234374999999,
           "clip_radius": 3.8125
@@ -2510,9 +2510,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/gradient-no-radius/800x600/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/gradient-no-radius/800x600/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/gradient-no-radius/800x600/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/gradient-no-radius/800x600/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/gradient-no-radius/800x600/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/gradient-no-radius/800x600/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 53.16666666666667,
           "gradient_interpolation": 46.166666666666664
@@ -2765,9 +2765,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/images-intrinsic/800x1400/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/images-intrinsic/800x1400/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-2/images-intrinsic/800x1400/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/images-intrinsic/800x1400/iter-2/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/images-intrinsic/800x1400/iter-2/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-2/images-intrinsic/800x1400/iter-2/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 85.3680357142857,
           "replaced_content": 5.271785714285714
@@ -3020,9 +3020,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/article-typography/1280x800/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/article-typography/1280x800/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/article-typography/1280x800/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/article-typography/1280x800/iter-2/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/article-typography/1280x800/iter-2/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/article-typography/1280x800/iter-2/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 99.18593750000001,
           "gradient_interpolation": 0.515625
@@ -3275,9 +3275,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/card-grid/1280x800/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/card-grid/1280x800/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/card-grid/1280x800/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/card-grid/1280x800/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/card-grid/1280x800/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/card-grid/1280x800/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "gradient_interpolation": 26.03828125,
           "text_metrics": 59.178515624999996
@@ -3530,9 +3530,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/gradient-backgrounds/800x600/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/gradient-backgrounds/800x600/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/gradient-backgrounds/800x600/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/gradient-backgrounds/800x600/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/gradient-backgrounds/800x600/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/gradient-backgrounds/800x600/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 52.64583333333333,
           "gradient_interpolation": 46.77083333333333
@@ -3785,9 +3785,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/sticky-scroll/1280x800/iter-2/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/sticky-scroll/1280x800/iter-2/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/sticky-scroll/1280x800/iter-2/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/sticky-scroll/1280x800/iter-2/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/sticky-scroll/1280x800/iter-2/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/sticky-scroll/1280x800/iter-2/diff/overlay.png",
         "best_taxonomy": {
           "gradient_interpolation": 38.015625,
           "text_metrics": 45.460546875
@@ -4040,9 +4040,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/flex-positioning/800x1000/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/flex-positioning/800x1000/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/flex-positioning/800x1000/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/flex-positioning/800x1000/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/flex-positioning/800x1000/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/flex-positioning/800x1000/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 72.15024999999999
         },
@@ -4294,9 +4294,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/image-gallery/1280x800/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/image-gallery/1280x800/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/image-gallery/1280x800/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/image-gallery/1280x800/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/image-gallery/1280x800/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/image-gallery/1280x800/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 82.83124999999998,
           "gradient_interpolation": 5.177539062499999
@@ -4549,9 +4549,9 @@
         "iterations": 3,
         "stable": true,
         "passed": true,
-        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/rounded-corners/900x1000/iter-1/diff",
-        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/rounded-corners/900x1000/iter-1/diff/attribution.json",
-        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-301-shard-1/rounded-corners/900x1000/iter-1/diff/overlay.png",
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/rounded-corners/900x1000/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/rounded-corners/900x1000/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-1/rounded-corners/900x1000/iter-1/diff/overlay.png",
         "best_taxonomy": {
           "text_metrics": 70.55555555555557
         },
@@ -4786,6 +4786,1637 @@
           0.4353333333333333,
           0.4353333333333333,
           0.4353333333333333
+        ],
+        "errors": []
+      },
+      {
+        "case_id": "about",
+        "case_type": "builtins",
+        "viewport": "800x600",
+        "width": 800,
+        "height": 600,
+        "threshold": 15,
+        "diff_pct_median": 3.6939583333333332,
+        "diff_pct_min": 3.6939583333333332,
+        "diff_pct_max": 3.6939583333333332,
+        "diff_pct_variance": 0.0,
+        "iterations": 3,
+        "stable": true,
+        "passed": true,
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/about/800x600/iter-2/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/about/800x600/iter-2/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/about/800x600/iter-2/diff/overlay.png",
+        "best_taxonomy": {
+          "gradient_interpolation": 50.25833333333333,
+          "text_metrics": 49.74166666666667
+        },
+        "best_top_contributors": [
+          {
+            "selector": "html > body",
+            "tag": "body",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 800,
+              "height": 600
+            },
+            "diff_pixels": 173568,
+            "contribution_percent": 36.16,
+            "element_diff_percent": 36.16,
+            "corner_ratio": 0.00331858407079646,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div.container > div.card:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 64,
+              "y": 360,
+              "width": 672,
+              "height": 321.3125
+            },
+            "diff_pixels": 58650,
+            "contribution_percent": 12.21875,
+            "element_diff_percent": 27.162586489565676,
+            "corner_ratio": 0.004910485933503836,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div.hero:nth-of-type(1) > h1.logo",
+            "tag": "h1",
+            "rect": {
+              "x": 64,
+              "y": 48,
+              "width": 672,
+              "height": 76
+            },
+            "diff_pixels": 51072,
+            "contribution_percent": 10.639999999999999,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.011278195488721804,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div.container > div.card:nth-of-type(3) > p:nth-of-type(2)",
+            "tag": "p",
+            "rect": {
+              "x": 89,
+              "y": 469.1875,
+              "width": 622,
+              "height": 54.375
+            },
+            "diff_pixels": 34210,
+            "contribution_percent": 7.127083333333334,
+            "element_diff_percent": 101.14942528735634,
+            "corner_ratio": 0.01683718211049401,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div.card:nth-of-type(3) > p:nth-of-type(3)",
+            "tag": "p",
+            "rect": {
+              "x": 89,
+              "y": 535.5625,
+              "width": 622,
+              "height": 54.375
+            },
+            "diff_pixels": 33588,
+            "contribution_percent": 6.9975,
+            "element_diff_percent": 99.3103448275862,
+            "corner_ratio": 0.01714898177920686,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div.hero:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 64,
+              "y": 48,
+              "width": 672,
+              "height": 150
+            },
+            "diff_pixels": 31464,
+            "contribution_percent": 6.555,
+            "element_diff_percent": 31.214285714285715,
+            "corner_ratio": 0.009153318077803204,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 64,
+              "y": 246,
+              "width": 672,
+              "height": 66
+            },
+            "diff_pixels": 27752,
+            "contribution_percent": 5.781666666666667,
+            "element_diff_percent": 62.572150072150066,
+            "corner_ratio": 0.020755260882098586,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div.card:nth-of-type(3) > h2.card-title",
+            "tag": "h2",
+            "rect": {
+              "x": 89,
+              "y": 385,
+              "width": 622,
+              "height": 29
+            },
+            "diff_pixels": 17400,
+            "contribution_percent": 3.6249999999999996,
+            "element_diff_percent": 96.46302250803859,
+            "corner_ratio": 0.016551724137931035,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div.card:nth-of-type(3) > p:nth-of-type(1)",
+            "tag": "p",
+            "rect": {
+              "x": 89,
+              "y": 430,
+              "width": 622,
+              "height": 27.1875
+            },
+            "diff_pixels": 16794,
+            "contribution_percent": 3.49875,
+            "element_diff_percent": 99.3103448275862,
+            "corner_ratio": 0.03429796355841372,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div:nth-of-type(2) > a.sponsor-btn",
+            "tag": "a",
+            "rect": {
+              "x": 233.875,
+              "y": 262,
+              "width": 332.25,
+              "height": 50
+            },
+            "diff_pixels": 16600,
+            "contribution_percent": 3.4583333333333335,
+            "element_diff_percent": 99.9247554552295,
+            "corner_ratio": 0.03469879518072289,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div.container > div.hero:nth-of-type(1) > p.tagline",
+            "tag": "p",
+            "rect": {
+              "x": 64,
+              "y": 132,
+              "width": 672,
+              "height": 23
+            },
+            "diff_pixels": 15456,
+            "contribution_percent": 3.2199999999999998,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.03571428571428571,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "#versionBadge",
+            "tag": "span",
+            "rect": {
+              "x": 347.6875,
+              "y": 171,
+              "width": 104.625,
+              "height": 27
+            },
+            "diff_pixels": 2808,
+            "contribution_percent": 0.585,
+            "element_diff_percent": 99.4026284348865,
+            "corner_ratio": 0.20512820512820512,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container > div.card:nth-of-type(3) > h2.card-title > span.icon",
+            "tag": "span",
+            "rect": {
+              "x": 89,
+              "y": 385,
+              "width": 22,
+              "height": 29
+            },
+            "diff_pixels": 638,
+            "contribution_percent": 0.13291666666666666,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.8275862068965517,
+            "likely_cause": "text_metrics"
+          }
+        ],
+        "iteration_diffs": [
+          3.6939583333333332,
+          3.6939583333333332,
+          3.6939583333333332
+        ],
+        "errors": []
+      },
+      {
+        "case_id": "css-selectors",
+        "case_type": "websuite",
+        "viewport": "800x1200",
+        "width": 800,
+        "height": 1200,
+        "threshold": 15,
+        "diff_pct_median": 1.3251041666666665,
+        "diff_pct_min": 1.3251041666666665,
+        "diff_pct_max": 1.3251041666666665,
+        "diff_pct_variance": 0.0,
+        "iterations": 3,
+        "stable": true,
+        "passed": true,
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/css-selectors/800x1200/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/css-selectors/800x1200/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/css-selectors/800x1200/iter-1/diff/overlay.png",
+        "best_taxonomy": {
+          "text_metrics": 58.30729166666666
+        },
+        "best_top_contributors": [
+          {
+            "selector": "html > body",
+            "tag": "body",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 800,
+              "height": 1545
+            },
+            "diff_pixels": 131600,
+            "contribution_percent": 13.708333333333334,
+            "element_diff_percent": 10.647249190938512,
+            "corner_ratio": 0.002188449848024316,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 397,
+              "width": 760,
+              "height": 195
+            },
+            "diff_pixels": 46730,
+            "contribution_percent": 4.867708333333334,
+            "element_diff_percent": 31.53171390013495,
+            "corner_ratio": 0.012326128825165846,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 207,
+              "width": 760,
+              "height": 175
+            },
+            "diff_pixels": 43210,
+            "contribution_percent": 4.501041666666667,
+            "element_diff_percent": 32.48872180451128,
+            "corner_ratio": 0.01333024762786392,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(5)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 817,
+              "width": 760,
+              "height": 236
+            },
+            "diff_pixels": 37740,
+            "contribution_percent": 3.93125,
+            "element_diff_percent": 21.041480820695806,
+            "corner_ratio": 0.015262321144674086,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 20,
+              "width": 760,
+              "height": 172
+            },
+            "diff_pixels": 37280,
+            "contribution_percent": 3.883333333333333,
+            "element_diff_percent": 28.518971848225217,
+            "corner_ratio": 0.015450643776824034,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 607,
+              "width": 760,
+              "height": 195
+            },
+            "diff_pixels": 35050,
+            "contribution_percent": 3.6510416666666665,
+            "element_diff_percent": 23.650472334682863,
+            "corner_ratio": 0.016433666191155494,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(6)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 1068,
+              "width": 760,
+              "height": 100
+            },
+            "diff_pixels": 32200,
+            "contribution_percent": 3.3541666666666665,
+            "element_diff_percent": 42.368421052631575,
+            "corner_ratio": 0.017888198757763974,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(2) > div.test-item:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 253,
+              "width": 730,
+              "height": 35
+            },
+            "diff_pixels": 25550,
+            "contribution_percent": 2.6614583333333335,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.022544031311154598,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(3) > div.test-item:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 443,
+              "width": 730,
+              "height": 35
+            },
+            "diff_pixels": 25550,
+            "contribution_percent": 2.6614583333333335,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.022544031311154598,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(4) > div:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 653,
+              "width": 730,
+              "height": 43
+            },
+            "diff_pixels": 24390,
+            "contribution_percent": 2.540625,
+            "element_diff_percent": 77.69990442816183,
+            "corner_ratio": 0.015744157441574414,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(1) > div.test-child:nth-of-type(2) > div.direct-child:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 66,
+              "width": 730,
+              "height": 33
+            },
+            "diff_pixels": 24090,
+            "contribution_percent": 2.5093750000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.023910336239103363,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(1) > div.test-child:nth-of-type(2) > div.wrapper:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 103,
+              "width": 730,
+              "height": 33
+            },
+            "diff_pixels": 24090,
+            "contribution_percent": 2.5093750000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.023910336239103363,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(1) > div.test-child:nth-of-type(2) > div.direct-child:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 140,
+              "width": 730,
+              "height": 33
+            },
+            "diff_pixels": 24090,
+            "contribution_percent": 2.5093750000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.023910336239103363,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(2) > div.adjacent:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 313,
+              "width": 730,
+              "height": 33
+            },
+            "diff_pixels": 24090,
+            "contribution_percent": 2.5093750000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.023910336239103363,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.section:nth-of-type(3) > div.following:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 35,
+              "y": 503,
+              "width": 730,
+              "height": 33
+            },
+            "diff_pixels": 24090,
+            "contribution_percent": 2.5093750000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.023910336239103363,
+            "likely_cause": "text_metrics"
+          }
+        ],
+        "iteration_diffs": [
+          1.3251041666666665,
+          1.3251041666666665,
+          1.3251041666666665
+        ],
+        "errors": []
+      },
+      {
+        "case_id": "specificity",
+        "case_type": "micro",
+        "viewport": "800x600",
+        "width": 800,
+        "height": 600,
+        "threshold": 15,
+        "diff_pct_median": 0.6029166666666667,
+        "diff_pct_min": 0.6029166666666667,
+        "diff_pct_max": 0.6029166666666667,
+        "diff_pct_variance": 0.0,
+        "iterations": 3,
+        "stable": true,
+        "passed": true,
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/specificity/800x600/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/specificity/800x600/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/specificity/800x600/iter-1/diff/overlay.png",
+        "best_taxonomy": {
+          "text_metrics": 99.99999999999996
+        },
+        "best_top_contributors": [
+          {
+            "selector": "html > body",
+            "tag": "body",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 800,
+              "height": 722
+            },
+            "diff_pixels": 341680,
+            "contribution_percent": 71.18333333333334,
+            "element_diff_percent": 59.15512465373961,
+            "corner_ratio": 0.000842893935846406,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h1",
+            "tag": "h1",
+            "rect": {
+              "x": 20,
+              "y": 20,
+              "width": 760,
+              "height": 48
+            },
+            "diff_pixels": 36480,
+            "contribution_percent": 7.6,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.015789473684210527,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > p",
+            "tag": "p",
+            "rect": {
+              "x": 20,
+              "y": 68,
+              "width": 760,
+              "height": 24
+            },
+            "diff_pixels": 18240,
+            "contribution_percent": 3.8,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "#test1",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 102,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "#test2",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 162,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.test-box test3:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 222,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.test-box test4:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 282,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "#test5",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 342,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.test-box test6:nth-of-type(6)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 402,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.test-box test7:nth-of-type(7)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 462,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.test-box test8a test8b:nth-of-type(8)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 522,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 10000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0576,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.test-box test9:nth-of-type(9)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 582,
+              "width": 200,
+              "height": 50
+            },
+            "diff_pixels": 3600,
+            "contribution_percent": 0.75,
+            "element_diff_percent": 36,
+            "corner_ratio": 0.08,
+            "likely_cause": "text_metrics"
+          }
+        ],
+        "iteration_diffs": [
+          0.6029166666666667,
+          0.6029166666666667,
+          0.6029166666666667
+        ],
+        "errors": []
+      },
+      {
+        "case_id": "pseudo-classes",
+        "case_type": "micro",
+        "viewport": "800x800",
+        "width": 800,
+        "height": 800,
+        "threshold": 15,
+        "diff_pct_median": 0.43640625,
+        "diff_pct_min": 0.43640625,
+        "diff_pct_max": 0.43640625,
+        "diff_pct_variance": 0.0,
+        "iterations": 3,
+        "stable": true,
+        "passed": true,
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/pseudo-classes/800x800/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/pseudo-classes/800x800/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/pseudo-classes/800x800/iter-1/diff/overlay.png",
+        "best_taxonomy": {
+          "text_metrics": 85.71875000000004
+        },
+        "best_top_contributors": [
+          {
+            "selector": "html > body",
+            "tag": "body",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 800,
+              "height": 1598
+            },
+            "diff_pixels": 184000,
+            "contribution_percent": 28.749999999999996,
+            "element_diff_percent": 14.392991239048811,
+            "corner_ratio": 0.001565217391304348,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container test1:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 119,
+              "width": 760,
+              "height": 74
+            },
+            "diff_pixels": 44240,
+            "contribution_percent": 6.9125000000000005,
+            "element_diff_percent": 78.66287339971551,
+            "corner_ratio": 0.013019891500904159,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container test2:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 244,
+              "width": 760,
+              "height": 74
+            },
+            "diff_pixels": 44240,
+            "contribution_percent": 6.9125000000000005,
+            "element_diff_percent": 78.66287339971551,
+            "corner_ratio": 0.013019891500904159,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container test3:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 369,
+              "width": 760,
+              "height": 74
+            },
+            "diff_pixels": 44240,
+            "contribution_percent": 6.9125000000000005,
+            "element_diff_percent": 78.66287339971551,
+            "corner_ratio": 0.013019891500904159,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container test5:nth-of-type(5)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 619,
+              "width": 760,
+              "height": 74
+            },
+            "diff_pixels": 40240,
+            "contribution_percent": 6.2875,
+            "element_diff_percent": 71.55049786628734,
+            "corner_ratio": 0.014314115308151094,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h1",
+            "tag": "h1",
+            "rect": {
+              "x": 20,
+              "y": 20,
+              "width": 760,
+              "height": 48
+            },
+            "diff_pixels": 36480,
+            "contribution_percent": 5.7,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.015789473684210527,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container test4:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 494,
+              "width": 760,
+              "height": 74
+            },
+            "diff_pixels": 36240,
+            "contribution_percent": 5.6625000000000005,
+            "element_diff_percent": 64.43812233285917,
+            "corner_ratio": 0.015894039735099338,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container test6:nth-of-type(6)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 744,
+              "width": 760,
+              "height": 74
+            },
+            "diff_pixels": 19160,
+            "contribution_percent": 2.99375,
+            "element_diff_percent": 34.06827880512091,
+            "corner_ratio": 0.015031315240083507,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(1)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 88,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 2.4937500000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(2)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 213,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 2.4937500000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(3)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 338,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 2.4937500000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(4)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 463,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 2.4937500000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(5)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 588,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 2.4937500000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(6)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 713,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 2.4937500000000004,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.container test1:nth-of-type(1) > div.test-box:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 37,
+              "y": 136,
+              "width": 100,
+              "height": 40
+            },
+            "diff_pixels": 4000,
+            "contribution_percent": 0.625,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.144,
+            "likely_cause": "text_metrics"
+          }
+        ],
+        "iteration_diffs": [
+          0.43640625,
+          0.43640625,
+          0.43640625
+        ],
+        "errors": []
+      },
+      {
+        "case_id": "gpu-gradient-regression",
+        "case_type": "micro",
+        "viewport": "800x1200",
+        "width": 800,
+        "height": 1200,
+        "threshold": 15,
+        "diff_pct_median": 0.3905208333333333,
+        "diff_pct_min": 0.3905208333333333,
+        "diff_pct_max": 0.3905208333333333,
+        "diff_pct_variance": 0.0,
+        "iterations": 3,
+        "stable": true,
+        "passed": true,
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/gpu-gradient-regression/800x1200/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/gpu-gradient-regression/800x1200/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/gpu-gradient-regression/800x1200/iter-1/diff/overlay.png",
+        "best_taxonomy": {
+          "text_metrics": 55.640625000000014,
+          "gradient_interpolation": 7.8125
+        },
+        "best_top_contributors": [
+          {
+            "selector": "html > body",
+            "tag": "body",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 800,
+              "height": 1909
+            },
+            "diff_pixels": 177200,
+            "contribution_percent": 18.458333333333332,
+            "element_diff_percent": 11.602933473022524,
+            "corner_ratio": 0.0016252821670428893,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(5)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 958,
+              "width": 760,
+              "height": 254
+            },
+            "diff_pixels": 95570,
+            "contribution_percent": 9.955208333333333,
+            "element_diff_percent": 49.50787401574803,
+            "corner_ratio": 0.0015067489798053784,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 119,
+              "width": 760,
+              "height": 260
+            },
+            "diff_pixels": 66350,
+            "contribution_percent": 6.911458333333333,
+            "element_diff_percent": 33.57793522267207,
+            "corner_ratio": 0.004340617935192163,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 606,
+              "width": 760,
+              "height": 125
+            },
+            "diff_pixels": 38750,
+            "contribution_percent": 4.036458333333334,
+            "element_diff_percent": 40.78947368421053,
+            "corner_ratio": 0.007432258064516129,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h1",
+            "tag": "h1",
+            "rect": {
+              "x": 20,
+              "y": 20,
+              "width": 760,
+              "height": 48
+            },
+            "diff_pixels": 36480,
+            "contribution_percent": 3.8,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.015789473684210527,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(5) > div:nth-of-type(1) > div.test-box-wide multi-5-stop:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 958,
+              "width": 300,
+              "height": 100
+            },
+            "diff_pixels": 30000,
+            "contribution_percent": 3.125,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0192,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(5) > div:nth-of-type(3) > div.test-box-wide multi-rainbow:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 1093,
+              "width": 300,
+              "height": 100
+            },
+            "diff_pixels": 30000,
+            "contribution_percent": 3.125,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0192,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 430,
+              "width": 760,
+              "height": 125
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 21.052631578947366,
+            "corner_ratio": 0.0144,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 782,
+              "width": 760,
+              "height": 125
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.083333333333333,
+            "element_diff_percent": 21.052631578947366,
+            "corner_ratio": 0.0144,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(1)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 88,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 1.6625,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(2)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 399,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 1.6625,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(3)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 575,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 1.6625,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(4)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 751,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 1.6625,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(5)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 927,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 1.6625,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.row:nth-of-type(1) > div:nth-of-type(1) > div.test-box radial-center:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 119,
+              "width": 150,
+              "height": 100
+            },
+            "diff_pixels": 15000,
+            "contribution_percent": 1.5625,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0384,
+            "likely_cause": "gradient_interpolation"
+          }
+        ],
+        "iteration_diffs": [
+          0.3905208333333333,
+          0.3905208333333333,
+          0.3905208333333333
+        ],
+        "errors": []
+      },
+      {
+        "case_id": "bg-solid",
+        "case_type": "micro",
+        "viewport": "800x600",
+        "width": 800,
+        "height": 600,
+        "threshold": 15,
+        "diff_pct_median": 0.21270833333333333,
+        "diff_pct_min": 0.21270833333333333,
+        "diff_pct_max": 0.21270833333333333,
+        "diff_pct_variance": 0.0,
+        "iterations": 3,
+        "stable": true,
+        "passed": true,
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/bg-solid/800x600/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/bg-solid/800x600/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/bg-solid/800x600/iter-1/diff/overlay.png",
+        "best_taxonomy": {
+          "text_metrics": 100.00000000000003
+        },
+        "best_top_contributors": [
+          {
+            "selector": "html > body",
+            "tag": "body",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 800,
+              "height": 796
+            },
+            "diff_pixels": 295640,
+            "contribution_percent": 61.59166666666667,
+            "element_diff_percent": 46.425879396984925,
+            "corner_ratio": 0.0009741577594371533,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h1",
+            "tag": "h1",
+            "rect": {
+              "x": 20,
+              "y": 20,
+              "width": 760,
+              "height": 48
+            },
+            "diff_pixels": 36480,
+            "contribution_percent": 7.6,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.015789473684210527,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.box red:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 129,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 4.166666666666666,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.box named:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 254.1875,
+              "y": 129,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 4.166666666666666,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.box hex:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 306,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 4.166666666666666,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.box rgb:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 483,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 4.166666666666666,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div.box rgba:nth-of-type(5)",
+            "tag": "div",
+            "rect": {
+              "x": 254.1875,
+              "y": 483,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 4.166666666666666,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(1)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 88,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 3.325,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(2)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 265,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 3.325,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h2:nth-of-type(3)",
+            "tag": "h2",
+            "rect": {
+              "x": 20,
+              "y": 442,
+              "width": 760,
+              "height": 21
+            },
+            "diff_pixels": 15960,
+            "contribution_percent": 3.325,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.031578947368421054,
+            "likely_cause": "text_metrics"
+          }
+        ],
+        "iteration_diffs": [
+          0.21270833333333333,
+          0.21270833333333333,
+          0.21270833333333333
+        ],
+        "errors": []
+      },
+      {
+        "case_id": "gradients",
+        "case_type": "micro",
+        "viewport": "900x1000",
+        "width": 900,
+        "height": 1000,
+        "threshold": 15,
+        "diff_pct_median": 0.14055555555555554,
+        "diff_pct_min": 0.14055555555555554,
+        "diff_pct_max": 0.14055555555555554,
+        "diff_pct_variance": 0.0,
+        "iterations": 3,
+        "stable": true,
+        "passed": true,
+        "best_diff_dir": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/gradients/900x1000/iter-1/diff",
+        "best_attribution_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/gradients/900x1000/iter-1/diff/attribution.json",
+        "best_overlay_path": "/Users/runner/work/hiwave/hiwave/hiwave-macos/parity-results/macos-305-shard-0/gradients/900x1000/iter-1/diff/overlay.png",
+        "best_taxonomy": {
+          "text_metrics": 67.02666666666667,
+          "gradient_interpolation": 22.222222222222218
+        },
+        "best_top_contributors": [
+          {
+            "selector": "html > body",
+            "tag": "body",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 900,
+              "height": 1851
+            },
+            "diff_pixels": 151800,
+            "contribution_percent": 16.866666666666667,
+            "element_diff_percent": 9.112191608139744,
+            "corner_ratio": 0.0018972332015810276,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 119,
+              "width": 860,
+              "height": 252
+            },
+            "diff_pixels": 136720,
+            "contribution_percent": 15.19111111111111,
+            "element_diff_percent": 63.086009597637506,
+            "corner_ratio": 0.004183733177296665,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 422,
+              "width": 860,
+              "height": 252
+            },
+            "diff_pixels": 136720,
+            "contribution_percent": 15.19111111111111,
+            "element_diff_percent": 63.086009597637506,
+            "corner_ratio": 0.004183733177296665,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 20,
+              "y": 725,
+              "width": 860,
+              "height": 252
+            },
+            "diff_pixels": 136720,
+            "contribution_percent": 15.19111111111111,
+            "element_diff_percent": 63.086009597637506,
+            "corner_ratio": 0.004183733177296665,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > h1",
+            "tag": "h1",
+            "rect": {
+              "x": 20,
+              "y": 20,
+              "width": 860,
+              "height": 48
+            },
+            "diff_pixels": 41280,
+            "contribution_percent": 4.586666666666667,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.013953488372093023,
+            "likely_cause": "text_metrics"
+          },
+          {
+            "selector": "body > div:nth-of-type(1) > div.test-box test1a:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 129,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(1) > div.test-box test1b:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 254.1875,
+              "y": 129,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(1) > div.test-box test1c:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 478.375,
+              "y": 129,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(1) > div.test-box test1d:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 255,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(2) > div.test-box test2a:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 432,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(2) > div.test-box test2b:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 254.1875,
+              "y": 432,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(2) > div.test-box test2c:nth-of-type(3)",
+            "tag": "div",
+            "rect": {
+              "x": 478.375,
+              "y": 432,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(2) > div.test-box test2d:nth-of-type(4)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 558,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(3) > div.test-box test3a:nth-of-type(1)",
+            "tag": "div",
+            "rect": {
+              "x": 30,
+              "y": 735,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          },
+          {
+            "selector": "body > div:nth-of-type(3) > div.test-box test3b:nth-of-type(2)",
+            "tag": "div",
+            "rect": {
+              "x": 254.1875,
+              "y": 735,
+              "width": 200,
+              "height": 100
+            },
+            "diff_pixels": 20000,
+            "contribution_percent": 2.2222222222222223,
+            "element_diff_percent": 100,
+            "corner_ratio": 0.0288,
+            "likely_cause": "gradient_interpolation"
+          }
+        ],
+        "iteration_diffs": [
+          0.14055555555555554,
+          0.14055555555555554,
+          0.14055555555555554
         ],
         "errors": []
       }
