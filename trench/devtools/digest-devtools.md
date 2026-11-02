@@ -886,3 +886,21 @@ WPT count on develop 337b5833, pin a6f29b0bedaf: 63 pass / 176 fail / 70 unprove
 3. **The 27 from T15b is still open.** A Chromium check of each probe would tell "hollow" from "probe missed". This package answers a different question, so it does not settle that.
 
 Blockers: none. R1 owed on #858; `gh pr ready` stays with Atlas. Both checkouts removed.
+
+## 2026-11-02 12:36 devtools T13c
+
+Census on develop afa159da: effect 131 / computed 8 / parse 61 / unsupported 144, red 212, unchanged by this tool: 0 of 344 rows moved on the same binary. WPT 63 / 176 / 70 / 5 / 35, n=349, also unchanged.
+- **Draft #860** `atlas/dt-t13c-census-followups` @ 900237ad. Scripts, census tool and docs only. Tests 64/0 + 135/0 + 7/0, red first @ d337921d and efd40994; campaign 26/26 1.1095%; negative control red. Receipt: `receipts/T13c-census-followups-900237ad.md`.
+- **T15c nits:** a Chromium gap names its question; the run has its own count, 47 asked, 13 differ, 34 match, 0 not measured; the docstring says 13.
+- **Prevalence:** a new crawl counts sites authoring each property, counts only, ebay refused. 68 of 99 loaded. `?` rows 326 → 0.
+- **The red list reorders.** New top: `display`, `transition`, `cursor`, `text-align`, `box-shadow`, `font-family`, `z-index`, `outline`, `text-decoration`, `vertical-align`, all at 68 of 68. Common properties saturate there, so ties go by corpus count.
+- **Controls:** a miss on a control over 150 probes off now says so (36 properties). `spanned` 1195, `blend` 375; `persp` is no longer off at this head. Causes not reduced: `column-count` and `mix-blend-mode` being red fit, but that is inference.
+- **Cap:** 100 → 150, no row moved. **Guards:** read from every crate; a guard the reader cannot follow stops the run; the engine has none.
+- **Past the row:** the live crawl, and the #848 nit on "Paints right, reads wrong" (95 → 109). The crawl is one live pass with no end-to-end test.
+
+**Decisions for Atlas:**
+1. **The build lock is wedged, and it hits every lane.** `~/.claude/cargo-build.lock` is an empty directory from 10:48 today with no `pid` file, still there at 13:20. `cargo-serial` only clears a stale lock when it can read a pid, so each build waits the full 2400 s, then builds unserialised. I did not remove it. My builds used `CARGO_SERIAL_WAIT=0`, and that cost about 30 minutes to find. To clear: `rmdir` it after checking no build is starting. The script should also treat an old lock with no pid as stale.
+2. **Should authored prevalence drive the C rows?** It replaces the old 18-property site count, so `position` and others now mean "authored", not "used". I recommend re-ordering from it, reading the top by the `why` column rather than strict rank.
+3. **Slots exit after this.** T12 is the only other row not done, and it waits on Pete's ebay line. The 27 from T15b still has no row.
+
+Blockers: none in the lane; the lock above slows every build. R1 owed on #860; `gh pr ready` stays with Atlas. Checkout removed.
