@@ -4808,3 +4808,23 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 **Slip:** I wrote a new `tools/c2/ppm2png.py` over the existing tracked one; restored from git before any commit.
 
 **Receipts (hub):** `2026-11-01-{tcalc2,c10b2g,c2dg}-*`, `2026-11-01-campaign-{tcalc2-b5cc8df8,c10b2g-b6e3089b,c2dg-68f4cf7b}.json`. Probes: `tools/c10/translate_z_probe.mjs`, `tools/c2/held2_probe.mjs`. Worktrees z-c10-tcalc2, z-c10b2-g, z-c2d-g, z-base-92342645, z-base-525f6ec0 removed. The comparison Chrome is the oracle's 143.0.7499.4. Open hiwave-macos PRs: #847, #851, #853 (3 of 8).
+
+## 2026-11-01 22:30 Z-lane C2 #851 R1 finding 1, develop merge, gates
+
+**#851 @ `a38195be` (draft, merges develop `337b5833`).** Before: a stuck header with `z-index:10` in a `z-index:0` wrapper took clicks from a fixed `z-index:5` modal outside it, where Chromium and develop give the modal; the rule read the sticky box's own z-index. After: from where the two paths part, each side is placed by the first stacking context on its way down, then tree order. Red `b548c185` (5 of 41 failing), fix `a38195be`. 50 pages pinned to Chromium 143, plus a pointer `hit_at` on the modal page and its control. It was wrong both ways: wrapper z 60, header 1, bar 50 gave the bar where Chromium gives the header.
+
+**Beyond the order, Atlas to accept or send back:** `isolation`, `mix-blend-mode`, `perspective`, `transform-style`, `backdrop-filter` get arms, plus the stacking names in `will-change`, one bit each in `ComputedStyle::stacks`, read only by this test. Without them the regression stays for those wrappers. **The declaration census now flatters us:** `backdrop-filter` leaves the gap list (12 to 11) and still does not paint. Pins updated, ledger not touched.
+
+**Gates at `a38195be`:** campaign 26/26, 0 moved. Layout 881/0, bindings 428/0, engine lib 618/0, css 88/0, app debug build rc=0, census guard pass. **Headless: first run 1463/1, rerun 1464/0.** The failure was `live_timer_slice_tests::a_page_that_chains_zero_delay_timers_gets_turns_of_one_slice`, longest turn 192 ms, with my A/B repeats on the machine; alone it passed 3 of 3. Not run on develop under the same load, so load is my reading and not a proof.
+
+**20-site A/B against develop (which lacks the whole PR):** shopify the one mover, 2.83% across on all four pairs, 0.00% within; frame read: header paints, no black columns. linkedin 89.90% inside the candidate arm, repeat 40.96% inside the base arm, each on a 6-record capture. google 1.53% inside the candidate arm, repeat 0.01%. cnn at the 90 s limit 0.00%. The other 16 0.00%. Captures sit at scroll 0: a guard only.
+
+**Not done:** no real window (the lane has no input grant; Atlas's). No review at this head. C10's 17:45 items and the 19:30 `preserve3d-pseudo-element` regression not touched: the slot's order was #851 only, and I stopped at 22:30 with the cap at 23:05.
+
+**Found, no row yet:**
+- `top_held_or_page` picks among fixed boxes by their own z-index, not along the chain. Read from the code, not probed.
+- `perspective` takes a unitless non-zero value and `backdrop-filter` anything ending in `)`, looser than Chromium.
+
+**Note on the brief:** it says to obey a 'PETE'S HAND TEST' CONSEQUENCE line under Rules. PLAN-z.md has no such line today; the Rules section has only the general hand-test rule. I followed the plan's latest order. It also names I0/D0/D1/B0, which the 10-30 CSS-week note parks until 11-07.
+
+**Receipts (hub):** `2026-11-01-c2dh-{suite-first.txt,suite-rerun.txt,crates.txt,ab.txt}`, `2026-11-01-campaign-c2dh-a38195be.json`. Probe: `tools/c2/sticky_ctx_probe.mjs`. Worktrees z-c2d-hit and z-base-337b5833 removed, with the frames in them. The comparison Chrome is the oracle's 143.0.7499.4; Aleph tools were not available in this session, so the reading was by grep. Open hiwave-macos PRs: #847, #851 (2 of 8).
