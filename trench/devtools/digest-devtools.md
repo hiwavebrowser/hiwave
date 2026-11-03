@@ -904,3 +904,18 @@ Census on develop afa159da: effect 131 / computed 8 / parse 61 / unsupported 144
 3. **Slots exit after this.** T12 is the only other row not done, and it waits on Pete's ebay line. The 27 from T15b still has no row.
 
 Blockers: none in the lane; the lock above slows every build. R1 owed on #860; `gh pr ready` stays with Atlas. Checkout removed.
+
+## 2026-11-03 12:55 devtools T13d
+
+Census crawl refusal follow-ups from the #860 R1, tooling only. No recrawl and no live loads: every browser test maps every host to a local server.
+- **Draft #873** `atlas/dt-t13d-crawl-refusal` @ 29104c5e on develop 6ef43673. Census node tools, one cargo test, README. Node 25/0; `cargo test -p css-census` 64/0 + node_tools 1/0; campaign 26/26 1.1095%, no engine change. Receipt: `receipts/T13d-crawl-refusal-29104c5e.md`.
+- **Before -> after:** a page that redirects into a refused host, and a blocked-status page that asked for one, read `failed`; now `dropped` and counted. A refused request made during the CSS read read `loaded`; now `dropped`. The drop is decided after the context closes, and the page stays open 500 ms past the read. Red first @ cdb02900, on a no-behaviour-change refactor (d0d013c4) that moved the visit into `prevalence_visit.mjs`.
+- **Known list:** `css_known_properties.test.mjs` checks every committed name against the Playwright Chromium's own list, read on a blank page. A made-up name added to both files passes the old guard and fails the new one (mutation).
+- **One command:** `cargo test -p css-census` runs the node tests too. With the pre-fix visit checked out it goes red (mutation).
+
+**Decisions for Atlas:**
+1. **The 500 ms leave window is a chosen number.** It adds about 0.5 s per site to a crawl, about 13 s at four workers. A request a page would make later is never made, because the page is closed first.
+2. **The checked-in 11-03 crawl's dropped count is the old count.** The row said not to recrawl. The next crawl will count drops on every path.
+3. **Slots exit after this.** T12 is the only other row not done, and it waits on Pete's ebay line.
+
+Blockers: none. The build lock was free this session. R1 owed on #873; `gh pr ready` stays with Atlas. Checkout and the campaign shim removed.
