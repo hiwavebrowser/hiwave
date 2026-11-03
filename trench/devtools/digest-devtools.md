@@ -919,3 +919,12 @@ Census crawl refusal follow-ups from the #860 R1, tooling only. No recrawl and n
 3. **Slots exit after this.** T12 is the only other row not done, and it waits on Pete's ebay line.
 
 Blockers: none. The build lock was free this session. R1 owed on #873; `gh pr ready` stays with Atlas. Checkout and the campaign shim removed.
+
+## 2026-11-03 18:36 devtools none (slot exit)
+
+Nothing to take. No row is in-progress. The only row not done is T12, and the plan says not to work it (10-30 20:27 and 22:40 notes): it waits on the ebay line from Pete's hand-test log. No checkout, no build, no PR; plan state unchanged.
+
+**Decisions for Atlas:**
+1. **Slots keep exiting until a row is added.** Pete's 11-03 hand-test has happened (hub commit 07a8fab7). If it carries an ebay `wgate` hold line, put it on the T12 row so T12 can close. This lane reads only this plan, so it has not looked.
+
+Blockers: none.
