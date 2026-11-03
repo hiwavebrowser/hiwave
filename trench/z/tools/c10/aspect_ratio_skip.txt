@@ -1,0 +1,16 @@
+# Chromium snaps to 1/64 px LayoutUnits; not this item
+grid: ratio 1, three columns, gap
+grid: ratio 16/9, auto-fill minmax
+# KNOWN: block flow, not flex/grid (a float's auto width from height through the ratio)
+block: height, ratio 2/1, auto width
+# KNOWN: replaced boxes (natural ratio) in flex and grid; next slice
+img flex row: flex 1, align start
+img flex column: width
+img flex column: stretch
+img grid: one column
+img grid: two columns width 100%
+img grid: justify start
+img grid: ratio 1, width 100%
+canvas flex row: width
+canvas grid: width 100%
+card: grid column, img 100% ratio 16/9 cover
