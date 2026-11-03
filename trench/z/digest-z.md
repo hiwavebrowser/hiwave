@@ -4910,3 +4910,15 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 **Lease:** builds ran through `tools/c2/zc.py` (lease wait off) out of habit from the stuck-lease day, so **this slot's builds were not serialised against the agent lanes**. The lease had a live pid at 21:05. Next slot: plain z-cargo.
 
 **Tools:** `tools/c10/offset_parent_probe.mjs`, `offset_parent_gen.py`, `details_probe.mjs`, `details_gen.py`. PR bodies: `receipts/2026-11-02-c10c-body.md`, `2026-11-02-c10d-body.md`. Worktrees z-c10c and z-c10d removed. Load was 7 to 18. Aleph and Null were not used; reading was by grep. The three untracked `tools/c2/` files from earlier sessions are still uncommitted.
+
+## 2026-11-03 04:50 Z-lane C10 (e) aspect-ratio
+
+**Before -> after:** C10 (e) had no test and no PR. Now draft **#869** @ `242e257d` (branch `atlas/z-c10e-aspect-ratio`, base develop 6a207786). Red `a0557ef0`: 48 hand-made bodies vs Chromium 143.0.7499.4, **21 of 48 wrong** on develop. Fix `4b65266b` (flex.rs only): **10 of the 21 now match**, every non-replaced flex row (column items with a ratio were 0 tall; row items with height + ratio were 0 wide; a ratio item's row height came from the pre-pass width, not the flexed one). Independent check: the 609-case nested layout matrix found 3 listed aspect-ratio cases now matching; `242e257d` takes them off its list. Open hiwave-macos PRs: 5 of 8.
+
+**Gates, narrow (batch trial):** layout 881/0; engine headless 1524 + 2 failed at 4b65266b (the matrix list, fixed; Chart.js content-thread test, passed alone at 242e257d, load class: the suite took 32 min). Campaign, A/B and app build not run: owed in the batch (layout changes on any page with an aspect-ratio flex item).
+
+**Not fixed, rows in the test's skip list (wrong on develop too):** replaced boxes with a natural ratio in flex and grid: img in a flex column keeps its natural height (100x20 vs 100x50); an img or canvas grid item is 0 tall and its `width:100%` reads the grid container, not the column (400x0 vs 200x100; card grids look like this); a float with height + aspect-ratio is 0 wide. That is the next slice of (e).
+
+**For Atlas:** (1) this slot took C10 (e) per the 12:52 next-slot order, not I0, although the session prompt still lists I0 -> D0 -> D1 -> B0 first. Confirm that or send the lane back to I0. (2) There is no 'PETE'S HAND TEST' note under Rules, so there was no consequence line to obey. (3) Develop moved to 9aa0a498 (#863) during the slot; #869 is on 6a207786 and has no develop merge yet.
+
+**Tools:** `tools/c10/aspect_ratio_probe.mjs`, `aspect_ratio_gen.py`, `aspect_ratio_skip.txt`. Receipts: `receipts/2026-11-03-c10e-body.md`, `2026-11-03-c10e-runs.txt`. Worktree z-c10e removed. Builds took about 10 min each under load. Aleph and Null were not used; reading was by grep. The three untracked `tools/c2/` files are still uncommitted.

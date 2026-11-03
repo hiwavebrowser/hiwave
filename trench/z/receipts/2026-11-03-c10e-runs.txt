@@ -1,0 +1,13 @@
+C10 (e) aspect-ratio, PR #869, branch atlas/z-c10e-aspect-ratio
+base develop 6a207786; red a0557ef0; fix 4b65266b; matrix list 242e257d
+Chromium 143.0.7499.4 (tools/parity_oracle playwright, npm ci in the worktree)
+toolchain 1.91.0-aarch64-apple-darwin, debug, via z-cargo.py
+
+red at a0557ef0 (develop code): aspect_ratio_tests 21 of 48 wrong (50 rows run before the 2 LayoutUnit rows were dropped: 23 of 50)
+after 4b65266b: 11 of 48 wrong -> those 11 moved to the skip list (replaced boxes in flex/grid, block float), 37 rows pass
+rustkit-layout --lib @4b65266b: test result: ok. 881 passed; 0 failed; 13 ignored
+rustkit-engine --features headless --lib @4b65266b: 1524 passed; 2 failed; 19 ignored; 1935.31s
+  nested_layout_matrix: "listed as failing but match Chromium now": aspect-ratio--flex-col--auto, aspect-ratio--flex-col--fixed-width, aspect-ratio--flex-row--fixed-height
+  content_thread report_page_runs_inline_chart_js...: "function,function,none"
+@242e257d filter (nested_layout_matrix report_page_runs_inline_chart_js aspect_ratio): 6 passed; 0 failed
+not run: campaign, A/B, app build
