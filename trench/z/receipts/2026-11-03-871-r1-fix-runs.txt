@@ -1,0 +1,18 @@
+#871 R1 BLOCK fix (comment 6612792527), Z lane 2026-11-03 15:05-15:20 ET, macOS seat
+branch atlas/z-c10e-replaced; base head f79319a5; red 6e53614e; fix a7ec389b
+Oracle: Playwright Chromium 143.0.7499.4 (tools/parity_oracle), probe trench/z/tools/c10/replaced_ratio_probe.mjs (+13 R1 rows)
+Builds: z-cargo.py, debug, worktree target; load ~1.3
+
+red at 6e53614e (fix not applied): replaced_ratio 10 of 36 wrong
+  card attrs 800x400 max-width 100%: 800x400 (Chromium 200x400)
+  card attrs ... height auto: 800x400 (200x100); three columns: 800x400 (133.33x400)
+  direct attrs max-width 100%: 200x100 (200x400)
+  self stretch both / justify / align: 40x20 (400x100 / 400x200 / 200x100)
+  auto / max-content col width 100%, auto col max-width 100%: 0x0 (40x20)
+green at a7ec389b:
+  replaced_ratio: test result: ok. 1 passed (34 rows; 16 listed KNOWN)
+  rustkit-layout --lib: test result: ok. 881 passed; 0 failed; 13 ignored
+  rustkit-engine headless -- grid replaced image aspect flex_: test result: ok. 137 passed; 0 failed (324.66 s)
+KNOWN left (builder height:auto vs height= attr, + layout_image_in max-width scales an attr height):
+  card attrs + max-width 100% + height auto: 200x400 (Chromium 200x100, develop 400x400)
+Not run: full engine suite, campaign, A/B, app build (full gates in batch).

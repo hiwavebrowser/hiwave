@@ -9,6 +9,10 @@ canvas flex column: stretch
 # KNOWN: an author `height: auto` loses to the height= attribute (the builder cannot tell it from the initial auto); block flow too
 img block: width 100%, height auto attrs
 img grid: width 100%, height auto attrs
+card: grid column, img attrs 800x400 max-width 100% height auto
+card: three columns gap, img attrs 800x400 max-width 100% height auto
+# KNOWN: a percentage max-width scales a height= attribute down with the width (layout_image_in); it stands in for the author `height: auto` above, so the two are fixed together
+img grid: two columns, attrs 800x400 max-width 100%
 # KNOWN: replaced flex items keep their natural height when the flexed or stretched width changes (flex.rs, after #869)
 img flex row: flex 1, align start
 img flex column: width

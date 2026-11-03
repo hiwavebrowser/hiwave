@@ -4941,3 +4941,13 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 **Time:** about 30 min of the slot waited on the lease: Atlas's batch-7 engine suite, then another lane's release parity-capture build. One 20-min background run was killed before it got the lease.
 
 **Tools:** `tools/c10/replaced_ratio_probe.mjs`, `replaced_ratio_gen.py`, `replaced_ratio_skip.txt`, `replaced_gates.py`. Receipts: `receipts/2026-11-03-c10e2-body.md`, `2026-11-03-c10e2-runs.txt`. Worktree z-c10e-replaced removed. Aleph and Null not used; reading was by grep. The three untracked `tools/c2/` files are still uncommitted (not this session's).
+
+## 2026-11-03 15:20 Z-lane C10 (#871 R1 BLOCK)
+
+**Before -> after (Chromium 143 rows, `replaced_ratio`):** f79319a5 had 10 of 36 R1 rows wrong -> a7ec389b 34 of 34 (16 listed KNOWN). R1's card `<img width=800 height=400>` + `max-width:100%` in `1fr 1fr`: 800x400 -> 200x400 (= Chromium); explicit `justify-self`/`align-self: stretch` 40x20 -> 400x100 / 400x200 / 200x100 (= Chromium); `width:100%` image in an `auto`/`max-content` column 0x0 -> 40x20 (= Chromium; `auto` + `max-width:100%` was 0x0 on develop too).
+
+**PR:** #871 @ `a7ec389b` (red `6e53614e`), plain push, comment 6614485567. Narrow runs: layout 881/0, engine `grid replaced image aspect flex_` 137/0; full gates in batch.
+
+**For Atlas:** R1's exact card *with* `height:auto` reads 200x400 (Chromium 200x100, develop 400x400). The width is fixed; the height is the older KNOWN gap: the builder cannot see an author `height:auto` over `height=`, and `layout_image_in` scales an attribute height with `max-width` (a direct item gets 200x100 by accident). They must be fixed together (cascade `height_declared` + a clamp that keeps a specified height), block flow too: a follow-up row (recommended), or fold into #871. Finding 4 to C12.
+
+**Tools:** `tools/c10/replaced_ratio_probe.mjs` (+13 R1 rows), `replaced_ratio_skip.txt`, `close_871r1.py`. Receipt: `receipts/2026-11-03-871-r1-fix-runs.txt`. Slot 15:05-15:20, no lease waits, load ~1.3.

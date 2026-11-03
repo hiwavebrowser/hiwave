@@ -58,6 +58,22 @@ const cases = [
   ['card: grid column, img 100% ratio 16/9 cover', grid(`<div>${I('width:100%;aspect-ratio:16/9;object-fit:cover')}</div><div></div>`, two)],
   ['card: flex 1, img 100%', flex(`<div style="flex:1">${I('width:100%')}</div><div style="flex:1"></div>`)],
   ['card: flex 1, img 100% ratio 16/9', flex(`<div style="flex:1">${I('width:100%;aspect-ratio:16/9')}</div><div style="flex:1"></div>`)],
+  // #871 R1 (6612792527) finding 1: attribute-sized image with max-width:100% in a card column
+  ['card: grid column, img attrs 800x400 max-width 100%', grid(`<div>${I('max-width:100%', 'width=800 height=400 ')}</div><div></div>`, two)],
+  ['card: grid column, img attrs 800x400 max-width 100% height auto', grid(`<div>${I('max-width:100%;height:auto', 'width=800 height=400 ')}</div><div></div>`, two)],
+  ['card: three columns, img attrs 800x400 max-width 100%', grid(`<div>${I('max-width:100%', 'width=800 height=400 ')}</div><div></div><div></div>`, 'grid-template-columns:repeat(3,1fr)')],
+  ['card: three columns gap, img attrs 800x400 max-width 100% height auto', grid(`<div>${I('max-width:100%;height:auto', 'width=800 height=400 ')}</div><div></div><div></div>`, 'grid-template-columns:repeat(3,1fr);gap:20px')],
+  ['img grid: two columns, attrs 800x400 max-width 100%',grid(I('max-width:100%', 'width=800 height=400 ') + '<div></div>', two)],
+  ['img grid: two columns, attrs 800x400 width 100%', grid(I('width:100%', 'width=800 height=400 ') + '<div></div>', two)],
+  // finding 2: explicit stretch on the item
+  ['img grid: self stretch both, row 100px', grid(I('justify-self:stretch;align-self:stretch'), 'grid-template-rows:100px')],
+  ['img grid: justify-self stretch', grid(I('justify-self:stretch'))],
+  ['img grid: align-self stretch, row 100px', grid(I('align-self:stretch'), 'grid-template-rows:100px')],
+  // finding 3: percentage image in an auto / max-content column
+  ['img grid: auto column, width 100%', grid(I('width:100%') + '<div></div>', 'grid-template-columns:auto 1fr')],
+  ['img grid: max-content column, width 100%', grid(I('width:100%') + '<div></div>', 'grid-template-columns:max-content 1fr')],
+  ['img grid: auto column, max-width 100%', grid(I('max-width:100%') + '<div></div>', 'grid-template-columns:auto 1fr')],
+  ['img grid: min-content column, width 100%', grid(I('width:100%') + '<div></div>', 'grid-template-columns:min-content 1fr')],
 ];
 const out = [];
 for (const [name, body] of cases) {
