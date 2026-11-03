@@ -4885,3 +4885,28 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 - The WPT table adds 11 fails; not read one by one.
 
 **Tools and receipts:** `receipts/2026-11-02-851-*`, `2026-11-02-86{1,2,3}-body.md`. Probes `tools/c2/opacity_pct_probe.mjs`, `tools/c10/depth_persp_probe.mjs`, `float_margin_probe.mjs`, `empty_through_probe.mjs`. `tools/c2/zc.py` is z-cargo with the lease wait off. Worktrees z-c2-ab851, z-base-afa159da, z-c12-opacity, z-c12-merge851, z-c10-depth, z-c10-p3d and z-c10a removed. Comparison Chrome is the oracle's 143.0.7499.4. Aleph and Null tools were not used this session; reading was by grep. The three untracked `tools/c2/` files from before this session are still uncommitted.
+
+## 2026-11-02 21:45 Z-lane C10 (c) and (d)
+
+**Before -> after:** C10 (c) and (d) had no PRs; now both are drafts, each with a red commit before the fix, Chromium 143.0.7499.4 rows from the oracle, and narrow runs only (batch trial). Open hiwave-macos PRs: 8 of 8, so the next item has to wait for a landing before it can open a PR.
+
+| PR | Head | Red | Red count | After, narrow runs |
+|---|---|---|---|---|
+| #864 C10(c) offsetParent stops at `td`/`th`/`table` | `712a7352` | `79737630` | 23 of 34 wrong in the draft table at develop; 29 committed rows | engine `offset` 24/0, `element_scroll` 23/0, `geometry` 11/0, bindings 429/0 |
+| #865 C10(d) summary first, default "Details" summary | `d2ae4dd1` | `0258dfb0`, `df811f55` | 10 of 16; then the paint test | engine `details` 6/0; `contents` 14/0, `pseudo` 40/0, `restyle` 65/0 at `0a44e281` |
+
+**#865 nearly went out wrong.** The first fix passed all 16 height rows. A parity frame of the branch then showed the default summary's line with no text: `ComputedStyle::inherit_from` fills non-inherited fields from `Default`, so the block was zero wide. Red `df811f55` reads the display list's text runs, and fix `d2ae4dd1` starts the style from `ComputedStyle::new()`. Height-only rows can't see a box that keeps its line but loses its width.
+
+**Two things for Atlas:**
+1. #865 adds boxes (and text) on any page with a `<details>` whose summary isn't first or that has none. Batch it apart from #863.
+2. Decision packet on #865: the disclosure triangle needs list markers, and **the engine draws none at all** (`li` has no bullet). (a) Add a marker row first, or (b) close (d) and park the triangle with list markers on C6. Recommended: (b).
+
+**Found on develop, not fixed (rows are in the probe's skip list):**
+- An absolute or fixed box in a static `td` is placed 20 px low (`top:6px` reads 26). This is the unplaced 10-31 abspos finding, now seen through tables.
+- In Chromium, a `transform`, `filter`, `contain:paint` or `will-change:transform` ancestor is an offsetParent, and a fixed box inside a transform has it as its offsetParent. Develop returns body or null.
+- A positioned `body` with a margin: offsets read 9 9 where Chromium reads 0 0 (from the body's padding edge).
+- The parser keeps a `<td>` in `<body>` with no table; Chromium drops it.
+
+**Lease:** builds ran through `tools/c2/zc.py` (lease wait off) out of habit from the stuck-lease day, so **this slot's builds were not serialised against the agent lanes**. The lease had a live pid at 21:05. Next slot: plain z-cargo.
+
+**Tools:** `tools/c10/offset_parent_probe.mjs`, `offset_parent_gen.py`, `details_probe.mjs`, `details_gen.py`. PR bodies: `receipts/2026-11-02-c10c-body.md`, `2026-11-02-c10d-body.md`. Worktrees z-c10c and z-c10d removed. Load was 7 to 18. Aleph and Null were not used; reading was by grep. The three untracked `tools/c2/` files from earlier sessions are still uncommitted.
