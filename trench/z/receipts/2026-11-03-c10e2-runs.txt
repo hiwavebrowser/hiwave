@@ -1,0 +1,22 @@
+C10 (e) replaced slice, PR #871 (draft), branch atlas/z-c10e-replaced
+base develop 6090c1eb; red 5466ec03; fix f79319a5
+Chromium 143.0.7499.4 (tools/parity_oracle playwright, npm ci in the worktree)
+toolchain rustc 1.91.0 (f8297e351 2025-10-28), aarch64-apple-darwin, debug, via z-cargo.py
+host: macOS seat, Darwin 25.5.0 arm64; load 1.8-2.5
+
+red at 5466ec03 (develop code): replaced_ratio_tests 27 of 33 wrong
+after first grid change (placement + Phase 9 record + row/column contributions): 13 of 33 wrong
+  card rows still 400 wide: a temp row showed the wrapper div at 200 (column right), the img inside at 400 -> Phase 9 block arm kept the pre-pass image size
+after f79319a5 + 4 block-flow controls in the probe (37 rows, 11 skipped -> 26): 2 of 26 wrong, both block-flow controls:
+  img block: width 100%, height auto attrs: 400x20, Chromium 400x200
+  canvas block: none: 0x0, Chromium 300x150
+  -> both added to the skip list (wrong outside grid): 24 rows, 13 skipped
+narrow gates at f79319a5 (log tools/c10/run-replaced-2.log):
+  rustkit-engine --features headless --lib replaced_ratio: 1 passed; 0 failed
+  rustkit-layout --lib: 881 passed; 0 failed; 13 ignored
+  rustkit-engine --features headless --lib grid: 36 passed; 0 failed (257 s)
+  rustkit-engine --features headless --lib image: 52 passed; 0 failed
+  rustkit-engine --features headless --lib nested_layout_matrix: 1 passed; 0 failed
+  rustkit-engine --features headless --lib aspect: 3 passed; 0 failed
+not run: full engine headless suite, campaign, 20-site A/B, app build (batch trial: full gates in batch)
+lease: ~30 min of the slot waited behind Atlas's batch-7 engine suite (pid 36975) and another lane's release parity-capture build
