@@ -1,0 +1,35 @@
+S2 #876, base develop 76c6ff8b, red 3c3c3dbd, candidate 1c7da77c
+
+### stops.py on live-20261103T1704.log
+22:05:53.942017 n=5 elapsed=['0'] src={'event:mousemove': 3, 'event:pointermove': 2}
+    before (+0.1 ms):   INFO hiwave: Navigating content to: https://www.walmart.com/
+22:10:39.670102 n=288 elapsed=['0'] src={'event:pointerout': 11, 'event:pointerover': 11, 'event:pointerenter': 34, 'event:mouseout': 11, 'event:mouseover': 11, 'event:mouseenter': 34, 'event:pointermove': 60, 'event:mousemove': 60, 'event:pointerleave': 28, 'event:mouseleave': 28}
+    before (+0.1 ms):   WARN rustkit_engine::wgate: Content thread hold entry=move ms=480 build_ms=401.1 layout_ms=26.0 display_list_ms=1.1 snapshot_ms=33.6 render_ms=0.0 acquire_ms=0.0 execute_m
+22:11:06.504035 n=1 elapsed=['1071'] src={'network': 1}
+    before (+5008.9 ms):   WARN rustkit_engine::wgate: Content thread hold entry=live_turn ms=1371 build_ms=21.4 layout_ms=7.3 display_list_ms=0.8 snapshot_ms=31.6 render_ms=0.0 acquire_ms=0.0 execu
+22:14:56.462163 n=1 elapsed=['15089'] src={'inline#12': 1}
+    before (+22718.1 ms):   INFO hiwave: Navigating content to: https://www.cnn.com
+22:14:59.905651 n=1 elapsed=['380'] src={'event:DOMContentLoaded': 1}
+    before (+26161.6 ms):   INFO hiwave: Navigating content to: https://www.cnn.com
+22:19:27.512290 n=1 elapsed=['4765'] src={'network': 1}
+    before (+1385.2 ms):   INFO hiwave: content click (view-local) x=435.41796875 y=73.09765625
+22:19:42.284386 n=1 elapsed=['0'] src={'event:keyup': 1}
+    before (+0.1 ms):   WARN relayout{id=EngineViewId(2) view_id=EngineViewId(2)}:relayout{id=EngineViewId(2)}: rustkit_engine::wgate: Content thread hold entry=relayout ms=148 build_ms=36.1 layo
+22:20:27.949150 n=1 elapsed=['5669'] src={'timers': 1}
+    before (+5674.1 ms):   WARN rustkit_engine::wgate: Content thread hold entry=live_turn ms=974 build_ms=206.9 layout_ms=43.2 display_list_ms=8.3 snapshot_ms=85.5 render_ms=0.0 acquire_ms=0.0 exec
+22:22:30.431069 n=2 elapsed=['5004'] src={'https://www.ebay.com/iBaucWn0ToeFGahtrA/Jh5Lmkt7iE/LVhMfg/Q0/Alb3JeSnQZ?v=null&x=1': 1, 'network': 1}
+    before (+5009.2 ms):   WARN rustkit_engine::wgate: Content thread hold entry=live_turn ms=967 build_ms=204.5 layout_ms=42.5 display_list_ms=8.3 snapshot_ms=84.7 render_ms=0.0 acquire_ms=0.0 exec
+(the 288-burst follows "Navigating content to: https://www.yahoo.com" at 22:10:39.239; Loading URL yahoo at 22:10:44.748; 11 entry=move holds between)
+
+### red.log
+test content_thread::tests::coalesce_keeps_only_the_latest_of_adjacent_moves ... FAILED
+thread 'content_thread::tests::coalesce_keeps_only_the_latest_of_adjacent_moves' (23822801) panicked at crates/rustkit-engine/src/content_thread.rs:1472:9:
+  left: [1.0, 2.0, 3.0]
+ right: [3.0]
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 1613 filtered out; finished in 4.19s
+
+### fix.log
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 1613 filtered out; finished in 4.07s
+
+### narrow.log
+test result: ok. 161 passed; 0 failed; 4 ignored; 0 measured; 1456 filtered out; finished in 91.75s
