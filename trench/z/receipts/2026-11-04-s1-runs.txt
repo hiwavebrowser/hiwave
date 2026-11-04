@@ -1,0 +1,40 @@
+S1 #875, base develop 76c6ff8b, red 0b57baa0 + ed9ec076, candidate 6381303b, Chromium 143.0.7499.4
+
+### red.log
+test redirect_base_tests::a_redirected_document_belongs_to_the_redirect_target ... FAILED
+thread 'redirect_base_tests::a_redirected_document_belongs_to_the_redirect_target' (23793549) panicked at crates/rustkit-engine/src/redirect_base_tests.rs:54:5:
+assertion `left == right` failed: the view's URL (the address bar) is the last hop's
+  left: Some("http://127.0.0.1:49567/start")
+ right: Some("http://127.0.0.1:49566/app/page")
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1620 filtered out; finished in 0.98s
+
+### red2.log
+test redirect_base_tests::a_redirected_document_belongs_to_the_redirect_target ... FAILED
+test redirect_base_tests::a_redirect_keeps_the_requested_fragment ... FAILED
+thread 'redirect_base_tests::a_redirected_document_belongs_to_the_redirect_target' (23797247) panicked at crates/rustkit-engine/src/redirect_base_tests.rs:49:5:
+assertion `left == right` failed: the view's URL (the address bar) is the last hop's
+  left: Some("http://127.0.0.1:49671/start/49670")
+ right: Some("http://127.0.0.1:49670/app/page")
+thread 'redirect_base_tests::a_redirect_keeps_the_requested_fragment' (23797246) panicked at crates/rustkit-engine/src/redirect_base_tests.rs:90:5:
+assertion `left == right` failed
+  left: "String(\"http://127.0.0.1:49672/start/49669#box\")"
+ right: "String(\"http://127.0.0.1:49669/app/page#box\")"
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 1620 filtered out; finished in 2.51s
+
+### fix.log
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1620 filtered out; finished in 2.62s
+
+### core.log
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+### engine-narrow.log
+test inspector_network_tests::a_redirect_chain_is_recorded_between_the_request_and_its_response ... FAILED
+thread 'inspector_network_tests::a_redirect_chain_is_recorded_between_the_request_and_its_response' (23801301) panicked at crates/rustkit-engine/src/inspector_network_tests.rs:345:5:
+assertion `left == right` failed
+  left: ["navigation_start /", "request #1 GET document / by=navigation", "navigation_redirect / -> /hop 302", "navigation_redirect /hop -> /final 302", "response #1 200 text/html", "navigation_commit /final 200"]
+ right: ["navigation_start /", "request #1 GET document / by=navigation", "navigation_redirect / -> /hop 302", "navigation_redirect /hop -> /final 302", "response #1 200 text/html", "navigation_commit / 200"]
+test result: FAILED. 167 passed; 1 failed; 0 ignored; 0 measured; 1455 filtered out; finished in 206.82s
+
+### inspector.log
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 1602 filtered out; finished in 47.59s
