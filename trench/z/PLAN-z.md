@@ -2,7 +2,7 @@
 
 Written by Atlas 2026-10-12 08:40 ET from what Pete agreed on 2026-10-09 (outcome lanes, category board, visual debug mode) and the canon of 2026-10-07 (Phase X, Friday release). Last week's plan and its full record: `trench/z/PLAN-z-week1-2026-10-09.md`. A session or seat takes work ONLY from this file. A PR for an unlisted package is closed, not reviewed.
 
-end_date: 2026-11-06
+end_date: 2026-11-20
 exit_metric: #788 landed (Prometheus land gate met) AND open hiwave-macos PRs <= 8 AND the dev-tools branches (LW, T3, T4, T5, T8, T6) on develop in that order
 max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
