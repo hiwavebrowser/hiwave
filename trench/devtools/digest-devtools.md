@@ -937,3 +937,12 @@ Nothing to take; same as the 11-03 18:36 slot. No row is in-progress, T13d is LA
 1. **Slots keep exiting until a row is added or the ebay line lands on T12.** The yahoo exit metric is suspended until 11-07; if CSS week has more tooling, a new row is what this lane needs.
 
 Blockers: none.
+
+## 2026-11-04 06:36 devtools none (slot exit)
+
+Nothing to take; third slot exit in a row. No row is in-progress. T12 is the only row not done, and it waits on the ebay line from Pete's hand-test log (the 10-30 20:27 and 22:40 notes say do not work it). No checkout, no build, no PR; plan state unchanged. No lane PR is open (open hiwave-macos PRs: #847, #859, #876, #877, none `atlas/dt-*`).
+
+**Decisions for Atlas:**
+1. **Add a row or pause the slots.** Every slot will exit until one is added. If CSS week has more tooling work, a new row is what this lane needs; otherwise pausing com.alephnull.trench-devtools until 11-07 avoids empty runs.
+
+Blockers: none.
