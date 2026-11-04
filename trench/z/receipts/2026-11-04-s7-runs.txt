@@ -1,0 +1,38 @@
+S7 runs, 2026-11-04 (macOS seat). base develop a3fa3a8b; red 148c21a9 + 80158ab0; candidate b6070736 (PR #878).
+
+## red (148c21a9, no headless feature)
+test checked_sibling_tests::sibling_steps_above_the_subject_match_as_chrome_at_load ... FAILED
+test checked_sibling_tests::sibling_steps_above_the_subject_follow_script_checkedness ... FAILED
+test checked_sibling_tests::a_click_on_the_box_swaps_its_icon ... FAILED
+9 of 16 rows differ from Chrome 143: ["on1:block (Chrome on1:none)", "off2:block (Chrome off2:none)", "mark1:block (Chrome mark1:none)", "deep1:block (Chrome deep1:none)", "n1:none (Chrome n1:block)", "n2:block (Chrome n2:none)", "v1:block (Chrome v1:none)", "g2:none (Chrome g2:block)", "z2:none (Chrome z2:block)"]
+10 of 16 rows differ from Chrome 143: ["off1:block (Chrome off1:none)", "on2:block (Chrome on2:none)", "mark1:block (Chrome mark1:none)", "mark2:block (Chrome mark2:none)", "deep1:block (Chrome deep1:none)", "deep2:block (Chrome deep2:none)", "n1:none (Chrome n1:block)", "n2:block (Chrome n2:none)", "v1:block (Chrome v1:none)", "g2:none (Chrome g2:block)"]
+  left: "false block block"
+ right: "true none block"
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 640 filtered out; finished in 2.42s
+
+## red (80158ab0 tests on base matcher, headless)
+test checked_sibling_tests::a_click_on_the_box_swaps_its_icon ... FAILED
+test checked_sibling_tests::sibling_steps_above_the_subject_match_as_chrome_at_load ... FAILED
+test checked_sibling_tests::sibling_steps_above_the_subject_follow_script_checkedness ... FAILED
+  left: "true block block"
+ right: "true none block"
+9 of 16 rows differ from Chrome 143: ["on1:block (Chrome on1:none)", "off2:block (Chrome off2:none)", "mark1:block (Chrome mark1:none)", "deep1:block (Chrome deep1:none)", "n1:none (Chrome n1:block)", "n2:block (Chrome n2:none)", "v1:block (Chrome v1:none)", "g2:none (Chrome g2:block)", "z2:none (Chrome z2:block)"]
+10 of 16 rows differ from Chrome 143: ["off1:block (Chrome off1:none)", "on2:block (Chrome on2:none)", "mark1:block (Chrome mark1:none)", "mark2:block (Chrome mark2:none)", "deep1:block (Chrome deep1:none)", "deep2:block (Chrome deep2:none)", "n1:none (Chrome n1:block)", "n2:block (Chrome n2:none)", "v1:block (Chrome v1:none)", "g2:none (Chrome g2:block)"]
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 1626 filtered out; finished in 2.33s
+
+## fix, checked_sibling_tests (headless)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1626 filtered out; finished in 2.29s
+
+## fix, whole rustkit-engine --features headless --lib (before pin edit)
+test script_selector_tests::query_selector_uses_the_cascade_matcher ... FAILED
+  left: "1"
+ right: "0"
+test result: FAILED. 1600 passed; 1 failed; 28 ignored; 0 measured; 0 filtered out; finished in 2481.19s
+
+## candidate b6070736: --lib selector, --lib checked_sibling
+test result: ok. 48 passed; 0 failed; 0 ignored; 0 measured; 1581 filtered out; finished in 59.76s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1625 filtered out; finished in 5.26s
+
+## Chrome 143.0.7499.4 (trench/z/tools/s7/checked_sibling_probe.mjs)
+load off1:block on1:none off2:none on2:block mark1:none mark2:block deep1:none deep2:block n1:block n2:none v1:none v2:block g1:none g2:block z1:none z2:block
+toggled off1:none on1:block off2:block on2:none mark1:none mark2:none deep1:none deep2:none n1:block n2:none v1:none v2:block g1:none g2:block z1:none z2:none

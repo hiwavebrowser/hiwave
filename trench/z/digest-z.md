@@ -4971,3 +4971,16 @@ Three drafts off develop 76c6ff8b, each red first, narrow runs only (batch trial
 **For Atlas:** (1) accept S2's re-scope or send it back; (2) a navigation cancel logs as "stopped at the script budget" (mislabel, one-line follow-up); (3) suggest a cost row: reddit hover restyle ~430 ms per move (`tree_reused=false`, presenter p95 8.1 s); (4) real-window checks owed on all three (eBay header, www.gmail.com fresh profile, reddit hover then type a URL); (5) census guard red on develop.
 Receipts: `receipts/2026-11-04-s{5,1,2}-{body.md,runs.txt}`. Worktrees removed. Aleph not exposed this session (grep); Null recall found the Grok gmail measurement. Load ~1.1, no lease waits.
 - **S6 late stylesheets → draft #877 @ `301af344`** (red `054b2019`), added 03:50. A sheet still out at the 8 s subresource budget was dropped for good (microsoft: 37 sheets, 6 at a time). Now its fetch continues on the live loop and it lands at its document-order slot, then a restyle; the load itself is not longer. Narrow 252/0. Open PRs now 6 of 8. Real-window microsoft check owed; remote `@font-face` in a late sheet still not fetched.
+
+
+## 2026-11-04 10:20 Z-lane S7 (:checked with a sibling combinator)
+Picked S7: the only open S row with nothing to wait for (S1/S2/S5/S6 landed in batches 11-12, S3/S4 wait on measurements). Open hiwave-macos PRs: 3 of 8 (#847, #859, #878).
+
+- **S7 → draft #878 @ `b6070736`** (`atlas/z-s7-checked-sibling`, red `148c21a9` + `80158ab0`, base develop a3fa3a8b).
+- Before: the selector walk tested `+`/`~` against the subject's own earlier siblings even after a descendant/child step had moved it up to an ancestor. So eBay's `.ctrl:checked + .icon .off` / `.ctrl:not(:checked) + .icon .on` never matched and both icons showed. Chained sibling steps all re-tested the last sibling, and `:not(:checked)` on a sibling was permissive. Chrome 143 table (16 rows, hand-made page): 9/16 wrong at load, 10/16 after script toggles; a click left both icons showing.
+- After: 16/16 and 16/16; a click swaps the icon. An ancestor's earlier siblings are read from the DOM, with live checkedness from `WalkCheckedScope` (set around every build and script query).
+- Runs: whole `rustkit-engine --features headless --lib` 1600 pass / 1 fail / 28 ignored (2481 s at load ~10). The failure was `script_selector_tests`' pin of this exact gap ("Chrome finds #deep"), now set to 1. Then `selector` 48/0 and `checked_sibling` 4/0. No new warnings.
+- Not run: campaign, A/B (batch). The cascade changes on every page: expect movers toward Chrome on `x:checked + label .y`-style rules.
+
+**For Atlas:** (1) a NEW gap needs a row: an inline checkbox inside an inline span is not found by the hit test at its centre (`elementFromPoint` → BODY; the click test uses a block control because of it). On eBay, clicks on such boxes may miss. Seen on the branch, which doesn't touch hit testing; not yet checked on develop. (2) A real-window eBay check is owed after landing. (3) `~`/` ` take the nearest match with no backtracking (kept as before).
+Receipts: `receipts/2026-11-04-s7-{body.md,runs.txt}`; probe + page `tools/s7/`. Worktree removed. Aleph not used (grep); no lease waits.

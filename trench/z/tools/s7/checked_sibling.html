@@ -1,0 +1,34 @@
+<!doctype html>
+<html><head><style>
+body { margin: 0; font: 16px/20px monospace }
+i, b { display: block; width: 10px; height: 10px }
+/* eBay skin checkbox: the control, then an icon span holding both svgs. */
+.cb__ctrl:checked + .cb__icon .cb__off,
+.cb__ctrl:not(:checked) + .cb__icon .cb__on { display: none }
+/* Child combinator after the sibling step. */
+.r:checked + .lab > .mark { display: none }
+/* General sibling, then a deep descendant. */
+.x:checked ~ .w .deep { display: none }
+/* An ancestor whose own earlier sibling is not .k: the subject's is. */
+.k + .m .n { display: none }
+/* Chained sibling steps at the subject. */
+.t + .u + .v { display: none }
+.a ~ .bb ~ .c { display: none }
+/* :not() of a state on an earlier sibling, subject level. */
+.y:not(:checked) + .z { display: none }
+</style></head><body>
+<span class="cb"><input class="cb__ctrl" type="checkbox" id="c1"><span class="cb__icon"><i class="cb__off" id="off1"></i><i class="cb__on" id="on1"></i></span></span>
+<span class="cb"><input class="cb__ctrl" type="checkbox" id="c2" checked><span class="cb__icon"><i class="cb__off" id="off2"></i><i class="cb__on" id="on2"></i></span></span>
+<div><input class="r" type="radio" id="r1" checked><span class="lab"><i class="mark" id="mark1"></i></span></div>
+<div><input class="r" type="radio" id="r2"><span class="lab"><i class="mark" id="mark2"></i></span></div>
+<div><input class="x" type="checkbox" id="x1" checked><p></p><div class="w"><p><i class="deep" id="deep1"></i></p></div></div>
+<div><input class="x" type="checkbox" id="x2"><p></p><div class="w"><p><i class="deep" id="deep2"></i></p></div></div>
+<div><div class="m"><i class="k"></i><i class="n" id="n1"></i></div></div>
+<div><i class="k"></i><div class="m"><i class="n" id="n2"></i></div></div>
+<div><b class="t"></b><b class="u"></b><b class="v" id="v1"></b></div>
+<div><b class="t"></b><b class="q"></b><b class="u"></b><b class="v" id="v2"></b></div>
+<div><b class="a"></b><b class="bb"></b><b class="c" id="g1"></b></div>
+<div><b class="bb"></b><b class="a"></b><b class="c" id="g2"></b></div>
+<div><input class="y" type="checkbox" id="y1"><b class="z" id="z1"></b></div>
+<div><input class="y" type="checkbox" id="y2" checked><b class="z" id="z2"></b></div>
+</body></html>
