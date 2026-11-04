@@ -1,0 +1,48 @@
+S5 #874, base develop 76c6ff8b, red 38264a63, candidate bbfeb08a, Chromium 143.0.7499.4
+
+### red.log
+     Running unittests src/lib.rs (target/debug/deps/rustkit_engine-181e4433b4622c25)
+test visually_hidden_tests::visually_hidden_boxes_paint_as_chromium ... FAILED
+14 of 25 wrong:
+bootstrap: clip rect(0,0,0,0) margin -1px: ink 1, Chromium 0
+clip rect(0 0 0 0) space form: ink 1, Chromium 0
+clip only, no clip-path: ink 1, Chromium 0
+clip rect no overflow: ink 923, Chromium 0
+clip rect on 40x40 block: ink 1600, Chromium 400
+clip rect auto sides: ink 1600, Chromium 800
+clip on fixed box: ink 1600, Chromium 0
+clip rect with child overflowing: ink 6400, Chromium 400
+button clipped (ebay): ink 888, Chromium 0
+button clip-path only: ink 888, Chromium 0
+button clip only: ink 888, Chromium 0
+input clip-path only: ink 923, Chromium 0
+in a flex row, clip only: ink 1, Chromium 0
+abs child of a clipped box: ink 1600, Chromium 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1620 filtered out; finished in 17.64s
+
+### fix-head.log
+     Running unittests src/lib.rs (target/debug/deps/rustkit_engine-181e4433b4622c25)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1620 filtered out; finished in 18.13s
+
+### css-parse.log
+     Running unittests src/lib.rs (target/debug/deps/rustkit_css-8dc1d4544d9b9fa5)
+test result: ok. 116 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+### narrow-css-layout.log
+     Running unittests src/lib.rs (target/debug/deps/rustkit_css-a4fa36bc7057a6da)
+test result: ok. 114 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+     Running unittests src/lib.rs (target/debug/deps/rustkit_layout-1df85fa65494888c)
+test result: ok. 881 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.21s
+     Running tests/fallback_face_line_height.rs (target/debug/deps/fallback_face_line_height-2c6d15e9eafd4c4d)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+     Running tests/normal_line_height_probe.rs (target/debug/deps/normal_line_height_probe-60fffc0d56769b14)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+### engine-narrow.log
+     Running unittests src/lib.rs (target/debug/deps/rustkit_engine-181e4433b4622c25)
+test result: ok. 209 passed; 0 failed; 9 ignored; 0 measured; 1403 filtered out; finished in 443.24s
