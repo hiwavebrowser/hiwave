@@ -1,0 +1,14 @@
+S6 #877, base develop 76c6ff8b, red 054b2019, candidate 301af344
+
+### red.log
+test page_script_tests::a_sheet_that_misses_the_budget_applies_when_it_arrives ... FAILED
+thread 'page_script_tests::a_sheet_that_misses_the_budget_applies_when_it_arrives' (23843067) panicked at crates/rustkit-engine/src/lib.rs:35493:9:
+  left: "String(\"384\")"
+ right: "String(\"123\")"
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1620 filtered out; finished in 11.74s
+
+### fix.log
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1620 filtered out; finished in 4.31s
+
+### narrow.log
+test result: ok. 252 passed; 0 failed; 1 ignored; 0 measured; 1368 filtered out; finished in 293.92s
