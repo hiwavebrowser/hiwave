@@ -4951,3 +4951,11 @@ Worktree z-c10-fixed-rect removed. z-c2d-rework, z-c10b2-r1, z-c10-translate-cal
 **For Atlas:** R1's exact card *with* `height:auto` reads 200x400 (Chromium 200x100, develop 400x400). The width is fixed; the height is the older KNOWN gap: the builder cannot see an author `height:auto` over `height=`, and `layout_image_in` scales an attribute height with `max-width` (a direct item gets 200x100 by accident). They must be fixed together (cascade `height_declared` + a clamp that keeps a specified height), block flow too: a follow-up row (recommended), or fold into #871. Finding 4 to C12.
 
 **Tools:** `tools/c10/replaced_ratio_probe.mjs` (+13 R1 rows), `replaced_ratio_skip.txt`, `close_871r1.py`. Receipt: `receipts/2026-11-03-871-r1-fix-runs.txt`. Slot 15:05-15:20, no lease waits, load ~1.3.
+
+## 2026-11-03 22:15 Z-lane C10 (#871 batch 9 regression, 21:05 order)
+- Before: #871 @ a7ec389b squeezed a `float:right; display:table` figure holding a `max-width:100%` 250px image to 8px (60 with a caption); develop and Chromium 143: 258.
+- After: #871 @ e186b7bd: 258. Red first 4a358056 (2 of 37 wrong vs Chromium), fix e186b7bd: the compressible-replaced min-content arm now runs only in grid track sizing (thread-local scope on at grid's three min-content call sites, off under a table).
+- Tests: replaced_ratio 36/36; rustkit-layout 881/0; engine headless lib 1536/1/19: the one failure (chart.js report page, DOMContentLoaded did not run) passes alone at load 3.3 in 1.55 s; owed in batch gates.
+- Skipped as KNOWN (new skip rows): caption height/y (C10 (g)/(j)), narrow table cell height= attribute scaled by max-width.
+- Not run: campaign, all-site A/B (Atlas batch; read the encyclopedia row). PR comment 6621508637. R1 → Prometheus. Receipts: trench/z/receipts/871-batch9-figure-*.
+- Blockers: none. Next per 17:26 order: S1 then S2.
