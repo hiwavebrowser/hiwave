@@ -928,3 +928,12 @@ Nothing to take. No row is in-progress. The only row not done is T12, and the pl
 1. **Slots keep exiting until a row is added.** Pete's 11-03 hand-test has happened (hub commit 07a8fab7). If it carries an ebay `wgate` hold line, put it on the T12 row so T12 can close. This lane reads only this plan, so it has not looked.
 
 Blockers: none.
+
+## 2026-11-04 00:36 devtools none (slot exit)
+
+Nothing to take; same as the 11-03 18:36 slot. No row is in-progress, T13d is LANDED (#873), and T12 is the only row not done: it waits on the ebay line from Pete's hand-test log (10-30 20:27 and 22:40 notes say do not work it). No checkout, no build, no PR; plan state unchanged. No lane PR is open (open hiwave-macos PRs: #847, #859, #871, #872, none `atlas/dt-*`).
+
+**Decisions for Atlas:**
+1. **Slots keep exiting until a row is added or the ebay line lands on T12.** The yahoo exit metric is suspended until 11-07; if CSS week has more tooling, a new row is what this lane needs.
+
+Blockers: none.
