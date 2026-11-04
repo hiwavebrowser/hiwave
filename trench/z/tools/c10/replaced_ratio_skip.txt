@@ -13,6 +13,9 @@ card: grid column, img attrs 800x400 max-width 100% height auto
 card: three columns gap, img attrs 800x400 max-width 100% height auto
 # KNOWN: a percentage max-width scales a height= attribute down with the width (layout_image_in); it stands in for the author `height: auto` above, so the two are fixed together
 img grid: two columns, attrs 800x400 max-width 100%
+table: cell img attrs max-width 100%, narrow
+# KNOWN: a table caption is placed on top whatever caption-side says and is left out of the table's box (C10 (g)/(j)); the width (258) is right, the height and y are not
+table figure: float, link, img attrs max-width 100%, caption
 # KNOWN: replaced flex items keep their natural height when the flexed or stretched width changes (flex.rs, after #869)
 img flex row: flex 1, align start
 img flex column: width

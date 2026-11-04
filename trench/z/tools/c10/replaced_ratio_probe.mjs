@@ -74,6 +74,19 @@ const cases = [
   ['img grid: max-content column, width 100%', grid(I('width:100%') + '<div></div>', 'grid-template-columns:max-content 1fr')],
   ['img grid: auto column, max-width 100%', grid(I('max-width:100%') + '<div></div>', 'grid-template-columns:auto 1fr')],
   ['img grid: min-content column, width 100%', grid(I('width:100%') + '<div></div>', 'grid-template-columns:min-content 1fr')],
+  // #871 batch 9 regression (encyclopedia infobox, reduced 11-03): the compressible-replaced rule is a grid
+  // rule; a shrink-to-fit table holding a max-width:100% image keeps the image's width (Chromium 258).
+  ...(() => {
+    const fig = (cap, s = '') => `<figure id=t style="float:right;display:table;margin:0 0 8px 16px;${s}"><a style="display:block;border:1px solid #888;padding:3px"><img src="${IMG}" width=250 height=125 style="display:block;max-width:100%;height:auto"></a>${cap}</figure>`;
+    const cap = '<figcaption style="display:table-caption;caption-side:bottom"><div style="width:60px;height:10px"></div></figcaption>';
+    const cell = (w) => `<div style="width:${w}px"><table id=t style="border-spacing:0"><tr><td style="padding:0"><img src="${IMG}" width=250 height=125 style="display:block;max-width:100%"></td></tr></table></div>`;
+    return [
+      ['table figure: float, link, img attrs max-width 100%', fig('')],
+      ['table figure: float, link, img attrs max-width 100%, caption', fig(cap)],
+      ['table: cell img attrs max-width 100%', cell(400)],
+      ['table: cell img attrs max-width 100%, narrow', cell(100)],
+    ];
+  })(),
 ];
 const out = [];
 for (const [name, body] of cases) {
