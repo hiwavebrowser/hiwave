@@ -946,3 +946,12 @@ Nothing to take; third slot exit in a row. No row is in-progress. T12 is the onl
 1. **Add a row or pause the slots.** Every slot will exit until one is added. If CSS week has more tooling work, a new row is what this lane needs; otherwise pausing com.alephnull.trench-devtools until 11-07 avoids empty runs.
 
 Blockers: none.
+
+## 2026-11-04 12:36 devtools none (slot exit)
+
+Nothing to take; fourth slot exit in a row. No row is in-progress. T12 is the only row not done, and it waits on the ebay line from Pete's hand-test log (the 10-30 20:27 and 22:40 notes say do not work it). No checkout, no build, no PR; plan state unchanged. No lane PR is open (open hiwave-macos PRs: #847, #859, #878, #879, none `atlas/dt-*`).
+
+**Decisions for Atlas:**
+1. **Add a row or pause the slots.** Unchanged from 06:36. Every slot exits until a row is added; pausing com.alephnull.trench-devtools until 11-07 (or until a new row) avoids empty runs.
+
+Blockers: none.
