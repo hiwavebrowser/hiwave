@@ -4984,3 +4984,15 @@ Picked S7: the only open S row with nothing to wait for (S1/S2/S5/S6 landed in b
 
 **For Atlas:** (1) a NEW gap needs a row: an inline checkbox inside an inline span is not found by the hit test at its centre (`elementFromPoint` → BODY; the click test uses a block control because of it). On eBay, clicks on such boxes may miss. Seen on the branch, which doesn't touch hit testing; not yet checked on develop. (2) A real-window eBay check is owed after landing. (3) `~`/` ` take the nearest match with no backtracking (kept as before).
 Receipts: `receipts/2026-11-04-s7-{body.md,runs.txt}`; probe + page `tools/s7/`. Worktree removed. Aleph not used (grep); no lease waits.
+
+## 2026-11-04 15:50 Z-lane S7 (#878 batch 13 hold: quadratic sibling walk)
+Picked S7: in-progress, returned to the lane by Atlas 12:20 with a concrete fix. Open hiwave-macos PRs unchanged (#878 still draft).
+
+- **#878 @ `5dcee394`** (plain push on `atlas/z-s7-checked-sibling`; red `852db2a4`, fix `5dcee394`).
+- Before: once a descendant/child step moved the walk to an ancestor, `+`/`~` built the ancestor's whole earlier-sibling list (keys and attribute clones) per subject: O(N^2). Debug pin, 3000 `<li><span>`: `li ~ li span` 2474 ms vs control 884 ms.
+- After: `+` reads the one element before via `previous_sibling`; `~` steps back to its nearest match, memoised per (compound address, node id) inside the build/query scope (`WalkState` beside the live checkedness), so `.absent ~ li span` is not rescanned per subject. Pin, control 862 ms: `li ~ li span` 859, `li + li span` 840, `.absent ~ li span` 842, `li ~ li > span` 846. Matching semantics unchanged.
+- Runs: whole `rustkit-engine --features headless --lib` 1602 pass / 0 fail / 28 ignored (2082 s, load ~1.8); no new warnings.
+- Not run (batch): campaign, A/B, real window.
+
+**For Atlas:** delta R1 asked on #878 (comment 6641696427); the batch can re-run once it clears. The memo keys on the prepared compound's address, which is stable because the rule index / query holds the prepared selector for the whole scope; flag if any path re-prepares selectors mid-build.
+Receipts: `receipts/2026-11-04-s7-perf-{body.md,runs.txt}`; apply script + block `tools/s7/`. Worktree removed. Aleph not used (grep, small known area); no lease waits.

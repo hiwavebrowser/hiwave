@@ -1,0 +1,41 @@
+#878 @ 5dcee394, rustkit-engine --features headless --lib (tail)
+height_normal_comes_from_metrics_and_multipliers_scale ... ok
+test windows_a_leg_pins::text_align_inherits_to_a_block_child ... ok
+test windows_engine_pins::a_malformed_group_does_not_kill_its_valid_siblings ... ok
+test windows_a_leg_pins::background_clip_text_propagates_to_the_text_run ... ok
+test windows_a_leg_pins::an_inline_svg_with_only_a_viewbox_is_sized_by_its_ratio ... ok
+test windows_a_leg_pins::root_custom_properties_reach_the_body ... ok
+test windows_engine_pins::a_fully_transparent_shadow_emits_nothing ... ok
+test windows_a_leg_pins::whitespace_between_block_siblings_makes_no_boxes ... ok
+test windows_engine_pins::a_new_document_does_not_inherit_the_previous_external_css ... ok
+test windows_a_leg_pins::custom_properties_resolve_on_the_element_that_declares_them ... ok
+test windows_engine_pins::a_percentage_radius_resolves_per_axis ... ok
+test windows_engine_pins::a_radius_declaration_reaches_paint_through_the_engine ... ok
+test windows_engine_pins::a_shadowed_box_paints_differently_from_an_unshadowed_one ... ok
+test windows_engine_pins::a_rounded_img_clips_its_image_to_the_content_edge_curve ... ok
+test windows_a_leg_pins::inline_and_important_custom_properties_follow_the_cascade ... ok
+test windows_engine_pins::an_elliptical_radius_reaches_paint_with_both_axes ... ok
+test windows_engine_pins::a_two_value_corner_longhand_rounds_that_corner ... ok
+test windows_engine_pins::a_logical_corner_longhand_rounds_its_physical_corner ... ok
+test windows_engine_pins::an_inset_shadow_is_emitted_after_the_background ... ok
+test windows_engine_pins::a_relative_radius_survives_to_paint ... ok
+test windows_engine_pins::overlapping_radii_are_reduced_by_one_factor ... ok
+test transform_rect_tests::translate_refuses_a_depth_that_is_not_a_length ... ok
+test windows_a_leg_pins::pseudo_classes_on_an_ancestor_compound_constrain_it ... ok
+test windows_engine_pins::the_heading_scale_is_monotonically_decreasing ... ok
+test windows_engine_pins::the_shadow_is_emitted_before_the_background ... ok
+test ws_beside_block_replaced_tests::white_space_between_block_level_controls_makes_no_line ... ok
+test ws_beside_block_replaced_tests::white_space_between_block_level_images_makes_no_line ... ok
+test zero_font_size_tests::a_wrapped_inline_block_in_a_link_is_counted_once ... ok
+test windows_engine_pins::the_multi_value_shorthand_rounds ... ok
+test zero_font_size_tests::text_restored_inside_a_nested_inline_box_gives_the_line_its_height ... ok
+test windows_engine_pins::the_comparison_can_actually_report_a_difference ... ok
+test zero_font_size_tests::a_zero_font_size_is_zero_and_not_sixteen ... ok
+test windows_engine_pins::a_shadow_carries_the_corner_radii_of_its_box ... ok
+test ws_beside_block_replaced_tests::lines_beside_a_block_level_image_are_kept ... ok
+test windows_a_leg_pins::a_self_referencing_css_variable_falls_back_instead_of_looping ... ok
+
+test result: ok. 1602 passed; 0 failed; 28 ignored; 0 measured; 0 filtered out; finished in 2081.53s
+
+
+[exited with code 0]
