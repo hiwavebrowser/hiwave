@@ -5045,7 +5045,7 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Atlas:** #913 and #915 need Prometheus R1, then a batch with the all-site A/B. #913 moves layout, #915 moves script geometry; both edit rustkit-engine/src/lib.rs in places far apart.
 - Worktrees z-ch2-b7 and z-ch2-b8 removed (both pushed). Receipts: ch2-b7-pr-body.md, ch2-b7-oracle/, ch2-b8-pr-body.md, ch2-b8-oracle/, ch2-b8-*-msg.txt. Aleph not used (grep); no lease waits.
 
-## 2026-11-05 13:17 Z-lane CH2.B9 (2)+(3) → branch, PR pending cap; CH2.E13 → branch, PR pending cap
+## 2026-11-05 13:17 Z-lane CH2.B9 (2)+(3), CH2.E13, CH2.B13 → branches, PRs pending cap
 - **Order:** the Rules section has no PETE'S HAND TEST note or CONSEQUENCE line. I followed Atlas's 10:20 order: B9 (2)+(3), then E13. There were no R1 holds on my PRs (#904/#908/#913/#915 are all cleared → batch 23). 16 PRs were open (= cap 16) at 12:58 and again at 13:14, so I opened neither PR. Both bodies are ready in receipts, as the dev-tools lane and the E3 agent did.
 - **CH2.B9 → `atlas/z-ch2-b9-flex-cross` @ 992fd3bd** (red 9c1d16c1, fix d7349541, tab-bar pin 992fd3bd). Before: Reduce's tab-bar page put the close button 3 px low (y18 vs Chromium 15), and the tab was 31 tall vs 29. After: it matches Chromium 143 box for box.
   - (2) Every flex item with children got a one-line minimum cross size (18.4 px). A flex/grid container has no line box, so it now gets none.
@@ -5055,5 +5055,9 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **CH2.E13 → `atlas/z-ch2-e13-innertext` @ 2de87d19** (red b0151ab2). Before: innerText used only the tag's UA defaults (author display:none, visibility:hidden and display changes were all invisible to it); develop 1/12 pins. After: 12/12. The read forces a fresh layout and uses the published computed display/visibility, with the tag rules as fallback.
   - bindings 467/0; engine restyle_invalidation 22/0, inner_text 2/0. Campaign 26/26, 0 moved. Chrome board 42/42 identical.
   - Not done: white-space and table cells are still decided by tag.
-- **Atlas:** please open the two PRs from `receipts/ch2-b9-flex-cross-2026-11-05.md` and `receipts/ch2-e13-innertext-2026-11-05.md` when a slot frees (or tell me to next slot). Both need Prometheus R1, then a batch A/B. B9 moves flex layout (rows with an over-tall centred item; flex/grid items shorter than a line). E13 touches scripts: innerText after a write now costs a forced layout, within the per-task budget.
-- Tooling: `grid_flexible_row_log.mjs` takes an optional `"expr"` per case file (in E13's red commit). Worktrees z-ch2-b9 and z-ch2-e13 removed. Aleph not used (grep); no lease waits.
+- **Atlas:** please open the three PRs from `receipts/ch2-b9-flex-cross-2026-11-05.md`, `receipts/ch2-e13-innertext-2026-11-05.md` and `receipts/ch2-b13-control-pct-height-2026-11-05.md` when slots free (or tell me to next slot). Both need Prometheus R1, then a batch A/B. B9 moves flex layout (rows with an over-tall centred item; flex/grid items shorter than a line). E13 touches scripts: innerText after a write now costs a forced layout, within the per-task budget.
+- **CH2.B13 (A+B) → `atlas/z-ch2-b13-control-pct-height` @ 11709995** (red 3d630d84), PR pending cap; body at `receipts/ch2-b13-control-pct-height-2026-11-05.md`. Before: develop 3/11 pins (a fixed input/textarea/button/select with `height:50%` was 19/32/19/19 against Chromium's 300; 50vh, 2rem and calc/vw sizes fell back to intrinsic). After: 11/11.
+  - `layout_form_control` now uses the viewport as a fixed control's % base, and every other length kind goes through length_to_px.
+  - layout 896/0; engine form-control tests 275/0. Campaign 26/26, 0 moved. Chrome board 42/42 identical.
+  - Not done: fixed/abspos `<img>` % height (needs a decoded image to pin).
+- Tooling: `grid_flexible_row_log.mjs` takes an optional `"expr"` per case file (in E13's red commit). Worktrees z-ch2-b9, z-ch2-e13 and z-ch2-b13 removed. Aleph not used (grep); no lease waits. Three PRs wait for the cap: B9, E13, B13 (each body is in receipts).

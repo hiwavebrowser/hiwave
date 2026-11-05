@@ -1,0 +1,45 @@
+chrome board develop c959570f vs atlas/z-ch2-b13-control-pct-height 11709995 (parity profile), 2026-11-05 13:35 ET
+row                                       dev px%   br px% dev geo  br geo
+chrome/address_focused/1024x700              4.82     4.82     205     205 
+chrome/address_focused/1280x800             3.779    3.779     205     205 
+chrome/address_focused/1600x1000            2.744    2.744     205     205 
+chrome/default/1024x700                      4.16     4.16     205     205 
+chrome/default/1280x800                     3.118    3.118     205     205 
+chrome/default/1600x1000                    2.161    2.161     205     205 
+chrome/downloads_open/1024x700               1.56     1.56     206     206 
+chrome/downloads_open/1280x800              1.092    1.092     218     218 
+chrome/downloads_open/1600x1000             0.699    0.699     221     221 
+chrome/find_open/1024x700                   4.034    4.034     224     224 
+chrome/find_open/1280x800                   3.002    3.002     224     224 
+chrome/find_open/1600x1000                  2.126    2.126     224     224 
+chrome/focus_mode/1024x700                  0.718    0.718     219     219 
+chrome/focus_mode/1280x800                  0.502    0.502     231     231 
+chrome/focus_mode/1600x1000                 0.322    0.322     234     234 
+chrome/hover_tab2/1024x700                  4.017    4.017     205     205 
+chrome/hover_tab2/1280x800                  3.018    3.018     205     205 
+chrome/hover_tab2/1600x1000                 2.097    2.097     205     205 
+chrome/sidebar_collapsed/1024x700           1.067    1.067     219     219 
+chrome/sidebar_collapsed/1280x800           0.747    0.747     231     231 
+chrome/sidebar_collapsed/1600x1000          0.478    0.478     234     234 
+inspector/console_tab/1024x700              0.873    0.873       6       6 
+inspector/console_tab/1280x800              0.611    0.611       6       6 
+inspector/console_tab/1600x1000             0.391    0.391       6       6 
+inspector/default/1024x700                  3.904    3.904      50      50 
+inspector/default/1280x800                  3.258    3.258      50      50 
+inspector/default/1600x1000                 2.505    2.505      50      50 
+report/default/1024x700                     3.259    3.259      65      65 
+report/default/1280x800                     2.332    2.332      65      65 
+report/default/1600x1000                    1.596    1.596      65      65 
+report/weekly/1024x700                      3.485    3.485      69      69 
+report/weekly/1280x800                      2.488    2.488      69      69 
+report/weekly/1600x1000                     1.698    1.698      69      69 
+settings/default/1024x700                   2.064    2.064     256     256 
+settings/default/1280x800                   1.661    1.661     256     256 
+settings/default/1600x1000                   1.44     1.44     256     256 
+shelf/default/1024x700                      0.467    0.467       0       0 
+shelf/default/1280x800                      0.327    0.327       0       0 
+shelf/default/1600x1000                     0.211    0.211       0       0 
+shelf/shelf_search/1024x700                  0.85     0.85       0       0 
+shelf/shelf_search/1280x800                 0.695    0.695       0       0 
+shelf/shelf_search/1600x1000                0.526    0.526       0       0 
+better 0 worse 0 same 42
