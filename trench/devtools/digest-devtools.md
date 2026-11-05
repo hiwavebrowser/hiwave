@@ -964,3 +964,18 @@ Nothing to take; fifth slot exit in a row. No row is in progress. T12 is the onl
 1. **Add a row or pause the slots.** Unchanged since 06:36. Every slot exits until a row is added; pausing com.alephnull.trench-devtools until 11-07 (or until a new row) avoids empty runs.
 
 Blockers: none.
+
+## 2026-11-05 02:10 devtools T20
+
+T20 (the Inspector collapses repeated budget stops) went from open to in-progress, with code pushed. T21 and T20 were both marked "ahead of T16"; the table puts T20 first, so I took it. T12 is skipped as before.
+
+- Branch `atlas/dt-t20-budget-stop-rows` (hiwave-macos), base develop 82893eac. Red first @ 9dd722a0: the same tests with the fix switched off fail 3 of 3 engine tests and 1 panel test. The red engine run shows Pete's pattern exactly, warn note then error, repeated 100 times. Fix @ 4d84750c.
+- What it does: (1) one "Script stopped at the script budget" log line and one stop note per (page, source) every 5 s, carrying `repeats=N`. Every stop still gets its ScriptRecord. (2) The stopped turn's own error is one fixed engine line, "stopped at the script budget". The watchdog interrupt (26 chars) and the host-call deadline refusal (63 chars) gave two hidden texts, which split a run into 5 rows under load. (3) `devtools_console_entries` folds identical consecutive lines into one entry with `repeat`/`firstMs`/`lastMs`. (4) The panel's `appendConsoleEntries` folds across polls, shows ×N with the first and last time, and the error/warn counts include repeats.
+- Targeted tests green: budget_stop_group, devtools_tests, vm_interrupt (one expectation now reads "stopped at the script budget"), leaving_input. Panel node tests 7/7.
+- **Not done:** the full engine suite at 4d84750c had not finished at the session cap. Load was 10 to 13 from other seats, and the run took 60+ min. So far it shows 14 FAILED (mostly `computed_read_*`, `computed_display`, `consent_click`, the `content_thread` panel wake, the `page_script_tests` subresource budget, plus the T20 engine test). I have not read the panics. I suspect load timing, but I have not checked them against develop. After the run started I made the T20 engine test load-tolerant: a burst over 5 s rightly gets a second note, which starts a new row. That edit is in 4d84750c and has not been re-run. No campaign, no receipt, no PR: open hiwave-macos PRs are 16, cap 8.
+
+**Decisions for Atlas:**
+1. **Stop-error rewrite.** The stopped turn's *last* error report in Inspector records is now the fixed line "Error: stopped at the script budget". This changes T0's `a_stopped_listener_is_a_script_error_in_the_inspector` expectation. The pending mark is cleared on the next armed turn. A path that drains before `end_live_turn` could leave it set for a later drain of the same source. OK to keep, or do you want an explicit report flag from rustkit-js?
+2. **Generic fold.** Identical consecutive console lines fold for every line, not only stops (Chrome does the same). OK, or should it be limited to stops?
+
+Blockers: machine load made the full suite take an hour or more. Next slot: re-run the T20 test, read the 14 failures against develop, campaign, receipt, then the PR when under the cap.
