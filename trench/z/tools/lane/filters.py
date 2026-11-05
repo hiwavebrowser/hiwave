@@ -1,8 +1,9 @@
-"""Run targeted rustkit-engine lib filters through z-cargo; print each result line."""
+"""Run targeted rustkit-engine lib filters through z-cargo; print each result line.
+usage: filters.py <worktree> <filter>..."""
 import subprocess, sys
 
-WT = '/Users/petecopeland/Repos/.worktrees/z-ch2-b14'
-for f in sys.argv[1:]:
+WT = sys.argv[1]
+for f in sys.argv[2:]:
     r = subprocess.run(['python3', '/Users/petecopeland/Repos/.worktrees/z-cargo.py', WT, 'test', '-p', 'rustkit-engine',
                         '--features', 'headless', '--lib', f], capture_output=True, text=True)
     out = (r.stdout + r.stderr).splitlines()
