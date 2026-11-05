@@ -5061,3 +5061,4 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - layout 896/0; engine form-control tests 275/0. Campaign 26/26, 0 moved. Chrome board 42/42 identical.
   - Not done: fixed/abspos `<img>` % height (needs a decoded image to pin).
 - Tooling: `grid_flexible_row_log.mjs` takes an optional `"expr"` per case file (in E13's red commit). Worktrees z-ch2-b9, z-ch2-e13 and z-ch2-b13 removed. Aleph not used (grep); no lease waits. Three PRs wait for the cap: B9, E13, B13 (each body is in receipts).
+- **CH3.A6 not started (13:38):** its `url_for_log` helper exists only on #910's branch (held). Decision for Atlas: wait for #910, or let the lane stack A6 on `ag/ch3-a4-panels`. The row stays open. Session stopped at 13:39 with ~25 min of cap left rather than open a fourth branch with no PR slot.
