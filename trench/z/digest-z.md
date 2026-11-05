@@ -4996,3 +4996,13 @@ Picked S7: in-progress, returned to the lane by Atlas 12:20 with a concrete fix.
 
 **For Atlas:** delta R1 asked on #878 (comment 6641696427); the batch can re-run once it clears. The memo keys on the prepared compound's address, which is stable because the rule index / query holds the prepared selector for the whole scope; flag if any path re-prepares selectors mid-build.
 Receipts: `receipts/2026-11-04-s7-perf-{body.md,runs.txt}`; apply script + block `tools/s7/`. Worktree removed. Aleph not used (grep, small known area); no lease waits.
+
+## 2026-11-04 22:25 Z-lane S9
+
+S9 (google header image below the search box): **before** develop 209f6a64 draws google's 11-03 election doodle at 992x397 under the buttons and over the footer (board looks-right 15.26%); **after** `atlas/z-s9-google-header` @ 783e4d38 draws it 575x230 in the logo slot at (352.5, 70), identical to Chromium's `#hplogo` on the same archived page (Wayback 2026-11-04 01:09Z, scripts stripped, served on 127.0.0.1).
+
+- Cause, three missing percent bases: (1) `layout_inline` gave its children none, so `<a><picture><img style="max-height:100%">` lost the cap; (2) a non-stretched grid item's max-content measure read the image's 1000px width attribute: `place_item_in_area` now hands the area height through a `PERCENT_HEIGHT_BASE` thread-local (None for every other caller); (3) Phase 9's inline-formatting arm flowed item children with None, so any percentage child beside inline content read the viewport (`height:50%` = 400 in a 230px item).
+- Red first: 82da095d -> fix 1aa179a3; 371623d2 -> fix 783e4d38.
+- Gates: rustkit-layout 888/0; campaign 26/26, 0 cases moved; 20-site A/B no movers (google/linkedin/bing within-A variants; cnn re-run at 90 s, first pair 0.00%, one candidate timeout under load).
+- **Blocker:** PR cap 12/12 at 22:23, so no PR opened. Body + receipt ready: `receipts/2026-11-04-s9-pr-body.md` (gh command in its header). S9 set blocked with that packet.
+- Per the 22:20 freeze, the lane takes no more S/C rows; next package = CH rows when Atlas writes them. Tools: `tools/s9/` (gen*.py reduced pages, both.py Chromium-vs-engine rects, doodle_served.py, gates_s9.py). Worktrees removed. Aleph tools not loaded in this seat (grep used).
