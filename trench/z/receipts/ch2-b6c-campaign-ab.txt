@@ -1,0 +1,29 @@
+26-case campaign: develop 232fca86 (sha256 51370e24) vs branch 7b0d55b3 (sha256 ffde943c), --profile parity
+about                          3.703%   3.330%  None None  MOVED
+article-typography             4.786%   4.786%  None None
+backgrounds                    1.216%   1.216%  None None
+bg-pure                        0.000%   0.000%  None None
+bg-solid                       0.211%   0.211%  None None
+card-grid                      1.343%   1.343%  None None
+chrome_rustkit                 1.069%   1.076%  None None  MOVED
+combinators                    0.655%   0.655%  None None
+css-selectors                  1.330%   1.330%  None None
+flex-positioning               0.635%   0.635%  None None
+form-controls                  3.242%   3.242%  None None
+form-elements                  0.954%   0.944%  None None  MOVED
+gpu-gradient-regression        0.390%   0.390%  None None
+gradient-backgrounds           1.013%   1.013%  None None
+gradient-no-radius             0.520%   0.520%  None None
+gradient-radius-only           0.343%   0.343%  None None
+gradients                      0.141%   0.141%  None None
+image-gallery                  0.522%   0.522%  None None
+images-intrinsic               0.327%   0.327%  None None
+new_tab                        1.075%   1.051%  None None  MOVED
+pseudo-classes                 0.434%   0.434%  None None
+rounded-corners                0.435%   0.435%  None None
+settings                       2.092%   2.091%  None None  MOVED
+shelf                          0.727%   0.721%  None None  MOVED
+specificity                    0.601%   0.601%  None None
+sticky-scroll                  0.658%   0.632%  None None  MOVED
+cases 26 moved 7
+passed develop 26 branch 26
