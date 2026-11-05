@@ -982,3 +982,18 @@ T20 (the Inspector collapses repeated budget stops) went from open to in-progres
 2. **Generic fold.** Identical consecutive console lines fold for every line, not only stops (Chrome does the same). OK, or should it be limited to stops?
 
 Blockers: machine load made the full suite take an hour or more. Next slot (fresh checkout of the branch): find the stop error that missed the pending mark, settle the fold scope (decision 2) and fix `content_thread`, re-run the T20 test and the suite, campaign, receipt, then the PR when under the cap.
+
+## 2026-11-05 06:36 devtools T20
+
+T20 went from in-progress to blocked on the PR cap only. The code and the acceptance checks are done; the draft PR waits for room (13 open, cap 8). T12 was skipped as before.
+
+- Fresh checkout `dt-t20-0640` of `atlas/dt-t20-budget-stop-rows`. Pushed: red 0b69972b, fix **2e01dbcb**.
+- **Open item 1, the lone raw stop row under load: found and fixed.** The 02:10 run's `[warn, err×34, warn, err×1, err×66]` was 101 error rows for 100 stops. The stop note is page script (`console.warn` may be the page's own). On a loaded machine it can overrun its own 50 ms budget, and its error then came after the stop's, so "the drain's last report is the stop" labelled the note's error with the fixed line and left the real stop raw. Red test (a page whose `console.warn` throws): `[raw stop 63 chars ×1, fixed ×3]` at 4d84750c. Fix: the stop is the last exception queued *when the turn ended*, read before the note runs (`queued_exception_reports`, a new accessor in rustkit-js and rustkit-bindings).
+- **Open item 2, decision 2 (fold scope): settled narrow, pending Atlas.** Only the engine's budget-stop line folds. The entry gains `budgetStop`, and the engine `same_line` and panel `sameConsoleLine` both require it. Shape-only page logs (`<string len=1>` ×3) stay three rows, so the content_thread panel-wake test passes with no change. A new engine test and a new panel test pin this. Say so if you want Chrome's generic fold instead; it is a one-line change in each place.
+- Test-only change: at the tests' 5 ms budget, a loaded machine also stops the engine's own `pointerover`/`mousemove` dispatch, which has no listener. These are real stops of other sources, so both pointermove tests count only pointermove's rows. The strict "1 note + 1 row ×100" check runs whenever no other source was stopped.
+- Gates at 2e01dbcb: budget_stop_group 3/3; devtools/vm_interrupt/leaving_input/inspector 143/0; panel node 8/8; content_thread green; `check -p hiwave-app` clean. **Full engine suite 1599/23/28 ignored** (2905 s, load 9 to 27). All 23 failures are the GPU test guard plus one wall-clock bound, and all 23 pass when re-run by module with `--test-threads=1` (16/0 + 44/0). **Campaign 26/26, mean 1.1095%**, the same as the last three receipts. receipt.py output is in `receipts/T20-budget-stop-rows-2e01dbcb.md`, which is also the ready PR body.
+- `dt-t20-0640` removed with done-task.sh (the branch is pushed). The 02:10 checkout `dt-t20-0042` was already gone.
+
+**For Atlas:** (1) open T20's draft PR when the cap allows (the next lane slot will do it if it's under 8); (2) confirm the narrow fold; (3) decision 1 from 02:10 still stands, with its risk now smaller: the stop's place is fixed at turn end, not guessed at drain.
+
+Blockers: PR cap. Machine load 9 to 27 from processes outside the lane: the suite took 48 min and the GPU guard tripped 22 times.
