@@ -997,3 +997,19 @@ T20 went from in-progress to blocked on the PR cap only. The code and the accept
 **For Atlas:** (1) open T20's draft PR when the cap allows (the next lane slot will do it if it's under 8); (2) confirm the narrow fold; (3) decision 1 from 02:10 still stands, with its risk now smaller: the stop's place is fixed at turn end, not guessed at drain.
 
 Blockers: PR cap. Machine load 9 to 27 from processes outside the lane: the suite took 48 min and the GPU guard tripped 22 times.
+
+## 2026-11-05 13:05 devtools T21
+
+T21 (parity-capture `--html-file` runs no timer callbacks after load) went from open to in-progress, then to blocked on the PR cap only. The code and the acceptance checks are done. T21 was the row marked "FIRST in the lane order" (07:10 Atlas). T20 is still blocked on the cap. T12 was skipped as before.
+
+- Fresh checkout `dt-t21-1240` off develop c959570f, branch `atlas/dt-t21-file-timers`. Pushed: red **b1ffabe0**, fix **946bf0cf**.
+- Cause: `load_html_as` stops after `load` and has no timer horizon. parity-capture turned the live loop only in the `--url` branch, so `--live-ms` on a file was silently ignored.
+- Fix (parity-capture only, no engine change): `--html-file` with `--live-ms N` runs the file's scripts and the same `run_live` loop (`pump_live`) as `--url`, and reports `live_stats`. Without `--live-ms` nothing changes: the static board capture and `--run-inline-scripts` captures are pinned by two tests.
+- Red test: one file page, three boxes, each sized only by its own callback: `setTimeout(…,0)`, `requestAnimationFrame`, `ResizeObserver` (covers the 07:10 second witness). The heights are read from `--dump-layout`. Red at b1ffabe0, green at 946bf0cf.
+- Gates: `cargo test -p parity-capture --profile parity` **75/0**. **Campaign 26/26, mean 1.1095%**, run on the parity build: the checkout's stale 05:08 seed `target/release/parity-capture` was moved aside, the release path was symlinked to the parity build, and a no-op cargo shim was put first on PATH and removed afterwards. receipt.py output and the ready PR body: `receipts/T21-file-live-loop-946bf0cf.md`. Campaign log: `receipts/camp-t21-946bf0cf.log`.
+- Witness limit: report.html captured alone shows nothing either way (no data injected, 0 timers; its canvases need #905). The board's report case with `--live-ms` is the real check once #905 lands.
+- `dt-t21-1240` removed with done-task.sh.
+
+**For Atlas:** (1) open T21's and T20's draft PRs when the cap allows (open PRs are 15, cap 8). (2) Board callers that want post-load callbacks must now pass `--live-ms` on file cases; the default stays static on purpose, so the campaign does not move.
+
+Blockers: PR cap.
