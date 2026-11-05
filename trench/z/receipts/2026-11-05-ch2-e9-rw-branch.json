@@ -1,0 +1,63 @@
+{
+ "app": "/Users/petecopeland/Repos/.worktrees/z-ch2-e9/target/release/hiwave",
+ "sha256": "2ecf6fb9a4db9eb60ecb408a14f4368bed43da08229b61a85d0837ee646f5446",
+ "seat": {
+  "accessibility": false,
+  "display_asleep": false,
+  "display_points": [
+   3440,
+   1440
+  ],
+  "display_scale": 1,
+  "post_events": false,
+  "screen_capture": false,
+  "screen_locked": false
+ },
+ "tally": {
+  "PASS": 5,
+  "FAIL": 0,
+  "NOT RUN": 0
+ },
+ "assertions": [
+  {
+   "check": "e9_redirect",
+   "name": "the app fetched the page it was restored on",
+   "status": "PASS",
+   "detail": "http://127.0.0.1:57017/e9_start"
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the app has a window",
+   "status": "PASS",
+   "detail": "{\"h\": 832, \"id\": 3540, \"on_screen\": true, \"w\": 1280, \"x\": 1080, \"y\": 159}"
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the app followed the redirect",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the saved tab holds the committed URL, not the one restored",
+   "status": "PASS",
+   "detail": "tab urls ['http://127.0.0.1:57017/e9_final.html']"
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the saved tab holds the page's title",
+   "status": "PASS",
+   "detail": ""
+  }
+ ],
+ "requests": [
+  [
+   8.262,
+   "/e9_start"
+  ],
+  [
+   8.269,
+   "/e9_final.html"
+  ]
+ ]
+}

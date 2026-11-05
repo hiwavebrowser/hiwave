@@ -33,15 +33,16 @@ New check `tools/real_window/driver.py --checks e9_redirect`: the app restored o
 
 Seat grants: accessibility/post_events/screen_capture false, so the address bar pixels themselves are not seen; Pete's hand test or a granted seat confirms the bar.
 
-## Narrow runs at `7f07a992`
+## Narrow runs at `7903e602`
 
 - `rustkit-engine --lib --features headless content_thread`: 46 passed, 0 failed, 2 ignored.
 - `rustkit-bindings`: 438 + 1 passed, 0 failed.
-- `hiwave-app`: 69/70 in a full run at load avg 16–19; `a_new_load_replaces_the_one_in_progress` (wall-clock `< 5 s`, same-thread path, which this PR does not touch apart from one host function at bindings creation) failed once in the full run and passed alone twice at 3.0 s. One earlier full run had it and `content_thread_a_url_bar_navigation_lands_within_100_ms…` failing, both passed alone. Not measured on develop at the same load.
+- `hiwave-app`: 70 + 27 + 1 + 8 passed, 0 failed (main suite 7.9 s, load avg ~18).
+- **Found and fixed in `7903e602`:** at `7f07a992` `__rk_ipc_post` was registered after the bindings' setup scripts, and every page load got slower: `a_new_load_replaces_the_one_in_progress` + `content_thread_a_url_bar_navigation_lands_within_100_ms…` took 3.0 s together (develop `df02d853`: 1.34 s, same load) and failed their wall-clock limits inside the full app suite (15–19 s vs develop's 7.4 s). Reverting only the bindings file brought it to 1.38 s; registering the function first in `DomBindings::new` gives 1.47 s. Mechanism not proven (a global added after the setup scripts; Boa's global object shape is the suspect). Worth a look for any other host function installed late.
 - Merges cleanly with develop `82893eac` (`git merge-tree`).
 
 Full gates, campaign and A/B are the batch's (this touches scripts: every page loses `window.__ipcQueue` / `window.__drainIpcQueue`, and `postMessage` is a host call).
 
-Receipt fields: base `df02d853`, candidate `7f07a992`, toolchain rustc 1.92.0, profiles test (debug) and `--release` (app), host Petes-MacBook-Pro (macOS seat, Z lane), Chrome not used (no pixel claim), fixtures in-tree (`tools/real_window/pages/e9_final.html`, the 302 route in `driver.py`).
+Receipt fields: base `df02d853`, candidate `7903e602` (real-window binary built at `6a85a9d8`), toolchain rustc 1.92.0, profiles test (debug) and `--release` (app), host Petes-MacBook-Pro (macOS seat, Z lane), Chrome not used (no pixel claim), fixtures in-tree (`tools/real_window/pages/e9_final.html`, the 302 route in `driver.py`).
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)

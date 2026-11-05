@@ -1,0 +1,103 @@
+{
+ "app": "/Users/petecopeland/Repos/.worktrees/z-ch3-a2/target/release/hiwave",
+ "sha256": "776dddc6d1aebda84ff21f098a13614569f52a7747513a58cc1b851b85bf2c68",
+ "seat": {
+  "accessibility": false,
+  "display_asleep": false,
+  "display_points": [
+   3440,
+   1440
+  ],
+  "display_scale": 1,
+  "post_events": false,
+  "screen_capture": false,
+  "screen_locked": false
+ },
+ "tally": {
+  "PASS": 11,
+  "FAIL": 0,
+  "NOT RUN": 0
+ },
+ "assertions": [
+  {
+   "check": "a2_chrome_boots",
+   "name": "the app fetched the page it was restored on",
+   "status": "PASS",
+   "detail": "http://127.0.0.1:52912/e9_final.html"
+  },
+  {
+   "check": "a2_chrome_boots",
+   "name": "the app has a window",
+   "status": "PASS",
+   "detail": "{\"h\": 832, \"id\": 3617, \"on_screen\": true, \"w\": 1280, \"x\": 1080, \"y\": 159}"
+  },
+  {
+   "check": "a2_chrome_boots",
+   "name": "the app built the chrome as a RustKit view",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "a2_chrome_boots",
+   "name": "the chrome's script posted get_sidebar_width and the app's handler took it",
+   "status": "PASS",
+   "detail": "RustKit chrome IPC body={\"cmd\":\"get_sidebar_width\""
+  },
+  {
+   "check": "a2_chrome_boots",
+   "name": "the chrome's script posted get_workspaces",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "a2_chrome_boots",
+   "name": "the app is still running 3 s later",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the app fetched the page it was restored on",
+   "status": "PASS",
+   "detail": "http://127.0.0.1:52912/e9_start"
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the app has a window",
+   "status": "PASS",
+   "detail": "{\"h\": 832, \"id\": 3626, \"on_screen\": true, \"w\": 1280, \"x\": 1080, \"y\": 159}"
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the app followed the redirect",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the saved tab holds the committed URL, not the one restored",
+   "status": "PASS",
+   "detail": "tab urls ['http://127.0.0.1:52912/e9_final.html']"
+  },
+  {
+   "check": "e9_redirect",
+   "name": "the saved tab holds the page's title",
+   "status": "PASS",
+   "detail": ""
+  }
+ ],
+ "requests": [
+  [
+   4.323,
+   "/e9_final.html"
+  ],
+  [
+   8.706,
+   "/e9_start"
+  ],
+  [
+   8.714,
+   "/e9_final.html"
+  ]
+ ]
+}

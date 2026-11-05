@@ -5006,3 +5006,20 @@ S9 (google header image below the search box): **before** develop 209f6a64 draws
 - Gates: rustkit-layout 888/0; campaign 26/26, 0 cases moved; 20-site A/B no movers (google/linkedin/bing within-A variants; cnn re-run at 90 s, first pair 0.00%, one candidate timeout under load).
 - **Blocker:** PR cap 12/12 at 22:23, so no PR opened. Body + receipt ready: `receipts/2026-11-04-s9-pr-body.md` (gh command in its header). S9 set blocked with that packet.
 - Per the 22:20 freeze, the lane takes no more S/C rows; next package = CH rows when Atlas writes them. Tools: `tools/s9/` (gen*.py reduced pages, both.py Chromium-vs-engine rects, doodle_served.py, gates_s9.py). Worktrees removed. Aleph tools not loaded in this seat (grep used).
+
+## 2026-11-05 01:25 Z-lane CH2.E9 + CH3.A2
+Per Atlas's 22:28 order (E9, then A2). Open hiwave-macos PRs 15 → 16 (cap 16).
+
+- **CH2.E9 → draft #901 @ `7903e602`** (`atlas/z-ch2-e9-ipc-push`, base develop df02d853, merges clean with 82893eac). Red first twice: `05e26190` → fix `6a85a9d8`; `085afb13` → fix `7f07a992`; timing fix `7903e602`.
+- Before: on macOS nothing read the RustKit view's Url/Title/LoadState events (the senders are WebKit-only). After a redirect the address bar and saved tab kept the typed URL; no title, spinner never stopped, no visit, no back/forward state. `window.ipc.postMessage` went to a JS array nothing drained.
+- After: the macOS loop sends UpdateUrl/UpdateActiveTabUrl/NavigationStateChanged/UpdateTitle/SetLoading/SyncShieldStats/RecordVisit from `take_chrome_updates()`. Real-window `e9_redirect` (grant-free, state file): develop PASS 3 FAIL 2 (tab stays `/e9_start`), branch PASS 5. `window.ipc` → Rust queue (`__rk_ipc_post`) → `PageEvent::Ipc` → `RustKitView::take_ipc_messages()`.
+- Found on my own branch: registering `__rk_ipc_post` AFTER the bindings' setup scripts made every load slower (two app tests 1.34 s on develop → 3.0 s; full app suite 7.4 s → 15–19 s with two wall-clock failures). Bisected to the bindings file; registered first → 1.47 s, 70/0 in 7.9 s. Mechanism unproven (late global on Boa's global object); worth checking other late host functions.
+- Runs at 7903e602: engine content_thread 46/0, bindings 438/0, app 70+27+1+8/0. Campaign/A/B: batch's (touches scripts: every page loses `__ipcQueue`/`__drainIpcQueue`).
+- NOT done from the row: dispatching content-view IPC to `handle_message` (any web page can post; that is for app-owned views, A2/A4). **Decision for Atlas/Pete:** drop `window.ipc`/`window.hiwaveChrome` from web content views once A2 marks views app-owned (today every page sees them).
+
+- **CH3.A2 (part) → branch `atlas/z-ch3-a2-chrome-sink` @ `4d602445`, no PR (cap 16/16).** Body ready: `receipts/ch3-a2-pr-body.md` (gh command in its header). Stacked on #901: land #901 first. Plan: `ch3-a2-design.md`.
+- Steps: (2) chrome IPC closure → `handle_chrome_ipc()` (pure move, checked by line multiset); (1) `trait ChromeUi {eval, place}` for the 35 chrome calls (pure refactor); (3a) `HIWAVE_RUSTKIT_CHROME=1` builds the chrome as a `RustKitView` with JS_BRIDGE, its IPC → `handle_chrome_ipc`, input on its NSView dropped (3b routes it).
+- Real-window `a2_chrome_boots` (log only): develop PASS 3 FAIL 3; branch PASS 6/6, e9_redirect 5/5 (flag off). The log shows a full round trip (get_sidebar_width → reply → set_sidebar_width 220 → get_workspaces/get_shelf). Paint not seen (no Screen Recording on this seat); input not routed.
+- Next for A2: 3b input routing (lift the content input arm into a fn first), verify with a granted seat; measure RSS/idle CPU with two content threads.
+
+Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/2026-11-05-{ch2-e9,ch3-a2}-rw-{develop,branch}.json`. Tools `tools/ch/`. Worktrees removed. Aleph not used (grep); no lease waits.
