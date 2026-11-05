@@ -1,0 +1,112 @@
+== rw-develop app sha256 2e494a98c343016accda1a34578748c811687e65792da6ce84e4988932383183 tally {'PASS': 2, 'FAIL': 2, 'NOT RUN': 0}
+a6_url_log PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker>
+a6_url_log PASS the app has a window | {"h": 832, "id": 11365, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+a6_url_log FAIL the navigation line names the page's path | Navigating content to: http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker>
+a6_url_log FAIL the query and fragment are nowhere in the log | 54:21.722132Z  INFO hiwave: Deferring restored-tab navigation until after first paint url=http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker>; 2026-11-05T23:54:21.858365Z  INFO hiwave: Navigating content to: http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker>; 2026-11-05T23:54:21.858
+== rw-branch app sha256 f5ce339acebc9fea4145363b7308b6cb7bf0a1b455fa58b0644aa3a326d385b5 tally {'PASS': 43, 'FAIL': 1, 'NOT RUN': 6}
+a6_url_log PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker>
+a6_url_log PASS the app has a window | {"h": 832, "id": 11192, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+a6_url_log PASS the navigation line names the page's path | Navigating content to: http://127.0.0.1:PORT/e9_final.html
+a6_url_log FAIL the query and fragment are nowhere in the log | 2026-11-05T23:39:03.588180Z  INFO hiwave_shell: Updating tab TabId(0) URL to: http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker>; 5T23:39:03.632849Z  INFO rustkit_engine: Loading URL id=EngineViewId(2) url=http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker> replace=false; 2026-11-05
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11201, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav NOT RUN a click on a link: request, load, layout, script and frame of page B | no Accessibility grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11210, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: link.click(): page A started it | 
+h16_click_nav PASS script: link.click(): the app requested page B | ['/h16_b.html?from=link']
+h16_click_nav PASS script: link.click(): the engine logged Loading URL for page B | 
+h16_click_nav PASS script: link.click(): page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: link.click(): page B's script ran | ['/beacon?h16-b-ran-from=link']
+h16_click_nav NOT RUN script: link.click(): the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11219, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: location.href = url: page A started it | 
+h16_click_nav PASS script: location.href = url: the app requested page B | ['/h16_b.html?from=assign']
+h16_click_nav PASS script: location.href = url: the engine logged Loading URL for page B | 
+h16_click_nav PASS script: location.href = url: page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: location.href = url: page B's script ran | ['/beacon?h16-b-ran-from=assign']
+h16_click_nav NOT RUN script: location.href = url: the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11228, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: submit button .click(): page A started it | 
+h16_click_nav PASS script: submit button .click(): the app requested page B | ['/h16_b.html?q=test&from=button']
+h16_click_nav PASS script: submit button .click(): the engine logged Loading URL for page B | 
+h16_click_nav PASS script: submit button .click(): page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: submit button .click(): page B's script ran | ['/beacon?h16-b-ran-q=test&from=button']
+h16_click_nav NOT RUN script: submit button .click(): the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11237, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: form.submit(): page A started it | 
+h16_click_nav PASS script: form.submit(): the app requested page B | ['/h16_b.html?q=test']
+h16_click_nav PASS script: form.submit(): the engine logged Loading URL for page B | 
+h16_click_nav PASS script: form.submit(): page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: form.submit(): page B's script ran | ['/beacon?h16-b-ran-q=test']
+h16_click_nav NOT RUN script: form.submit(): the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_redirect.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11246, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: location.replace() in an inline script: the app requested page B | ['/h16_b.html?from=inline']
+h16_click_nav PASS script: location.replace() in an inline script: page B's script ran | 
+h16_click_nav PASS script: location.replace() in an inline script: page B was requested once | 1 requests
+h16_click_nav NOT RUN script: location.replace() in an inline script: the window shows page B's green | no Screen Recording grant
+e9_redirect PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/e9_start
+e9_redirect PASS the app has a window | {"h": 832, "id": 11255, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+e9_redirect PASS the app followed the redirect | 
+e9_redirect PASS the saved tab holds the committed URL, not the one restored | tab urls ['http://127.0.0.1:PORT/e9_final.html']
+e9_redirect PASS the saved tab holds the page's title | 
+== rw-branch2 app sha256 0bbbb9939faab88d762f8a0fe1861c759ca195ab0667f746ea5129388a1dd165 tally {'PASS': 48, 'FAIL': 0, 'NOT RUN': 7}
+a6_url_log PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/e9_final.html?token=<marker>#<marker>
+a6_url_log PASS the app has a window | {"h": 832, "id": 11274, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+a6_url_log PASS the navigation line names the page's path | Navigating content to: http://127.0.0.1:PORT/e9_final.html
+a6_url_log PASS the query and fragment are nowhere in the log | 
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11283, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav NOT RUN a click on a link: request, load, layout, script and frame of page B | no Accessibility grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11292, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: link.click(): page A started it | 
+h16_click_nav PASS script: link.click(): the app requested page B | ['/h16_b.html?from=link']
+h16_click_nav PASS script: link.click(): the engine logged Loading URL for page B | 
+h16_click_nav PASS script: link.click(): page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: link.click(): page B's script ran | ['/beacon?h16-b-ran-from=link']
+h16_click_nav NOT RUN script: link.click(): the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11301, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: location.href = url: page A started it | 
+h16_click_nav PASS script: location.href = url: the app requested page B | ['/h16_b.html?from=assign']
+h16_click_nav PASS script: location.href = url: the engine logged Loading URL for page B | 
+h16_click_nav PASS script: location.href = url: page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: location.href = url: page B's script ran | ['/beacon?h16-b-ran-from=assign']
+h16_click_nav NOT RUN script: location.href = url: the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11310, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: submit button .click(): page A started it | 
+h16_click_nav PASS script: submit button .click(): the app requested page B | ['/h16_b.html?q=test&from=button']
+h16_click_nav PASS script: submit button .click(): the engine logged Loading URL for page B | 
+h16_click_nav PASS script: submit button .click(): page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: submit button .click(): page B's script ran | ['/beacon?h16-b-ran-q=test&from=button']
+h16_click_nav NOT RUN script: submit button .click(): the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_a.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11319, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: form.submit(): page A started it | 
+h16_click_nav PASS script: form.submit(): the app requested page B | ['/h16_b.html?q=test']
+h16_click_nav PASS script: form.submit(): the engine logged Loading URL for page B | 
+h16_click_nav PASS script: form.submit(): page B was laid out with boxes | Root box built total_children=1
+h16_click_nav PASS script: form.submit(): page B's script ran | ['/beacon?h16-b-ran-q=test']
+h16_click_nav NOT RUN script: form.submit(): the window shows page B's green | no Screen Recording grant
+h16_click_nav PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/h16_redirect.html
+h16_click_nav PASS the app has a window | {"h": 832, "id": 11328, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+h16_click_nav PASS script: location.replace() in an inline script: the app requested page B | ['/h16_b.html?from=inline']
+h16_click_nav PASS script: location.replace() in an inline script: page B's script ran | 
+h16_click_nav PASS script: location.replace() in an inline script: page B was requested once | 1 requests
+h16_click_nav NOT RUN script: location.replace() in an inline script: the window shows page B's green | no Screen Recording grant
+e9_redirect PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/e9_start
+e9_redirect PASS the app has a window | {"h": 832, "id": 11337, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+e9_redirect PASS the app followed the redirect | 
+e9_redirect PASS the saved tab holds the committed URL, not the one restored | tab urls ['http://127.0.0.1:PORT/e9_final.html']
+e9_redirect PASS the saved tab holds the page's title | 
+a4_private PASS the app fetched the page it was restored on | http://127.0.0.1:PORT/a3_page.html
+a4_private PASS the app has a window | {"h": 832, "id": 11346, "on_screen": true, "w": 1280, "x": 1080, "y": 159}
+a4_private PASS the chrome was stacked over the page | 
+a4_private PASS the chrome reported its settings button's box | 
+a4_private NOT RUN open, change, save, close | no Accessibility grant
