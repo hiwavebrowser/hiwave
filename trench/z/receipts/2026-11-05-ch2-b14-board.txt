@@ -1,0 +1,2 @@
+42 42 differ 0
+keys ['geometry_diffs', 'height', 'join_failures', 'notes', 'page', 'pixel_diff_pct', 'size', 'state', 'status', 'taxonomy', 'top', 'width', 'worst_geometry']
