@@ -1,0 +1,11 @@
+fix(engine): an explicit html height is the document element's rect (CH2.B8)
+
+root_element_geometry folded body's margin box into an explicit html
+height and floored it at the viewport-stretched root box. The rect now
+takes html's own height resolved against the initial containing block
+(plus its padding and border); auto keeps body's margin box. The scroll
+height is unchanged. html,body height:100% with body margin 8: 216 -> 200;
+html height 50px: 200 -> 50; html height 300px: 200 -> 300 (Chromium
+200/50/300).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

@@ -1,0 +1,10 @@
+test(engine): percent height chain pins + explicit html height rect (CH2.B8, red)
+
+The row's case (.row 102 vs 200) already passes on develop (fixed by
+PR 902); pinned for every display type. Still red: with an explicit html
+height the document element's rect folded in body's margin box and the
+viewport-stretched root (html height:100% + body margin 8 = 216,
+html height:50px = 200, html height:300px = 200; Chromium 200/50/300).
+Chromium 143.0.7499.4 values at 300x200.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
