@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-06 09:55 ET (Atlas): Pete is bringing the Windows workers back online to catch the Windows baseline up. Last Windows sync was 10-09 from macOS develop f54103d9; delta to 95691f85 is 1,582 commits / 465 merges / +132k crate lines. Brief for the Windows seat: `trench/z/WINDOWS-SYNC-BRIEF-2026-11-06.md` (history purge, feature renames, RustKit chrome default, content thread, behaviour changes, gate recipe). Sync target = last batch-tested develop, never mid-batch.**
+
 > **11-06 09:04 ET (Atlas): batch 29 landed #946 A6b, #948 A9, #936 B17 → develop 95691f85 (tree f77ab126 = tested); real window 471/485 on the default chrome. 43 PRs landed since the reset. In flight: #947 LAT7 (merging with #941's dirty marker), #949 A4c (delta R1 pending), #950 Z lane, #952 E16, #953 E19 (R1 pending), E22 :focus (building). Pete decisions still open: A8 accessibility, LAT11 incremental layout, B12, B15.**
 
 > **11-06 06:59 ET (Atlas): batch 28 landed the LAT quartet (#941 paint-only animations, #943 hover misses, #944 SVG use index, #945 scoped :has()) → develop c16607ac (tree 10408aff = tested); chrome animation relayouts 500 → 0 per load loop. Batch 29 running (#936 B17, #946 A6b, #948 A9). #947 LAT7 rebasing onto #941's dirty marker; #949 A4c delta pending; #950 unreviewed. 40 PRs landed since the reset. New: CH3.A10 (the chrome's script-mutation relayouts, 66/s while loading).**
