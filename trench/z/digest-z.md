@@ -5115,3 +5115,12 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - layout 896/0, engine lib 722/0 (filter-free), headless form 147/0, input 29/0.
   - Campaign 26/26, 0 moved. Board: 0 attributable movers (same focus_mode flip).
 - **Blockers:** none. Lane PRs open: #926 #931 #932 #935 #936. All worktrees from this session are removed.
+
+## 2026-11-06 01:35 Z-lane CH2.B19 (#935 batch-26 hold)
+- **Order:** #935 (my own PR) was HELD by batch 26, and fixing holds on my own PRs comes first. There is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules. No receipt step was due.
+- **Before → after:** fixed boxes took their size from the flow parent (consent overlay dialog at x −224, click missed) → sized against the viewport. Chromium 143 pins 1/6 → 6/6.
+- **#935 @ 75a47bcd** (red 8bfb17f2, fix 75a47bcd, pushed without force).
+  - consent_click 10/0, `fixed_` 67/0, sticky_scroll 53/0, scroll_into_view 25/0, layout 896/0.
+  - Campaign 26/26, 0 moved. Chrome board identical (13/42).
+- **Blocker:** the 20-site A/B shows google AWAY from Chrome. The search box icon is "+" where Chromium 143 shows a magnifier: 0.03% on all four cross pairs, 0 inside each arm. #935 stays held. Next session: reduce it, or use Atlas's option 2 (no unsafe centring in a zero-size container).
+- **Process:** filters.py piped to tail lost a 10-minute run. Run it with `python3 -u … > log` in the background. Engine filters are slow under load (sticky_scroll 9 min), so I stopped after 4 filters. Aleph not used. Worktrees removed.
