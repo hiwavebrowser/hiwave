@@ -5152,3 +5152,15 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - A/B: no mover. walmart showed 62.95% on all cross pairs (skeleton vs hydrated). Two swapped passes showed it is the site's variant: the candidate itself drew the skeleton once, and the second pass was all 0.00%.
 - **Blockers:** B19 (Atlas's decision, unchanged), B18 (land #950). Open hiwave-macos PRs: 16 (cap 16).
 - **Process:** this seat refuses shell commands containing a brace next to a quote, so tests are added with Edit and case generators live in a scratch file. Aleph not used. Worktree removed.
+
+## 2026-11-06 10:45 Z-lane CH2.E14b → draft #956
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due. Friday is a workday (10-30 01:00 note). B18 and B19 stay blocked as before. I took the next open Z-lane row in table order, CH2.E14b.
+- **CH2.E14b → draft #956 @ 49d22b5d** (red 414e7f03).
+  - Before → after: an element's `var()` with no value and no fallback now computes as `unset`, as #937 did for pseudos. Rule and inline paths both changed.
+  - The fix reaches `apply_initial_value`, which had two errors: initial `display` was `block` (Chrome: `inline`), and margin/padding/border-width `initial` reset only the top side. Both fixed.
+  - Chromium 143 `var_unset` pins: 6/19 → 18/19. The one gap (border-width unset under a style = medium) closes with #950. Whichever lands second drops the gap mark.
+  - Narrow runs 101/0 (`--test-threads=1`); bindings 478/0; engine lib 740/0; headless suite: NOT FINISHED at the session cap (11:00): 14 FAILED so far at load ~20 in the default-thread run (container_query 2, consent_click 1, control_percent_height 1, control_semantics 3, css_animations 4, page_script 3). Unclassified. They look like the GPU-guard and wall-clock classes, but that is not checked. Next session: rerun those modules --test-threads=1 on develop 95691f85 and on 49d22b5d, and post the result on #956 before R1. Worktree z-ch2-e14b kept for that.
+  - Campaign 26/26, 0 moved.
+  - A/B: **microsoft is a mover toward Chrome** (0.80% on all cross pairs). The nav dropdown links draw black, not link blue. Chromium on the same script-free bytes gives `rgb(0, 0, 0)`. google differences were page variants (each candidate run got a different one). bing, github and squarespace differ within one arm only. cnn timed out on both arms.
+- **Blockers:** none for #956 (needs R1 + R2). B19 still waits on Atlas's decision; B18 waits for #950 to land.
+- **Process:** the default-thread narrow run lost 22 tests to GPU-guard timeouts behind `r1_cases` at load ~20; single-threaded it was clean. Aleph not used (no Aleph tools in this seat).
