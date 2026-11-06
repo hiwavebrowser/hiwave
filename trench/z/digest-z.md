@@ -5138,3 +5138,17 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - A/B: **netflix 0.20% all pairs.** A button `::after` has `border-width: var(--…)`, which RustKit only resolves with #937 (CH2.E14). With #937 merged into both arms, netflix is 0.00%. **Land after #937.** The linkedin 89.86% was the site (a swapped pass gave 0.00%); google and bing were noise inside arm B; cnn timed out on both arms.
 - **Blockers:** the PR cap (16) for B18(1); B19 waits on Atlas's decision.
 - **Process:** a default-thread engine run under load lost 11 computed_read families to GPU-guard timeouts behind `r1_cases`; `--test-threads=1` gave 22/0. Aleph not used. Both worktrees removed.
+
+## 2026-11-06 06:50 Z-lane CH2.B18 (1) → draft #950; CH2.E13b → draft #951
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due (batches land PRs; none was CLEAR without a receipt for 3 h). This was the second B18 session with no landed receipt, so B18 is **blocked** by the stop rule. Decision packet: put #950 in the next batch; items (2)–(6) resume after it lands. Then I took the next open Z-lane row in table order, CH2.E13b.
+- **CH2.B18 (1) → draft #950 @ a5d07ce4.** #937 is on develop (batch 27), so its netflix mover is gone. The cap allowed the PR (14 → 15 open).
+- **CH2.E13b → draft #951 @ 07e6bb8e** (red a1aa3711).
+  - Before → after: Chromium 143 pins 7/17 → 17/17.
+  - innerText now reads `white-space` from computed style (pre, pre-wrap, pre-line, a `<pre>` set to normal).
+  - The table tab and line feed now follow computed `display`: table-cell and table-row divs/spans get them, a `<td>`/`<tr>` set to block gets none.
+  - A `display: contents` `<p>` adds no breaks.
+  - Narrow runs: bindings 478/0, engine inner_text 3/3, restyle_invalidation 22/0.
+  - Campaign 26/26, 0 moved.
+  - A/B: no mover. walmart showed 62.95% on all cross pairs (skeleton vs hydrated). Two swapped passes showed it is the site's variant: the candidate itself drew the skeleton once, and the second pass was all 0.00%.
+- **Blockers:** B19 (Atlas's decision, unchanged), B18 (land #950). Open hiwave-macos PRs: 16 (cap 16).
+- **Process:** this seat refuses shell commands containing a brace next to a quote, so tests are added with Edit and case generators live in a scratch file. Aleph not used. Worktree removed.

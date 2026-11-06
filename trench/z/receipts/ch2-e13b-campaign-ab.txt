@@ -1,0 +1,28 @@
+campaign base 5e87a184 (pc sha256 484e7904) vs candidate 07e6bb8e (07d35a44), --profile parity
+about                                         15986      15986
+article-typography                            49006      49006
+backgrounds                                   10947      10947
+bg-pure                                           0          0
+bg-solid                                       1011       1011
+card-grid                                     13748      13748
+chrome_rustkit                                 1259       1259
+combinators                                    4190       4190
+css-selectors                                 12767      12767
+flex-positioning                               5078       5078
+form-controls                                 31124      31124
+form-elements                                  4531       4531
+gpu-gradient-regression                        3747       3747
+gradient-backgrounds                           4863       4863
+gradient-no-radius                             2498       2498
+gradient-radius-only                           1646       1646
+gradients                                      1271       1271
+image-gallery                                  5342       5342
+images-intrinsic                               3659       3659
+new_tab                                       10763      10763
+pseudo-classes                                 2778       2778
+rounded-corners                                3919       3919
+settings                                      16444      16444
+shelf                                          1108       1108
+specificity                                    2887       2887
+sticky-scroll                                  6469       6469
+cases 26, moved 0
