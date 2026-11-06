@@ -1,0 +1,26 @@
+chromium 143.0.7499.4
+media_print width=10px height=0px sheets=2
+media_screen width=20px height=0px sheets=2
+media_all width=20px height=0px sheets=2
+media_empty width=20px height=0px sheets=2
+media_minw_match width=20px height=0px sheets=2
+media_minw_nomatch width=10px height=0px sheets=2
+media_list_print_screen width=20px height=0px sheets=2
+media_invalid width=10px height=0px sheets=2
+media_unknown_type width=10px height=0px sheets=2
+media_SCREEN_upper width=20px height=0px sheets=2
+media_not_print width=20px height=0px sheets=2
+media_inner_rule width=10px height=0px sheets=2
+media_set_by_script width=10px height=0px disabled=false sheets=2
+media_removed_by_script width=20px height=0px disabled=false sheets=2
+media_resize_flip width=20px height=0px sheets=2 before_resize=10px
+disabled_true width=10px height=0px disabled=true sheets=2
+disabled_via_styleSheets width=10px height=0px disabled=true sheets=2
+disabled_then_enabled width=20px height=0px disabled=false sheets=2
+disabled_then_text_change width=30px height=0px disabled=false sheets=2
+disabled_then_append_text width=20px height=5px disabled=false sheets=2
+disabled_then_insertRule width=10px height=0px disabled=true sheets=2
+disabled_then_reinsert width=20px height=0px disabled=false sheets=2
+disabled_first_sheet width=20px height=0px disabled=true sheets=2
+disabled_attr_on_style width=20px height=0px disabled=false sheets=2
+media_print_sheet_rules_visible width=10px height=0px disabled=false sheets=2 cssRules=1 mediaText=print disabled=false
