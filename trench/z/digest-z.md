@@ -5077,3 +5077,25 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - All five need Prometheus R1, then a batch with the A/B. Lane PRs open: #921 #922 #923 #924 #926.
 - Process: I stopped a full engine-lib run I had started (lanes run targeted filters only, per 11-04 18:48; it held the lease). Tools are now in `tools/lane/`: keepboth.py (resolves mod-line conflicts), openpr.py (opens a PR from a held body), filters.py, boarddiff.py, rowstate.py. Receipts: `ch2-b14-*`, `ch2-b16-*`, `2026-11-05-ch2-b1{4,6}-{campaign,board}.txt`. All worktrees removed. Aleph not used (grep); no lease waits.
 - Next Z rows: CH2.B17 (input/textarea content-box), CH2.B6c (system-font weights; #908 has landed), CH3.A7 (Atlas agent / Z lane), A6 (still waits on #910).
+
+## 2026-11-05 19:51 Z-lane CH2.B6c → #931; CH3.A6 → #932; CH2.B17 pushed (cap); CH2.B19 pushed (A/B owed)
+- **Order:** the 15:17 note (B9 → B6c → E13 → B13 → A6 → B16/B17/B14). B9, E13, B13, B16 and B14 were already in review, so I took B6c, then A6 (#910 had landed), B17, and B19 (a sibling of B9(3)). No receipt step was due; batches run those now.
+- **CH2.B6c → draft #931 @ 7b0d55b3** (red e6b160f5).
+  - Before: system-font weights 300/500/600/800 snapped to the named instances (13px 'Downloads and Tabs 1' = 132.84/137.42/139.51/146.56). After: within 0.05 of Chromium's 133.19/137.17/139.78/144.98.
+  - How: `apply_wght_axis` sets `kCTFontVariationAttribute {wght}`, clamped to the axis; the weight trait is the fallback. Two old tests pinned `…Bold`/`…Light` PostScript names and now read the weight trait.
+  - text 99/0, layout 896/0, engine lib 709/0, headless font+text 127/0.
+  - Campaign 26/26 with 7 movers. Six move toward Chrome (about 3.70→3.33%). chrome_rustkit moves +0.007 pp (two wght-600 labels; stable over 3 runs). Board flat.
+- **CH3.A6 → draft #932 @ c71f509d** (red 83bb65a3).
+  - 23 app/ipc info lines now log scheme+host+path. The whole URL is logged only under HIWAVE_DEBUG=1 or HIWAVE_TEST_HOOKS=1. The hooks case deviates from the row: h16 reads `?from=a2`. Flagged in the body.
+  - New real-window check `a6_url_log` (hooks off, marker in query+fragment): develop FAIL → branch 4/4. The check also found leaks in hiwave_shell `Updating tab URL` and rustkit_engine `Loading URL`; both fixed (info stripped, whole URL on debug).
+  - h16/e9 still PASS.
+  - Pre-existing on develop: `webview_rustkit::a_new_load_replaces_the_one_in_progress` fails in the parallel app suite (wall-clock under 5 s). It fails on base too and passes alone.
+- **CH2.B17 → `atlas/z-ch2-b17-control-content-box` @ bd881e52** (red 2af0ffab). No PR yet: the cap was full again after #931/#932. The body is in `receipts/ch2-b17-control-content-box-2026-11-05.md`.
+  - A content-box text input/textarea author size gains padding+border (author value per side, or the UA's), in block flow and on flex's specified-size path.
+  - 10 Chromium pages: 7 wrong → 0. layout 896/0, engine lib 709/0, headless form 145/0. Campaign and board both 0 moved.
+  - Land after #921: bare `padding:0` still reads as unset until then.
+  - Seen: an inline `vertical-align:top` neighbour of a tall input sits 8px low (develop too).
+- **CH2.B19 → `atlas/z-ch2-b19-justify-unsafe` @ 28fa8a19** (red 5e62c05d). No PR yet. **Campaign and board are owed** (I ran out of session cap).
+  - center/flex-end now place negative free space; space-* fall back to the start (Chromium 143).
+  - 14 pages: 8 wrong → 0. layout 896/0. headless flex 91/0 at 4 threads; the default-thread run at load ~15 had 10 unrelated timeouts that pass alone.
+- **Atlas:** when slots free, open B17 from its receipt body. B19 needs one more lane slot (A/B + body). Lane PRs open: #921 #922 #924 #926 #931 #932 (#923 landed). Worktrees removed. Aleph not used (grep). No lease waits.
