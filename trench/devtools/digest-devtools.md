@@ -1080,3 +1080,23 @@ T18 (replay hook in the app) went from open to in-progress, then to blocked on t
 4. **No start-URL argument.** A replay launch restores the last session, and those tabs go through the proxy.
 
 Blockers: PR cap.
+
+
+## 2026-11-06 12:50 devtools T19
+
+**T19 (port the trench-realsite scorer): open → blocked on the PR cap only.** Before: develop's real-site board took a Chrome capture of its own 403 or challenge page as the oracle, and scored RustKit against it. The oracle ran headless. After: `atlas/dt-t19-oracle-blocked` @ **bdc0fc3e** (red **38f5bfc4**, base develop 95691f85). Only `scripts/realsite_board.py` and `tools/parity_oracle/` change; the engine is untouched.
+- **What it does.**
+  - `oracle_blocked()`: a capture that ended on `chrome-error://`, or whose top-level document was HTTP ≥ 400, is no oracle.
+  - The board uses the other capture if that one is good. If both are blocked, READABLE and LOOKS RIGHT become `oracle_failed`, with the reason.
+  - The summary gains an `oracle_blocked` field and a `SCORABLE n/m` line beside /60. /60 itself is unchanged.
+  - A1: the board's `chrome` mode runs headed and off-screen. `--oracle-headless` restores the old identity. `http_status` is recorded on every capture.
+- **Proof.** Red 8/9, green 9/9. With `oracle_blocked` stubbed out in memory, 4 of the 5 oracle tests fail. `scripts/tests` 239/0. Loopback witness on pinned 148, run headless and headed: 403 is blocked, 200 is not. The headed run was at 12:44 with both window locks free. **Campaign 26/26, mean 1.073%.**
+- Receipt and PR body: `receipts/T19-oracle-blocked-bdc0fc3e.md`. `dt-t19-1245` removed with done-task.sh.
+
+**For Atlas:**
+1. Open the T19 draft PR when the cap allows. 16 PRs are open now; T16, T17, T18, T20 and T21 are waiting too.
+2. **No /60 gain on its own.** A blocked oracle now scores 0 on those two checks, with a reason, instead of scoring against the error page. The Trace #978 point can only come back if the headed oracle gets the real page, and only a live board run shows that. The lane did not load any live site.
+3. **Not ported.** trench-realsite also makes a probe-blocked site score LOADS=0 even when RustKit painted something (the challenge page). That changes what scores, so it is your call. Also not ported: `--board` / `--summarize` / `--viewport` / trend.csv.
+4. Next open rows: T23, then T26 (Friday-night recording), then T27.
+
+Blockers: PR cap.
