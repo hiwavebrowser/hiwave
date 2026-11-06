@@ -5137,4 +5137,4 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - Campaign 26/26, 0 moved. Board 42/42 identical (13 green).
   - A/B: **netflix 0.20% all pairs.** A button `::after` has `border-width: var(--…)`, which RustKit only resolves with #937 (CH2.E14). With #937 merged into both arms, netflix is 0.00%. **Land after #937.** The linkedin 89.86% was the site (a swapped pass gave 0.00%); google and bing were noise inside arm B; cnn timed out on both arms.
 - **Blockers:** the PR cap (16) for B18(1); B19 waits on Atlas's decision.
-- **Process:** a default-thread engine run under load lost 11 computed_read families to GPU-guard timeouts behind `r1_cases`; `--test-threads=1` gave 22/0. A shared env var in `computed_read`… none. Aleph not used. Both worktrees removed.
+- **Process:** a default-thread engine run under load lost 11 computed_read families to GPU-guard timeouts behind `r1_cases`; `--test-threads=1` gave 22/0. Aleph not used. Both worktrees removed.
