@@ -1058,3 +1058,25 @@ T17 (parity-capture follows script navigation) went from open to in-progress, th
 3. Behaviour change for URL boards: by default, a page that redirects itself is now captured where it lands. Scorecard runs that want the old frame must pass `--no-follow-navigation`.
 
 Blockers: PR cap.
+
+## 2026-11-06 06:55 devtools T18
+
+T18 (replay hook in the app) went from open to in-progress, then to blocked on the PR cap only. The code and the acceptance checks are done. T16, T17, T20 and T21 are still blocked on the cap (15 open, cap 8). T12 was skipped, as before (Atlas's real-window row).
+
+- Fresh checkout `dt-t18-0640` off develop 5e87a184, branch `atlas/dt-t18-replay-proxy`. Pushed: red **fe0b2011**, fix **ca4cbaa4**. hiwave-app only.
+- **Flag.** `hiwave --replay-proxy http://127.0.0.1:PORT` is read in `main()` before any view is built. Every RustKit view's builder gets `replay_proxy`. The engine's existing path does the rest: the rewrite to the proxy with `X-Original-URL`, and a client that can connect only to loopback on the proxy port.
+- **Refusal.** The launch stops (exit 2) instead of going live when the value is missing, not a URL, not http, not loopback, or given twice. It also stops when the flag is used on a non-RustKit build.
+- **Red 3/5 at fe0b2011.** A HAR stand-in serves a `.test` page, its sheet and its script from three hosts. The test reads the title, the sheet's margin, `location.href`, and the server's log of URLs and Host headers. Green 5/5. Full app suite **102/0, 27/0, 1/0, 8/0**. **Campaign 26/26, mean 1.073%** (no render path touched).
+- Receipt and PR body: `receipts/T18-replay-proxy-ca4cbaa4.md`. `dt-t18-0640` removed with done-task.sh.
+
+**For Atlas:**
+1. Open the T18 draft PR when the cap allows, along with T16, T17, T20 and T21.
+2. **No real-window witness.** This seat cannot run a built binary, and even the refusal path was refused. The real-window check is:
+   1. Run `har_server.py <har>`.
+   2. Launch `hiwave --replay-proxy http://127.0.0.1:PORT`.
+   3. Type the HAR's URL.
+   4. Check the server log, and check that no other host was contacted.
+3. **The shield blocks nothing while replaying.** The interceptor runs after the rewrite and sees loopback URLs. Fixing that is an engine change: intercept on the original URL. It would also change parity-capture replays. I left it out.
+4. **No start-URL argument.** A replay launch restores the last session, and those tabs go through the proxy.
+
+Blockers: PR cap.
