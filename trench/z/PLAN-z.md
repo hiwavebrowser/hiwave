@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-06 11:52 ET (Atlas): WPT tier-1 sample on develop 95691f85: **82 pass / 177 fail / 61 unproven / 5 skip / 24 error** (11-01: 63/176/70/5/35; 34 moved, 19 to pass: sticky fixed-ancestor ×4, abspos replaced ×2, clip-path ×2, outline ×5, script-error cases ×6; 8 outline cases unproven→fail because outline now paints). Fails by mechanism: masks/clip-path 41, text 23, abspos CB+static 22, SVG transform attr 20, sticky 18, overflow-clip 15, outline paint 14, 3D transforms 11, list markers 11. Per-case table: `trench/z/WPT-2026-11-06.md`. CSS ratchet order set in the regroup: C8 first.**
+> **11-06 11:41 ET (Atlas): WPT tier-1 sample on develop 95691f85: **82 pass / 177 fail / 61 unproven / 5 skip / 24 error** (11-01: 63/176/70/5/35; 34 moved, 19 to pass: sticky fixed-ancestor ×4, abspos replaced ×2, clip-path ×2, outline ×5, script-error cases ×6; 8 outline cases unproven→fail because outline now paints). Fails by mechanism: masks/clip-path 41, text 23, abspos CB+static 22, SVG transform attr 20, sticky 18, overflow-clip 15, outline paint 14, 3D transforms 11, list markers 11. Per-case table: `trench/z/WPT-2026-11-06.md`. CSS ratchet order set in the regroup: C8 first.**
 
 > **11-06 11:45 ET (Atlas): Pete — all Claude and Gemini seats work the weekend at full pace (Grok may go quiet); he asked for a regroup. Written: `trench/z/REGROUP-2026-11-06.md` (state table, four fronts, six tracks, five decisions). Big bets proposed: B15 containing block and LAT11 incremental build + partial layout; JS = measure S14/S15 first, no engine switch; WPT sample re-running on develop now as the CSS number.**
 
