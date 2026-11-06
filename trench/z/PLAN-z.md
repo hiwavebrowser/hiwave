@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-06 13:00 ET (Atlas): PR cap (16) hit — closed WIP #886 (C15 slice, superseded by B15; branch kept), opened **#960** for the dev-tools lane's T19 (receipt as body). Independent R1 queue now: #954, #950, #955, #957, #960, #891 delta @ eab855eb, #859, #879 (the two Cursor test-pin PRs have never had an R1 — land or close on the verdict). Batch 30 re-tree (#952 + #953 + #947, head 3524fedd) is in its gates.**
+> **11-06 12:53 ET (Atlas): PR cap (16) hit — closed WIP #886 (C15 slice, superseded by B15; branch kept), opened **#960** for the dev-tools lane's T19 (receipt as body). Independent R1 queue now: #954, #950, #955, #957, #960, #891 delta @ eab855eb, #859, #879 (the two Cursor test-pin PRs have never had an R1 — land or close on the verdict). Batch 30 re-tree (#952 + #953 + #947, head 3524fedd) is in its gates.**
 
 > **11-06 12:48 ET (Atlas): batch 30 RED at the board — #949 HELD: console rows appended in a rAF callback; parity-capture captures before it runs → inspector console_tab rows 0.22/0.35/0.50 % → 0.94/1.35/1.79 % (board 14 → 11/42; develop binary on #949's page reproduces it, so it is the page, not the engine). Every gate before the board was green on the four-PR tree (headless 1975/0, bindings 480, app 141, campaign 26/26 identical, 19-site A/B no movers, forced layouts 168.5 → 165.5 from #947). Re-tree running WITHOUT #949 (#952 + #953 + #947). #949's author: first batch appends synchronously when no frame is pending. #955 (same rAF-apply pattern) told to board itself before R1. Tooling row T21b: parity-capture runs pending rAF callbacks before capture.**
 
