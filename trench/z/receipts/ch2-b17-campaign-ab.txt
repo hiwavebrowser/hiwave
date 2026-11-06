@@ -1,0 +1,29 @@
+26-case campaign: develop 232fca86 vs branch bd881e52, --profile parity
+about                          3.703%   3.703%
+article-typography             4.786%   4.786%
+backgrounds                    1.216%   1.216%
+bg-pure                        0.000%   0.000%
+bg-solid                       0.211%   0.211%
+card-grid                      1.343%   1.343%
+chrome_rustkit                 1.069%   1.069%
+combinators                    0.655%   0.655%
+css-selectors                  1.330%   1.330%
+flex-positioning               0.635%   0.635%
+form-controls                  3.242%   3.242%
+form-elements                  0.954%   0.954%
+gpu-gradient-regression        0.390%   0.390%
+gradient-backgrounds           1.013%   1.013%
+gradient-no-radius             0.520%   0.520%
+gradient-radius-only           0.343%   0.343%
+gradients                      0.141%   0.141%
+image-gallery                  0.522%   0.522%
+images-intrinsic               0.327%   0.327%
+new_tab                        1.075%   1.075%
+pseudo-classes                 0.434%   0.434%
+rounded-corners                0.435%   0.435%
+settings                       2.092%   2.092%
+shelf                          0.727%   0.727%
+specificity                    0.601%   0.601%
+sticky-scroll                  0.658%   0.658%
+cases 26 moved 0
+passed develop 26 branch 26
