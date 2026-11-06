@@ -1,0 +1,5 @@
+42 42 differ 3
+(('chrome', 'focus_mode', '1280x800'), (0.2, 189), (0.315, 187))
+(('chrome', 'focus_mode', '1024x700'), (0.285, 177), (0.449, 175))
+(('chrome', 'focus_mode', '1600x1000'), (0.128, 194), (0.201, 192))
+keys ['geometry_diffs', 'height', 'join_failures', 'notes', 'page', 'pixel_diff_pct', 'size', 'state', 'status', 'taxonomy', 'top', 'width', 'worst_geometry']

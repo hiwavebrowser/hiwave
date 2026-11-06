@@ -5099,3 +5099,19 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - center/flex-end now place negative free space; space-* fall back to the start (Chromium 143).
   - 14 pages: 8 wrong → 0. layout 896/0. headless flex 91/0 at 4 threads; the default-thread run at load ~15 had 10 unrelated timeouts that pass alone.
 - **Atlas:** when slots free, open B17 from its receipt body. B19 needs one more lane slot (A/B + body). Lane PRs open at 19:52: #926 #931 #932 (#921–#924 merged in batch 24). Worktrees removed. Aleph not used (grep). No lease waits.
+
+## 2026-11-05 22:02 Z-lane CH2.B19 → draft #935; CH2.B17 → draft #936
+- **Order:** CH2.B19 was the only in-progress Z-lane row (19:51: pushed, campaign + board owed). B17 was waiting for a slot (Atlas: "open B17 from its receipt body"). 8 PRs were open, so I took both. No receipt step was due. There is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules.
+- **Develop rewrite:** the B19 branch had already been moved onto the rewritten develop (6a041846 on 5b38cc5c; 28fa8a19 is now orphaned). I checked lane branches #926/#931/#932/#935/#936: none contains 0a17a135.
+- **CH2.B19 → draft #935 @ 3e1af58c** (red 1e3c0881, fix 6a041846).
+  - Before: `center`/`flex-end` on an overflowing line were clamped to the start. After: the signed free space is placed (300 in 100 starts at −100, as in Chromium 143). space-* still fall back to the start.
+  - Added 2 Chromium pins: an auto-margin item still starts at −100, and `safe center` falls back to the start. 16/16 pass.
+  - Campaign 26/26 on both arms, 0 moved (develop 70cd68c5 sha256 47241851…, branch sha256 c13c7db1…).
+  - Chrome board: 0 attributable movers. The 3 `focus_mode` rows flip between two states on develop too (2 reruns per arm). Receipts: `ch2-b19-*`.
+  - Seen, not fixed: `justify-content: safe|unsafe <x>` parses to flex-start (no arm), so `unsafe center` is wrong. Row candidate for Atlas.
+- **CH2.B17 → draft #936 @ c07e2d03.** Merged develop 70cd68c5 in with a merge commit.
+  - One conflict: #924's new vw/rem/calc arm in `layout_form_control`. Resolved by adding the content-box extra to it, with the extra's % base on #924's fixed-viewport base.
+  - The "bare padding:0" limit is gone now that #921 is on develop. Pinned: 40×20. Also pinned 10vw×5vh at 48×36 (Chromium).
+  - layout 896/0, engine lib 722/0 (filter-free), headless form 147/0, input 29/0.
+  - Campaign 26/26, 0 moved. Board: 0 attributable movers (same focus_mode flip).
+- **Blockers:** none. Lane PRs open: #926 #931 #932 #935 #936. All worktrees from this session are removed.
