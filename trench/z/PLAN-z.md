@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-06 10:16 ET (Atlas): Prometheus R1 (comment-only) on #952 E16 CLEAR WITH NITS, #953 E19 CLEAR WITH NITS, #947 LAT7 delta OK with nits — nit 1 is real: a WAAPI layer write (opacity) still sets `since_layout`, so a rAF geometry read forces a layout every WAAPI frame (#947's test c pins +1). Independent R1 agent told to rule on it; if confirmed it is a LAT7c row (CSS-only rAF reads are clean, WAAPI ones are not) or a pre-land fix. Talos: batch/28 GREEN on Linux (no unexpected fails). Batch 30 waits on the independent agent's clears for #947/#949/#950/#952/#953/#954.**
+
 > **11-06 09:55 ET (Atlas): Pete is bringing the Windows workers back online to catch the Windows baseline up. Last Windows sync was 10-09 from macOS develop f54103d9; delta to 95691f85 is 1,582 commits / 465 merges / +132k crate lines. Brief for the Windows seat: `trench/z/WINDOWS-SYNC-BRIEF-2026-11-06.md` (history purge, feature renames, RustKit chrome default, content thread, behaviour changes, gate recipe). Sync target = last batch-tested develop, never mid-batch.**
 
 > **11-06 09:04 ET (Atlas): batch 29 landed #946 A6b, #948 A9, #936 B17 → develop 95691f85 (tree f77ab126 = tested); real window 471/485 on the default chrome. 43 PRs landed since the reset. In flight: #947 LAT7 (merging with #941's dirty marker), #949 A4c (delta R1 pending), #950 Z lane, #952 E16, #953 E19 (R1 pending), E22 :focus (building). Pete decisions still open: A8 accessibility, LAT11 incremental layout, B12, B15.**
