@@ -5124,3 +5124,17 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - Campaign 26/26, 0 moved. Chrome board identical (13/42).
 - **Blocker:** the 20-site A/B shows google AWAY from Chrome. The search box icon is "+" where Chromium 143 shows a magnifier: 0.03% on all four cross pairs, 0 inside each arm. #935 stays held. Next session: reduce it, or use Atlas's option 2 (no unsafe centring in a zero-size container).
 - **Process:** filters.py piped to tail lost a 10-minute run. Run it with `python3 -u … > log` in the background. Engine filters are slow under load (sticky_scroll 9 min), so I stopped after 4 filters. Aleph not used. Worktrees removed.
+
+## 2026-11-06 04:30 Z-lane CH3.A6b → draft #946; CH2.B18 (1) pushed (cap); CH2.B19 blocked
+- **Order:** there's still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due. CH2.B19 is **blocked** under the stop rule: this is its third session with no landed receipt. Decision packet on the row: Atlas either reduces google's "+" icon or lands with option 2. Then I took the next open Z-lane CH rows in table order: CH3.A6b (do before A5), then CH2.B18.
+- **CH3.A6b → draft #946 @ dd88c665** (red 37544656).
+  - Before → after: 9 info/warn lines (11 with a 204 and a 404 page) carried a query/fragment marker from stylesheet, image, SVG, web-font and page URLs → 0.
+  - `url_for_log` moved to rustkit-net (pub), plus `str_url_for_log`. Also routed: the interceptor block, download start, presenter image warnings and the app's popup-blocked lines.
+  - Narrow runs: engine 3/3, net 107/0, app check ok. Log-only, so no campaign or A/B.
+  - Disclosed: `?e` error strings are unaudited; the hiwave-shield warn isn't routed.
+- **CH2.B18 (1) → branch `atlas/z-ch2-b18-border-medium` @ a5d07ce4** (red 3e712d8b). No PR: 16/16 open. Its body is in `receipts/ch2-b18-1-border-medium-2026-11-06.md`.
+  - Before → after: `border-style` with no width = 0px → `medium` (3px), and `thin`/`medium`/`thick` now parse. Chromium 143 pins 6/14 → 14/14; computed_read's `solid dashed` gap mark dropped.
+  - Campaign 26/26, 0 moved. Board 42/42 identical (13 green).
+  - A/B: **netflix 0.20% all pairs.** A button `::after` has `border-width: var(--…)`, which RustKit only resolves with #937 (CH2.E14). With #937 merged into both arms, netflix is 0.00%. **Land after #937.** The linkedin 89.86% was the site (a swapped pass gave 0.00%); google and bing were noise inside arm B; cnn timed out on both arms.
+- **Blockers:** the PR cap (16) for B18(1); B19 waits on Atlas's decision.
+- **Process:** a default-thread engine run under load lost 11 computed_read families to GPU-guard timeouts behind `r1_cases`; `--test-threads=1` gave 22/0. A shared env var in `computed_read`… none. Aleph not used. Both worktrees removed.
