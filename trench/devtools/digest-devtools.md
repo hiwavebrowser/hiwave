@@ -1013,3 +1013,30 @@ T21 (parity-capture `--html-file` runs no timer callbacks after load) went from 
 **For Atlas:** (1) open T21's and T20's draft PRs when the cap allows (open PRs are 15, cap 8). (2) Board callers that want post-load callbacks must now pass `--live-ms` on file cases; the default stays static on purpose, so the campaign does not move.
 
 Blockers: PR cap.
+
+
+## 2026-11-05 20:10 devtools T16
+
+T16 (parity-capture saves the settled page) went from open to in-progress, then to blocked on the PR cap only. The code and the acceptance checks are done. T20 and T21 are still blocked on the cap (16 open, cap 8). T12 was skipped as before.
+
+- Fresh checkout `dt-t16-1840` off develop 232fca86, branch `atlas/dt-t16-save-html`. Pushed: red **36198817**, fix **71e24dae**.
+- **Engine, opt-in.** `Engine::keep_sheet_texts(view)` keeps each fetched external sheet's text by URL, as parsed (`url()`s absolute). This includes a sheet that lands after the budget. With keeping off, the cost is one `None` clone per sheet.
+- **Serializer.** `Engine::settled_html(view)` (new `save_html.rs`) writes the DOM as it stands. Each `<link rel=stylesheet>` becomes a `<style>` in place. A link that was never fetched becomes an empty `<style data-saved-sheet="missing">`. Adopted sheets go last in `<body>`. Scripts stay as empty inert elements. `<noscript>` is emptied when the capture ran script. A `<base>` is added: the page URL without query, fragment or userinfo.
+- **Flag.** `parity-capture --save-html DIR` writes `DIR/page.html`.
+- **Red test.** A script inserts a node after load, and a sheet arrives at 8.6 s, past the 8 s budget. The capture saves the page. Replaying it with `--html-file` (script on) gives identical boxes. The saved file has no query, script source or noscript content. The red commit's diagnostics JSON paths were wrong (`layout_box`/`height`); the fix commit corrects them to `box`/`h`. The red had already failed earlier, at "page.html not written".
+- **Gates.**
+  - parity-capture **73/0**.
+  - Engine `sheet` subset 31/1. The one failure is the S6 wall-clock bound; it passes alone in 4.8 s.
+  - `check -p hiwave-app` clean.
+  - Full headless engine suite **1806/23** (3369 s). 22 of the 23 are GPU-guard waits behind `computed_read_tests::r1_cases` (T23) and `grid_block_axis_align`. They were **not re-run** single-threaded this session.
+  - **Campaign 26/26 at 1.0931%**, and the develop arm at 232fca86 is the same: 1.0931%, 0 of 26 cases differ. The drop from 1.1095% comes from develop.
+  - Receipt and PR body: `receipts/T16-save-html-71e24dae.md`.
+- **Witness: github, live, headless, shape only.** The saved file is 6.9 MB. 28 sheets were inlined, matching the 28 stylesheet requests in the event log. 19 links (14 with `media`) were never requested and became `missing`. 13 scripts were made inert. The replay is ok: 2009 → 1996 boxes, 2.66% of frame pixels differ. The replay has no images, because an `--html-file` load fetches none.
+- `dt-t16-1840` was already gone at 20:12. This session did not remove it: done-task.sh was run only on `dt-t16base-1905`, the develop arm, at 19:07, and it removes only the directory it is named. A sweep from outside the session is likely. The branch is intact on origin at 71e24dae, and every result above had been taken before the checkout disappeared.
+
+**For Atlas:**
+1. Open T16's draft PR when the cap allows, along with T20 and T21.
+2. **Engine lead for the Z plan:** stylesheet discovery runs only at load (`discover_external_stylesheets` ← `load_external_stylesheets_slotted`). A `<link rel=stylesheet>` inserted by script later is probably never fetched. github's 19 unrequested links fit that. Which of them were script-inserted is not checked.
+3. The serializer duplicates rustkit-bindings' private `serialize_node` (about 40 lines). Moving it into rustkit-dom is a possible follow-up.
+
+Blockers: PR cap. Load was 4 to 18 during the suite.
