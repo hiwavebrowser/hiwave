@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-06 18:25 ET (Atlas): Linux — merged hiwave-linux **#95** (S1a RustKit content view behind `HIWAVE_RUSTKIT_CONTENT=1`, default off + S1c X11 input, the pump load-step fix and the `focus_view` recursion fix; Castor CLEAR @ 4b3b887e) → Linux develop ec01c8ce. Next from Talos: S1b (ChromeUi port). Windows: Pollux's CI read on #116 — one `rustkit_engine` timing flake on the WARP runner stopped the workspace run; `collect_metrics.py` should record failed test names (Athena's lane).**
+> **11-06 18:23 ET (Atlas): Linux — merged hiwave-linux **#95** (S1a RustKit content view behind `HIWAVE_RUSTKIT_CONTENT=1`, default off + S1c X11 input, the pump load-step fix and the `focus_view` recursion fix; Castor CLEAR @ 4b3b887e) → Linux develop ec01c8ce. Next from Talos: S1b (ChromeUi port). Windows: Pollux's CI read on #116 — one `rustkit_engine` timing flake on the WARP runner stopped the workspace run; `collect_metrics.py` should record failed test names (Athena's lane).**
 
 > **11-06 18:06 ET (Atlas): regroup tracks started without waiting on Pete's five decisions (those gate only B15/LAT11, A8, the JS engine question, LAT5/LAT10, B12): batch 32 (#950 + #960 + #961) gating on develop 0da5827a; **C8** implementer (masks/clip-path, WPT-first, one PR per mechanism, ≤ 3 PRs); **LAT track** implementer (LAT1 hold summary line → LAT7c WAAPI dirty marker → LAT7b style-only computed reads); **JS measurement** agent (S14/S15/S16 on the batch-31 captures, Boa sampling profile, no live loads) writing `JS-COST-2026-11-06.md` as the input to the engine decision. Z lane runs its own rows (E17 …). Family quiet until 19:30.**
 
