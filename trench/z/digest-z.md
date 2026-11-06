@@ -5164,3 +5164,20 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - A/B: **microsoft is a mover toward Chrome** (0.80% on all cross pairs). The nav dropdown links draw black, not link blue. Chromium on the same script-free bytes gives `rgb(0, 0, 0)`. google differences were page variants (each candidate run got a different one). bing, github and squarespace differ within one arm only. cnn timed out on both arms.
 - **Blockers:** none for #956 (needs R1 + R2). B19 still waits on Atlas's decision; B18 waits for #950 to land.
 - **Process:** the default-thread narrow run lost 22 tests to GPU-guard timeouts behind `r1_cases` at load ~20; single-threaded it was clean. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-06 13:55 Z-lane CH2.E14b (#956 suite owed) → classified; CH2.E17 → branch pushed (cap)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due. First I finished the item the 10:45 session left owed on #956, then took the next open Z-lane row in table order, CH2.E17.
+- **#956 (CH2.E14b): suite classified, posted on the PR, row back to in-review.**
+  - Single-threaded on 49d22b5d, the six modules give 87 passed and 6 failed. container_query, consent_click, control_percent_height, control_semantics and css_animations all pass, so their failures in the cap-cut run were load timeouts.
+  - The 6 failures are budget/wall-clock tests. Run by exact name on both arms at load ~17–21, the result is identical: 3 pass on both, and the same 3 fail on develop 95691f85 too (sheet-misses-budget, stalled-subresource = T27, scripts-fetched-while-subresources). No failure is caused by the PR.
+  - A quiet rerun is still owed (load never dropped below 15). Logs in `receipts/ch2-e14b/`. Worktrees removed.
+- **CH2.E17 → branch `atlas/z-ch2-e17-style-media` @ 6afc63d2, no PR: the cap was 16/16** (red f9b44a6b).
+  - Before → after: `<style media=print>` applied on screen, and `sheet.disabled` was a no-op. Chromium 143 pins: 6/7 tests failing → 7/7 passing.
+  - Media: 11 lists, inner @media, set or removed by script, resize.
+  - Disabled: via `.sheet` and via `styleSheets`, re-enable, `insertRule` keeps it off, new text makes a new enabled sheet, appended text.
+  - Narrow 47/0. Layout 897/0, bindings 478/0, engine lib 740/0. Campaign 26/26, 0 moved.
+  - A/B: no mover. google read 1.53% on all cross pairs (button row vs AI pill row). A swapped re-run gave 1.53% within EACH arm, so it is Google's page variant. facebook/linkedin are within-arm variants; cnn timed out on both arms.
+  - **Owed:** the headless default-thread suite was stopped at the cap with 10 FAILED (computed_read 3, consent_click 7) at load ~16, unclassified. Next session: run those two modules `--test-threads=1` on 6afc63d2 and on develop, then open the PR with `receipts/ch2-e17/pr-body.md` once the cap allows. Worktree z-ch2-e17 kept (banked base and candidate binaries in scratch/bins).
+  - Gaps, written in the body: a re-inserted disabled `<style>` stays disabled; `<link>` media and `.sheet.disabled` are not honoured; `disabled` on a `<style>` in a shadow root is not honoured.
+- **Blockers:** E17's PR waits on the cap. B18 and B19 are unchanged.
+- **Process:** a fresh worktree needs `npm ci` in tools/parity_oracle for the Chromium oracle, and that dirties tracked node_modules files: stage by name. Aleph not used (no Aleph tools in this seat).
