@@ -1040,3 +1040,21 @@ T16 (parity-capture saves the settled page) went from open to in-progress, then 
 3. The serializer duplicates rustkit-bindings' private `serialize_node` (about 40 lines). Moving it into rustkit-dom is a possible follow-up.
 
 Blockers: PR cap. Load was 4 to 18 during the suite.
+
+## 2026-11-06 01:00 devtools T17
+
+T17 (parity-capture follows script navigation) went from open to in-progress, then to blocked on the PR cap only. The code and the acceptance checks are done. T16, T20 and T21 are still blocked on the cap (15 open, cap 8). T12 was skipped, as before.
+
+- Fresh checkout `dt-t17-0040` off develop b813ba0c, branch `atlas/dt-t17-script-nav`. Pushed: red **c525fd85**, fix **010be089**. parity-capture only, no engine change.
+- Cause: the engine already queues every navigation that script asks for (`take_script_navigation_with_replace`, which the app polls), but parity-capture never asked.
+- Fix: after the load and after every live turn, the capture takes the ask, loads the first one into the view and counts the rest. The live clock restarts on the landed page. The result gets `followed_navigation` (to: origin+path, during: load/live, at_ms, replace) and `navigations_not_followed`. With `--live-ms`, a non-2xx first page is judged where it lands, so a challenge interstitial captures its target; a 403 that never navigates fails with the old message. `--report` reads only the landed page's records. `--no-follow-navigation` gives the old capture.
+- Red 4/4 at c525fd85 (script 500 ms, meta refresh, one hop only, no-follow count). Three more pins, each red by mutation: live-window follow, challenge 403, report of the landed page. parity-capture **79/0**. Campaign **26/26, mean 1.0896%** on the parity build. File mode never enters the new path; no develop arm was run. Receipt and PR body: `receipts/T17-script-nav-010be089.md`; log `receipts/camp-t17-010be089.log`.
+- Departure: the row's "navigates after 500 ms" is seen as the load returns, because the load runs page timers to its 5 s virtual horizon. The live-window path has its own test (a late inserted script navigates).
+- `dt-t17-0040` removed with done-task.sh.
+
+**For Atlas:**
+1. Open the T17 draft PR when the cap allows, along with T16, T20 and T21.
+2. No live reddit witness: this seat needs approval to run a built binary. The reddit D1 check is one headless `--url https://www.reddit.com/ --live-ms 15000 --event-log …`, reading `followed_navigation` and the two `navigation_start` URLs.
+3. Behaviour change for URL boards: by default, a page that redirects itself is now captured where it lands. Scorecard runs that want the old frame must pass `--no-follow-navigation`.
+
+Blockers: PR cap.
