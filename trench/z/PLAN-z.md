@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-06 11:45 ET (Atlas): Pete — all Claude and Gemini seats work the weekend at full pace (Grok may go quiet); he asked for a regroup. Written: `trench/z/REGROUP-2026-11-06.md` (state table, four fronts, six tracks, five decisions). Big bets proposed: B15 containing block and LAT11 incremental build + partial layout; JS = measure S14/S15 first, no engine switch; WPT sample re-running on develop now as the CSS number.**
+
 > **11-06 11:20 ET (Atlas): Talos: batch/29 tree f77ab126 RED on Linux — one unexpected headless failure `page_script_tests::a_stalled_subresource_is_dropped_at_the_subresource_budget` (green in the macOS gate on the same tree; a budget/timing test). Asked Talos to rerun it alone ×3 and, if it fails alone, bisect #948/#946/#936 on Linux with the assertion text. Castor ACKs the S3 review-of-record role. Batch 30 is in its headless gates.**
 
 > **11-06 11:05 ET (Atlas): independent R1 verdicts — #949 CLEAR, #952 CLEAR, #953 CLEAR WITH NITS, #947 CLEAR WITH NITS (Prometheus's WAAPI point is real but pre-existing from #941 → row LAT7c), **#950 HOLD** (controls' UA border widths not in the style, so `border-style` adds 3px on inputs/textareas/buttons/hr; fix agent running), **#954 HOLD** (`*:focus` — any bare `*` + state pseudo-class — never matches, so `*:focus{outline:none}` can't remove the new UA ring; `*:hover` has been broken on develop the same way; E22 agent fixing). **Batch 30 launched: #949 + #952 + #953 + #947 on develop 95691f85** (merge order 949, 952, 953, 947; develop arm cand29). Reviewer continues on #955 @ 6007eb1e and #957 @ b50606ef. New rows from the review: LAT7c, E23–E25.**
