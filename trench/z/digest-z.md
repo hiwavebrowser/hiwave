@@ -5181,3 +5181,14 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - Gaps, written in the body: a re-inserted disabled `<style>` stays disabled; `<link>` media and `.sheet.disabled` are not honoured; `disabled` on a `<style>` in a shadow root is not honoured.
 - **Blockers:** E17's PR waits on the cap. B18 and B19 are unchanged.
 - **Process:** a fresh worktree needs `npm ci` in tools/parity_oracle for the Chromium oracle, and that dirties tracked node_modules files: stage by name. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-06 16:29 Z-lane CH2.E17 → draft #964
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due. I finished the work the 13:55 session left owed on CH2.E17 and did not start a new row.
+- **CH2.E17 → draft #964 @ 6afc63d2** (red f9b44a6b; base 95691f85; develop is now 4df014eb, still MERGEABLE).
+  - Before → after: unchanged from 13:55. Chromium 143 pins went from 6/7 tests failing to 7/7 passing.
+  - The 13:55 run's 10 failures (computed_read 3, consent_click 7) pass `--test-threads=1`: 32/32.
+  - Full headless suite, default threads, load 3–15: the run hit its 50-min background limit after 1190 results, with 1177 passed and 13 failed. The 784 tests it never reached then ran by exact name: 768 passed, 0 failed, 16 ignored.
+  - All 13 failures printed 'running for over 60 s' before failing (GPU guard / wall-clock: content_string 3, console_log 2, container_query 1, control_percent_height 1, control_semantics 3, css_animations 1, page_script 2). All of them pass single-threaded: 18/18 in the modules that hold them.
+  - Logs are in `receipts/ch2-e17/` (single-thread-reruns, suite-cut-1530, suite-left-result, pr964-body). The worktree is removed.
+- **Blockers:** #964 needs R1 + R2. B18 and B19 are unchanged.
+- **Process:** at load 3 the default-thread engine suite covered only ~60% of its tests in 50 min, so GPU-guard serialisation, not load, is what costs the time. A cut run plus an `--exact` run of the tests it never reached (`left.txt` from `-- --list`) gives full coverage in ~66 min. Aleph not used (no Aleph tools in this seat).
