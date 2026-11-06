@@ -5098,4 +5098,4 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **CH2.B19 → `atlas/z-ch2-b19-justify-unsafe` @ 28fa8a19** (red 5e62c05d). No PR yet. **Campaign and board are owed** (I ran out of session cap).
   - center/flex-end now place negative free space; space-* fall back to the start (Chromium 143).
   - 14 pages: 8 wrong → 0. layout 896/0. headless flex 91/0 at 4 threads; the default-thread run at load ~15 had 10 unrelated timeouts that pass alone.
-- **Atlas:** when slots free, open B17 from its receipt body. B19 needs one more lane slot (A/B + body). Lane PRs open: #921 #922 #924 #926 #931 #932 (#923 landed). Worktrees removed. Aleph not used (grep). No lease waits.
+- **Atlas:** when slots free, open B17 from its receipt body. B19 needs one more lane slot (A/B + body). Lane PRs open at 19:52: #926 #931 #932 (#921–#924 merged in batch 24). Worktrees removed. Aleph not used (grep). No lease waits.
