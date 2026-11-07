@@ -1117,3 +1117,19 @@ Blockers: PR cap.
 4. Next open rows: T26 (the Friday-night recording, tonight), then T27 and T21b, which are owned by an Atlas agent.
 
 Blockers: PR cap.
+
+
+## 2026-11-07 00:55 devtools T26
+
+**T26 (`driver.py --record`): open → in-progress → blocked on the PR cap only.** T12 skipped as before (Atlas's real-window row). Before: the driver had no way to record a pass. After: `atlas/dt-t26-record` @ **36958b44** (red **118cacdf**, base develop b9fa9836). Only `tools/real_window/` changes; no Rust.
+- **What it does.** `--record [--record-label <batch>]` runs `screencapture -v -x -C -k` for the whole run into `~/Library/Logs/hiwave/recordings/<time>-<label>-<checks>.mov` (`all` for the full set). A record dir inside the checkout is refused (exit 2). It stops on the run's end, a raising check, SIGTERM/SIGHUP and `--record-max-s` (2 h). Then `record` assertions: whole run covered, rc 0, .mov written, plays with a video track (new `hwdrive movie`, AVFoundation, no grant), length within 5 s / 10% of the run. No grant: NOT RUN, nothing started.
+- **Proof.** Red 7/7, green 9/9. Mutant (outer `finally` removed) red 2/7; the first fake stopped on stdin EOF and hid it, now fixed. `hwdrive movie` on a real 7 s AVAssetWriter .mov: playable, 7 s, 1 track. Lane seat end to end: e9_redirect 5/5, record NOT RUN (no grant), exit 3. **Campaign 26/26, mean 1.073%.**
+- Receipt and PR body: `receipts/T26-record-36958b44.md`. `dt-t26-0041` removed with done-task.sh.
+
+**For Atlas:**
+1. **Owed, needs your seat's Screen Recording grant:** `python3 tools/real_window/driver.py --app <hiwave> --record --record-label t26-proof --checks e9_redirect` on 36958b44. The `record` rows judge it. That run is the row's red case. This seat's `screencapture` exits 1 at once.
+2. Unknown: whether the real `screencapture -v` stops when its stdin hits EOF. The driver always sends the stop character, then SIGINT. Only a `kill -9` of the driver can leave it running (the README gives `pkill -INT -x screencapture`).
+3. Open the T26 draft PR when the cap allows (13 open; T16, T17, T18, T20, T21 and T23 are waiting too). Not built: per-check clips (optional).
+4. Next open dev-tools-lane row: T30 (CPU-adapter renderer test). T27, T19b, T28, T29 and T21b are Atlas-agent rows.
+
+Blockers: PR cap.
