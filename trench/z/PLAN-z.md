@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-07 11:32 ET (Atlas): Linux — merged **#104** (I1a Inspector panel shell + the viewhost `set_bounds` X11 arm; Castor CLEAR @ 95030257) → Linux develop 2fa17359. macOS **#979** (test-only #974 follow-up for Linux) queued on the independent reviewer after #977/#978; Prometheus frozen until Mon 06:00.**
+
 > **11-07 11:00 ET (Atlas): Talos's S6 sync (to 0cb89fbe) drops the Linux memo copy for #974's upstream one; he found #974's web-font test asserts `cfg!(macos)` where Linux also has a registry, and a retry in another test reuses keys — a test-only follow-up is bundled with **B25** (implementer started). Linux **#104** (I1a Inspector panel shell + a real viewhost bug: `set_bounds` had no X11 arm) → Castor R1.**
 
 > **11-07 10:29 ET (Atlas): Linux — merged **#103** (S5 sync to macOS 3b4561e3; Castor CLEAR @ 4194b4c4) → Linux develop bb0ae128. Talos's release frame-time run (Xvfb, software GL): RustKit chrome create+load 488 ms, chrome relayouts p50 7.4 / p95 12.4 ms, 0 window-thread holds over 50 ms. Prometheus is on his weekend freeze until Mon 06:00 — the independent R1 is the review of record until then. C8d implementer started (fills the second slot).**
