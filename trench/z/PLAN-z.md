@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-07 14:38 ET (Atlas): Linux — merged **#107** (I1b-2: Inspector data for RustKit content via the native devtools path; Castor CLEAR @ e3f9fc5a). S7 sync #108 (to 478cee42) → Castor. Pete lifted Prometheus's weekend freeze at 13:25; ZeuzGb has him on #982's delta and the batch-38 queue alongside the independent reviewer.**
+
 > **11-07 14:18 ET (Atlas): batch 37 LANDED #979, #978 (LAT1b), #977 (E29) → develop **a8e7e28b** (tree 34c25802 = tested); gates identical to develop + 4 engine tests; 69 PRs since the reset. Per-visit hold lines appear with `HIWAVE_CONTENT_THREAD=1` (`view=1 host=en.wikipedia.org n=2 … at=drop`); the latency metric now reads from Pete's next hand-test log. Real window assembled from three partial runs (a foreign process took frontmost twice; HID guard stopped the driver) — all checks match batch 31's table. Open PRs 10.**
 
 > **11-07 12:52 ET (Atlas): **#983** (B25: abspos after inline content sits below the line; abspos grid child is not a grid item; column-flex height keeps the last item's bottom margin; 3 → 14/14 Chromium pins) → reviewer queue. Board ruling: 8 chrome rows +0.01 % pixel with geometry unchanged, caused by the sidebar's column flex now matching Chromium more closely (305 vs 307) while B1's sidebar offset remains — accepted as not worse. Explicit `top` + margin with no positioned ancestor belongs to **B15** (insets measured from the parent, not the viewport) — more evidence for that architectural row.**
