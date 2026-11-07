@@ -5192,3 +5192,23 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - Logs are in `receipts/ch2-e17/` (single-thread-reruns, suite-cut-1530, suite-left-result, pr964-body). The worktree is removed.
 - **Blockers:** #964 needs R1 + R2. B18 and B19 are unchanged.
 - **Process:** at load 3 the default-thread engine suite covered only ~60% of its tests in 50 min, so GPU-guard serialisation, not load, is what costs the time. A cut run plus an `--exact` run of the tests it never reached (`left.txt` from `-- --list`) gives full coverage in ~66 min. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-06 20:00 Z-lane CH2.E18 → draft #968
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due. 16:29 left no row in progress, so I took the next open Z-lane row in table order, CH2.E18. Pete's 11:45 weekend note keeps the Claude seats working.
+- **CH2.E18 → draft #968 @ 983e4084** (red b13f4a74; base develop 0da5827a; branch `atlas/z-ch2-e18-attr-i`).
+  - Before → after: `[a="v" i]` never matched, because the flag was read as part of the value, and `:not([a="v" i])` matched everything. Now `i`/`I` folds ASCII case.
+  - `s` and any other flag make the selector invalid, as in Chromium 143.0.7499.4: the rule is dropped and the query throws SyntaxError.
+  - An operator inside a quoted value no longer splits the selector.
+  - Oracle page and log are committed: `tools/parity_oracle/attribute_flag_{page.html,log.mjs}`. On that page develop showed 3 of 27 navs (`l1 o0 o1`); the fix shows Chromium's 16.
+  - Pins: 3/3 failed on develop, 3/3 pass with the fix.
+  - Campaign 26/26, 0 moved. A/B (20 sites + a 3-site rerun): no cross-arm mover. google, facebook and squarespace vary only inside the base arm; cnn timed out on both arms.
+  - **Headless suite: owed.** Three other seats were running engine suites, at load 17–25.
+    - The default-thread run was cut at 50 min after 1089 of 2078 tests: 45 failed, all 'over 60 s'. On one thread 43 of those pass; the 2 left are content_thread load deadlines.
+    - The never-reached tests then ran by exact name. Chunk 0: 178 passed, 18 failed (11 GPU guard, 6 page_script budget/wall-clock, 1 LAT2 spinner cost). Chunk 1: 200/200.
+    - I stopped the run with 589 tests left, at the cap.
+    - Every selector and attribute module that ran passes.
+  - Logs are in `receipts/ch2-e18/`. Worktree `z-ch2-e18` is KEPT, with its banked base and candidate binaries in `scratch/bins` and its test binary built.
+  - **Next session:** run `left.txt` minus the done names by exact name (`z-e18-scratch/runlist.py`), then rerun the failures on one thread. If any still fails, run it on develop. Then mark #968 ready.
+- **New row CH2.E27:** a script query with an attribute on an ancestor compound ignores that ancestor's attributes. `querySelectorAll('[data-m] nav')` returns 27, where Chromium returns 2. The query path gives attributes only to the root element in its ancestor chain. Found on the E18 branch; that code is develop's.
+- **Blockers:** none. #968 needs the rest of the suite, then R1 + R2. B18 and B19 are unchanged.
+- **Process:** with three engine suites running on the Mac, the default-thread run covered about half the tests in 50 min, and exact-name chunks of 200 took 11–20 min each. Aleph not used (no Aleph tools in this seat).

@@ -1,0 +1,4 @@
+test attribute_flag_tests::the_flag_splits_from_the_value_and_folds_only_with_i ... ok
+test attribute_flag_tests::script::script_queries_take_the_flag_as_chromium_does ... ok
+test attribute_flag_tests::a_flagged_attribute_selector_matches_as_chromium_does ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 2075 filtered out; finished in 1.17s
