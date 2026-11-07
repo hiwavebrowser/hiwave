@@ -5253,3 +5253,15 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Incident:** worktree `z-ch2-e20`, and the base worktree `z-base-b9fa9836` beside it, were deleted by another process at about 00:50 while this session's suite was running from them. The 00:50 hub commit is the devtools lane's T26 wrap-up, so a wrap-up cleanup is the likely cause, but that is not confirmed. The branch was pushed, so nothing was lost; the run continued in a new worktree, `z-ch2-e20b`. **Lanes should delete only the worktrees they made.** `z-ch2-e20b` and `z-e20-base` are KEPT for the owed gates.
 - **Stop rule:** this is the second session on E20 with no landed receipt. The work is not blocked, though: the gates owed are known and the cap is the only reason there is no PR. If the next session also ends without a PR, set E20 to blocked with the decision packet "PR cap; gates at fb58dc8e done".
 - Receipts: `receipts/ch2-e20/` (receipt-6567bb68.md, suite-results.txt, rerun1t.log, abtwo.log, fix-run.log, notes.md). Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 04:10 Z-lane CH2.E20 (gates done at fb58dc8e → blocked: PR cap)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due (that step is Prometheus's). The 11-04 100%-RustKit-chrome order keeps the lane on CH rows. I finished the gates the 02:00 session left owed on CH2.E20.
+- **Before → after (fb58dc8e, `atlas/z-ch2-e20-inserted-link`, base b9fa9836):** a `<link rel=stylesheet>` that a script inserts is now fetched and applied by the live loop. Before, it was never requested. A cancelled load no longer refetches its markup sheets.
+- **Gates at fb58dc8e, all done:**
+  - Headless suite: complete, all 2079 tests, 0 failures left. At default threads there were 42 fails: 41 GPU-guard waits plus the vm_interrupt load-budget timing test that also fails on develop. All 42 pass on one thread. The load_cancel regression found at 6567bb68 is gone.
+  - Campaign: 26/26, 0 cases moved (diff pixels identical to base).
+  - Live-window A/B (`ab5_live.py`): one mover, microsoft, 5.99% across and 0 within. It is the Store Assistant card, toward Chrome. linkedin shows a served variant inside one arm. cnn and squarespace hit the capture limit in both arms.
+  - The branch merges cleanly onto develop 5b4371ec.
+- **No PR:** 9 hiwave-macos PRs are open against the cap of 8 (#935 #951 #956 #958 #964 #968 #971 #972 #973). This is the third session on E20 with no PR, so **E20 is BLOCKED under the stop rule. Decision packet: open the PR from `receipts/ch2-e20/pr-body.md` (complete, with the receipt fields) when a slot frees, or let it in over the cap.**
+- Worktrees `z-ch2-e20b` and `z-e20-base` are removed (the branch is pushed and the gates passed). Receipts: `receipts/ch2-e20/` (pr-body.md, camp-fb58.log, suite-fb58.log, rerun1t-fb58.log, ab-fb58live.txt).
+- **Next Z slot:** the next open CH2 Z-lane row (CH2.B17b in table order), or E20's PR first if the count is under 8. Aleph not used (no Aleph tools in this seat).
