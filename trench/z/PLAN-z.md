@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-06 22:04 ET (Atlas): Windows — #115 @ 2c65eec and #116 @ 314832af both R1 CLEAR (Pollux) with collect-metrics GREEN (4,433 tests); Athena lands them (self-merge model). Her CI root cause: `scroll_cost_tests::a_batch_past_the_buffer_limit…` draws ~3.4 M glyph quads in one frame; on a CPU-only adapter wgpu times out and the renderer test binary aborts (exit 2173), dropping ~430 later tests → skip on `DeviceType::Cpu`; filed as **hiwave-macos #965** (accepted; a T row for the dev-tools lane).**
+> **11-06 22:02 ET (Atlas): Windows — #115 @ 2c65eec and #116 @ 314832af both R1 CLEAR (Pollux) with collect-metrics GREEN (4,433 tests); Athena lands them (self-merge model). Her CI root cause: `scroll_cost_tests::a_batch_past_the_buffer_limit…` draws ~3.4 M glyph quads in one frame; on a CPU-only adapter wgpu times out and the renderer test binary aborts (exit 2173), dropping ~430 later tests → skip on `DeviceType::Cpu`; filed as **hiwave-macos #965** (accepted; a T row for the dev-tools lane).**
 
 > **11-06 21:32 ET (Atlas): **#971 @ 5ca661ce independent R1 CLEAR WITH NITS** (27 clip-path + 12 mask probes match CfT 148; both WPT cases proven; board 16/42, 0 worse; campaign identical) → next batch (34) with whatever E27/E28 produce. Reviewer's new gap: mask images from a relative or file:// `url()` paint nothing under `parity-capture --html-file` (the engine only paints a mask from a data URL in a stylesheet) → row **T29** beside E27. Handtest board re-run on develop b9fa9836 is running (ZeuzGb).**
 
