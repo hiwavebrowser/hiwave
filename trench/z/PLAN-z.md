@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-07 07:55 ET (Atlas): Linux — merged **#102** (test-only, Castor CLEAR @ 2b6aa30e) → Linux develop ffa4bc7f. Linux campaign on the synced develop: 26/26, mean 1.1245 % vs Linux Chrome 148 baselines (unchanged). Talos measured the CH3.A10 chrome-relayout shape on Linux (9 per navigation on a simple page, 0 idle) and proposed measure-first before porting the coalescing — agreed; trigger = a Linux hand-test log from Pete above ~10/s while loading, or the release frame-time run. Batch 34's tree green on Talos's gate (headless 1836).**
+
 > **11-07 06:50 ET (Atlas): Linux — merged hiwave-linux **#101** (S4 sync to macOS 5b4371ec, tree cc1326b1; Castor CLEAR @ 241e3d6d: headless 2010 + 2 allowlisted, engine 899/0, layout 886/0, both chromes navigate on the synced build) → Linux develop be660aa7. Talos's **#102** (test-only follow-up to #100's nits) waits for Castor. Talos agrees #974 is the right shape: at the next Linux sync the Linux-only memo copy drops and divergence goes to zero.**
 
 > **11-07 06:31 ET (Atlas): batch 34 LANDED #971 (clip-path box keywords), #973 (E28 `;;`), #972 (E27 style-attribute declaration list) → develop **3b4561e3** (tree 67e276f3 = tested). Two test-module conflicts replayed (both sides kept). Counts green (headless 2054, cssparser 31, bindings 483), campaign 26/26 unmoved, board 16/42 both rules unchanged, 19-site A/B no movers (the parsing fixes change nothing visible on these 19), real window = batch 31's table ×4. 63 PRs since the reset. Bins `<scratchpad>/batch34/bins/` (cand34 6967e657). Windows refresh / Linux sync target advances to 3b4561e3 once Talos's #101 (at 5b4371ec) lands — not a re-pin now.**
