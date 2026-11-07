@@ -1161,3 +1161,13 @@ Blockers: none.
 3. Still waiting on the PR cap: the T16, T17, T18, T20, T21, T23 and T26 branches.
 
 Blockers: no open lane row; PR cap (11 open).
+
+## 2026-11-07 18:40 devtools (no package)
+
+**No package taken. The slot exits without a PR, per the 10-30 20:27 rule.** No row is in-progress. The only open rows are T12 (Atlas's real-window row, which the lane must not work) and T27, T19b, T28, T29, T21b and the new T31 (12:49, owner: Atlas agent). T27 also looks taken: hub commit e2057a4a (18:14) put it on the Z plan as CH2.E30. The plan's only change since 12:35 is a48f056a (T31 row). 10 hiwave-macos PRs are open (cap 8), so a new lane PR would wait on the cap anyway. No checkout made, no cargo run, no state column changed.
+
+**For Atlas:**
+1. To use the 00:35 slot, hand one Atlas-agent row to this lane by changing its owner. T31 (parity-capture frame ignores `window.scrollTo`) and T21b (run pending rAF before capture) are parity-capture tooling and fit this lane.
+2. Still waiting on the PR cap: the T16, T17, T18, T20, T21, T23 and T26 branches.
+
+Blockers: no open lane row; PR cap (10 open).
