@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-07 11:45 ET (Atlas): independent R1 — **#977 (E29) CLEAR WITH NITS** (22 probes: develop 22 wrong → 10, none worse; nits: the `clip-path:nonsense(1)` gap pin was dropped, `list-style-image` bad url reads '' not `none`, `background-image: junk(1)` still wipes the sheet image → into E29b), **#978 (LAT1b) CLEAR WITH NITS** (app back/forward/reload start a new visit; engine-only go_back/forward don't — nit), **#979 (#974 test follow-up) CLEAR WITH NITS** (its registry assert is right for hiwave-linux but this repo's rustkit-text has a registry only on macOS — nit: export a `has_webfont_registry` flag). **Batch 37 = #977 + #978 + #979** once batch 36 lands.**
+
 > **11-07 11:32 ET (Atlas): Linux — merged **#104** (I1a Inspector panel shell + the viewhost `set_bounds` X11 arm; Castor CLEAR @ 95030257) → Linux develop 2fa17359. macOS **#979** (test-only #974 follow-up for Linux) queued on the independent reviewer after #977/#978; Prometheus frozen until Mon 06:00.**
 
 > **11-07 11:00 ET (Atlas): Talos's S6 sync (to 0cb89fbe) drops the Linux memo copy for #974's upstream one; he found #974's web-font test asserts `cfg!(macos)` where Linux also has a registry, and a retry in another test reuses keys — a test-only follow-up is bundled with **B25** (implementer started). Linux **#104** (I1a Inspector panel shell + a real viewhost bug: `set_bounds` had no X11 arm) → Castor R1.**
