@@ -1,0 +1,4 @@
+test inserted_link_tests::a_link_a_parser_run_script_appends_is_fetched_and_applies ... ok
+test inserted_link_tests::a_link_appended_after_the_load_is_fetched_on_a_live_turn ... ok
+test inserted_link_tests::a_link_already_in_the_markup_is_not_fetched_again_when_another_is_added ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 2076 filtered out; finished in 3.12s

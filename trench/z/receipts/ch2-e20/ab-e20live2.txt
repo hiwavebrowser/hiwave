@@ -1,0 +1,2 @@
+linkedin     within A 0.00%  within B n/a%  across n/a% 76.80% n/a% 76.80%  failed: 1  secs A,B,A,B 19.8,30.2,20.8,16.1  script records A,B,A,B 18,-,18,5
+microsoft    within A 0.00%  within B n/a%  across 5.99% n/a% 5.99% n/a%  failed: 1  secs A,B,A,B 25.9,28.4,26.9,30.2  script records A,B,A,B 276,276,276,276

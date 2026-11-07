@@ -5212,3 +5212,26 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **New row CH2.E27:** a script query with an attribute on an ancestor compound ignores that ancestor's attributes. `querySelectorAll('[data-m] nav')` returns 27, where Chromium returns 2. The query path gives attributes only to the root element in its ancestor chain. Found on the E18 branch; that code is develop's.
 - **Blockers:** none. #968 needs the rest of the suite, then R1 + R2. B18 and B19 are unchanged.
 - **Process:** with three engine suites running on the Mac, the default-thread run covered about half the tests in 50 min, and exact-name chunks of 200 took 11–20 min each. Aleph not used (no Aleph tools in this seat).
+
+
+## 2026-11-06 22:45 Z-lane CH2.E18 (suite finished) + CH2.E20 → branch pushed, no PR (cap)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due. I finished the suite 20:00 left owed on CH2.E18, then took the next open Z-lane row in CH2 order, CH2.E20.
+- **CH2.E18 #968 @ 983e4084: the headless suite is complete.** All 2078 tests are accounted for and 0 failures remain.
+  - The 535 tests never reached before ran at load ≈ 2.5: 519 passed, 16 ignored, 0 failed.
+  - All 63 earlier failures reran on one thread: 62 passed. `scripts_are_fetched_while_the_subresources_load` failed once (12.5 s), then passed 3/3 alone.
+  - The PR body is updated and a comment posted. It is still a draft, because `gh pr ready` needs approval on this seat. It needs R1 + R2.
+  - Receipts are in `receipts/ch2-e18/`. The worktree is removed.
+- **CH2.E20 (a script-inserted `<link rel=stylesheet>` was never fetched) → branch `atlas/z-ch2-e20-inserted-link` @ 6567bb68** (red efdf6045, base develop b9fa9836).
+  - **No PR:** 11 hiwave-macos PRs are open against the cap of 8.
+  - Before → after: the engine found stylesheet links once, before the page's scripts ran. Now the live loop fetches links the document has not requested yet, on its first turn and after each layout, through the S6 late-sheet path. Load-time URLs are not requested again.
+  - Known limit, written in the code: an inserted sheet cascades after the load's sheets. That is right for appended links.
+  - Pins: 3/3 red → 3/3 green. Expected values come from the HTML spec; no Chromium probe was run.
+  - Campaign 26/26, 0 moved.
+  - The load-end A/B shows no cross-arm mover, but ab5.py never runs a live turn, so it cannot see this change.
+  - **The new live-window A/B (`tools/ab5_live.py`, `--live-ms 10000`) has one mover: microsoft, 5.99% across and 0 within, on two runs.** The candidate now draws the Store Assistant card, from the sheet S12 found Chrome loads and we never did. This mover is toward Chrome. linkedin, yahoo and google vary inside the arms.
+  - Crates: layout 906, bindings 479, engine lib 772, all with 0 failures.
+  - Headless suite: **partial.** It ran under the A/B and was stopped at the cap after 676 ok + 33 failed. All 33 had printed 'over 60 s' and all pass on one thread.
+  - The worktree `z-ch2-e20` is KEPT. Receipts are in `receipts/ch2-e20/`.
+- **Next session:** run the rest of the E20 headless suite by exact name. Open the PR once the open count is under 8.
+- **Blockers:** the PR cap (11 open of 8). B18 and B19 are unchanged.
+- **Process:** a change that acts only on live turns needs `ab5_live.py`; ab5.py captures at the end of the load. Aleph not used (no Aleph tools in this seat).

@@ -1,0 +1,2 @@
+bing         within A 0.00%  within B 25.38%  across 25.38% 0.00% 25.38% 0.00%  failed: 0  secs A,B,A,B 11.1,10.6,10.8,12.2  script records A,B,A,B 10,11,10,10
+walmart      within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 8.9,8.7,11.0,9.5  script records A,B,A,B 124,124,124,124

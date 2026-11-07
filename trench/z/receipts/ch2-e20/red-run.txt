@@ -1,0 +1,10 @@
+thread 'inserted_link_tests::a_link_a_parser_run_script_appends_is_fetched_and_applies' (111624546) panicked at crates/rustkit-engine/src/inserted_link_tests.rs:62:5:
+  left: 0
+ right: 1
+thread 'inserted_link_tests::a_link_appended_after_the_load_is_fetched_on_a_live_turn' (111624548) panicked at crates/rustkit-engine/src/inserted_link_tests.rs:73:5:
+  left: 0
+ right: 1
+thread 'inserted_link_tests::a_link_already_in_the_markup_is_not_fetched_again_when_another_is_added' (111624547) panicked at crates/rustkit-engine/src/inserted_link_tests.rs:92:5:
+  left: "800"
+ right: "55"
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 2076 filtered out; finished in 9.32s
