@@ -1,0 +1,24 @@
+### chunk 0 (1 tests)
+
+running 1 test
+test page_script_tests::scripts_are_fetched_while_the_subresources_load ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2077 filtered out; finished in 4.33s
+
+### runlist done
+### chunk 0 (1 tests)
+
+running 1 test
+test page_script_tests::scripts_are_fetched_while_the_subresources_load ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2077 filtered out; finished in 4.38s
+
+### runlist done
+### chunk 0 (1 tests)
+
+running 1 test
+test page_script_tests::scripts_are_fetched_while_the_subresources_load ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2077 filtered out; finished in 4.28s
+
+### runlist done

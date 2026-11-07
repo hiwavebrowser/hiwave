@@ -1,0 +1,664 @@
+### chunk 0 (100 tests)
+
+running 100 tests
+test shadow_tree_tests::adding_and_removing_a_shadow_style_after_layout_restyles ... ok
+test select_popup_engine_tests::a_select_in_a_scrolled_element_opens_its_popup_where_it_is_shown ... ok
+test shadow_tree_tests::a_document_rule_naming_a_shadow_id_does_not_match ... ok
+test shadow_tree_tests::a_script_answered_with_an_error_status_does_not_settle ... ok
+test select_popup_overlay_tests::the_mode_select_popup_reaches_past_the_sidebar_and_is_in_the_chrome_region ... ok
+test shadow_tree_tests::a_name_that_first_appears_after_the_settle_follows_the_registry ... ok
+test shadow_tree_tests::a_nomodule_script_beside_a_module_does_not_settle ... ok
+test shadow_tree_tests::defined_follows_the_custom_element_registry ... ok
+test shadow_tree_tests::a_late_definition_of_a_settled_name_upgrades_once ... ok
+test shadow_tree_tests::a_script_lost_on_the_engines_side_settles ... ok
+test shadow_tree_tests::nested_shadow_trees_each_use_their_own_styles ... ok
+test select_popup_engine_tests::hover_moves_the_highlight ... ok
+test shadow_tree_tests::document_queries_still_stop_at_the_shadow_boundary ... ok
+test shadow_tree_tests::slotted_rules_lose_to_light_rules ... ok
+test shadow_tree_tests::host_rules_with_and_without_an_argument ... ok
+test shadow_tree_tests::document_styles_do_not_leak_in ... ok
+test shadow_tree_tests::the_component_page_on_the_navigation_path_paints_what_chromium_paints ... ok
+test shadow_tree_tests::light_children_of_an_element_whose_definition_never_arrives_are_painted ... ok
+test shadow_tree_tests::a_shadow_style_does_not_leak_out ... ok
+test shadow_tree_tests::script_sees_a_never_defined_element_as_not_defined_after_the_load ... ok
+test shadow_tree_tests::scoped_colours_match_chromium ... ok
+test sheet_cache_tests::the_switch_is_on_unless_turned_off ... ok
+test sheet_cache_tests::a_build_changes_its_own_copy_not_the_cached_sheet ... ok
+test shadow_tree_tests::the_lazy_menu_with_a_lost_script_settles ... ok
+test sheet_cache_tests::cached_sheets_paint_what_freshly_parsed_ones_paint ... ok
+test sheet_cache_tests::the_cache_is_bounded ... ok
+test sheet_reuse_tests::a_disabled_sheet_stops_applying_and_applies_again_when_enabled ... ok
+test shadow_tree_tests::the_display_list_paints_the_flat_tree ... ok
+test sheet_reuse_tests::a_late_external_sheet_applies_when_it_arrives ... ok
+test sheet_reuse_tests::measure_build_ms_on_a_5k_rule_page ... ignored
+test sheet_reuse_tests::measure_relayout_on_a_sprite_icon_page ... ignored
+test sheet_cache_tests::unchanged_text_hits_and_edited_text_misses ... ok
+test sheet_reuse_tests::a_second_full_relayout_with_no_sheet_change_parses_and_prepares_nothing ... ok
+test sheet_cache_tests::the_rule_index_is_rebuilt_exactly_when_selectors_change ... ok
+test shadow_tree_tests::inherited_properties_cross_into_the_shadow_tree ... ok
+test snapshot_stage_tests::a_held_animation_frame_takes_no_snapshot ... ok
+test sheet_reuse_tests::a_style_text_mutation_reparses_only_that_sheet ... ok
+test snapshot_stage_tests::snapshot_stage_measure ... ignored
+test srcset_tests::a_bare_candidate_is_one_x_not_zero ... ok
+test sheet_reuse_tests::media_rules_follow_the_viewport_over_cached_sheets ... ok
+test srcset_tests::density_candidates_are_ranked_among_themselves ... ok
+test srcset_tests::density_never_outranks_width_by_scale_accident ... ok
+test srcset_tests::malformed_input_yields_none_rather_than_a_bogus_url ... ok
+test srcset_tests::widest_w_candidate_wins ... ok
+test sticky_flex_grid_tests::a_bottom_sticky_footer_cell_holds_up_from_the_tables_end ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test snapshot_stage_tests::a_lazily_formatted_style_follows_the_layout ... ok
+test sheet_cache_tests::a_new_document_starts_with_an_empty_sheet_cache ... ok
+test shadow_tree_tests::the_hit_test_reaches_into_the_flat_tree ... ok
+test sheet_reuse_tests::custom_properties_stay_correct_after_a_sheet_change ... ok
+test shadow_tree_tests::shadow_content_is_laid_out_where_chromium_puts_it has been running for over 60 seconds
+test shadow_tree_tests::the_display_list_paints_what_chromium_paints has been running for over 60 seconds
+test sheet_reuse_tests::insert_rule_reparses_only_that_sheet_and_the_rule_applies has been running for over 60 seconds
+test snapshot_stage_tests::a_changed_frame_snapshots_once_and_only_what_is_read has been running for over 60 seconds
+test snapshot_stage_tests::an_unchanged_frames_turn_takes_no_snapshot has been running for over 60 seconds
+test snapshot_stage_tests::lazily_formatted_styles_equal_the_whole_page_snapshot has been running for over 60 seconds
+test srcset_tests::an_img_with_only_srcset_still_gets_a_layout_box_with_that_url has been running for over 60 seconds
+test sticky_flex_grid_tests::a_collapsed_table_in_a_fixed_row_keeps_its_rows has been running for over 60 seconds
+test shadow_tree_tests::shadow_content_is_laid_out_where_chromium_puts_it ... ok
+test sticky_flex_grid_tests::a_display_table_div_in_a_fixed_row_keeps_its_content_height has been running for over 60 seconds
+test sticky_flex_grid_tests::a_grid_sidebar_sticks_to_its_scroller has been running for over 60 seconds
+test sheet_reuse_tests::insert_rule_reparses_only_that_sheet_and_the_rule_applies ... ok
+test sticky_flex_grid_tests::a_header_in_a_flex_column_leaves_with_its_container has been running for over 60 seconds
+test sticky_flex_grid_tests::a_header_in_a_flex_column_sticks_to_its_scroller has been running for over 60 seconds
+test snapshot_stage_tests::a_changed_frame_snapshots_once_and_only_what_is_read ... ok
+test srcset_tests::an_img_with_only_srcset_still_gets_a_layout_box_with_that_url ... ok
+test sticky_flex_grid_tests::a_sticky_tr_sticks_in_a_scrolling_table ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test sticky_flex_grid_tests::a_collapsed_table_in_a_fixed_row_keeps_its_rows ... ok
+test snapshot_stage_tests::an_unchanged_frames_turn_takes_no_snapshot ... ok
+test snapshot_stage_tests::lazily_formatted_styles_equal_the_whole_page_snapshot ... ok
+test sticky_flex_grid_tests::a_th_sticks_in_a_scrolling_table ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test sticky_flex_grid_tests::a_th_sticks_to_the_window_until_the_table_ends ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test sticky_flex_grid_tests::a_th_stops_at_the_tables_content_box ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test shadow_tree_tests::the_display_list_paints_what_chromium_paints ... ok
+test sticky_flex_grid_tests::a_stretched_grid_sidebar_never_moves ... ok
+test sticky_flex_grid_tests::a_header_in_a_flex_column_leaves_with_its_container ... ok
+test sticky_flex_grid_tests::a_grid_sidebar_sticks_to_its_scroller ... ok
+test sticky_flex_grid_tests::a_display_table_div_in_a_fixed_row_keeps_its_content_height ... ok
+test sticky_flex_grid_tests::a_short_table_in_a_fixed_row_still_stretches ... ok
+test sticky_flex_grid_tests::a_stretched_flex_item_never_moves_but_start_and_end_do ... ok
+test sticky_flex_grid_tests::a_sticky_thead_carries_its_cells ... ok
+test sticky_flex_grid_tests::content_taller_than_a_fixed_row_keeps_its_size ... ok
+test sticky_flex_grid_tests::an_app_shell_pane_scrolls_and_its_empty_rail_does_not_grow_the_page ... ok
+test sticky_flex_grid_tests::a_sidebar_in_a_grid_column_sticks_until_the_grid_ends ... ok
+test sticky_flex_grid_tests::a_header_in_a_flex_column_sticks_to_its_scroller ... ok
+test sticky_flex_grid_tests::a_table_in_a_fixed_row_keeps_its_rows ... ok
+test sticky_flex_grid_tests::it_sticks_inside_a_flex_item_that_scrolls ... ok
+test sticky_flex_grid_tests::align_items_start_lets_a_flex_item_stick ... ok
+test sticky_flex_grid_tests::top_and_bottom_both_hold_a_centred_grid_item ... ok
+test sticky_scroll_tests::a_bar_later_in_the_tree_is_over_a_stuck_box ... ok
+test sticky_scroll_tests::a_bottom_inset_holds_it_up_until_its_place_comes ... ok
+test sticky_flex_grid_tests::an_inline_table_in_a_fixed_row_keeps_its_rows ... ok
+test sticky_scroll_tests::a_box_sticks_in_the_windows_paint ... ok
+test sticky_flex_grid_tests::it_sticks_inside_a_flexed_scroller_in_a_column ... ok
+test sticky_scroll_tests::a_box_taller_than_the_scrollport_keeps_its_top ... ok
+test sticky_flex_grid_tests::every_stretched_item_of_a_fixed_row_takes_the_rows_height ... ok
+test sticky_flex_grid_tests::an_app_shell_without_sticky_keeps_its_rail_to_the_row ... ok
+test sticky_flex_grid_tests::top_and_bottom_both_hold_a_flex_column_item ... ok
+test sticky_scroll_tests::a_click_over_a_stuck_header_in_a_percent_opacity_wrapper_goes_to_the_fixed_box ... ok
+test sticky_scroll_tests::a_child_of_the_stuck_box_is_hit_over_the_bar ... ok
+test sticky_scroll_tests::a_box_sticks_in_its_scrollers_paint ... ok
+test sticky_scroll_tests::a_cookie_bar_is_over_a_stuck_header_in_an_isolate_root ... ok
+test sticky_scroll_tests::a_click_over_a_stuck_header_in_a_wrapper_goes_to_the_modal ... ok
+test sticky_scroll_tests::a_fixed_box_in_a_stuck_box_stays_put ... ok
+test sticky_scroll_tests::a_flex_item_with_a_z_index_is_a_stacking_context ... ok
+test sticky_scroll_tests::a_higher_z_index_on_the_bar_keeps_it_on_top ... ok
+test sticky_scroll_tests::a_higher_z_index_on_the_stuck_box_puts_it_on_top_of_a_later_bar ... ok
+test sticky_scroll_tests::a_percent_inset_is_of_the_scrollport ... ok
+test sticky_scroll_tests::a_fixed_box_cuts_off_the_sticky_boxes_above_it ... ok
+test sticky_scroll_tests::a_right_inset_with_no_room_changes_nothing ... ok
+test sticky_scroll_tests::a_sticky_box_in_a_sticky_box ... ok
+test sticky_scroll_tests::a_percent_opacity_wrapper_orders_as_one_box ... ok
+test sticky_scroll_tests::a_percent_opacity_wrapper_keeps_the_stuck_header_under_a_later_fixed_box has been running for over 60 seconds
+test sticky_scroll_tests::a_percent_opacity_wrapper_keeps_the_stuck_header_under_a_later_fixed_box ... ok
+
+test result: ok. 92 passed; 0 failed; 8 ignored; 0 measured; 1978 filtered out; finished in 278.97s
+
+### runlist done
+### chunk 0 (100 tests)
+
+running 100 tests
+test sticky_scroll_tests::a_sticky_box_not_yet_at_the_bar_changes_nothing ... ok
+test sticky_scroll_tests::a_view_transition_name_makes_a_context ... ok
+test sticky_scroll_tests::a_z_index_applies_on_an_item_and_on_the_modals_side ... ok
+test sticky_scroll_tests::a_stuck_box_later_in_the_tree_is_over_a_fixed_bar ... ok
+test sticky_scroll_tests::a_transform_above_moves_it_after_the_rule has been running for over 60 seconds
+test sticky_scroll_tests::a_window_scroll_does_not_build_the_list_again has been running for over 60 seconds
+test sticky_scroll_tests::a_z_index_counts_only_where_it_applies has been running for over 60 seconds
+test sticky_scroll_tests::a_z_index_wrapper_places_the_stuck_box_against_a_fixed_box has been running for over 60 seconds
+test sticky_scroll_tests::after_a_window_scroll_a_click_finds_the_stuck_box has been running for over 60 seconds
+test sticky_scroll_tests::an_absolute_box_takes_its_sticky_child_past_a_static_scroller has been running for over 60 seconds
+test sticky_scroll_tests::an_overflowing_division_or_a_dropped_calc_opacity_makes_no_wrong_context has been running for over 60 seconds
+test sticky_scroll_tests::both_insets_apply_only_to_a_box_that_fits_between_them has been running for over 60 seconds
+test sticky_scroll_tests::clip_is_not_a_scroller has been running for over 60 seconds
+test sticky_scroll_tests::a_z_index_counts_only_where_it_applies ... ok
+test sticky_scroll_tests::an_absolute_box_takes_its_sticky_child_past_a_static_scroller ... ok
+test sticky_scroll_tests::an_overflowing_division_or_a_dropped_calc_opacity_makes_no_wrong_context ... ok
+test sticky_scroll_tests::content_visibility_makes_a_context_unless_visible has been running for over 60 seconds
+test sticky_scroll_tests::it_follows_its_scroller_then_sticks_at_the_edge has been running for over 60 seconds
+test sticky_scroll_tests::it_stays_in_its_containing_block_and_keeps_its_margin has been running for over 60 seconds
+test sticky_scroll_tests::a_z_index_wrapper_places_the_stuck_box_against_a_fixed_box ... ok
+test sticky_scroll_tests::a_transform_above_moves_it_after_the_rule ... ok
+test sticky_scroll_tests::it_sticks_in_a_scaled_scroller ... ok
+test sticky_scroll_tests::it_sticks_in_a_transformed_scroller ... ok
+test sticky_scroll_tests::both_insets_apply_only_to_a_box_that_fits_between_them ... ok
+test sticky_scroll_tests::it_sticks_across_too ... ok
+test sticky_scroll_tests::after_a_window_scroll_a_click_finds_the_stuck_box ... ok
+test sticky_scroll_tests::a_window_scroll_does_not_build_the_list_again ... ok
+test sticky_scroll_tests::clip_is_not_a_scroller ... ok
+test sticky_scroll_tests::it_follows_its_scroller_then_sticks_at_the_edge ... ok
+test sticky_scroll_tests::it_stays_in_its_containing_block_and_keeps_its_margin ... ok
+test sticky_scroll_tests::its_own_transform_goes_with_it ... ok
+test sticky_scroll_tests::content_visibility_makes_a_context_unless_visible ... ok
+test sticky_scroll_tests::the_inset_is_kept_from_the_edge ... ok
+test sticky_scroll_tests::it_sticks_to_the_window_under_a_transform has been running for over 60 seconds
+test sticky_scroll_tests::it_sticks_to_the_window_with_no_scroller has been running for over 60 seconds
+test sticky_scroll_tests::only_the_unprefixed_backdrop_filter_makes_a_context has been running for over 60 seconds
+test sticky_scroll_tests::opacity_with_a_tab_a_newline_or_a_huge_number_decides_the_context has been running for over 60 seconds
+test sticky_scroll_tests::only_the_unprefixed_backdrop_filter_makes_a_context ... ok
+test sticky_scroll_tests::the_comparison_starts_where_the_paths_part has been running for over 60 seconds
+test sticky_scroll_tests::the_containing_block_is_its_content_box has been running for over 60 seconds
+test sticky_scroll_tests::the_hit_test_finds_it_where_it_is has been running for over 60 seconds
+test sticky_scroll_tests::the_comparison_starts_where_the_paths_part ... ok
+test sticky_table_paint_tests::a_stuck_th_paints_and_hits_over_the_scrolled_rows ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test sticky_table_paint_tests::a_stuck_th_with_a_z_index_paints_and_hits_over_the_scrolled_rows ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test sticky_table_paint_tests::a_stuck_thead_paints_and_hits_over_the_scrolled_rows ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test sticky_table_paint_tests::a_stuck_tr_paints_and_hits_over_the_scrolled_rows ... ignored, sticky table parts need stacking-context hoisting: PLAN-z follow-up row after C7 (#868 R1 delta 3); expected values are Chromium 143
+test sticky_scroll_tests::the_nearest_scroller_is_the_one_that_counts_even_when_hidden has been running for over 60 seconds
+test sticky_scroll_tests::the_scrollers_padding_narrows_the_scrollport has been running for over 60 seconds
+test sticky_scroll_tests::under_a_fixed_box_the_window_does_not_move_it_but_the_inset_holds has been running for over 60 seconds
+test sticky_scroll_tests::opacity_with_a_tab_a_newline_or_a_huge_number_decides_the_context ... ok
+test sticky_scroll_tests::what_is_inside_goes_with_it ... ok
+test sticky_scroll_tests::the_scrollers_padding_narrows_the_scrollport ... ok
+test sticky_scroll_tests::the_nearest_scroller_is_the_one_that_counts_even_when_hidden ... ok
+test sticky_scroll_tests::the_hit_test_finds_it_where_it_is ... ok
+test stop_navigation_tests::a_destroyed_view_supersedes_its_own_in_flight_load ... ok
+test sticky_scroll_tests::the_containing_block_is_its_content_box ... ok
+test stop_navigation_tests::stop_is_safe_and_idempotent_on_an_idle_view ... ok
+test style_share_tests::a_rule_that_reads_siblings_position_or_children_is_never_shared ... ok
+test stop_navigation_tests::a_newer_navigation_supersedes_an_older_one ... ok
+test style_share_tests::an_element_whose_parent_is_not_the_enclosing_scope_shares_nothing ... ok
+test style_share_tests::every_untracked_or_computed_style_gets_an_id_of_its_own ... ok
+test sticky_scroll_tests::what_makes_a_stacking_context_without_a_z_index has been running for over 60 seconds
+test sticky_scroll_tests::under_a_fixed_box_the_window_does_not_move_it_but_the_inset_holds ... ok
+test sticky_scroll_tests::it_sticks_to_the_window_with_no_scroller ... ok
+test style_share_tests::sharing_is_on_unless_turned_off ... ok
+test style_share_tests::the_key_holds_what_the_selectors_read_of_an_attribute ... ok
+test style_share_tests::the_keyed_attribute_tests_answer_as_the_matcher_does ... ok
+test sticky_scroll_tests::it_sticks_to_the_window_under_a_transform ... ok
+test sticky_scroll_tests::will_change_of_a_mask_image_or_transition_name_makes_a_context has been running for over 60 seconds
+test stop_navigation_tests::a_stop_supersedes_an_in_flight_navigation has been running for over 60 seconds
+test stop_navigation_tests::stop_on_a_missing_view_is_false_not_a_panic has been running for over 60 seconds
+test stop_navigation_tests::stop_on_a_yielded_load_fails_as_stopped_and_drops_the_tail has been running for over 60 seconds
+test stop_navigation_tests::stop_on_an_idle_view_emits_no_navigation_failed has been running for over 60 seconds
+test stop_navigation_tests::the_generation_actually_advances has been running for over 60 seconds
+test style_share_tests::a_sharing_build_paints_what_a_full_cascade_paints has been running for over 60 seconds
+test style_share_tests::matches_are_shared_only_for_the_slice_the_enclosing_scope_named has been running for over 60 seconds
+test style_share_tests::shared_matches_paint_what_a_full_cascade_paints has been running for over 60 seconds
+test style_share_tests::the_match_key_tells_look_alikes_apart has been running for over 60 seconds
+test style_share_tests::verify_mode_finds_no_difference_between_a_shared_and_a_fresh_style has been running for over 60 seconds
+test sticky_scroll_tests::what_makes_a_stacking_context_without_a_z_index ... ok
+test stop_navigation_tests::stop_on_an_idle_view_emits_no_navigation_failed ... ok
+test style_share_tests::the_match_key_tells_look_alikes_apart ... ok
+test stop_navigation_tests::stop_on_a_yielded_load_fails_as_stopped_and_drops_the_tail ... ok
+test sticky_scroll_tests::will_change_of_a_mask_image_or_transition_name_makes_a_context ... ok
+test style_share_tests::a_sharing_build_paints_what_a_full_cascade_paints ... ok
+test stop_navigation_tests::a_stop_supersedes_an_in_flight_navigation ... ok
+test style_share_tests::shared_matches_paint_what_a_full_cascade_paints ... ok
+test styled_scrollbar_tests::a_bar_press_goes_to_the_scroller_and_clicks_nothing ... ok
+test style_share_tests::verify_mode_finds_no_difference_between_a_shared_and_a_fresh_style ... ok
+test styled_scrollbar_tests::a_cancelled_mousedown_does_not_stop_the_bar ... ok
+test stop_navigation_tests::the_generation_actually_advances ... ok
+test styled_scrollbar_tests::a_column_flex_item_scroller_takes_its_bar_too ... ok
+test styled_scrollbar_tests::a_flex_item_scroller_matches_chrome_in_a_row_and_a_column ... ok
+test styled_scrollbar_tests::a_press_on_the_viewport_bar_goes_to_the_root_element ... ok
+test styled_scrollbar_tests::a_relayout_keeps_the_bar_while_it_overflows_and_drops_it_after ... ok
+test styled_scrollbar_tests::a_relayout_with_the_root_bar_takes_one_pass ... ok
+test styled_scrollbar_tests::a_press_on_the_viewports_bar_is_the_root_elements ... ok
+test style_share_tests::matches_are_shared_only_for_the_slice_the_enclosing_scope_named ... ok
+test styled_scrollbar_tests::display_none_on_the_scrollbar_paints_nothing_and_takes_no_space ... ok
+test styled_scrollbar_tests::a_press_on_a_bar_is_the_scrollers_and_fires_no_click ... ok
+test styled_scrollbar_tests::after_scrolling_a_third_the_thumb_moves_a_third ... ok
+test stop_navigation_tests::stop_on_a_missing_view_is_false_not_a_panic ... ok
+test styled_scrollbar_tests::a_six_pixel_track_paints_at_the_right_edge ... ok
+test styled_scrollbar_tests::the_box_geometry_script_reads_counts_the_bar_where_chrome_does ... ok
+test styled_scrollbar_tests::a_flex_item_scroller_takes_its_bar_from_its_content_box ... ok
+test styled_scrollbar_tests::scrollbar_width_none_paints_nothing_and_takes_no_space ... ok
+test svg_background_clip_tests::a_circle_across_the_edge_does_not_paint_past_it ... ok
+test svg_background_clip_tests::a_polygon_across_the_edge_is_cut_at_it ... ok
+test styled_scrollbar_tests::auto_without_overflow_takes_no_space_and_scroll_always_does ... ok
+test svg_background_clip_tests::a_stroke_across_the_edge_is_cut_at_it ... ok
+test svg_background_clip_tests::what_lies_outside_the_box_is_not_emitted ... ok
+test styled_scrollbar_tests::the_page_does_not_see_the_pseudo_elements_declarations ... ok
+test styled_scrollbar_tests::the_root_scrollbar_paints_at_the_viewport_edge ... ok
+test styled_scrollbar_tests::a_relayout_of_an_overflowing_scroller_takes_one_pass ... ok
+test styled_scrollbar_tests::dragging_the_thumb_fifty_pixels_scrolls_in_proportion ... ok
+test styled_scrollbar_tests::the_thumb_is_viewport_over_content_of_the_track_at_the_top ... ok
+test styled_scrollbar_tests::the_scrollbar_is_its_own_gutter_not_border ... ok
+test styled_scrollbar_tests::the_standard_properties_win_over_the_pseudo_elements ... ok
+test svg_background_clip_tests::a_short_value_list_is_repeated_over_the_layers ... ok
+test styled_scrollbar_tests::a_press_on_the_track_pages_by_seven_eighths has been running for over 60 seconds
+test svg_content_type_tests::an_extensionless_img_is_routed_to_the_svg_lane_by_its_content_type ... ok
+test svg_paint_state_tests::a_hover_rule_colours_the_icon_and_reverts ... ok
+test svg_image_tests::cached_svg_supplies_natural_size_to_img_layout ... ok
+test styled_scrollbar_tests::a_press_on_the_track_pages_by_seven_eighths ... ok
+test styled_scrollbar_tests::the_scrollbar_takes_its_width_from_the_content_box ... ok
+test styled_scrollbar_tests::the_thumb_takes_its_hover_background_under_the_pointer ... ok
+test svg_paint_state_tests::an_active_rule_colours_the_icon_while_pressed ... ok
+test svg_paint_state_tests::a_focus_within_rule_colours_the_icon ... ok
+test svg_paint_state_tests::every_icon_is_black_at_rest ... ok
+test svg_paint_state_tests::a_checked_sibling_rule_colours_the_icon ... ok
+test table_engine_tests::a_clearfix_table_pseudo_is_empty ... ok
+test svg_paint_state_tests::an_icon_hover_takes_the_short_restyle_path ... ok
+test table_engine_tests::a_nested_tables_cellpadding_is_its_own ... ok
+test table_engine_tests::align_center_centres_the_table ... ok
+test table_engine_tests::an_author_valign_on_a_row_reaches_its_cells ... ok
+
+test result: ok. 96 passed; 0 failed; 4 ignored; 0 measured; 1978 filtered out; finished in 404.77s
+
+### runlist done
+### chunk 0 (100 tests)
+
+running 100 tests
+test table_engine_tests::html_attribute_parsers ... ok
+test test_gpu::tests::a_caller_learns_its_helper_failed_in_the_guard ... ok
+test test_gpu::tests::a_holder_past_the_limit_fails_the_waiter_by_name - should panic ... ok
+test tests::a_corner_longhand_takes_one_or_two_radii ... ok
+test tests::a_list_scores_the_max_of_its_member_specificities ... ok
+test table_engine_tests::author_css_beats_presentational_attributes ... ok
+test table_engine_tests::colspan_rowspan_and_span_reach_the_boxes ... ok
+test table_engine_tests::the_issue_repro_puts_cells_side_by_side ... ok
+test table_engine_tests::table_presentational_attributes_map_to_style ... ok
+test table_engine_tests::css_table_displays_on_divs_get_anonymous_rows_and_tables ... ok
+test tests::an_unclosed_functional_pseudo_class_does_not_panic ... ok
+test table_engine_tests::empty_cells_and_cols_keep_their_place ... ok
+test tests::author_svg_paint_matching_bench ... ignored
+test table_engine_tests::ua_defaults_give_tables_their_displays_and_spacing ... ok
+test tests::border_radius_shorthand_expands_one_to_four_values ... ok
+test tests::a_transformed_group_refuses_the_shapes_beneath_it ... ok
+test table_engine_tests::border_spacing_and_collapse_parse_and_inherit ... ok
+test tests::inline_svg_use_by_xlink_href_appends_only_svg_targets ... ok
+test tests::inline_svg_use_resolves_a_target_in_another_svg ... ok
+test tests::a_replaced_element_is_built_with_its_element_identity ... ok
+test tests::radial_gradient_size_is_parsed ... ok
+test tests::a_shape_at_the_viewbox_origin_paints_at_the_content_origin ... ok
+test tests::simple_selector_matches_tag_class_and_id ... ok
+test tests::simple_selector_refuses_what_it_cannot_answer ... ok
+test tests::specificity_of_is_and_not_with_whitespace_inside_the_parens ... ok
+test tests::a_views_layout_export_keeps_its_svg_shapes_after_another_view_relaid_out ... ok
+test tests::an_inline_svg_is_built_with_its_element_identity ... ok
+test tests::an_unmodelled_svg_shape_is_refused_rather_than_approximated ... ok
+test tests::selector_nesting_past_the_cap_is_invalid_not_a_stack_overflow ... ok
+test tests::test_ch_unit_tokenizer_is_narrow ... ok
+test tests::inline_svg_shapes_are_exported_at_chromes_rects ... ok
+test tests::br_inside_an_inline_is_hoisted_to_the_block_flow ... ok
+test tests::load_html_does_not_inherit_the_previous_documents_stylesheets ... ok
+test table_engine_tests::cells_with_different_attributes_do_not_share_a_style ... ok
+test tests::test_engine_builder ... ok
+test tests::test_engine_config_default ... ok
+test tests::test_engine_config_for_parity ... ok
+test tests::test_engine_view_id_uniqueness ... ok
+test tests::test_author_css_paints_inline_svg_children ... ok
+test tests::test_author_svg_paint_follows_the_cascade_where_develop_did ... ok
+test tests::test_bare_form_control_heights_match_chrome ... ok
+test tests::author_svg_paint_prefilter_keeps_the_cascades_answer ... ok
+test tests::test_button_ua_display_inline_block_one_line ... ok
+test tests::test_ch_width_resolves_against_the_zero_glyph ... ok
+test tests::test_collapsible_space_collapses_across_text_node_boundaries ... ok
+test tests::test_display_list_generation ... ok
+test tests::test_em_font_size_absolutizes_against_parent ... ok
+test tests::test_parse_color ... ok
+test tests::test_parse_color_stop ... ok
+test tests::test_parse_grid_template_auto_repeat_is_not_hardcoded ... ok
+test tests::test_parse_length ... ok
+test tests::test_parse_linear_gradient ... ok
+test tests::test_parse_min_max_clamp ... ok
+test tests::test_focus_within_does_not_match_in_the_static_frame ... ok
+test tests::test_parse_radial_gradient ... ok
+test tests::test_parse_timing_function ... ok
+test tests::test_parse_transform ... ok
+test tests::test_font_weight_numeric_and_relative_values_compute ... ok
+test tests::test_parse_transform_origin ... ok
+test tests::test_selector_list_validity_and_top_level_commas ... ok
+test tests::test_selector_specificity ... ok
+test tests::test_split_by_comma ... ok
+test tests::test_inline_svg_is_a_sized_replaced_box_without_child_boxes ... ok
+test tests::test_inline_svg_paints_through_the_svg_cache ... ok
+test tests::test_is_and_where_select_only_their_arguments ... ok
+test tests::test_of_type_pseudo_classes_use_the_typed_sibling_index ... ok
+test tests::test_layout_tree_from_document ... ok
+test tests::test_sibling_combinators_and_positional_pseudo_classes ... ok
+test tests::test_ruby_ua_display_inline ... ok
+test tests::test_unknown_pseudo_class_invalidates_the_whole_rule ... ok
+test test_gpu::tests::a_caller_outlasts_its_helper_queueing_behind_short_holders ... ok
+test test_gpu::tests::a_waiter_outlasts_a_queue_of_short_holders ... ok
+test tests::test_link_placeholder_shown_and_empty ... ok
+test tests::test_word_break_and_line_break_reach_the_line_breaker ... ok
+test tests::test_line_height_inherits_from_html_through_body ... ok
+test text_control_select_tests::selection_start_and_end_follow_the_users_caret ... ok
+test text_control_select_tests::focus_handler_select_by_script_focus_then_typing_replaces ... ok
+test text_control_select_tests::select_on_an_unfocused_input_reads_back ... ok
+test text_control_select_tests::click_then_cmd_a_then_typing_replaces_the_value ... ok
+test text_input_tests::a_cmd_chord_the_page_cancels_is_claimed_and_carries_meta_key ... ok
+test text_input_tests::a_cmd_chord_in_a_text_field_edits_and_others_go_to_the_menu ... ok
+test text_control_select_tests::set_selection_range_then_typing_replaces_the_middle ... ok
+test text_input_tests::an_accent_picked_from_the_press_and_hold_popover_replaces_the_letter ... ok
+test text_provenance_tests::the_declared_backend_matches_what_shaping_actually_does ... ok
+test text_provenance_tests::the_layout_export_declares_its_text_shaper ... ok
+test text_control_select_tests::focus_handler_select_by_click_then_typing_replaces ... ok
+test text_input_tests::an_ime_updates_twice_then_commits_other_text ... ok
+test text_input_tests::edit_menu_commands_act_on_the_focused_field ... ok
+test transform_parse_pure_tests::a_bad_value_refuses_the_whole_declaration ... ok
+test text_input_tests::insert_text_with_nothing_marked_is_a_cancelable_insert ... ok
+test text_input_tests::empty_marked_text_cancels_the_composition ... ok
+test text_transform_layout_tests::a_flex_row_places_the_next_item_after_an_uppercase_title ... ok
+test text_input_tests::a_dead_key_composes_then_commits_as_chrome_does ... ok
+test text_input_tests::unmark_keeps_the_marked_text_and_ends_the_composition ... ok
+test text_input_tests::the_text_input_state_reports_the_marked_range_and_a_caret_rect ... ok
+test text_transform_layout_tests::a_capitalized_run_is_measured_capitalized ... ok
+test text_transform_layout_tests::an_uppercase_run_is_measured_as_uppercase ... ok
+test text_input_tests::focus_leaving_a_composing_field_ends_the_composition_first ... ok
+test text_input_tests::script_selection_mid_composition_leaves_the_composition_open ... ok
+test text_control_select_tests::a_click_places_the_caret_at_the_click_point ... ok
+
+test result: ok. 99 passed; 0 failed; 1 ignored; 0 measured; 1978 filtered out; finished in 31.05s
+
+### runlist done
+### chunk 0 (100 tests)
+
+running 100 tests
+test transform_parse_pure_tests::a_rotation_about_z_is_a_rotation ... ok
+test transform_parse_pure_tests::a_percentage_scales ... ok
+test transform_parse_pure_tests::a_rotation_about_x_or_y_foreshortens ... ok
+test transform_parse_pure_tests::function_names_ignore_case ... ok
+test transform_parse_pure_tests::inf_and_nan_scale_are_refused ... ok
+test transform_parse_pure_tests::perspective_alone_moves_nothing ... ok
+test transform_parse_pure_tests::scale3d_drops_its_depth ... ok
+test transform_parse_pure_tests::matrix3d_flattens ... ok
+test transform_parse_pure_tests::calc_angle_in_rotate_is_accepted ... ok
+test transform_parse_pure_tests::non_angle_calc_in_rotate_is_refused ... ok
+test transform_parse_pure_tests::translate3d_flattens ... ok
+test transform_parse_pure_tests::translate_z_is_a_transform_that_moves_nothing ... ok
+test transform_parse_pure_tests::zero_needs_no_unit ... ok
+test transform_parse_tests::a_negative_perspective_is_refused_in_any_unit ... ok
+test transform_parse_tests::a_depth_refuses_a_percentage_inside_calc ... ok
+test transform_parse_tests::a_depth_takes_calc_with_no_percentage ... ok
+test transform_parse_tests::a_percentage_scales ... ok
+test transform_parse_tests::a_rotation_about_x_or_y_foreshortens ... ok
+test transform_parse_tests::a_rotation_about_z_is_a_rotation ... ok
+test transform_parse_tests::a_bad_value_refuses_the_whole_declaration ... ok
+test transform_parse_tests::a_perspective_in_calc_is_taken_whatever_it_comes_to ... ok
+test transform_parse_tests::font_and_viewport_units_in_a_translate ... ignored, transform lengths in em, rem, vw and vh do not see the element or the viewport
+test transform_parse_tests::function_names_ignore_case ... ok
+test transform_parse_tests::perspective_alone_moves_nothing ... ok
+test transform_parse_tests::matrix3d_flattens ... ok
+test transform_parse_tests::perspective_with_depth ... ignored, perspective with depth is not an affine the 2D painter can hold
+test transform_parse_tests::scale3d_drops_its_depth ... ok
+test transform_parse_tests::translate3d_flattens ... ok
+test transform_parse_tests::translate_z_is_a_transform_that_moves_nothing ... ok
+test transform_parse_tests::an_angle_divided_by_zero_turns_nothing ... ok
+test transform_parse_tests::zero_needs_no_unit ... ok
+test transform_parse_tests::calc_in_a_number ... ok
+test transform_parse_tests::a_list_keeps_all_of_itself_with_calc_in_it ... ok
+test transform_parse_tests::perspective_takes_no_negative_length_and_no_bare_number ... ok
+test transform_parse_tests::a_refused_value_leaves_the_box_alone has been running for over 60 seconds
+test transform_parse_tests::calc_in_a_translate has been running for over 60 seconds
+test transform_parse_tests::calc_in_an_angle has been running for over 60 seconds
+test transform_parse_tests::calc_that_is_not_an_angle_is_refused has been running for over 60 seconds
+test transform_parse_tests::infinity_and_nan_are_not_numbers has been running for over 60 seconds
+test transform_parse_tests::keywords_ignore_case_and_take_the_earlier_one_away has been running for over 60 seconds
+test transform_parse_tests::the_box_reads_the_flattened_rect has been running for over 60 seconds
+test transform_parse_tests::units_ignore_case has been running for over 60 seconds
+test transform_rect_tests::a_box_that_holds_a_fixed_box_scrolls_it_with_its_scroller has been running for over 60 seconds
+test transform_parse_tests::the_box_reads_the_flattened_rect ... ok
+test transform_rect_tests::a_filter_holds_a_fixed_box_to_the_page has been running for over 60 seconds
+test transform_rect_tests::a_fixed_box_does_not_read_the_window_scroll_at_the_top has been running for over 60 seconds
+test transform_parse_tests::calc_in_an_angle ... ok
+test transform_rect_tests::a_fixed_box_in_an_element_scroller_stays_put has been running for over 60 seconds
+test transform_parse_tests::calc_that_is_not_an_angle_is_refused ... ok
+test transform_rect_tests::a_panel_slides_out_of_its_clipping_wrapper has been running for over 60 seconds
+test transform_parse_tests::keywords_ignore_case_and_take_the_earlier_one_away ... ok
+test transform_parse_tests::calc_in_a_translate ... ok
+test transform_parse_tests::a_refused_value_leaves_the_box_alone ... ok
+test transform_rect_tests::a_fixed_box_does_not_read_the_window_scroll_at_the_top ... ok
+test transform_rect_tests::a_panel_slides_out_of_its_clipping_wrapper ... ok
+test transform_rect_tests::a_transform_holds_fixed_boxes ... ignored, layout: a fixed box under a transform is placed from the viewport
+test transform_rect_tests::a_percentage_is_of_the_box ... ok
+test transform_rect_tests::a_plain_fixed_box_stays_put_when_the_window_scrolls ... ok
+test transform_parse_tests::infinity_and_nan_are_not_numbers ... ok
+test transform_rect_tests::a_rotation_reads_as_its_bounding_box has been running for over 60 seconds
+test transform_rect_tests::a_scroll_inside_a_transform_is_scaled_by_it has been running for over 60 seconds
+test transform_rect_tests::a_transform_does_not_apply_to_a_plain_inline has been running for over 60 seconds
+test transform_rect_tests::a_transform_holds_absolute_boxes has been running for over 60 seconds
+test transform_rect_tests::a_transform_inside_a_scroll_is_moved_by_it has been running for over 60 seconds
+test transform_parse_tests::units_ignore_case ... ok
+test transform_rect_tests::a_transformed_box_in_the_flow_moves_with_the_window has been running for over 60 seconds
+test transform_rect_tests::a_filter_holds_a_fixed_box_to_the_page ... ok
+test transform_rect_tests::a_scroll_inside_a_transform_is_scaled_by_it ... ok
+test transform_rect_tests::a_transformed_fixed_box_stays_put_when_the_window_scrolls has been running for over 60 seconds
+test transform_rect_tests::a_transform_holds_absolute_boxes ... ok
+test transform_rect_tests::a_transform_inside_a_scroll_is_moved_by_it ... ok
+test transform_rect_tests::a_transformed_fixed_box_stays_put_when_the_window_scrolls ... ok
+test transform_rect_tests::an_element_scroll_under_a_fixed_box_still_moves_its_content ... ok
+test transform_rect_tests::an_absolute_box_held_by_a_transformed_scroller_scrolls_with_it ... ok
+test transform_rect_tests::a_rotation_reads_as_its_bounding_box ... ok
+test transform_rect_tests::a_transformed_box_in_the_flow_moves_with_the_window ... ok
+test transform_rect_tests::a_transform_does_not_apply_to_a_plain_inline ... ok
+test transform_rect_tests::an_identity_transform_holds_a_fixed_box_to_the_page ... ok
+test transform_rect_tests::a_box_that_holds_a_fixed_box_scrolls_it_with_its_scroller ... ok
+test transform_rect_tests::matrix_and_skew ... ok
+test transform_rect_tests::a_fixed_box_in_an_element_scroller_stays_put ... ok
+test transform_rect_tests::get_client_rects_answers_the_same ... ok
+test transform_rect_tests::scale_is_about_the_centre ... ok
+test transform_rect_tests::contain_holds_a_fixed_box_to_the_page has been running for over 60 seconds
+test transform_rect_tests::get_client_rects_of_a_fixed_box_stays_put_too has been running for over 60 seconds
+test transform_rect_tests::it_applies_to_an_inline_block_and_a_flex_item has been running for over 60 seconds
+test transform_rect_tests::no_transform_is_no_change has been running for over 60 seconds
+test transform_rect_tests::contain_holds_a_fixed_box_to_the_page ... ok
+test transform_rect_tests::it_applies_to_an_inline_block_and_a_flex_item ... ok
+test transform_rect_tests::the_origin_moves_a_scale ... ok
+test transform_rect_tests::offsets_and_sizes_stay_where_layout_put_the_box has been running for over 60 seconds
+test transform_rect_tests::get_client_rects_of_a_fixed_box_stays_put_too ... ok
+test transform_rect_tests::the_window_scroll_comes_off_after_the_transform ... ok
+test transform_rect_tests::the_individual_properties has been running for over 60 seconds
+test transform_rect_tests::the_individual_properties ... ok
+test transform_rect_tests::translate_takes_a_function_with_spaces_in_it ... ok
+test transform_rect_tests::translate_takes_three_values_at_most ... ok
+test transform_rect_tests::offsets_and_sizes_stay_where_layout_put_the_box ... ok
+test transform_rect_tests::translate_moves_the_rect ... ok
+test transparent_frame_tests::a_popup_shadow_outside_its_box_is_translucent_black ... ok
+test transparent_frame_tests::a_rounded_popup_corner_shows_the_page ... ok
+test transparent_frame_tests::a_translucent_overlay_dims_the_page_premultiplied ... ok
+test transform_rect_tests::translate_flattens_a_depth ... ok
+test transparent_frame_tests::gradients_and_faded_groups_keep_the_frame_transparent ... ok
+test transform_rect_tests::what_is_inside_moves_with_it_and_what_follows_does_not ... ok
+test transform_rect_tests::transforms_multiply_down_the_tree ... ok
+test transparent_frame_tests::an_opaque_view_is_unchanged ... ok
+test transform_rect_tests::the_rect_is_of_the_border_box has been running for over 60 seconds
+test transform_rect_tests::will_change_holds_a_fixed_box_to_the_page ... ok
+test url_for_log_tests::a_url_on_an_info_line_is_scheme_host_and_path ... ok
+test visual_rect_tests::a_child_inherits_its_ancestors_transform ... ok
+test visual_rect_tests::a_rotated_box_is_bounded_by_all_four_corners ... ok
+test visual_rect_tests::a_scale_is_taken_about_the_transform_origin ... ok
+test visual_rect_tests::a_transformed_wrapped_inline_transforms_its_union ... ok
+test visual_rect_tests::a_translated_box_exports_the_rect_chrome_measures ... ok
+test visual_rect_tests::a_wrapped_inline_exports_the_rect_chrome_measures ... ok
+test transform_rect_tests::translate_refuses_a_depth_that_is_not_a_length has been running for over 60 seconds
+test transform_rect_tests::what_is_no_containing_block_leaves_a_fixed_box_alone has been running for over 60 seconds
+test transform_rect_tests::what_is_under_a_fixed_box_stays_put_when_the_window_scrolls has been running for over 60 seconds
+test transform_rect_tests::translate_refuses_a_depth_that_is_not_a_length ... ok
+test transparent_frame_tests::a_transparent_frame_has_alpha_zero_where_nothing_is_painted has been running for over 60 seconds
+test ua_hidden_tests::an_author_display_overrides_the_ua_hidden_rule has been running for over 60 seconds
+test ua_hidden_tests::an_open_dialog_is_painted has been running for over 60 seconds
+test transform_rect_tests::what_is_no_containing_block_leaves_a_fixed_box_alone ... ok
+test ua_hidden_tests::hidden_closed_dialogs_closed_popovers_and_templates_are_not_painted has been running for over 60 seconds
+test ua_hidden_tests::hidden_closed_dialogs_closed_popovers_and_templates_are_not_painted ... ok
+test unitless_zero_tests::unitless_zero_gap_reads_as_zero_px_not_normal has been running for over 60 seconds
+test unitless_zero_tests::unitless_zero_lays_out_as_zero_px_as_in_chrome has been running for over 60 seconds
+test ua_hidden_tests::an_author_display_overrides_the_ua_hidden_rule ... ok
+test transform_rect_tests::what_is_under_a_fixed_box_stays_put_when_the_window_scrolls ... ok
+test transform_rect_tests::the_rect_is_of_the_border_box ... ok
+test ua_hidden_tests::an_open_dialog_is_painted ... ok
+test unitless_zero_tests::unitless_zero_lays_out_as_zero_px_as_in_chrome ... ok
+test transparent_frame_tests::a_transparent_frame_has_alpha_zero_where_nothing_is_painted ... ok
+test unitless_zero_tests::unitless_zero_gap_reads_as_zero_px_not_normal ... ok
+test transform_rect_tests::no_transform_is_no_change ... ok
+
+test result: ok. 97 passed; 0 failed; 3 ignored; 0 measured; 1978 filtered out; finished in 497.43s
+
+### runlist done
+### chunk 0 (100 tests)
+
+running 100 tests
+test visual_rect_tests::an_untransformed_box_exports_no_visual_rect ... ok
+test visual_rect_tests::an_unwrapped_inline_exports_no_second_rect ... ok
+test visually_hidden_tests::clip_path_polygon_hides_as_chromium ... ok
+test waapi_layer_tests::a_hidden_then_shown_css_animation_is_a_new_object ... ok
+test waapi_layer_tests::a_swapped_animation_name_is_a_new_css_animation_object ... ok
+test vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget ... ok
+test vm_interrupt_tests::a_spin_after_the_load_budget_is_spent_is_still_stopped ... ok
+test vm_interrupt_tests::without_the_switch_the_watchdog_stops_nothing ... ok
+test walk_smalls_tests::lower_tag_is_to_lowercase_and_borrows_when_it_can ... ok
+test walk_smalls_tests::selector_paths_and_segments_are_spelled_as_before ... ok
+test waapi_layer_tests::an_animation_leaves_the_style_attribute_and_observers_alone ... ok
+test waapi_layer_tests::an_opacity_add_clamps_at_one ... ok
+test waapi_layer_tests::dropping_the_animation_name_mid_run_cancels_its_wrapper ... ok
+test web_animations_tests::fill_forwards_holds_the_final_opacity ... ok
+test web_animations_tests::fill_none_reverts_when_finished ... ok
+test waapi_layer_tests::composite_add_and_accumulate_build_on_the_underlying_value ... ok
+test vm_interrupt_tests::a_stopped_listener_is_a_script_error_in_the_inspector ... ok
+test web_font_tests::a_data_uri_fragment_is_not_part_of_the_payload ... ok
+test web_animations_tests::onfinish_and_finish_listeners_fire ... ok
+test web_font_tests::a_local_document_may_read_local_font_files ... ok
+test web_animations_tests::cancel_rejects_finished_and_reverts ... ok
+test web_font_tests::a_remote_document_never_reads_the_local_filesystem ... ok
+test vm_interrupt_tests::a_pure_spin_in_a_timer_is_stopped_within_the_budget_plus_250_ms ... ok
+test waapi_layer_tests::playback_rate_and_reverse_run_the_clock_both_ways ... ok
+test web_font_tests::data_uris_decode_in_both_encodings ... ok
+test web_font_tests::a_select_shows_its_selected_option ... ok
+test web_font_tests::a_declared_web_font_is_the_face_the_text_is_measured_in ... ok
+test waapi_layer_tests::get_animations_lists_css_animations_and_transitions ... ok
+test web_animations_tests::keyframe_shapes_transform_and_controls ... ok
+test web_font_tests::object_position_parses_keywords_percentages_and_lengths ... ok
+test web_font_tests::object_fit_reaches_the_computed_style ... ok
+test web_animations_tests::r4_waapi_finished_clears_the_hero_and_paints_it ... ok
+test web_font_tests::a_none_or_hidden_border_side_has_zero_width_in_either_declaration_order ... ok
+test web_font_tests::line_break_anywhere_fills_the_line_even_under_keep_all ... ok
+test visually_hidden_tests::visually_hidden_boxes_paint_as_chromium has been running for over 60 seconds
+test vm_interrupt_tests::a_pure_spin_in_a_click_listener_cannot_catch_the_stop has been running for over 60 seconds
+test visually_hidden_tests::visually_hidden_boxes_paint_as_chromium ... ok
+test vm_interrupt_tests::a_pure_spin_in_a_click_listener_cannot_catch_the_stop ... ok
+test web_font_tests::br_is_a_forced_line_break_and_an_empty_br_line_has_height ... ok
+test wgate::tests::a_hold_names_its_buckets_and_other_is_what_is_left ... ok
+test wgate::tests::a_hold_names_what_each_stage_took_and_what_nothing_claims ... ok
+test wgate::tests::a_hold_on_the_content_thread_is_not_labelled_as_the_window ... ok
+test wgate::tests::a_hold_under_the_threshold_is_not_reported ... ok
+test wgate::tests::a_nested_bucket_takes_its_time_from_the_one_around_it ... ok
+test wgate::tests::a_relayout_stage_inside_a_bucket_is_not_counted_twice ... ok
+test wgate::tests::a_short_entry_reports_nothing ... ok
+test wgate::tests::every_entry_records_its_name_and_only_a_long_one_is_reported ... ok
+test wgate::tests::latency_summarises_every_hundred_samples_with_nearest_rank_percentiles ... ok
+test wgate::tests::only_the_outermost_entry_reports_and_it_counts_the_nested_stages ... ok
+test wgate::tests::script_turns_are_counted_with_the_longest_and_the_stopped ... ok
+test web_font_format_tests::ttf_woff_and_woff2_faces_paint_their_own_glyphs_after_a_fallback_first_paint ... ok
+test web_font_tests::pointer_events_is_parsed_and_inherited_and_a_child_can_undo_it ... ok
+test web_font_tests::webkit_line_clamp_cuts_a_vertical_webkit_box_after_n_lines ... ok
+test web_font_tests::z_index_reaches_the_layout_box_of_a_positioned_element ... ok
+test web_font_tests::escaped_class_and_id_selectors_match_the_literal_names ... ok
+test web_font_tests::visibility_is_parsed_and_inherited_and_a_child_can_undo_it ... ok
+test web_font_tests::text_overflow_parses_and_is_not_inherited ... ok
+test wheel_routing_tests::a_box_at_its_end_hands_on_to_its_scroller ... ok
+test wgate_engine_tests::a_script_that_writes_the_page_reports_once_as_the_script ... ok
+test wgate_engine_tests::a_script_the_app_runs_on_the_page_is_a_hold ... ok
+test wheel_routing_tests::a_box_that_scrolls_across_only_leaves_a_down_wheel_to_the_window ... ok
+test wgate_engine_tests::a_script_the_app_runs_is_a_script_turn_in_its_hold ... ok
+test wgate_engine_tests::a_draw_the_app_asks_for_is_an_entry ... ok
+test wgate_engine_tests::a_load_hold_names_where_its_time_went ... ok
+test web_font_tests::the_font_shorthand_sets_every_longhand_it_names ... ok
+test wheel_routing_tests::a_gesture_on_the_window_is_not_caught_by_a_box_coming_under_the_pointer ... ok
+test waapi_layer_tests::animation_constructor_and_document_timeline has been running for over 60 seconds
+test waapi_layer_tests::animation_constructor_and_document_timeline ... ok
+test wheel_routing_tests::an_absolute_box_chains_past_a_static_scroller_around_it ... ok
+test web_font_tests::preserved_white_space_keeps_its_edge_spaces_through_box_assembly ... ok
+test wheel_routing_tests::a_diagonal_wheel_stays_on_the_box_that_moves ... ok
+test wheel_routing_tests::at_the_top_going_up_hands_on_too ... ok
+test wheel_routing_tests::nothing_to_move_reports_no_change ... ok
+test wheel_routing_tests::a_held_box_keeps_a_diagonal_step_while_one_axis_can_move ... ok
+test web_font_tests::inherited_text_properties_reach_inline_children ... ok
+test wheel_routing_tests::every_box_at_its_end_hands_on_to_the_window ... ok
+test wheel_routing_tests::the_plain_page_scrolls_the_window ... ok
+test windows_a_leg_pins::a_custom_property_referencing_an_undefined_var_is_invalid ... ok
+test wheel_routing_tests::outside_the_inner_box_the_outer_one_takes_it ... ok
+test wheel_routing_tests::a_box_with_nothing_to_scroll_leaves_it_to_the_window ... ok
+test windows_a_leg_pins::an_unchanged_custom_property_shares_the_parent_map ... ok
+test wheel_routing_tests::a_box_that_scrolls_across_takes_a_wheel_across ... ok
+test wheel_routing_tests::the_wheel_paints_and_fires_scroll_at_the_box ... ok
+test wheel_routing_tests::a_box_stops_at_its_end_and_keeps_the_rest ... ok
+test wheel_routing_tests::the_innermost_box_takes_the_wheel ... ok
+test windows_a_leg_pins::an_inline_svg_with_only_a_viewbox_is_sized_by_its_ratio ... ok
+test windows_a_leg_pins::css_variable_fan_out_is_bounded ... ok
+test windows_a_leg_pins::custom_properties_resolve_on_the_element_that_declares_them ... ok
+test windows_a_leg_pins::css_variables_resolve_including_fallbacks_and_aliases ... ok
+test wheel_routing_tests::overflow_hidden_does_not_take_the_wheel ... ok
+test windows_a_leg_pins::layered_custom_properties_match_a_flat_map_at_every_depth ... ok
+test windows_a_leg_pins::a_page_with_a_self_referencing_variable_lays_out ... ok
+test windows_a_leg_pins::element_scoped_custom_properties_inherit_down_their_subtree ... ok
+test windows_a_leg_pins::background_clip_text_propagates_to_the_text_run ... ok
+test windows_a_leg_pins::checked_sibling_content_follows_the_checkbox_state ... ok
+test windows_a_leg_pins::body_background_propagates_to_the_canvas ... ok
+test wheel_routing_tests::small_steps_add_up ... ok
+test windows_a_leg_pins::a_selector_list_naming_the_root_contributes_custom_properties ... ok
+test windows_a_leg_pins::inline_and_important_custom_properties_follow_the_cascade ... ok
+test wheel_routing_tests::a_gesture_hands_on_when_its_box_is_at_its_end ... ok
+test windows_a_leg_pins::line_height_normal_comes_from_metrics_and_multipliers_scale ... ok
+test windows_a_leg_pins::custom_property_cycles_and_missing_vars_fall_back ... ok
+test windows_a_leg_pins::a_self_referencing_css_variable_falls_back_instead_of_looping ... ok
+
+test result: ok. 100 passed; 0 failed; 0 ignored; 0 measured; 1978 filtered out; finished in 90.65s
+
+### runlist done
+### chunk 0 (35 tests)
+
+running 35 tests
+test windows_a_leg_pins::radial_gradient_positions_parse_to_normalised_centres ... ok
+test windows_engine_pins::a_descendant_selector_sums_the_specificity_of_its_compounds ... ok
+test windows_engine_pins::a_malformed_group_does_not_kill_its_valid_siblings ... ok
+test windows_engine_pins::a_descendant_matches_a_non_adjacent_ancestor ... ok
+test windows_engine_pins::a_descendant_selector_requires_the_ancestor ... ok
+test windows_a_leg_pins::root_custom_properties_reach_the_body ... ok
+test windows_a_leg_pins::text_align_inherits_to_a_block_child ... ok
+test windows_engine_pins::a_percentage_radius_resolves_per_axis ... ok
+test windows_engine_pins::a_rounded_img_clips_its_image_to_the_content_edge_curve ... ok
+test windows_engine_pins::a_fully_transparent_shadow_emits_nothing ... ok
+test windows_engine_pins::a_radius_declaration_reaches_paint_through_the_engine ... ok
+test windows_engine_pins::a_new_document_does_not_inherit_the_previous_external_css ... ok
+test windows_a_leg_pins::whitespace_between_block_siblings_makes_no_boxes ... ok
+test windows_engine_pins::a_shadow_carries_the_corner_radii_of_its_box ... ok
+test windows_engine_pins::the_heading_scale_is_monotonically_decreasing ... ok
+test windows_engine_pins::overlapping_radii_are_reduced_by_one_factor ... ok
+test windows_engine_pins::a_logical_corner_longhand_rounds_its_physical_corner ... ok
+test windows_engine_pins::an_inset_shadow_is_emitted_after_the_background ... ok
+test windows_engine_pins::a_relative_radius_survives_to_paint ... ok
+test windows_engine_pins::a_two_value_corner_longhand_rounds_that_corner ... ok
+test windows_engine_pins::a_shadowed_box_paints_differently_from_an_unshadowed_one ... ok
+test ws_beside_block_replaced_tests::white_space_between_block_level_controls_makes_no_line ... ok
+test windows_engine_pins::an_elliptical_radius_reaches_paint_with_both_axes ... ok
+test windows_engine_pins::the_multi_value_shorthand_rounds ... ok
+test ws_beside_block_replaced_tests::lines_beside_a_block_level_image_are_kept ... ok
+test zero_font_size_tests::text_restored_inside_a_nested_inline_box_gives_the_line_its_height ... ok
+test zero_size_overflow_clip_tests::a_zero_width_overflow_hidden_box_paints_none_of_its_children ... ok
+test zero_size_overflow_clip_tests::a_zero_height_overflow_hidden_box_paints_none_of_its_children ... ok
+test zero_font_size_tests::a_wrapped_inline_block_in_a_link_is_counted_once ... ok
+test windows_engine_pins::the_shadow_is_emitted_before_the_background ... ok
+test zero_size_overflow_clip_tests::a_wide_overflow_hidden_box_still_clips_to_its_padding_box ... ok
+test zero_font_size_tests::a_zero_font_size_is_zero_and_not_sixteen ... ok
+test windows_engine_pins::the_comparison_can_actually_report_a_difference ... ok
+test ws_beside_block_replaced_tests::white_space_between_block_level_images_makes_no_line ... ok
+test windows_a_leg_pins::pseudo_classes_on_an_ancestor_compound_constrain_it ... ok
+
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 2043 filtered out; finished in 18.36s
+
+### runlist done

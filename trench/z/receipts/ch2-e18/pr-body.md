@@ -25,12 +25,11 @@
   - google 1.53%, facebook 45.83% and squarespace 2.21% (rerun) differ only inside the base arm. These are page variants.
   - walmart and microsoft lost loads to timeouts in the first pass. In the rerun they read 0.00% on every pair.
   - cnn timed out on all four loads, as on develop.
-- Headless engine suite (`rustkit-engine --lib --features headless`): **partial, still owed.** Three other seats ran engine suites at the same time, at load 17–25.
-  - The default-thread run was cut at the 50-min limit after 1089 of 2078 tests: 1044 passed, 45 failed.
-  - All 45 failures had printed 'running for over 60 s' (GPU guard / wall clock). On one thread, 43 of them pass.
-  - The other 2 are content_thread load deadlines on pages with no attribute selector: `a_navigation_mid_flight_records_one_cancel_in_the_old_document` (8 s load) and `shutdown_does_not_wait_for_a_spinning_script` (10 s load).
-  - Every selector and attribute test that ran passes, including `ancestor_attribute_tests`, `is_complex_argument_tests`, `id_compound_selector_tests` and `diagnostics_tests::every_invalid_selector_is_an_error`.
-  - The 989 tests the cut run never reached are being run by exact name. Results so far are in the next comment.
+- Headless engine suite (`rustkit-engine --lib --features headless`) at 983e4084: **complete, 2078/2078 accounted for, 0 failures left.** The test binary is the same build for every step.
+  - Pass 1 (20:00 session, load 17–25): a default-thread run, cut at the 50-min limit after 1089 tests, gave 1044 passed and 45 failed. All 45 had printed 'running for over 60 s' (GPU guard / wall clock).
+  - Pass 2: the 989 tests that pass 1 never reached ran by exact name. 20:00 session: 454 run, 18 failed (11 GPU guard, 6 page_script budget/wall-clock, 1 LAT2 spinner cost). 21:10 session (load ≈ 2.5): the other 535 ran, 519 passed, 16 ignored, 0 failed.
+  - Pass 3: all 63 failures from passes 1–2 reran on one thread: 62 passed. `page_script_tests::scripts_are_fetched_while_the_subresources_load` failed once ('script fetch waited for the stylesheet: 12.5 s'), then passed 3/3 alone (4.3 s each). It is a script-fetch timing test, and this PR touches only selector parsing.
+  - Every selector and attribute test passes, including `ancestor_attribute_tests`, `is_complex_argument_tests`, `id_compound_selector_tests` and `diagnostics_tests::every_invalid_selector_is_an_error`.
 
 ## Receipt (`scripts/receipt.py`)
 
@@ -92,3 +91,4 @@
 R1: Prometheus. R2: any non-author.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+

@@ -1,0 +1,82 @@
+### chunk 0 (63 tests)
+
+running 63 tests
+test computed_pseudo_tests::page::a_pseudo_answers_its_own_style_and_inherits_the_rest ... ok
+test computed_read_tests::clip ... ok
+test computed_read_tests::font ... ok
+test computed_read_tests::grid ... ok
+test computed_read_tests::mask ... ok
+test computed_read_tests::object ... ok
+test computed_read_tests::sizing ... ok
+test computed_read_tests::text ... ok
+test computed_read_tests::text_decoration ... ok
+test computed_read_tests::transform ... ok
+test computed_read_tests::transition ... ok
+test consent_click_tests::a_button_that_listens_for_pointerup_only ... ok
+test consent_click_tests::a_closed_shadow_root_retargets_to_its_host_for_the_document ... ok
+test consent_click_tests::a_dialog_centred_with_translate ... ok
+test consent_click_tests::a_fixed_overlay_in_a_zero_size_fixed_container ... ok
+test consent_click_tests::a_fixed_overlay_inside_a_transformed_ancestor ... ok
+test consent_click_tests::a_fixed_overlay_over_a_scrolled_page ... ok
+test consent_click_tests::a_role_button_div_with_a_listener_delegated_to_the_document ... ok
+test consent_click_tests::a_see_through_backdrop_with_a_clickable_dialog ... ok
+test consent_click_tests::an_open_shadow_root_with_a_delegated_listener ... ok
+test consent_click_tests::plain_dom_at_the_end_of_body ... ok
+test console_log::engine_tests::failed_dynamic_imports_stay_quiet_when_the_switch_is_unset ... ok
+test content_thread::tests::a_navigation_mid_flight_records_one_cancel_in_the_old_document ... ok
+test content_thread::tests::a_queued_default_document_does_not_replace_a_newer_navigation ... ok
+test content_thread::tests::a_superseded_navigation_drops_the_late_result ... ok
+test content_thread::tests::a_user_click_keeps_its_origin ... ok
+test content_thread::tests::a_web_page_on_the_content_thread_has_no_app_bridge ... ok
+test content_thread::tests::about_page_script_runs_and_sets_the_version_line ... ok
+test content_thread::tests::an_open_panel_is_woken_when_the_view_records_and_not_otherwise ... ok
+test content_thread::tests::an_open_panel_on_an_idle_page_costs_the_page_no_devtools_commands ... ok
+test content_thread::tests::four_thousand_host_reentries_fit_the_configured_stack_and_the_limit_recovers ... ok
+test content_thread::tests::load_html_fires_domcontentloaded_and_load_after_its_scripts ... ok
+test content_thread::tests::load_html_runs_the_documents_inline_scripts ... ok
+test content_thread::tests::report_page_runs_inline_chart_js_and_its_dom_content_loaded_listener ... ok
+test content_thread::tests::script_navigation_is_reported_with_the_documents_nav_id ... ok
+test content_thread::tests::shutdown_does_not_wait_for_a_spinning_script ... ok
+test content_thread::tests::stop_during_a_held_navigation_fails_as_cancelled_and_keeps_the_shown_page ... ok
+test content_thread::tests::stop_during_a_script_returns_and_a_later_eval_runs ... ok
+test content_thread::tests::the_commit_carries_the_canvas_colour ... ok
+test content_thread::tests::the_first_commit_is_the_laid_out_frame ... ok
+test content_thread::tests::the_inspector_is_answered_on_the_content_thread ... ok
+test content_thread::tests::the_page_is_built_on_the_content_thread_and_events_stay_ordered ... ok
+test content_thread::tests::the_panel_reopens_with_history_marked_by_document ... ok
+test content_thread::tests::the_window_hears_focus_a_script_moved_and_a_new_document_has_none ... ok
+test content_thread::tests::the_window_hears_whether_the_focused_element_is_a_text_field ... ok
+test page_script_tests::a_module_still_running_at_the_budget_is_stopped_at_its_next_host_call ... ok
+test page_script_tests::a_script_still_running_at_the_budget_is_stopped_at_its_next_host_call ... ok
+test page_script_tests::a_sheet_that_misses_the_budget_applies_when_it_arrives ... ok
+test page_script_tests::a_stalled_subresource_is_dropped_at_the_subresource_budget ... ok
+test page_script_tests::runaway_promise_microtask_hits_iteration_limit_and_allows_subsequent_scripts ... ok
+test page_script_tests::scripts_are_fetched_while_the_subresources_load ... FAILED
+test paint_only_animation_tests::a_spinner_on_a_500_box_page_never_relays_out_and_is_cheap ... ok
+test paint_only_animation_tests::lat7_an_unseen_write_in_a_web_animation_frame_still_takes_the_full_path ... ok
+test percent_height_chain_tests::an_explicit_html_height_is_the_root_rect ... ok
+test polygon_transform_tests::a_scaled_ancestor_scales_its_polygons_and_lines ... ok
+test polygon_transform_tests::a_scrolled_page_moves_its_outlines ... ok
+test polygon_transform_tests::a_scrolled_page_moves_its_polygons_and_lines ... ok
+test polygon_transform_tests::an_inline_svg_path_scrolls_with_its_page ... ok
+test polygon_transform_tests::with_no_transform_the_shapes_stay_put ... ok
+test positioned_form_control_tests::a_click_on_a_positioned_field_focuses_it ... ok
+test positioned_form_control_tests::positioned_form_controls_are_placed_as_in_chrome ... ok
+test positioned_paint_order_tests::a_later_positioned_sibling_paints_over_an_earlier_absolute_one ... ok
+test post_onload_requests_tests::requests_made_after_load_are_answered_on_later_short_turns ... ok
+
+failures:
+
+---- page_script_tests::scripts_are_fetched_while_the_subresources_load stdout ----
+
+thread 'page_script_tests::scripts_are_fetched_while_the_subresources_load' (111585085) panicked at crates/rustkit-engine/src/lib.rs:38494:9:
+script fetch waited for the stylesheet: 12.53963375s
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    page_script_tests::scripts_are_fetched_while_the_subresources_load
+
+test result: FAILED. 62 passed; 1 failed; 0 ignored; 0 measured; 2015 filtered out; finished in 110.92s
+
+### runlist done
