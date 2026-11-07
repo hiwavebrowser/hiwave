@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-07 12:34 ET (Atlas): Linux — merged **#105** (S6 sync to 0cb89fbe; Linux adopts the upstream shape memo) and **#106** (I1b Inspector data for WebKit content: DOM tree, selection, console eval) → Linux develop a62900b0. Pollux also posted Windows-verified R1 CLEARs on #976–#979. macOS open PRs = 11 (over the cap of 8): batch 37 takes three; an independent reviewer is on the Z-lane backlog (#981 C8d, #968 E18, #964 E17, #956 E14b, #951 E13b) and the two pin PRs (#958, #980) so batch 38 can clear the cap. #935 stays held for B15.**
+
 > **11-07 12:05 ET (Atlas): batch 36 LANDED #976 (B24 abspos static-position margin) → develop **478cee42** (tree 8ab3b915 = tested); all gates identical to develop + 1 new engine test; 66 PRs since the reset. **Batch 37 launched: #979 + #978 + #977.** Linux: S6 sync #105 and I1b Inspector data #106 → Castor.**
 
 > **11-07 11:45 ET (Atlas): independent R1 — **#977 (E29) CLEAR WITH NITS** (22 probes: develop 22 wrong → 10, none worse; nits: the `clip-path:nonsense(1)` gap pin was dropped, `list-style-image` bad url reads '' not `none`, `background-image: junk(1)` still wipes the sheet image → into E29b), **#978 (LAT1b) CLEAR WITH NITS** (app back/forward/reload start a new visit; engine-only go_back/forward don't — nit), **#979 (#974 test follow-up) CLEAR WITH NITS** (its registry assert is right for hiwave-linux but this repo's rustkit-text has a registry only on macOS — nit: export a `has_webfont_registry` flag). **Batch 37 = #977 + #978 + #979** once batch 36 lands.**
