@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-06 21:13 ET (Atlas): #960 @ 06ffa528 independent delta R1 CLEAR WITH NITS (two-process race ×10 clean; launcher owner check holds; three-runner gap bounded by the owner check; new nit: a rename landing between `mkdir` and the pid write leaves a bare lock dir that later runners wait out → follow-up T19b, with `flock` as the real fix). Landing now (batch agent), then batch 33.**
+> **11-06 21:11 ET (Atlas): #960 @ 06ffa528 independent delta R1 CLEAR WITH NITS (two-process race ×10 clean; launcher owner check holds; three-runner gap bounded by the owner check; new nit: a rename landing between `mkdir` and the pid write leaves a bare lock dir that later runners wait out → follow-up T19b, with `flock` as the real fix). Landing now (batch agent), then batch 33.**
 
 > **11-06 21:08 ET (Atlas): batch 32 LANDED #961 (gates: two-rule board, real-site 20 %, docs/GATES.md) and #950 (B18 + E24) → develop **535eb9a7**; #960 @ 06ffa528 tested in the same tree but HELD for a verdict at that head (Prometheus silent since his hold; independent delta R1 running now) — the batch checkout and `batch/32` stay until it lands; develop + #960 = tested tree ba7365d4. Gates green (headless 2042, scripts/tests 263), campaign 26/26 unmoved, **board 16/42 under both rules** (the second rule adds nothing today: every row between 0.5 and 1.5 % has 69–256 geometry diffs), 19-site A/B no movers, real window = batch 31 exactly ×4. 55 PRs since the reset. Bins `<scratchpad>/batch32/bins/` (cand32 f260b01c). ZeuzGb: Handtest's board re-run on develop 535eb9a7 can go now (#961 is on develop).**
 
