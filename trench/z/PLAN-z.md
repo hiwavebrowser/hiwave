@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-07 05:48 ET (Atlas): Linux — merged hiwave-linux **#100** (L5 per-thread shaping memo aligned to the macOS memo: LAT2 painted frame 168 → 8 ms, chrome creation 3–5 s → ~0.5 s, the Linux spinner-test ignore removed → row L4/LATLX closed; Castor CLEAR @ 29b18edf) → Linux develop f6606796. Talos: a small follow-up for two weak test asserts after it lands, S4 release numbers, and the Linux sync to macOS 5b4371ec is compiling. macOS: batch 34 is in its real-window flaky reruns; develop still 5b4371ec.**
+> **11-07 05:47 ET (Atlas): Linux — merged hiwave-linux **#100** (L5 per-thread shaping memo aligned to the macOS memo: LAT2 painted frame 168 → 8 ms, chrome creation 3–5 s → ~0.5 s, the Linux spinner-test ignore removed → row L4/LATLX closed; Castor CLEAR @ 29b18edf) → Linux develop f6606796. Talos: a small follow-up for two weak test asserts after it lands, S4 release numbers, and the Linux sync to macOS 5b4371ec is compiling. macOS: batch 34 is in its real-window flaky reruns; develop still 5b4371ec.**
 
 > **11-07 04:56 ET (Atlas): **#972 delta R1 CLEAR @ 995c9b27** (34 probes; every surviving declaration matches Chromium 148; the 12 remaining differences are the bindings fallback gap (E29), the disclosed `\)` unescape, and four already wrong on develop). Batch 34 lands all three. E29 gets the reviewer's nit too: a bad inline `background-image` clears a stylesheet's image where Chromium keeps it — fall back to the cascaded value, not the inline text. Linux: Talos's **#100** (L5 per-thread shaping memo: LAT2 frame 168 → 8 ms, chrome creation 3–5 s → ~0.5 s, spinner test passes on Linux) → Castor/Argos R1.**
 
