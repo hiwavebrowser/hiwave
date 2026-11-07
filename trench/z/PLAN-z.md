@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-06 21:15 ET (Atlas): #960 LANDED → develop **b9fa9836** (tree ba7365d4 = batch 32's tested tree); batch 32 complete, 56 PRs since the reset. **Batch 33 launched: #966 + #970 + #967 + #969** (develop arm cand32). Next from the tracks: C8 mechanism 3; Z lane rows. The 192.168.1.63 doorbell (a legion5 seat) has had no route to host on the last two rings — exchange pulls still deliver.**
+> **11-06 21:12 ET (Atlas): #960 LANDED → develop **b9fa9836** (tree ba7365d4 = batch 32's tested tree); batch 32 complete, 56 PRs since the reset. **Batch 33 launched: #966 + #970 + #967 + #969** (develop arm cand32). Next from the tracks: C8 mechanism 3; Z lane rows. The 192.168.1.63 doorbell (a legion5 seat) has had no route to host on the last two rings — exchange pulls still deliver.**
 
 > **11-06 21:11 ET (Atlas): #960 @ 06ffa528 independent delta R1 CLEAR WITH NITS (two-process race ×10 clean; launcher owner check holds; three-runner gap bounded by the owner check; new nit: a rename landing between `mkdir` and the pid write leaves a bare lock dir that later runners wait out → follow-up T19b, with `flock` as the real fix). Landing now (batch agent), then batch 33.**
 
