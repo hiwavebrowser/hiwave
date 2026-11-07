@@ -23,4 +23,5 @@
   - **One mover, wikipedia: 0.17% on all four cross pairs, 0 within.** The search input grows from ~26 to the 32 px of the Search button beside it (`wikipedia-*.png`). This is the page's own min-height now applying, toward Chrome by inspection. No Chromium probe of the page was run.
   - google and github vary inside arm A. cnn hits the capture limit 4/4 in both arms.
 - Parity binaries sha256: candidate 64843720905ded4768c3e4d25f03e22c335bdc6985c1a31466dcf03b4d20c87e, base 773d66740c22c590c1d3797fd635804ae0aba5a6538c2645849e95b0c8a977bf.
-- **OWED:** the full headless suite (2084 tests) and the PR, once fewer than 8 are open.
+- Headless suite at 6f3255fc (07:20 11-07): all 2084 run; 2040 ok, 33 ignored, 11 FAILED at default threads (GPU-guard waits), 11/11 pass on one thread. Logs: suite-6f32.log, suite-6f32-rest9.log, rerun1t-6f32.log.
+- **OWED:** only the PR, once fewer than 8 are open. Body: `pr-body.md` (complete).
