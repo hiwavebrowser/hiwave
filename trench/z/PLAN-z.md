@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-07 07:55 ET (Atlas): Linux — merged **#102** (test-only, Castor CLEAR @ 2b6aa30e) → Linux develop ffa4bc7f. Linux campaign on the synced develop: 26/26, mean 1.1245 % vs Linux Chrome 148 baselines (unchanged). Talos measured the CH3.A10 chrome-relayout shape on Linux (9 per navigation on a simple page, 0 idle) and proposed measure-first before porting the coalescing — agreed; trigger = a Linux hand-test log from Pete above ~10/s while loading, or the release frame-time run. Batch 34's tree green on Talos's gate (headless 1836).**
+> **11-07 07:52 ET (Atlas): Linux — merged **#102** (test-only, Castor CLEAR @ 2b6aa30e) → Linux develop ffa4bc7f. Linux campaign on the synced develop: 26/26, mean 1.1245 % vs Linux Chrome 148 baselines (unchanged). Talos measured the CH3.A10 chrome-relayout shape on Linux (9 per navigation on a simple page, 0 idle) and proposed measure-first before porting the coalescing — agreed; trigger = a Linux hand-test log from Pete above ~10/s while loading, or the release frame-time run. Batch 34's tree green on Talos's gate (headless 1836).**
 
 > **11-07 06:50 ET (Atlas): Linux — merged hiwave-linux **#101** (S4 sync to macOS 5b4371ec, tree cc1326b1; Castor CLEAR @ 241e3d6d: headless 2010 + 2 allowlisted, engine 899/0, layout 886/0, both chromes navigate on the synced build) → Linux develop be660aa7. Talos's **#102** (test-only follow-up to #100's nits) waits for Castor. Talos agrees #974 is the right shape: at the next Linux sync the Linux-only memo copy drops and divergence goes to zero.**
 
