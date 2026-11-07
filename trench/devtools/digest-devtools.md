@@ -1100,3 +1100,20 @@ Blockers: PR cap.
 4. Next open rows: T23, then T26 (Friday-night recording), then T27.
 
 Blockers: PR cap.
+
+
+## 2026-11-06 19:31 devtools T23
+
+**T23 (`r1_cases` outruns the GPU guard): open → in-progress → blocked on the PR cap only.** T12 was skipped as before (Atlas's real-window row). Before: `computed_read_tests::r1_cases` held the GPU test guard **150.4 s** alone, past the 120 s limit, so 11 unrelated GPU tests behind it timed out in every full run (some lanes now pass `--skip computed_read_tests::r1_cases`). After: `atlas/dt-t23-r1-split` @ **9060ae10** (red **e3835054**, base develop 0da5827a). Test-only, one file.
+- **Hold check:** a part fails at half of `MAX_WAIT` (60 s) and names itself. The clock starts once the guard is taken, so queue time is not counted. My first green run made that mistake and failed two parts on queue time.
+- **Split:** 16 parts of 8 cases, dealt round-robin. Contiguous chunks put the three 300-node loops (cases 112–114) in one part, and that part failed in the full run at load 18–24. Max hold is now **14.4 s** at load 17.5. An engine-free pin checks the parts cover the JSON exactly.
+- **Proof:** computed_read **39/0**. **Campaign 26/26, mean 1.073%.** Partial full `--lib` run, 664 of 2092 results at load 13–24, stopped at the cap: **0 guard timeouts**, and all 11 named victims ok. There were 27 content_thread failures; the module passes 48/0 alone, so they are the wall-clock class.
+- Receipt and PR body: `receipts/T23-r1-split-9060ae10.md`. `dt-t23-1840` removed with done-task.sh.
+
+**For Atlas:**
+1. Open the T23 draft PR when the cap allows (10 open; T16, T17, T18, T20 and T21 are waiting too).
+2. **Owed:** one complete full `--lib` run at 9060ae10 with 0 guard timeouts. Other lanes' engine suites kept load at 13–24, the run managed about 116 tests per 10 min, and this session could not finish it.
+3. Other long guard holders may still be there: the grid block-axis test was about 100 s in October. It was not measured here. The new `within_half_the_gpu_guard` helper can be used on it if you want a row.
+4. Next open rows: T26 (the Friday-night recording, tonight), then T27 and T21b, which are owned by an Atlas agent.
+
+Blockers: PR cap.
