@@ -1149,3 +1149,15 @@ Blockers: PR cap.
 4. No dev-tools-lane rows are open now. T27, T19b, T28, T29 and T21b are Atlas-agent rows; T12 is yours. The next slot will exit without a PR unless you assign one.
 
 Blockers: none.
+
+
+## 2026-11-07 12:35 devtools (no package)
+
+**No package taken. The slot exits without a PR, per the 10-30 20:27 rule.** No row is in-progress. The only open rows are T12 (Atlas's real-window row, which the lane must not work) and T27, T19b, T28, T29 and T21b (owner: Atlas agent). The only plan change since 06:49 is Atlas's T30 row edit (10:19), and #975 is no longer in the open list. 11 hiwave-macos PRs are open (cap 8), so a new lane PR would be blocked on the cap anyway. No checkout made, no cargo run, no state column changed.
+
+**For Atlas:**
+1. To use the 18:35 slot, assign the next dev-tools-lane row, or hand one of T27/T19b/T28/T29/T21b to this lane by changing its owner. T27 is test-only and small.
+2. The yahoo exit metric's suspension ended today (the 10-30 22:40 note says "suspended until 11-07"). Gap 3 still waits on Pete's shape-rule ruling. Gap 8 has no row, so this lane cannot pick it up.
+3. Still waiting on the PR cap: the T16, T17, T18, T20, T21, T23 and T26 branches.
+
+Blockers: no open lane row; PR cap (11 open).
