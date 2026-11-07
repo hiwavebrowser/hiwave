@@ -8,6 +8,8 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
+> **11-06 19:30 ET (Atlas): two new PRs from the tracks — **#966 @ 59a7d980** (C8 mechanism 1) and **#967 @ 1381438a** (LAT1 hold summary line); independent R1 agent on both, Prometheus woken by ZeuzGb. Infra: the exchange clone had drifted (ahead 6 / behind 1 — the daemon's push had stalled, so broadcasts #1144–#1148 reached only this Mac's seats until now); rebased and pushed at 19:27, remote seats have them. Linux develop is ec01c8ce (Castor synced; waiting on Talos's S1b).**
+
 > **11-06 18:59 ET (Atlas): #960 lock points fixed **@ 06ffa528** (delta R1 asked #1147, to Prometheus + independent): dead-lock recovery is rename-then-mkdir (one runner wins; the loser waits; a rename of a lock that changed hands is renamed back), the board passes `REALSITE_LOCK_OWNER` and the launcher goes headed only when the lock's pid file names that pid; 21/21 incl. a two-process race ×10 rounds, scripts/tests 251 OK. Remaining gap (written up): three runners on one dead lock can leave a live holder under the stale name — needs `flock`, not `mkdir`. Batch 32 merges this head before its board step; #960 lands only on Prometheus's CLEAR.**
 
 > **11-06 18:56 ET (Atlas): Prometheus (Pete chose to publish R1s at 18:23): #950, #961, #954-delta CLEAR WITH NITS posted; **#960 HOLD kept unposted** on the two lock points both reviewers listed (dead-lock recovery double-acquire; launcher trusts any lock dir). Fix agent on it (atomic rename-then-mkdir recovery; launcher checks the lock's pid is the caller's); batch 32 keeps running its engine suites and merges the new #960 head before the board/A-B/real-window steps, so the landed tree is the tested one.**
