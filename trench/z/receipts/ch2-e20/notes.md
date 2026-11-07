@@ -26,3 +26,15 @@
 - Candidate parity binary sha256 b9f337a3b67c4098ecff98c8293068deb368da7b57be0c6afd685330835d5aeb (base 32c315ae…, in `gates.log`).
 - Crate suites (`crates-summary.txt`): layout 906/0, bindings 479/0, engine lib 772/0.
 - Headless engine suite: **partial**. It ran under the live A/B, and I stopped it at the session cap after 676 ok + 33 FAILED. All 33 had printed 'running for over 60 s' (117 such lines), and all 33 pass on one thread (`suite-failed-1thread.log`, 58 s). The rest of the 2079 tests are owed.
+
+## 2026-11-07 00:05-02:00 session: suite finished at 6567bb68, regression found and fixed (fb58dc8e)
+- Headless suite (`rustkit-engine --lib --features headless`, test binary rustkit_engine-0bcc04c2cb80b63e) at 6567bb68, all 2079 tests, in 200-test exact-name chunks (`runlist.py`), load 2-13:
+  - chunks 0-6 (1400 tests): 1360 ok, 23 FAILED, 17 ignored. 22 failures were GPU-guard waits ('waited 120s for computed_read_tests::r1_cases'); 1 was a real assertion.
+  - chunks 7-10 (679 tests, run in a new worktree `z-ch2-e20b` after `z-ch2-e20` was deleted from under the run at ~00:50 by another process): 661 ok, 1 FAILED, 16 ignored.
+  - all 24 failures rerun on one thread (`rerun1t.log`): 22 ok, 2 FAILED.
+- The two left (`abtwo.log`, 3 rounds alternating develop b9fa9836 / 6567bb68, one thread, load ~13):
+  - `vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget`: develop 1/3 pass, E20 0/3 ('the load took 2.3 s'). It fails on develop too: a debug-profile timing test under load, not this change.
+  - **`load_cancel_tests::a_subresource_answered_after_the_cancel_changes_nothing`: develop 3/3 pass, E20 3/3 FAIL** (`!engine.is_image_cached(/held/b.jpg)`). A REAL REGRESSION.
+- Cause: a cancel during the load stops `load_external_stylesheets_slotted` before it records `sheet_urls_seen`. The first live turn then takes the markup sheet for an inserted one, fetches it, restyles the stopped page and starts its images.
+- Fix fb58dc8e: `load_cancelled` marks every stylesheet link the stopped document holds as requested; links inserted after the stop are still fetched. 23/23 load_cancel / inserted_link / late_sheet / stylesheet tests pass on one thread (`fix-run.log`). The red for this fix is the existing load_cancel test failing at 6567bb68 (`abtwo.log`).
+- OWED at fb58dc8e: the full headless suite (partial run in `suite-results.txt`), the 26-case campaign, and the live A/B (the change acts only after a cancel, which no capture does, so no pixel move is expected; it still has to be run).

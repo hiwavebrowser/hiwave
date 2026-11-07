@@ -1,0 +1,80 @@
+== suite.log
+### chunk 0 (200 tests)
+test result: ok. 197 passed; 0 failed; 3 ignored; 0 measured; 1879 filtered out; finished in 293.02s
+### chunk 1 (200 tests)
+test consent_click_tests::a_dialog_centred_with_translate ... FAILED
+test computed_read_tests::transition ... FAILED
+test computed_read_tests::sizing ... FAILED
+test computed_read_tests::text_decoration ... FAILED
+test computed_read_tests::transform ... FAILED
+test computed_read_tests::object ... FAILED
+test computed_read_tests::text ... FAILED
+test consent_click_tests::a_button_that_listens_for_pointerup_only ... FAILED
+test consent_click_tests::a_fixed_overlay_in_a_zero_size_fixed_container ... FAILED
+test consent_click_tests::a_fixed_overlay_inside_a_transformed_ancestor ... FAILED
+test consent_click_tests::a_closed_shadow_root_retargets_to_its_host_for_the_document ... FAILED
+test consent_click_tests::a_fixed_overlay_over_a_scrolled_page ... FAILED
+test consent_click_tests::a_role_button_div_with_a_listener_delegated_to_the_document ... FAILED
+test consent_click_tests::a_see_through_backdrop_with_a_clickable_dialog ... FAILED
+test consent_click_tests::an_open_shadow_root_with_a_delegated_listener ... FAILED
+test consent_click_tests::plain_dom_at_the_end_of_body ... FAILED
+test container_query_tests::container_query_answers_with_the_laid_out_width_not_the_style_width ... FAILED
+test console_log::engine_tests::failed_dynamic_imports_stay_quiet_when_the_switch_is_unset ... FAILED
+test console_log::engine_tests::logs_the_specifier_url_and_reason_of_a_failed_dynamic_import ... FAILED
+test console_log::engine_tests::stays_quiet_when_the_switch_is_unset ... FAILED
+test console_log::engine_tests::logs_navigation_fetches_and_a_large_removal ... FAILED
+test console_log::engine_tests::mirrors_console_exceptions_rejections_and_inserted_scripts ... FAILED
+test result: FAILED. 174 passed; 22 failed; 4 ignored; 0 measured; 1879 filtered out; finished in 458.44s
+### chunk 2 (200 tests)
+test result: ok. 199 passed; 0 failed; 1 ignored; 0 measured; 1879 filtered out; finished in 343.53s
+### chunk 3 (200 tests)
+test result: ok. 198 passed; 0 failed; 2 ignored; 0 measured; 1879 filtered out; finished in 545.22s
+### chunk 4 (200 tests)
+test result: ok. 198 passed; 0 failed; 2 ignored; 0 measured; 1879 filtered out; finished in 314.52s
+### chunk 5 (200 tests)
+test load_cancel_tests::a_subresource_answered_after_the_cancel_changes_nothing ... FAILED
+test result: FAILED. 196 passed; 1 failed; 3 ignored; 0 measured; 1879 filtered out; finished in 643.18s
+### chunk 6 (200 tests)
+test result: ok. 198 passed; 0 failed; 2 ignored; 0 measured; 1879 filtered out; finished in 219.77s
+### chunk 7 (200 tests)
+== suite2.log
+### chunk 0 (200 tests)
+test result: ok. 196 passed; 0 failed; 4 ignored; 0 measured; 1879 filtered out; finished in 227.06s
+### chunk 1 (200 tests)
+test result: ok. 191 passed; 0 failed; 9 ignored; 0 measured; 1879 filtered out; finished in 210.11s
+### chunk 2 (200 tests)
+test vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget ... FAILED
+test result: FAILED. 196 passed; 1 failed; 3 ignored; 0 measured; 1879 filtered out; finished in 392.55s
+### chunk 3 (79 tests)
+test result: ok. 79 passed; 0 failed; 0 ignored; 0 measured; 2000 filtered out; finished in 95.52s
+### runlist done
+== suite-fb58.log
+### chunk 0 (200 tests)
+test result: ok. 197 passed; 0 failed; 3 ignored; 0 measured; 1879 filtered out; finished in 343.05s
+### chunk 1 (200 tests)
+test computed_read_tests::transition ... FAILED
+test consent_click_tests::a_fixed_overlay_over_a_scrolled_page ... FAILED
+test consent_click_tests::a_button_that_listens_for_pointerup_only ... FAILED
+test consent_click_tests::a_fixed_overlay_in_a_zero_size_fixed_container ... FAILED
+test computed_read_tests::object ... FAILED
+test consent_click_tests::a_role_button_div_with_a_listener_delegated_to_the_document ... FAILED
+test computed_read_tests::sizing ... FAILED
+test computed_read_tests::text ... FAILED
+test computed_read_tests::transform ... FAILED
+test consent_click_tests::a_fixed_overlay_inside_a_transformed_ancestor ... FAILED
+test computed_read_tests::text_decoration ... FAILED
+test result: FAILED. 185 passed; 11 failed; 4 ignored; 0 measured; 1879 filtered out; finished in 219.25s
+### chunk 2 (200 tests)
+test result: ok. 199 passed; 0 failed; 1 ignored; 0 measured; 1879 filtered out; finished in 254.69s
+### chunk 3 (200 tests)
+test frame_commit_tests::a_noop_represent_keeps_the_held_commit ... FAILED
+test gap_shorthand_tests::gap_with_one_value_sets_both_and_a_bad_value_sets_neither ... FAILED
+test frame_commit_tests::an_input_is_measured_by_the_frame_that_shows_it_and_a_fruitless_one_is_dropped ... FAILED
+test form_submit_tests::unnamed_disabled_and_unchecked_controls_do_not_submit ... FAILED
+test frame_commit_tests::a_destroyed_view_drops_its_commit ... FAILED
+test frame_commit_tests::a_scroll_commits_the_offset_and_shares_the_list ... FAILED
+test grid_fixed_track_tests::a_fixed_row_does_not_grow_to_fit_a_taller_item ... FAILED
+test frame_commit_tests::a_commit_outlives_the_page_side_and_is_drawn_without_it ... FAILED
+test gap_shorthand_tests::gap_with_two_values_sets_the_row_gap_then_the_column_gap ... FAILED
+test glyph_atlas_overflow_tests::a_frame_that_fills_the_atlas_draws_its_earlier_text_right ... FAILED
+test grid_fixed_track_tests::a_fixed_column_does_not_grow_to_fit_its_text ... FAILED

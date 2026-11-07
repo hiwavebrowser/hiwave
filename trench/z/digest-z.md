@@ -5235,3 +5235,21 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Next session:** run the rest of the E20 headless suite by exact name. Open the PR once the open count is under 8.
 - **Blockers:** the PR cap (11 open of 8). B18 and B19 are unchanged.
 - **Process:** a change that acts only on live turns needs `ab5_live.py`; ab5.py captures at the end of the load. Aleph not used (no Aleph tools in this seat).
+
+
+## 2026-11-07 02:00 Z-lane CH2.E20 (suite finished → regression found → fix fb58dc8e, no PR: cap)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due (Prometheus's). I finished the suite the 22:45 session left owed on CH2.E20, as that entry said to.
+- **Headless suite at 6567bb68: complete, all 2079 tests run.**
+  - Default threads, 200-test exact-name chunks: 2021 ok, 24 FAILED, 33 ignored.
+  - On one thread, 22 of the 24 pass (they were GPU-guard waits).
+  - `vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget` also fails on develop b9fa9836 (1 of 3 passes there; 'the load took 2.3 s' in a debug build at load 13), so it is not this change.
+  - **`load_cancel_tests::a_subresource_answered_after_the_cancel_changes_nothing` is a real E20 regression:** 3/3 fail on 6567bb68 against 3/3 pass on develop.
+    - Cause: a cancel during the load returns before `sheet_urls_seen` is recorded. The live loop then fetches the stopped page's markup sheet as if a script had inserted it, restyles the page and starts its images.
+- **Fix → `atlas/z-ch2-e20-inserted-link` @ fb58dc8e** (fast-forward on top of 6567bb68). `load_cancelled` now marks every link the stopped document holds as requested. Links inserted after the stop are still fetched.
+  - 23/23 load_cancel / inserted_link / late_sheet / stylesheet tests pass.
+  - The red is the existing test at 6567bb68 (`receipts/ch2-e20/abtwo.log`).
+- **No PR:** 9 hiwave-macos PRs are open against the cap of 8. Batch 33 landed (develop 5b4371ec), which brought it down from 13.
+- **Owed at fb58dc8e:** the full headless suite. A partial run, cut at the cap, covered chunks 0–2: 581 ok and 11 FAILED, all in chunk 1, the same computed_read/consent_click group, not yet rerun on one thread. The regressed test passed 3/3 at fb58dc8e on one thread at load 12 (`fix-rerun*.log`). Run chunks 3–10 by exact name next (`suite-results.txt`), the 26-case campaign, and the live A/B (`tools/ab5_live.py`). Then rebase onto develop if the PR shows conflicts, and open the PR with `receipts/ch2-e20/notes.md` as the body source.
+- **Incident:** worktree `z-ch2-e20`, and the base worktree `z-base-b9fa9836` beside it, were deleted by another process at about 00:50 while this session's suite was running from them. The 00:50 hub commit is the devtools lane's T26 wrap-up, so a wrap-up cleanup is the likely cause, but that is not confirmed. The branch was pushed, so nothing was lost; the run continued in a new worktree, `z-ch2-e20b`. **Lanes should delete only the worktrees they made.** `z-ch2-e20b` and `z-e20-base` are KEPT for the owed gates.
+- **Stop rule:** this is the second session on E20 with no landed receipt. The work is not blocked, though: the gates owed are known and the cap is the only reason there is no PR. If the next session also ends without a PR, set E20 to blocked with the decision packet "PR cap; gates at fb58dc8e done".
+- Receipts: `receipts/ch2-e20/` (receipt-6567bb68.md, suite-results.txt, rerun1t.log, abtwo.log, fix-run.log, notes.md). Aleph not used (no Aleph tools in this seat).

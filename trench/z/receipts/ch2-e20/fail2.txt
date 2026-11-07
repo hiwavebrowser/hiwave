@@ -1,0 +1,1 @@
+vm_interrupt_tests::a_pure_spin_in_a_load_script_is_stopped_at_the_load_budget
