@@ -44,7 +44,7 @@ Row CH2.B18c in `trench/z/PLAN-z.md` (hub `atlas/z`). Base develop 3b4561e3. Red
 - Crate suites at cfb8e2b5:
   - rustkit-layout lib 907/0;
   - headless engine `input|control|textarea|form` filter 220/0 (3 ignored).
-- Headless engine suite at cfb8e2b5: @@SUITE@@
+- Headless engine suite at cfb8e2b5: **complete, all 2088 tests (2000 ok, 33 ignored, 55 FAILED at default threads in 4953 s, load 13-19, with another seat's engine suite running beside it).** 42 of the 55 are GPU-guard waits behind `computed_read_tests::r1_cases`; the other 13 (content_thread, css_animations, console_log) are load timeouts and unwraps in the same window. **All 55 pass by exact name on one thread** (`rerun55-1t-cfb8e2b5.log`, 55/55 in 69 s).
 
 Receipts: hub `trench/z/receipts/ch2-b18c/`.
 

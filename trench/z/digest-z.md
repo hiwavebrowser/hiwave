@@ -5288,3 +5288,22 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - A/B: four small movers, 0 within each arm (bing 0.12%, netflix 0.08%, x 0.07%, wikipedia 0.02%). They are in input-shaped regions; I have not checked their direction against Chromium.
   - **Owed:** a Chromium look at the movers, the engine form filter and the full headless suite, `e22_focus_ring` in the real window, then the PR. Worktrees are KEPT.
 - **Blockers:** the PR cap. 8 are open (8 allowed). E20, B17b and B18c are all waiting for slots. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 10:45 Z-lane CH2.B18c (owed gates → second fix → blocked: cap)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules. No receipt step was due (that is Prometheus's). I0's Z items are all on develop, and the 11-04 order puts the lane on CH2 rows, so this session resumed B18c, the row the 07:50 session left in progress.
+- **Chromium look at the movers found a regression in 468544a4**, now fixed at **cfb8e2b5** (second red pin 01f3ffde; branch `atlas/z-ch2-b18c-input-border-width`, base develop 3b4561e3).
+  - 468544a4 painted the top side's width on all four sides, so an input with `border: 1px solid; border-top: 0` lost its whole frame. Chromium keeps three sides; develop painted all four.
+  - Now the frame follows the author only when the four sides agree, and widths snap as in Chromium (0.05em → 1, 2.5px → 2).
+  - Mixed sides keep develop's frame. Real per-side frames need a TextInput command change: **a new row is wanted** (Atlas to place).
+- **Before → after, by Chromium:**
+  - The reduced page of 15 border forms matches Chromium on every uniform form: `border:0`, `width:0 solid`, `thin`, `medium` → 3, `3px`, rem/calc/var.
+  - develop wrongly framed `border:0`: our `border` shorthand leaves the side styles set, so the old `style == none` test never fired.
+  - The e22 fixture at rest: red border pixels 1196 → 41600, and Chromium has 41600.
+- **The four A/B movers are confirmed toward Chrome.**
+  - wikipedia hide/move buttons are `0px none` in Chromium; netflix's select and email input are `0px solid`.
+  - bing and x lose an inner rectangle drawn inside a rounded search/login box.
+  - At cfb8e2b5 they have the same values as at 468544a4.
+- **Gates at cfb8e2b5:** campaign 26/26 (css-selectors 12767 → 12561, identical to 468544a4); layout 907/0; headless form filter 220/0. Suite: **complete, all 2088 tests (2000 ok, 33 ignored, 55 FAILED at default threads in 4953 s, load 13-19, with another seat's engine suite running beside it).** 42 of the 55 are GPU-guard waits behind `computed_read_tests::r1_cases`; the other 13 (content_thread, css_animations, console_log) are load timeouts and unwraps in the same window. **All 55 pass by exact name on one thread** (`rerun55-1t-cfb8e2b5.log`, 55/55 in 69 s).
+- **Not run:** the window half of `e22_focus_ring`. It needs Accessibility and Screen Recording, which this seat does not have.
+- **BLOCKED (stop rule, second session; PR cap 9/8).** Decision packet: open the PR from `receipts/ch2-b18c/pr-body.md` (complete) when a slot frees, after E20 and B17b. All gates are in, so worktrees z-ch2-b18c and z-base-3b4561e3 are removed. Receipts and the probe page are in `receipts/ch2-b18c/`.
+- Aleph not used (no Aleph tools in this seat).
