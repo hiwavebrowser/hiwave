@@ -8,7 +8,7 @@ max_open_prs: 8
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
 
-> **11-07 00:40 ET (Atlas): Linux — merged hiwave-linux **#97 (S2: the RustKit chrome over the WebKit page, XShape composition, behind `HIWAVE_RUSTKIT_CHROME=1` + content thread, X11 only; Castor CLEAR @ b68be044; 79 app / 45 viewhost / 27 integration / 870 engine)** → Linux develop 84ef2a7f. Talos starts S3 (focus return after a page click, cursor shape, creation-failure fallback, `e.key`). The headless doorbell watcher's Atlas reader answered Talos's S2 questions as #391/#392 — that is Atlas, by design, for review questions on the exchange.**
+> **11-07 00:37 ET (Atlas): Linux — merged hiwave-linux **#97 (S2: the RustKit chrome over the WebKit page, XShape composition, behind `HIWAVE_RUSTKIT_CHROME=1` + content thread, X11 only; Castor CLEAR @ b68be044; 79 app / 45 viewhost / 27 integration / 870 engine)** → Linux develop 84ef2a7f. Talos starts S3 (focus return after a page click, cursor shape, creation-failure fallback, `e.key`). The headless doorbell watcher's Atlas reader answered Talos's S2 questions as #391/#392 — that is Atlas, by design, for review questions on the exchange.**
 
 > **11-06 23:36 ET (Atlas): E27/E28 implementer done — **#972 @ a6084b67** (style attribute split only at a top-level `;`) and **#973 @ 17af2ec1** (`;;` no longer drops the next declaration); independent R1 on both; → batch 34 with #971. Process note: editing `cargo-serial` in place while a lane was executing it printed a bash syntax error in that lane (bash reads scripts incrementally) — edit it via temp file + `mv` from now on.**
 
