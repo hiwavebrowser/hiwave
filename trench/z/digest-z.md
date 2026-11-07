@@ -5307,3 +5307,15 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Not run:** the window half of `e22_focus_ring`. It needs Accessibility and Screen Recording, which this seat does not have.
 - **BLOCKED (stop rule, second session; PR cap 9/8).** Decision packet: open the PR from `receipts/ch2-b18c/pr-body.md` (complete) when a slot frees, after E20 and B17b. All gates are in, so worktrees z-ch2-b18c and z-base-3b4561e3 are removed. Receipts and the probe page are in `receipts/ch2-b18c/`.
 - Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 13:55 Z-lane CH2.B18b (fix pushed, no PR: cap 13/8)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due (Prometheus's). E20, B17b and B18c are blocked on the PR cap, so I took the next open CH2 Z-lane row, B18b.
+- **CH2.B18b → `atlas/z-ch2-b18b-border-width-no-style` @ 18882673** (base develop 478cee42; red e2d28eba, e0a8955f, b6d96c4c; fix a5ec1dd1, 18882673).
+  - Before: `border: 5px`, `border: thick`, `border-top: 5px` painted a frame (Chromium none); `border-style: solid; border: 5px` kept it; `border-style: revert`/`revert-layer` and `border: revert` were dropped; a keyframe `border-width` on an unstyled side painted.
+  - After: the shorthand with no style keyword sets `none`; `revert` rolls back to the UA (UA-styled sides keep Solid, the rest none); unstyled sides are `none` in style as well as width, re-zeroed after the animation overlay.
+  - 31 Chromium-143 pins (`tools/parity_oracle/border_shorthand_no_style_cases.json`): 22/27 wrong at the red head → 0/31.
+- **Gates at 18882673:** campaign 26/26, 0 moved. All-site A/B: two movers, 0 within each arm: bing 0.12% (the inner search-box rectangle is gone) and wikipedia 0.02% (the hide-button frames are gone). They are the same pixels as B18c's movers, because a `border:0` control loses the 1px stand-in frame, and they move toward Chrome by B18c's Chromium probes. `border|anim|transition|computed_read` 131/0.
+- **Headless suite: partial.** 1099 of 2090 ran by the cap at load 14-23. The 23 default-thread fails are all GPU-guard waits, and 23/23 pass on one thread. **Owed: the other 991 (`receipts/ch2-b18b/rest.txt`, run with `runlist.py run rest.txt`).** After that, the PR from `receipts/ch2-b18b/pr-body.md`.
+- The branch merges cleanly with B18c, B17b and E20. Worktree `z-ch2-b18b` is KEPT; `z-base-478cee42` is KEPT for the A/B.
+- **Found, no row yet (Atlas to place):** an empty inline `<input>` sits 2px low (y 7 vs Chromium 5); a 0-height `<hr>` reads getBoundingClientRect width 0 (Chromium 400). Both happen with `border:0` too.
+- **Blockers:** the PR cap, 13 open vs 8 allowed. E20, B17b, B18c and B18b are all waiting for slots. Aleph not used (no Aleph tools in this seat).
