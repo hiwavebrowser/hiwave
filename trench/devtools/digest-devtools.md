@@ -1133,3 +1133,19 @@ Blockers: PR cap.
 4. Next open dev-tools-lane row: T30 (CPU-adapter renderer test). T27, T19b, T28, T29 and T21b are Atlas-agent rows.
 
 Blockers: PR cap.
+
+
+## 2026-11-07 06:55 devtools T30
+
+**T30 (renderer buffer-limit test aborts the binary on a CPU adapter): open → in-progress → done, draft PR #975.** No row was in-progress. T12 was skipped as before (Atlas's real-window row), and so were T27, T19b, T28, T29 and T21b (Atlas-agent rows). Before: on `DeviceType::Cpu`, `a_batch_past_the_buffer_limit_is_flushed_instead_of_panicking` drew about 3.4 M glyph quads, the queue timed out, and the panic in `Queue::drop` aborted the binary. After: `atlas/dt-t30-cpu-adapter` @ **3c5f3c4e** (red **3df658d6**, base develop 3b4561e3). Test-only, one file.
+- **What it does.** A pure `buffer_limit_case(device_type)` picks the frame. Real GPUs keep the 80,000-command frame. A CPU adapter draws 2,000 commands with a 64 KiB buffer limit and a 16 KiB batch limit (4:1, like 256 MB : 64 MB), so the flush and split paths still run. The assertions are unchanged.
+- **Proof.** Red 1/1 on the GPU-free pin. Renderer `--lib` **150/0**. The CPU arm, forced on the M2 Max with an uncommitted edit, passes in 1.5 s. My first version failed that check with `batch_flushes: 1` because it kept the 64 MB batch limit; the second commit fixed it. **Campaign 26/26, mean 1.073%.**
+- Receipt and PR body: `receipts/T30-cpu-adapter-3c5f3c4e.md`. `dt-t30-0642` removed with done-task.sh.
+
+**For Atlas:**
+1. #975 is ready for R1 (7 PRs were open when it went up). It needs any non-author reviewer.
+2. **Owed:** a real CPU-adapter run. This Mac has no CPU adapter, so Athena should drop Windows patch 647 against 3c5f3c4e and look for the `software adapter …` line in the test output.
+3. Not audited: other GPU tests on a software adapter.
+4. No dev-tools-lane rows are open now. T27, T19b, T28, T29 and T21b are Atlas-agent rows; T12 is yours. The next slot will exit without a PR unless you assign one.
+
+Blockers: none.
