@@ -5265,3 +5265,15 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **No PR:** 9 hiwave-macos PRs are open against the cap of 8 (#935 #951 #956 #958 #964 #968 #971 #972 #973). This is the third session on E20 with no PR, so **E20 is BLOCKED under the stop rule. Decision packet: open the PR from `receipts/ch2-e20/pr-body.md` (complete, with the receipt fields) when a slot frees, or let it in over the cap.**
 - Worktrees `z-ch2-e20b` and `z-e20-base` are removed (the branch is pushed and the gates passed). Receipts: `receipts/ch2-e20/` (pr-body.md, camp-fb58.log, suite-fb58.log, rerun1t-fb58.log, ab-fb58live.txt).
 - **Next Z slot:** the next open CH2 Z-lane row (CH2.B17b in table order), or E20's PR first if the count is under 8. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 04:45 Z-lane CH2.B17b → branch pushed, no PR (cap)
+- **Order:** E20 went to blocked under the stop rule (04:10 entry above). The next open CH2 Z-lane row in table order is CH2.B17b.
+- **Before → after (`atlas/z-ch2-b17b-control-min-max` @ 6f3255fc, red 5360348e, base develop 5b4371ec):** text inputs and textareas ignored `min-*`/`max-*` in block flow. A `min-width:60px` input built 28 (Chromium 68), and a `max-width:40px` 100px input built 108 (Chromium 48). They now clamp, max first and then min, and a content-box control adds its padding and border as B17 does for width. The flex path already clamped.
+- **Pins:** 11 Chromium-143 pages in a new case file, 9/11 red → 11/11 green.
+- **Gates:**
+  - layout 906/0; headless input/control/textarea/form 221/0.
+  - Campaign 26/26, 0 moved.
+  - Chrome board 16/42 on both arms, 42/42 rows identical.
+  - **A/B: one mover, wikipedia, 0.17% across and 0 within.** The search input grows to the 32 px of the Search button beside it (receipt PNGs). This is toward Chrome by inspection; I did not probe the page in Chromium.
+- **Owed:** the full headless suite, then the PR once fewer than 8 are open (9 now). Worktree `z-ch2-b17b` is KEPT. Receipts: `receipts/ch2-b17b/notes.md`.
+- **Blockers:** the PR cap. E20 and B17b are both ready for PRs, waiting on slots. Aleph not used (no Aleph tools in this seat).
