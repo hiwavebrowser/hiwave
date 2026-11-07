@@ -36,7 +36,10 @@ Row CH2.B18b in `trench/z/PLAN-z.md` (hub `atlas/z`). Base develop 478cee42. Red
   - yahoo (36% / 34%), netflix (4.26%) and squarespace (2.21% in arm B) vary inside one arm.
   - cnn hits the 30 s limit in all four runs (failed 4).
 - Engine tests at 18882673 (named filter): `border|anim|transition|computed_read` 131/0 (one thread).
-- Headless engine suite at 18882673: **partial: 1099 of 2090 ran before the session cap (1063 ok, 13 ignored, 23 FAILED at default threads, load 14-23 from other seats).** All 23 are GPU-guard waits (backdrop_filter, background_image_fetch, consent_click, computed_read, error_page_script) and **all 23 pass by exact name on one thread** (`rerun-1t.log`, 23/23 in 49 s). The other 991 (`rest.txt`) are owed.
+- Headless engine suite at 18882673 (`--lib --features headless`, binary rustkit_engine-0bcc04c2cb80b63e): **complete, all 2090 tests, in two runs by exact name: 2030 ok, 33 ignored, 26 FAILED at default threads; all 26 pass on one thread.**
+  - First run: 1099 tests at load 14-23. 1063 ok, 13 ignored, 23 FAILED. All 23 were GPU-guard waits (backdrop_filter, background_image_fetch, consent_click, computed_read, error_page_script), and 23/23 pass on one thread (`rerun-1t.log`, 49 s).
+  - Second run, 2026-11-07 15:06-15:39: the remaining 991 (`rest.txt`) at load 3-10. 967 ok, 20 ignored, 3 FAILED. The 3 are elapsed-time asserts in `page_script_tests`: `scripts_are_fetched_while_the_subresources_load` (5.37 s), `a_stalled_subresource_is_dropped_at_the_subresource_budget` (3.27 s) and `a_sheet_that_misses_the_budget_applies_when_it_arrives`. 3/3 pass on one thread (`rerun-rest-1t.log`, 10.6 s). Log: `suite-rest-18882673.log`.
+- The branch merges cleanly onto develop a8e7e28b (`git merge-tree`).
 
 Receipts: hub `trench/z/receipts/ch2-b18b/`.
 

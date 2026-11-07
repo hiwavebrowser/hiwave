@@ -5319,3 +5319,13 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - The branch merges cleanly with B18c, B17b and E20. Worktree `z-ch2-b18b` is KEPT; `z-base-478cee42` is KEPT for the A/B.
 - **Found, no row yet (Atlas to place):** an empty inline `<input>` sits 2px low (y 7 vs Chromium 5); a 0-height `<hr>` reads getBoundingClientRect width 0 (Chromium 400). Both happen with `border:0` too.
 - **Blockers:** the PR cap, 13 open vs 8 allowed. E20, B17b, B18c and B18b are all waiting for slots. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 15:45 Z-lane CH2.B18b (owed suite done → blocked: cap)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due (Prometheus's). B18b had 991 suite tests owed from the 13:55 session, so I resumed it.
+- **The kept worktree `z-ch2-b18b` had vanished.** I re-added it from the seed at 18882673, which is the pushed branch head. The rebuilt test binary has the same hash (rustkit_engine-0bcc04c2cb80b63e) and lists the same 2090 tests.
+- **Before → after:** headless suite 1099/2090 → **2090/2090 complete**.
+  - Totals: 2030 ok, 33 ignored, and 26 FAILED at default threads. 23 are GPU-guard waits from the first run. 3 are elapsed-time asserts in `page_script_tests` from this run, at load 3-10: script fetch waited 5.37 s, stalled subresources 3.27 s, late sheet.
+  - **All 26 pass on one thread** (`rerun-1t.log`, `rerun-rest-1t.log`).
+  - The branch merges cleanly onto develop a8e7e28b. pr-body.md is updated. The worktree is removed, and the receipts are in `receipts/ch2-b18b/`.
+- **BLOCKED (stop rule, second session; PR cap 10/8).** Decision packet: open the PR from `receipts/ch2-b18b/pr-body.md` when a slot frees, after E20, B17b and B18c. Every gate is in, so nothing more is owed.
+- **Blockers:** the PR cap. 10 are open (8 allowed). E20, B17b, B18c and B18b are all ready and waiting for slots. Aleph not used (no Aleph tools in this seat).
