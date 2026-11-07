@@ -5277,3 +5277,14 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - **A/B: one mover, wikipedia, 0.17% across and 0 within.** The search input grows to the 32 px of the Search button beside it (receipt PNGs). This is toward Chrome by inspection; I did not probe the page in Chromium.
 - **Owed:** the full headless suite, then the PR once fewer than 8 are open (9 now). Worktree `z-ch2-b17b` is KEPT. Receipts: `receipts/ch2-b17b/notes.md`.
 - **Blockers:** the PR cap. E20 and B17b are both ready for PRs, waiting on slots. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 07:50 Z-lane CH2.B17b (suite → blocked: cap) + CH2.B18c (fix pushed, no PR)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due (Prometheus's). I finished the suite the 04:45 session left owed on B17b, then took the next open CH2 Z-lane row, B18c.
+- **CH2.B17b @ 6f3255fc: headless suite done.** All 2084 tests ran: 2040 ok, 33 ignored, and 11 FAILED at default threads. The 11 are the consent_click/console_log/container_query/computed_read group of GPU-guard waits, and they pass 11/11 on one thread. Every gate is done and the worktree is removed. **BLOCKED (stop rule, second session; the PR cap is at 8/8). Decision packet: open the PR from `receipts/ch2-b17b/pr-body.md` (complete) when a slot frees, after E20.**
+- **CH2.B18c → `atlas/z-ch2-b18c-input-border-width` @ 468544a4** (red 01e7ee98, base develop 3b4561e3).
+  - Before: an `<input>`/`<textarea>` with `border:40px solid` painted a 1px hairline (Chromium 40).
+  - After: the painted frame is the author width. Unset keeps the 1px UA frame, and `0px` paints none. The cause was one hardcoded 1.0 in `render_form_control`; layout already used the width.
+  - Gates so far: layout 907/0; campaign 26/26 with one mover toward Chrome (css-selectors 12767 → 12561 diff px).
+  - A/B: four small movers, 0 within each arm (bing 0.12%, netflix 0.08%, x 0.07%, wikipedia 0.02%). They are in input-shaped regions; I have not checked their direction against Chromium.
+  - **Owed:** a Chromium look at the movers, the engine form filter and the full headless suite, `e22_focus_ring` in the real window, then the PR. Worktrees are KEPT.
+- **Blockers:** the PR cap. 8 are open (8 allowed). E20, B17b and B18c are all waiting for slots. Aleph not used (no Aleph tools in this seat).
