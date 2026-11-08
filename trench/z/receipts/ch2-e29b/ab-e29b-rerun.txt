@@ -1,0 +1,2 @@
+google       within A 0.00%  within B 1.53%  across 1.53% 0.00% 1.53% 0.00%  failed: 0  secs A,B,A,B 2.6,3.2,3.3,3.2  script records A,B,A,B 15,14,14,14
+linkedin     within A 76.80%  within B n/a%  across 0.00% n/a% 76.80% n/a%  failed: 1  secs A,B,A,B 5.7,5.3,8.8,30.2  script records A,B,A,B 6,6,18,-

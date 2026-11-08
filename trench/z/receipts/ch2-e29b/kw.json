@@ -1,0 +1,1056 @@
+{
+ "chromium": "148.0.7778.216",
+ "pool": 253,
+ "properties": {
+  "object-fit": {
+   "keywords": [
+    "contain",
+    "cover",
+    "fill",
+    "none",
+    "scale-down"
+   ],
+   "other": []
+  },
+  "position": {
+   "keywords": [
+    "absolute",
+    "fixed",
+    "relative",
+    "static",
+    "sticky"
+   ],
+   "other": []
+  },
+  "float": {
+   "keywords": [
+    "inline-end",
+    "inline-start",
+    "left",
+    "none",
+    "right"
+   ],
+   "other": []
+  },
+  "clear": {
+   "keywords": [
+    "both",
+    "inline-end",
+    "inline-start",
+    "left",
+    "none",
+    "right"
+   ],
+   "other": []
+  },
+  "visibility": {
+   "keywords": [
+    "collapse",
+    "hidden",
+    "visible"
+   ],
+   "other": []
+  },
+  "box-sizing": {
+   "keywords": [
+    "border-box",
+    "content-box"
+   ],
+   "other": []
+  },
+  "flex-direction": {
+   "keywords": [
+    "column",
+    "column-reverse",
+    "row",
+    "row-reverse"
+   ],
+   "other": []
+  },
+  "flex-wrap": {
+   "keywords": [
+    "nowrap",
+    "wrap",
+    "wrap-reverse"
+   ],
+   "other": []
+  },
+  "table-layout": {
+   "keywords": [
+    "auto",
+    "fixed"
+   ],
+   "other": []
+  },
+  "border-collapse": {
+   "keywords": [
+    "collapse",
+    "separate"
+   ],
+   "other": []
+  },
+  "empty-cells": {
+   "keywords": [
+    "hide",
+    "show"
+   ],
+   "other": []
+  },
+  "caption-side": {
+   "keywords": [
+    "bottom",
+    "top"
+   ],
+   "other": []
+  },
+  "list-style-position": {
+   "keywords": [
+    "inside",
+    "outside"
+   ],
+   "other": []
+  },
+  "direction": {
+   "keywords": [
+    "ltr",
+    "rtl"
+   ],
+   "other": []
+  },
+  "isolation": {
+   "keywords": [
+    "auto",
+    "isolate"
+   ],
+   "other": []
+  },
+  "backface-visibility": {
+   "keywords": [
+    "hidden",
+    "visible"
+   ],
+   "other": []
+  },
+  "mix-blend-mode": {
+   "keywords": [
+    "color",
+    "color-burn",
+    "color-dodge",
+    "darken",
+    "difference",
+    "exclusion",
+    "hard-light",
+    "hue",
+    "lighten",
+    "luminosity",
+    "multiply",
+    "normal",
+    "overlay",
+    "plus-lighter",
+    "saturation",
+    "screen",
+    "soft-light"
+   ],
+   "other": []
+  },
+  "overflow-x": {
+   "keywords": [
+    "auto",
+    "clip",
+    "hidden",
+    "overlay",
+    "scroll",
+    "visible"
+   ],
+   "other": []
+  },
+  "overflow-y": {
+   "keywords": [
+    "auto",
+    "clip",
+    "hidden",
+    "overlay",
+    "scroll",
+    "visible"
+   ],
+   "other": []
+  },
+  "overflow": {
+   "keywords": [
+    "auto",
+    "clip",
+    "hidden",
+    "overlay",
+    "scroll",
+    "visible"
+   ],
+   "other": [
+    "auto auto"
+   ]
+  },
+  "resize": {
+   "keywords": [
+    "auto",
+    "block",
+    "both",
+    "horizontal",
+    "inline",
+    "none",
+    "vertical"
+   ],
+   "other": []
+  },
+  "text-overflow": {
+   "keywords": [
+    "clip",
+    "ellipsis"
+   ],
+   "other": []
+  },
+  "user-select": {
+   "keywords": [
+    "all",
+    "auto",
+    "none",
+    "text"
+   ],
+   "other": []
+  },
+  "pointer-events": {
+   "keywords": [
+    "all",
+    "auto",
+    "bounding-box",
+    "fill",
+    "none",
+    "painted",
+    "stroke",
+    "visible",
+    "visiblefill",
+    "visiblepainted",
+    "visiblestroke"
+   ],
+   "other": []
+  },
+  "white-space": {
+   "keywords": [
+    "break-spaces",
+    "collapse",
+    "normal",
+    "nowrap",
+    "pre",
+    "pre-line",
+    "pre-wrap",
+    "wrap"
+   ],
+   "other": []
+  },
+  "text-transform": {
+   "keywords": [
+    "capitalize",
+    "lowercase",
+    "math-auto",
+    "none",
+    "uppercase"
+   ],
+   "other": []
+  },
+  "font-style": {
+   "keywords": [
+    "italic",
+    "normal",
+    "oblique"
+   ],
+   "other": []
+  },
+  "text-align": {
+   "keywords": [
+    "-webkit-auto",
+    "-webkit-center",
+    "-webkit-left",
+    "-webkit-match-parent",
+    "-webkit-right",
+    "center",
+    "end",
+    "justify",
+    "left",
+    "right",
+    "start"
+   ],
+   "other": []
+  },
+  "word-break": {
+   "keywords": [
+    "auto-phrase",
+    "break-all",
+    "break-word",
+    "keep-all",
+    "normal"
+   ],
+   "other": []
+  },
+  "overflow-wrap": {
+   "keywords": [
+    "anywhere",
+    "break-word",
+    "normal"
+   ],
+   "other": []
+  },
+  "box-decoration-break": {
+   "keywords": [
+    "clone",
+    "slice"
+   ],
+   "other": []
+  },
+  "object-position": {
+   "keywords": [
+    "bottom",
+    "center",
+    "left",
+    "right",
+    "top"
+   ],
+   "other": [
+    "0",
+    "1px",
+    "50%",
+    "calc(1px)"
+   ]
+  },
+  "flex-grow": {
+   "keywords": [],
+   "other": [
+    "0",
+    "1"
+   ]
+  },
+  "flex-shrink": {
+   "keywords": [],
+   "other": [
+    "0",
+    "1"
+   ]
+  },
+  "appearance": {
+   "keywords": [
+    "auto",
+    "base-select",
+    "button",
+    "checkbox",
+    "listbox",
+    "menulist",
+    "menulist-button",
+    "meter",
+    "none",
+    "progress-bar",
+    "radio",
+    "searchfield",
+    "textarea",
+    "textfield"
+   ],
+   "other": []
+  },
+  "cursor": {
+   "keywords": [
+    "-webkit-grab",
+    "-webkit-grabbing",
+    "-webkit-zoom-in",
+    "-webkit-zoom-out",
+    "auto",
+    "crosshair",
+    "default",
+    "grab",
+    "grabbing",
+    "help",
+    "move",
+    "none",
+    "not-allowed",
+    "pointer",
+    "progress",
+    "text",
+    "wait",
+    "zoom-in",
+    "zoom-out"
+   ],
+   "other": []
+  },
+  "touch-action": {
+   "keywords": [
+    "auto",
+    "manipulation",
+    "none",
+    "pan-x",
+    "pan-y",
+    "pinch-zoom"
+   ],
+   "other": []
+  },
+  "will-change": {
+   "keywords": [
+    "-internal-base",
+    "-internal-center",
+    "-internal-textarea-auto",
+    "-moz-pre-wrap",
+    "-webkit-auto",
+    "-webkit-box",
+    "-webkit-center",
+    "-webkit-grab",
+    "-webkit-grabbing",
+    "-webkit-inline-box",
+    "-webkit-isolate",
+    "-webkit-isolate-override",
+    "-webkit-left",
+    "-webkit-match-parent",
+    "-webkit-nowrap",
+    "-webkit-optimize-contrast",
+    "-webkit-plaintext",
+    "-webkit-pre-wrap",
+    "-webkit-right",
+    "-webkit-sticky",
+    "-webkit-text",
+    "-webkit-zoom-in",
+    "-webkit-zoom-out",
+    "absolute",
+    "add",
+    "anchors-visible",
+    "anywhere",
+    "arial",
+    "auto",
+    "auto-flow",
+    "auto-phrase",
+    "balance",
+    "base",
+    "base-select",
+    "baseline",
+    "before",
+    "bidi-override",
+    "block",
+    "block-end",
+    "block-start",
+    "border-box",
+    "both",
+    "bottom",
+    "bounding-box",
+    "break-all",
+    "break-spaces",
+    "break-word",
+    "butt",
+    "button",
+    "capitalize",
+    "center",
+    "checkbox",
+    "circle",
+    "clip",
+    "clone",
+    "collapse",
+    "color",
+    "color-burn",
+    "color-dodge",
+    "column",
+    "column-reverse",
+    "contain",
+    "content-box",
+    "contents",
+    "cover",
+    "crisp-edges",
+    "crosshair",
+    "darken",
+    "dashed",
+    "decimal",
+    "difference",
+    "disc",
+    "dotted",
+    "double",
+    "ease",
+    "economy",
+    "element",
+    "ellipsis",
+    "embed",
+    "end",
+    "exclusion",
+    "fill",
+    "fixed",
+    "flat",
+    "flex",
+    "flow-root",
+    "from-image",
+    "full-size-kana",
+    "full-width",
+    "grab",
+    "grabbing",
+    "grid",
+    "groove",
+    "hard-light",
+    "help",
+    "hidden",
+    "hide",
+    "high-quality",
+    "horizontal",
+    "horizontal-tb",
+    "hue",
+    "inline",
+    "inline-block",
+    "inline-end",
+    "inline-flex",
+    "inline-grid",
+    "inline-start",
+    "inset",
+    "inside",
+    "isolate",
+    "isolate-override",
+    "italic",
+    "justify",
+    "keep-all",
+    "left",
+    "legacy",
+    "lighten",
+    "linearrgb",
+    "list-item",
+    "listbox",
+    "local",
+    "logical",
+    "loose",
+    "lowercase",
+    "lr",
+    "lr-tb",
+    "ltr",
+    "luminance",
+    "luminosity",
+    "manipulation",
+    "manual",
+    "match-parent",
+    "match-source",
+    "math-auto",
+    "media-slider",
+    "menulist",
+    "menulist-button",
+    "meter",
+    "middle",
+    "miter",
+    "mixed",
+    "move",
+    "multiply",
+    "no-autospace",
+    "no-limit",
+    "no-repeat",
+    "nonzero",
+    "normal",
+    "not-allowed",
+    "nowrap",
+    "numeric-only",
+    "oblique",
+    "opacity",
+    "optimizequality",
+    "optimizespeed",
+    "outset",
+    "outside",
+    "over",
+    "overlay",
+    "padding-box",
+    "painted",
+    "pan-x",
+    "pan-y",
+    "pinch-zoom",
+    "pixelated",
+    "plaintext",
+    "plus-darker",
+    "plus-lighter",
+    "pointer",
+    "pre",
+    "pre-line",
+    "pre-wrap",
+    "progress",
+    "progress-bar",
+    "push-button",
+    "radio",
+    "read-only",
+    "relative",
+    "repeat",
+    "repeat-x",
+    "repeat-y",
+    "replace",
+    "rgb",
+    "rgba",
+    "ridge",
+    "right",
+    "rl",
+    "rl-tb",
+    "root",
+    "round",
+    "row",
+    "row-reverse",
+    "rtl",
+    "ruby",
+    "running",
+    "saturation",
+    "scale-down",
+    "screen",
+    "scroll",
+    "scroll-position",
+    "searchfield",
+    "separate",
+    "show",
+    "sideways-lr",
+    "sideways-rl",
+    "slice",
+    "smooth",
+    "soft-light",
+    "solid",
+    "space",
+    "space-around",
+    "square",
+    "square-button",
+    "srgb",
+    "start",
+    "static",
+    "sticky",
+    "stretch",
+    "strict",
+    "stroke",
+    "table",
+    "table-cell",
+    "table-row",
+    "table-row-group",
+    "tb",
+    "tb-rl",
+    "text",
+    "textarea",
+    "textfield",
+    "times",
+    "top",
+    "transform",
+    "uppercase",
+    "vertical",
+    "vertical-lr",
+    "vertical-right",
+    "vertical-rl",
+    "view-box",
+    "visible",
+    "visiblefill",
+    "visiblepainted",
+    "visiblestroke",
+    "wait",
+    "wavy",
+    "wrap",
+    "wrap-reverse",
+    "x",
+    "y",
+    "zoom-in",
+    "zoom-out"
+   ],
+   "other": []
+  },
+  "scroll-behavior": {
+   "keywords": [
+    "auto",
+    "smooth"
+   ],
+   "other": []
+  },
+  "text-decoration-style": {
+   "keywords": [
+    "dashed",
+    "dotted",
+    "double",
+    "solid",
+    "wavy"
+   ],
+   "other": []
+  },
+  "border-top-style": {
+   "keywords": [
+    "dashed",
+    "dotted",
+    "double",
+    "groove",
+    "hidden",
+    "inset",
+    "none",
+    "outset",
+    "ridge",
+    "solid"
+   ],
+   "other": []
+  },
+  "outline-style": {
+   "keywords": [
+    "auto",
+    "dashed",
+    "dotted",
+    "double",
+    "groove",
+    "inset",
+    "none",
+    "outset",
+    "ridge",
+    "solid"
+   ],
+   "other": []
+  },
+  "image-rendering": {
+   "keywords": [
+    "-webkit-optimize-contrast",
+    "auto",
+    "crisp-edges",
+    "pixelated"
+   ],
+   "other": []
+  },
+  "unicode-bidi": {
+   "keywords": [
+    "-webkit-isolate",
+    "-webkit-isolate-override",
+    "-webkit-plaintext",
+    "bidi-override",
+    "embed",
+    "isolate",
+    "isolate-override",
+    "normal",
+    "plaintext"
+   ],
+   "other": []
+  },
+  "writing-mode": {
+   "keywords": [
+    "horizontal-tb",
+    "lr",
+    "lr-tb",
+    "rl",
+    "rl-tb",
+    "sideways-lr",
+    "sideways-rl",
+    "tb",
+    "tb-rl",
+    "vertical-lr",
+    "vertical-rl"
+   ],
+   "other": []
+  },
+  "font-kerning": {
+   "keywords": [
+    "auto",
+    "none",
+    "normal"
+   ],
+   "other": []
+  },
+  "content-visibility": {
+   "keywords": [
+    "auto",
+    "hidden",
+    "visible"
+   ],
+   "other": []
+  },
+  "hyphens": {
+   "keywords": [
+    "auto",
+    "manual",
+    "none"
+   ],
+   "other": []
+  },
+  "line-break": {
+   "keywords": [
+    "anywhere",
+    "auto",
+    "loose",
+    "normal",
+    "strict"
+   ],
+   "other": []
+  },
+  "text-align-last": {
+   "keywords": [
+    "auto",
+    "center",
+    "end",
+    "justify",
+    "left",
+    "right",
+    "start"
+   ],
+   "other": []
+  },
+  "background-attachment": {
+   "keywords": [
+    "fixed",
+    "local",
+    "scroll"
+   ],
+   "other": []
+  },
+  "background-repeat": {
+   "keywords": [
+    "no-repeat",
+    "repeat",
+    "repeat-x",
+    "repeat-y",
+    "round",
+    "space"
+   ],
+   "other": []
+  },
+  "list-style-type": {
+   "keywords": [
+    "-internal-base",
+    "-internal-center",
+    "-internal-textarea-auto",
+    "-moz-pre-wrap",
+    "-webkit-auto",
+    "-webkit-box",
+    "-webkit-center",
+    "-webkit-grab",
+    "-webkit-grabbing",
+    "-webkit-inline-box",
+    "-webkit-isolate",
+    "-webkit-isolate-override",
+    "-webkit-left",
+    "-webkit-match-parent",
+    "-webkit-nowrap",
+    "-webkit-optimize-contrast",
+    "-webkit-plaintext",
+    "-webkit-pre-wrap",
+    "-webkit-right",
+    "-webkit-sticky",
+    "-webkit-text",
+    "-webkit-zoom-in",
+    "-webkit-zoom-out",
+    "absolute",
+    "add",
+    "all",
+    "anchors-visible",
+    "anywhere",
+    "arial",
+    "auto",
+    "auto-flow",
+    "auto-phrase",
+    "balance",
+    "base",
+    "base-select",
+    "baseline",
+    "before",
+    "bidi-override",
+    "block",
+    "block-end",
+    "block-start",
+    "border-box",
+    "both",
+    "bottom",
+    "bounding-box",
+    "break-all",
+    "break-spaces",
+    "break-word",
+    "butt",
+    "button",
+    "capitalize",
+    "center",
+    "checkbox",
+    "circle",
+    "clip",
+    "clone",
+    "collapse",
+    "color",
+    "color-burn",
+    "color-dodge",
+    "column",
+    "column-reverse",
+    "contain",
+    "content-box",
+    "contents",
+    "cover",
+    "crisp-edges",
+    "crosshair",
+    "darken",
+    "dashed",
+    "decimal",
+    "difference",
+    "disc",
+    "dotted",
+    "double",
+    "ease",
+    "economy",
+    "element",
+    "ellipsis",
+    "embed",
+    "end",
+    "exclusion",
+    "fill",
+    "fixed",
+    "flat",
+    "flex",
+    "flow-root",
+    "from-image",
+    "full-size-kana",
+    "full-width",
+    "grab",
+    "grabbing",
+    "grid",
+    "groove",
+    "hard-light",
+    "help",
+    "hidden",
+    "hide",
+    "high-quality",
+    "horizontal",
+    "horizontal-tb",
+    "hue",
+    "inline",
+    "inline-block",
+    "inline-end",
+    "inline-flex",
+    "inline-grid",
+    "inline-start",
+    "inset",
+    "inside",
+    "isolate",
+    "isolate-override",
+    "italic",
+    "justify",
+    "keep-all",
+    "left",
+    "legacy",
+    "lighten",
+    "linearrgb",
+    "list-item",
+    "listbox",
+    "local",
+    "logical",
+    "loose",
+    "lowercase",
+    "lr",
+    "lr-tb",
+    "ltr",
+    "luminance",
+    "luminosity",
+    "manipulation",
+    "manual",
+    "match-parent",
+    "match-source",
+    "math-auto",
+    "media-slider",
+    "menulist",
+    "menulist-button",
+    "meter",
+    "middle",
+    "miter",
+    "mixed",
+    "move",
+    "multiply",
+    "no-autospace",
+    "no-limit",
+    "no-repeat",
+    "none",
+    "nonzero",
+    "normal",
+    "not-allowed",
+    "nowrap",
+    "numeric-only",
+    "oblique",
+    "opacity",
+    "optimizequality",
+    "optimizespeed",
+    "outset",
+    "outside",
+    "over",
+    "overlay",
+    "padding-box",
+    "painted",
+    "pan-x",
+    "pan-y",
+    "pinch-zoom",
+    "pixelated",
+    "plaintext",
+    "plus-darker",
+    "plus-lighter",
+    "pointer",
+    "pre",
+    "pre-line",
+    "pre-wrap",
+    "progress",
+    "progress-bar",
+    "push-button",
+    "radio",
+    "read-only",
+    "relative",
+    "repeat",
+    "repeat-x",
+    "repeat-y",
+    "replace",
+    "rgb",
+    "rgba",
+    "ridge",
+    "right",
+    "rl",
+    "rl-tb",
+    "root",
+    "round",
+    "row",
+    "row-reverse",
+    "rtl",
+    "ruby",
+    "running",
+    "saturation",
+    "scale-down",
+    "screen",
+    "scroll",
+    "scroll-position",
+    "searchfield",
+    "separate",
+    "show",
+    "sideways-lr",
+    "sideways-rl",
+    "slice",
+    "smooth",
+    "soft-light",
+    "solid",
+    "space",
+    "space-around",
+    "square",
+    "square-button",
+    "srgb",
+    "start",
+    "static",
+    "sticky",
+    "stretch",
+    "strict",
+    "stroke",
+    "table",
+    "table-cell",
+    "table-row",
+    "table-row-group",
+    "tb",
+    "tb-rl",
+    "text",
+    "textarea",
+    "textfield",
+    "times",
+    "top",
+    "transform",
+    "uppercase",
+    "vertical",
+    "vertical-lr",
+    "vertical-right",
+    "vertical-rl",
+    "view-box",
+    "visible",
+    "visiblefill",
+    "visiblepainted",
+    "visiblestroke",
+    "wait",
+    "wavy",
+    "wrap",
+    "wrap-reverse",
+    "x",
+    "y",
+    "zoom-in",
+    "zoom-out"
+   ],
+   "other": [
+    "\"s\""
+   ]
+  }
+ }
+}

@@ -1,0 +1,204 @@
+{
+ "chromium": "148.0.7778.216",
+ "pool": 133,
+ "properties": {
+  "white-space": {
+   "keywords": [
+    "collapse",
+    "normal",
+    "nowrap",
+    "pre",
+    "preserve",
+    "preserve-breaks",
+    "wrap"
+   ],
+   "other": []
+  },
+  "text-transform": {
+   "keywords": [
+    "none"
+   ],
+   "other": []
+  },
+  "pointer-events": {
+   "keywords": [
+    "all",
+    "auto",
+    "fill",
+    "none",
+    "visible"
+   ],
+   "other": []
+  },
+  "user-select": {
+   "keywords": [
+    "all",
+    "auto",
+    "none",
+    "text"
+   ],
+   "other": []
+  },
+  "visibility": {
+   "keywords": [
+    "collapse",
+    "hidden",
+    "visible"
+   ],
+   "other": []
+  },
+  "position": {
+   "keywords": [
+    "fixed",
+    "static"
+   ],
+   "other": []
+  },
+  "text-align": {
+   "keywords": [
+    "start"
+   ],
+   "other": []
+  },
+  "text-align-last": {
+   "keywords": [
+    "auto",
+    "start"
+   ],
+   "other": []
+  },
+  "overflow-x": {
+   "keywords": [
+    "auto",
+    "clip",
+    "hidden",
+    "scroll",
+    "visible"
+   ],
+   "other": []
+  },
+  "resize": {
+   "keywords": [
+    "auto",
+    "block",
+    "both",
+    "horizontal",
+    "inline",
+    "none"
+   ],
+   "other": []
+  },
+  "word-break": {
+   "keywords": [
+    "normal"
+   ],
+   "other": []
+  },
+  "line-break": {
+   "keywords": [
+    "anywhere",
+    "auto",
+    "normal"
+   ],
+   "other": []
+  },
+  "hyphens": {
+   "keywords": [
+    "auto",
+    "manual",
+    "none"
+   ],
+   "other": []
+  },
+  "image-rendering": {
+   "keywords": [
+    "-webkit-optimize-contrast",
+    "auto"
+   ],
+   "other": []
+  },
+  "content-visibility": {
+   "keywords": [
+    "auto",
+    "hidden",
+    "visible"
+   ],
+   "other": []
+  },
+  "border-top-style": {
+   "keywords": [
+    "hidden",
+    "inset",
+    "none",
+    "solid"
+   ],
+   "other": []
+  },
+  "outline-style": {
+   "keywords": [
+    "auto",
+    "inset",
+    "none",
+    "solid"
+   ],
+   "other": []
+  },
+  "mix-blend-mode": {
+   "keywords": [
+    "normal"
+   ],
+   "other": []
+  },
+  "isolation": {
+   "keywords": [
+    "auto",
+    "isolate"
+   ],
+   "other": []
+  },
+  "object-fit": {
+   "keywords": [
+    "contain",
+    "fill",
+    "none"
+   ],
+   "other": []
+  },
+  "writing-mode": {
+   "keywords": [
+    "horizontal-tb"
+   ],
+   "other": []
+  },
+  "unicode-bidi": {
+   "keywords": [
+    "-webkit-isolate",
+    "-webkit-plaintext",
+    "isolate",
+    "normal"
+   ],
+   "other": []
+  },
+  "flex-grow": {
+   "keywords": [],
+   "other": [
+    "0",
+    "1"
+   ]
+  },
+  "flex-shrink": {
+   "keywords": [],
+   "other": [
+    "0",
+    "1"
+   ]
+  },
+  "text-overflow": {
+   "keywords": [
+    "clip",
+    "ellipsis"
+   ],
+   "other": []
+  }
+ }
+}

@@ -1,0 +1,105 @@
+flex-grow: 1e1 -> true
+flex-grow: .5 -> true
+flex-grow: +1 -> true
+flex-grow: -1 -> false
+flex-grow: 1px -> false
+flex-grow: calc(1) -> true
+flex-grow: 0. -> false
+flex-grow: 1. -> false
+flex-grow: 1e -> false
+flex-grow: abc -> false
+flex-grow: var(--x) -> true
+flex-grow: "s" -> false
+flex-grow: clip ellipsis -> false
+flex-grow: ellipsis ellipsis -> false
+flex-grow: pre wrap -> false
+flex-grow: uppercase full-width -> false
+flex-grow: CLIP -> false
+flex-grow: Ellipsis -> false
+flex-grow: initial -> true
+flex-grow: default -> false
+flex-grow: revert-layer -> true
+flex-shrink: 1e1 -> true
+flex-shrink: .5 -> true
+flex-shrink: +1 -> true
+flex-shrink: -1 -> false
+flex-shrink: 1px -> false
+flex-shrink: calc(1) -> true
+flex-shrink: 0. -> false
+flex-shrink: 1. -> false
+flex-shrink: 1e -> false
+flex-shrink: abc -> false
+flex-shrink: var(--x) -> true
+flex-shrink: "s" -> false
+flex-shrink: clip ellipsis -> false
+flex-shrink: ellipsis ellipsis -> false
+flex-shrink: pre wrap -> false
+flex-shrink: uppercase full-width -> false
+flex-shrink: CLIP -> false
+flex-shrink: Ellipsis -> false
+flex-shrink: initial -> true
+flex-shrink: default -> false
+flex-shrink: revert-layer -> true
+text-overflow: 1e1 -> false
+text-overflow: .5 -> false
+text-overflow: +1 -> false
+text-overflow: -1 -> false
+text-overflow: 1px -> false
+text-overflow: calc(1) -> false
+text-overflow: 0. -> false
+text-overflow: 1. -> false
+text-overflow: 1e -> false
+text-overflow: abc -> false
+text-overflow: var(--x) -> true
+text-overflow: "s" -> false
+text-overflow: clip ellipsis -> false
+text-overflow: ellipsis ellipsis -> false
+text-overflow: pre wrap -> false
+text-overflow: uppercase full-width -> false
+text-overflow: CLIP -> true
+text-overflow: Ellipsis -> true
+text-overflow: initial -> true
+text-overflow: default -> false
+text-overflow: revert-layer -> true
+white-space: 1e1 -> false
+white-space: .5 -> false
+white-space: +1 -> false
+white-space: -1 -> false
+white-space: 1px -> false
+white-space: calc(1) -> false
+white-space: 0. -> false
+white-space: 1. -> false
+white-space: 1e -> false
+white-space: abc -> false
+white-space: var(--x) -> true
+white-space: "s" -> false
+white-space: clip ellipsis -> false
+white-space: ellipsis ellipsis -> false
+white-space: pre wrap -> false
+white-space: uppercase full-width -> false
+white-space: CLIP -> false
+white-space: Ellipsis -> false
+white-space: initial -> true
+white-space: default -> false
+white-space: revert-layer -> true
+text-transform: 1e1 -> false
+text-transform: .5 -> false
+text-transform: +1 -> false
+text-transform: -1 -> false
+text-transform: 1px -> false
+text-transform: calc(1) -> false
+text-transform: 0. -> false
+text-transform: 1. -> false
+text-transform: 1e -> false
+text-transform: abc -> false
+text-transform: var(--x) -> true
+text-transform: "s" -> false
+text-transform: clip ellipsis -> false
+text-transform: ellipsis ellipsis -> false
+text-transform: pre wrap -> false
+text-transform: uppercase full-width -> false
+text-transform: CLIP -> false
+text-transform: Ellipsis -> false
+text-transform: initial -> true
+text-transform: default -> false
+text-transform: revert-layer -> true

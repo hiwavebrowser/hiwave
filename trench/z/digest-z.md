@@ -5329,3 +5329,19 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - The branch merges cleanly onto develop a8e7e28b. pr-body.md is updated. The worktree is removed, and the receipts are in `receipts/ch2-b18b/`.
 - **BLOCKED (stop rule, second session; PR cap 10/8).** Decision packet: open the PR from `receipts/ch2-b18b/pr-body.md` when a slot frees, after E20, B17b and B18c. Every gate is in, so nothing more is owed.
 - **Blockers:** the PR cap. 10 are open (8 allowed). E20, B17b, B18c and B18b are all ready and waiting for slots. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 19:58 Z-lane CH2.E29b (fix pushed, no PR: cap 8/8)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due (Prometheus's). E20, B17b, B18c and B18b are complete and waiting for PR slots, so I took the next open CH2 Z-lane row, E29b.
+- **CH2.E29b → `atlas/z-ch2-e29b-inline-invalid` @ c8eeec4b** (base develop a8e7e28b; red 1e3fe459).
+  - **Before:** `object-fit:bogus` read back `bogus`, and `el.style` kept every invalid word. The cascade also reset a property to its default on an unknown word: `position: middle` inline wiped a sheet's `relative`, `flex-direction: down` wiped `column`, and `flex-grow:-1` was taken. `--x:url(a(b.png)` was kept.
+  - **After:** a lone word a keyword-only property does not take is not in the block, for `el.style` and for the cascade alike. That covers 41 properties, with word lists taken from Chromium 148 (`tools/parity_oracle/keyword_grammar_log.mjs`). The same goes for a flex factor that is not a non-negative number.
+  - Accepted keywords serialise in lower case and numbers in shortest form. A CSS-wide keyword's text never stands in for a missing computed row. An inline custom property with a bad url is dropped.
+  - Only lone identifiers are judged, so a missing word can never drop a valid value. A bindings test keeps the JS and Rust tables equal.
+  - **Chromium pins: 11 wrong → 0.** Three gaps are disclosed and each pins its last field; they could become rows: (1) the engine publishes no row for many initial values (C9); (2) engine arms match `position`/`overflow-x` case-sensitively and there is no `-webkit-center`; (3) there is no `initial`/`unset` for most properties and no `inherit` for `position`.
+- **Gates:** campaign 26/26, 0 moved.
+  - All-site A/B: no movers. google's 1.53% is a served chip-row variant: the base binary alone splits the same way (2 of 4), and the candidate alone was 0.00%. linkedin's 76.8% is a served variant, which shows in the A arm on rerun.
+  - Crates: css 124/0, layout 909/0, bindings 483/0.
+  - Headless suite **partial, 1238/2093**: 48 default-thread fails in GPU-guard bursts, and **29/29 rerun pass on one thread**.
+- **Owed:** 855 suite tests not reached, plus 19 fails still to rerun (`receipts/ch2-e29b/owed.txt`, `fails-unrerun.txt`, `runlist.py`). Then split the 41-case test round-robin, because it holds the GPU ~130 s under load, past the 120 s guard. After that, the PR from `receipts/ch2-e29b/pr-body.md`.
+- **Worktree `z-ch2-e29b` is KEPT** for the owed tests. `z-base-a8e7e28b` is removed (the base binary is banked in `z-ch2-e29b/scratch/bins/base`).
+- **Blockers:** the PR cap, 8 open of 8 allowed. E20, B17b, B18c, B18b and now E29b are waiting. Aleph not used (no Aleph tools in this seat).
