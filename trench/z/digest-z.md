@@ -5345,3 +5345,17 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Owed:** 855 suite tests not reached, plus 19 fails still to rerun (`receipts/ch2-e29b/owed.txt`, `fails-unrerun.txt`, `runlist.py`). Then split the 41-case test round-robin, because it holds the GPU ~130 s under load, past the 120 s guard. After that, the PR from `receipts/ch2-e29b/pr-body.md`.
 - **Worktree `z-ch2-e29b` is KEPT** for the owed tests. `z-base-a8e7e28b` is removed (the base binary is banked in `z-ch2-e29b/scratch/bins/base`).
 - **Blockers:** the PR cap, 8 open of 8 allowed. E20, B17b, B18c, B18b and now E29b are waiting. Aleph not used (no Aleph tools in this seat).
+
+## 2026-11-07 22:40 Z-lane CH2.E29b (owed suite done; blocked: PR cap)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules. No receipt step was due (that is Prometheus's job). Atlas took E30 and E31 at 20:53. E29b was owed a suite run and a test split, so I resumed it.
+- **The kept worktree `z-ch2-e29b` had vanished again.** I re-added it from the seed at c8eeec4b.
+- **The branch conflicted with develop c7209173.** E14b (#968) and E29b edit the same two cascade call sites. I merged develop in and kept both checks: the keyword check runs first, then `resolve_css_variables_or_invalid`.
+- **CH2.E29b → `atlas/z-ch2-e29b-inline-invalid` @ f8f04b11** (split cd9a5edb, then the develop merge). Pushed, no force.
+  - **Before:** one 41-case test held the GPU for about 130 s, and the suite had reached only 1238 of 2093 tests at c8eeec4b.
+  - **After:** the test is four round-robin tests, 4/4 passing.
+  - **Full headless suite at the merge head:** 2114 tests, 2055 ok, 33 ignored, 25 failed at default threads (load 5–22). 22 of the failures are GPU-guard waits.
+  - **One-thread rerun:** 24 of 26 pass. The other 2 are `page_script_tests` wall-clock asserts: the stalled-subresource budget at 3.5 s (the CH2.E30 bound) and the script fetch at 5.3 s.
+  - **Develop c7209173 fails those 2 the same way.** A/B/A/B at load 20–22: develop 3.12/3.35 s and 5.16/5.28 s, against the candidate's 3.22/3.36 s and 5.49/5.38 s.
+- **Campaign and A/B** are from c8eeec4b (0 moved, no movers). Since then the head has added only the test split and develop's batch-38 tree.
+- **BLOCKED (stop rule, second session; PR cap 8/8).** Decision packet: open the PR from `receipts/ch2-e29b/pr-body.md` when a slot frees, after B17b and B18b. Nothing more is owed. The worktree and the develop control worktree are both removed. Receipts are in `receipts/ch2-e29b/`.
+- **Blockers:** the PR cap. B17b, B18b, E29b, E30 and E31 are all waiting for slots. Aleph was not used (this seat has no Aleph tools).

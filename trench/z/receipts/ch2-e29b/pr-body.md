@@ -2,7 +2,9 @@
 
 Z plan row **CH2.E29b** (from #977's review): `getComputedStyle` read an invalid inline keyword back as the author's text (`object-fit:bogus` read `bogus`), and the cascade accepted a custom property holding a bad url.
 
-Branch `atlas/z-ch2-e29b-inline-invalid`, base develop **a8e7e28b**. Red first: **1e3fe459** (test only). Fix: **c8eeec4b**.
+Branch `atlas/z-ch2-e29b-inline-invalid`, base develop **a8e7e28b**. Red first: **1e3fe459** (test only). Fix: **c8eeec4b**. Test split: **cd9a5edb**. Head **f8f04b11** = develop **c7209173** merged in.
+
+**Merge note:** develop's CH2.E14b (#968) and this row edit the same two cascade call sites (sheet and pseudo passes). The resolution keeps both: this row's keyword check runs first, then E14b's `resolve_css_variables_or_invalid`, so an unresolvable `var()` still computes as `unset`.
 
 ### What changes
 - **Which values are judged.** A value that is one word a keyword-only property does not take is invalid. The tables cover 41 properties with Chromium 148's word lists (`tools/parity_oracle/keyword_grammar_log.mjs`). A `flex-grow`/`flex-shrink` value that is not a non-negative `<number>` is invalid too: `1.`, `-1` and `1px` are rejected, while `.5`, `+2` and `1e1` are kept.
@@ -35,7 +37,12 @@ Branch `atlas/z-ch2-e29b-inline-invalid`, base develop **a8e7e28b**. Red first: 
   - rustkit-layout 909/0.
   - rustkit-bindings 483/0, which includes the new `style_keyword_table_matches_the_cascade`. That test takes over 60 s in a debug build.
   - Engine `style_attr_declaration` 4/4 on one thread. At default threads, the 41-case test holds the GPU for about 130 s at load 18, so its neighbours can hit the GPU-guard wait.
-- **Engine headless suite:** **partial, 1238 of 2093** by the session cap (load 14-21, other seats' suites alongside): 1174 ok, 16 ignored, 48 FAILED at default threads, all in GPU-guard / load bursts (computed_read families, grid, opacity, page_script timing). **29 of the 48 pass by exact name on one thread** (`rerun1-1t.log`); the other 19 (`fails-unrerun.txt`) and the 855 not reached (`owed.txt`) are owed: `runlist.py run owed.txt <log>`, then the fails on one thread. None of the failing tests goes through the changed cascade call sites by name (e.g. `outline_apply_tests` calls `apply_style_property` directly).
+- **The 41-case test is now four tests** (`style_attribute_declarations_read_as_chromium_N_of_4`, every fourth case, as `grid_in_flex_tests` does). As one test it held the GPU for about 130 s at load 18, past the 120 s GPU test guard. All four pass at f8f04b11 (43 s at 2 threads).
+- **Engine headless suite at f8f04b11 (complete):** 2114 tests: **2055 ok, 33 ignored, 25 FAILED** at default threads, load 5 to 22 with other seats' suites running. 22 of the 25 are GPU-guard waits, mostly queued behind `computed_read_tests::r1_cases`, which passes. One test, `test_gpu::tests::a_holder_past_the_limit_fails_the_waiter_by_name`, printed no result line.
+  - **Rerun on one thread:** 24 of those 26 pass (`rerun-f8f04b11-1t.log`).
+  - **The 2 left are wall-clock asserts in `page_script_tests`:** `a_stalled_subresource_is_dropped_at_the_subresource_budget` (3.5 s against a 2.5 s bound; that bound is CH2.E30) and `scripts_are_fetched_while_the_subresources_load` (5.3 s).
+  - **Develop c7209173 fails them the same way at that load.** A one-thread A/B/A/B at load 20–22 gave develop 3.12/3.35 s and 5.16/5.28 s, against the candidate's 3.22/3.36 s and 5.49/5.38 s (`timing-ab.log`). This row does not touch fetch.
+- The campaign and A/B above ran at c8eeec4b. Since then the head has added only the test split and develop's batch-38 tree, which batch 38 already gated.
 
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
