@@ -181,3 +181,63 @@ Gates:
 - Python: test_chrome_board 20/20, test_layout_oracle_gate PASS, test_paint_oracle_gate 36 passed.
 - Engine headless lib: 2073 passed; 11 failed, all GPU-guard timeouts in computed_read_tests while r1_cases held the GPU under load (round 1 had the same 11); rerun by module: computed_read without r1 22/22, r1_cases alone 1/1.
 - Invariants: frame_commit 7, render_on_change 1, scroll_paints 4, load_cancel 11, all ok.
+
+## Round 3 (CH2.B35–B37, branch `atlas/z-board-r3` @ `cc20b1d5`, round 2 `921526e7` merged into develop `8ebc1b79`)
+
+Atlas's decision on round 2 stood: the emoji button line stays, and this round removed the chrome sidebar's pre-existing shift it had compounded.
+Full board re-run with `parity-capture` built from the branch; cells are pixel % / geometry diffs / join failures, then the rule that greens the row.
+Base columns: cand39 = batch39 `cb-cand2` (develop), r2 = round 2 `cb-r2b`. Rows byte-identical across all three are left out.
+
+| row | cand39 (develop `8ebc1b79`) | r2 | r3 |
+|---|---|---|---|
+| chrome/default/1280x800 | 2.099/159/8 - | 2.125/156/0 - | 0.770/68/0 - |
+| chrome/default/1024x700 | 2.711/157/8 - | 2.747/154/0 - | 1.022/68/0 - |
+| chrome/default/1600x1000 | 1.506/159/8 - | 1.522/156/0 - | 0.599/69/0 - |
+| chrome/hover_tab2/1280x800 | 2.091/159/8 - | 2.116/156/0 - | 0.757/68/0 - |
+| chrome/hover_tab2/1024x700 | 2.698/157/8 - | 2.735/154/0 - | 1.004/68/0 - |
+| chrome/hover_tab2/1600x1000 | 1.500/159/8 - | 1.517/156/0 - | 0.591/69/0 - |
+| chrome/address_focused/1280x800 | 2.322/159/8 - | 2.348/156/0 - | 0.994/68/0 - |
+| chrome/address_focused/1024x700 | 2.886/157/8 - | 2.923/154/0 - | 1.199/68/0 - |
+| chrome/address_focused/1600x1000 | 1.729/159/8 - | 1.745/156/0 - | 0.823/69/0 - |
+| chrome/sidebar_collapsed/1280x800 | 0.313/189/11 pixel | 0.313/188/3 pixel | 0.284/106/3 pixel |
+| chrome/sidebar_collapsed/1024x700 | 0.448/177/11 pixel | 0.448/176/3 pixel | 0.406/106/3 pixel |
+| chrome/sidebar_collapsed/1600x1000 | 0.201/194/10 pixel | 0.200/193/2 pixel | 0.182/107/2 pixel |
+| chrome/find_open/1280x800 | 1.983/178/8 - | 2.007/175/0 - | 0.668/87/0 - |
+| chrome/find_open/1024x700 | 2.576/176/8 - | 2.611/173/0 - | 0.906/87/0 - |
+| chrome/find_open/1600x1000 | 1.430/178/8 - | 1.446/175/0 - | 0.536/88/0 - |
+| chrome/downloads_open/1280x800 | 0.546/177/11 - | 0.546/176/3 - | 0.469/96/3 pixel **FLIP** |
+| chrome/downloads_open/1024x700 | 0.780/165/11 - | 0.780/164/3 - | 0.669/96/3 - |
+| chrome/downloads_open/1600x1000 | 0.350/182/10 pixel | 0.349/181/2 pixel | 0.300/97/2 pixel |
+| chrome/focus_mode/1280x800 | 0.202/189/13 pixel | 0.202/188/3 pixel | 0.202/104/7 pixel |
+| chrome/focus_mode/1024x700 | 0.288/177/13 pixel | 0.288/176/3 pixel | 0.288/106/3 pixel |
+| chrome/focus_mode/1600x1000 | 0.129/194/12 pixel | 0.129/193/2 pixel | 0.129/107/2 pixel |
+| inspector/default/1280x800 | 3.121/50/28 - | 3.121/50/27 - | 1.254/31/7 - |
+| inspector/default/1024x700 | 3.708/50/28 - | 3.708/50/27 - | 1.791/31/7 - |
+| inspector/default/1600x1000 | 2.417/50/28 - | 2.417/50/27 - | 0.802/31/7 - |
+| inspector/console_tab/1280x800 | 0.346/0/1 pixel | 0.346/0/0 pixel | 0.346/0/0 pixel |
+| inspector/console_tab/1024x700 | 0.495/0/1 pixel | 0.495/0/0 pixel | 0.495/0/0 pixel |
+| inspector/console_tab/1600x1000 | 0.222/0/1 pixel | 0.222/0/0 pixel | 0.222/0/0 pixel |
+| settings/default/1280x800 | 1.660/256/0 - | 0.818/128/0 - | 0.818/128/0 - |
+| settings/default/1024x700 | 2.064/256/0 - | 0.990/128/0 - | 0.990/128/0 - |
+| settings/default/1600x1000 | 1.440/256/0 - | 0.701/128/0 - | 0.701/128/0 - |
+| report/default/1280x800 | 1.120/69/1 - | 0.517/13/1 - | 0.498/7/1 pixel **FLIP** |
+| report/default/1024x700 | 1.598/69/1 - | 0.731/13/1 - | 0.704/7/1 - |
+| report/default/1600x1000 | 0.773/69/1 - | 0.337/13/1 pixel | 0.326/7/1 pixel |
+| report/weekly/1280x800 | 1.207/94/1 - | 0.519/13/1 - | 0.500/7/1 pixel **FLIP** |
+| report/weekly/1024x700 | 1.730/94/1 - | 0.745/13/1 - | 0.719/7/1 - |
+| report/weekly/1600x1000 | 0.829/94/1 - | 0.339/13/1 pixel | 0.327/7/1 pixel |
+
+**Board 16 → 18 → 21/42, under the pixel rule and under either rule (the geometry rule still greens nothing: every red row keeps 7–96 geometry diffs). Three rows flipped; no row's pixel % got worse than r2 or cand39.**
+
+What moved, by step (the steps were measured as step 1 alone, then steps 1–3 together):
+- **Step 1, the sidebar shift (B35).** The first box whose y diverges from Chrome 148 was never below the actions section: `#sidebarShieldStatus` and `#sidebarSettingsBtn` were 39 tall for Chrome's 33 (+6 each), because their `🛡` and `⚙` icons were measured and drawn from Apple Color Emoji where Chrome uses the system font's `.AppleColorEmojiUI` and Menlo (the characters lack Emoji_Presentation). Everything below sat 12 px low (11 from this, 1 from B33's correct expander). Fixing it alone: chrome/default/1280 2.125 → 0.770 with geometry 156 → 68, every chrome row 0.03–1.7 points better, and chrome/downloads_open/1280 flips (0.546 → 0.469). Under the pixel rule that is 1 flip; under the geometry rule 0 (68–107 diffs remain: `#urlInput` height, `#modeSelector`, the collapsed right-sidebar panel widths, `.focus-hint kbd`, shelf items +2).
+- **Step 2, the Inspector's `selected` (B36).** Not an event or restyle problem: the row is found with `[data-path="\30 \.1\.1"]` (CSS.escape) and the matcher never resolved escapes in an attribute value. Inspector joins 27 → 7 (the rest are empty `span.unit` boxes the engine drops); the inspector rows fall from 3.121/3.708/2.417 to 1.254/1.791/0.802 (with step 3) but stay red.
+- **Step 3, `span.time-format` (B37).** The box rounding and the text seat now move together: the shift for a NEGATIVE half-leading was never applied while the align pass assumed it was, so the line's baseline sat 1 px high; round 2's rounding alone widened that to 2. Report geometry 13 → 7, and the two 1280 rows flip at 0.498 / 0.500. Inspector geometry 50 → 31.
+- **One Chrome-arm note.** chrome/focus_mode/1280 shows 7 joins (r2: 3) with an unchanged 0.202 %: the Chromium capture of that one row caught `body.cursor-hidden` after `.focus-hint` had faded (the page's own idle timer); the other two sizes and the step-1 run have the hint visible, and RustKit's tree is identical in both runs. It is the composed page's timing, not the engine.
+
+Gates:
+- Campaign 26/26, mean 1.032 → 1.030, none worse than r2 (chrome_rustkit 0.984 → 0.957, css-selectors 1.330 → 1.308 = develop).
+- rustkit-text 100 (incl. the presentation pin), rustkit-layout 927 + 4 + 1 filter-free, rustkit-renderer 150, rustkit-css 122; engine attr 33 / selector 51 / escape 11 filters.
+- engine headless lib 2081 passed, 11 failed = all GPU test guard waits on `computed_read_tests::r1_cases` (same class as rounds 1-2); by module: r1_cases alone 1/1, computed_read_tests --skip r1_cases 22/22, color_shorthand_keep_tests 2/2, computed_display_tests 6/6; invariants frame_commit 7, render_on_change 1, scroll_paints 4, load_cancel 11, all ok
+
+Next by measured remainder: chrome rows need the form-control heights (`#urlInput` 16 → 18.5, `#modeSelector` with no `appearance`) and the collapsed right-sidebar panel widths before any flips under rule 1 at 1280 (0.77 → ≤ 0.5 needs about a third of the remaining pixels); inspector rows are now 0.80–1.79 and mostly the `dom-toggle` glyph box (5×2.5 vs 2.5×5: a rotated ▶) plus monospace raster; report's 1024 rows (0.704/0.719) are raster-bound after the export-button widths.
