@@ -5379,3 +5379,17 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - Campaign and A/B were not run, because the change is reached only by key input. The PR body says so.
 - **BLOCKED (PR cap 8/8).** Decision packet: open the PR from `receipts/ch2-e37/pr-body.md` (the gh command is in its header) when a slot frees. About 700 headless tests that the run never reached are still owed, and the batch suite covers them. Worktree `z-ch2-e37` is KEPT.
 - **Blockers:** the PR cap (8 open, #992–#994 just opened). Aleph was not used (this seat has no Aleph tools).
+
+## 2026-11-08 10:25 Z-lane CH2.B25b (fix pushed, no PR: cap 8/8)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, and no receipt step was due. CH2.B25b was in-progress from the 03:15 session. That session left the fix uncommitted, with no red commit and no digest. This session committed the red test first, then finished the fix. It is the second session on B25b; nothing could land under the cap, so it ends blocked.
+- **CH2.B25b → `atlas/z-ch2-b25b-inline-abspos` @ 50641591** (base develop 8ebc1b79; red 59cb7c84, fix 50641591). Pushed, no force.
+  - **Before:** an inline-level abspos box ignored `text-align` and floats (x 40 where Chromium has 220, 200 or 90). Inside `<a>`/`<span>` it widened the link (70 vs 40) and dropped with the baseline (y 6 vs 0).
+  - **After:** its static x starts past the floats and moves with the line's `text-align`, and when no line holds it, it is aligned as an empty line. It takes no width inside an inline and stays at the line's top: neither the half-leading shift nor the baseline shift moves it.
+  - **Pins:** Chromium 148 cases 2 → 12/12 (develop 10 of 12 wrong).
+- **Gates:**
+  - layout 924/0.
+  - Targeted headless modules: 154 tests, with 33 GPU-guard timeouts that pass 33/33 alone.
+  - **The full headless run did not finish** (load 30–35, ~6 tests/min); it is owed to the batch suite.
+  - Campaign 26/26, mean 1.0721 % (develop 1.072). Board and A/B were not run.
+- **BLOCKED (PR cap 8/8).** Decision packet: open the PR from `receipts/ch2-b25b/pr-body.md` (the gh command is in its header). Worktree removed.
+- **Blockers:** the PR cap, and machine load 30–35 from parallel batch gates. Aleph was not used (this seat has no Aleph tools).

@@ -1,0 +1,2 @@
+26 mean 1.0721
+new_tab=1.051 about=3.330 settings=2.091 chrome_rustkit=0.984 shelf=0.721 article-typography=4.786 card-grid=1.343 css-selectors=1.308 flex-positioning=0.635 form-elements=0.944 gradient-backgrounds=1.013 image-gallery=0.522 sticky-scroll=0.632 backgrounds=1.216 bg-solid=0.211 bg-pure=0.000 combinators=0.655 form-controls=3.242 gradients=0.141 gradient-no-radius=0.520 gradient-radius-only=0.343 gpu-gradient-regression=0.390 images-intrinsic=0.327 pseudo-classes=0.434 rounded-corners=0.435 specificity=0.601
