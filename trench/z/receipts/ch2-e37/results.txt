@@ -1,0 +1,66 @@
+engine-lib.log: test result: FAILED. 797 passed; 3 failed; 6 ignored; 0 measured; 0 filtered out; finished in 425.05s
+ct-rerun.log: test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 803 filtered out; finished in 11.17s
+app.log: test result: FAILED. 109 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.52s
+app-rerun.log: test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 109 filtered out; finished in 6.22s
+rerun.log: test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 2054 filtered out; finished in 375.73s
+enter-head.log: test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 2106 filtered out; finished in 15.44s
+headless.log (partial, killed at 1 h): reported 1415, ok 1353, failed 59, ignored 3
+  FAILED abspos_static_margin_tests::abspos_static_position_follows_the_previous_bottom_margin_as_in_chrome
+  FAILED aspect_ratio_apply_tests::bare_auto_clears_and_a_bare_ratio_does_not_set_the_flag
+  FAILED ancestor_attribute_tests::an_attribute_or_negation_on_an_ancestor_is_tested_against_that_ancestor
+  FAILED abspos_percent_height_image_tests::an_abspos_image_width_percent_resolves_against_the_inset_layer
+  FAILED aspect_ratio_apply_tests::invalid_auto_forms_and_negatives_leave_the_prior_ratio
+  FAILED abspos_percent_height_image_tests::a_positioned_image_with_a_z_index_paints_over_a_later_sibling
+  FAILED abspos_percent_height_image_tests::a_percent_height_image_in_an_inset_sized_layer_fills_the_layer
+  FAILED aspect_ratio_empty_block_tests::an_empty_block_sized_by_its_aspect_ratio_keeps_its_box
+  FAILED aspect_ratio_apply_tests::auto_before_or_after_a_ratio_keeps_the_ratio_and_sets_the_flag
+  FAILED aspect_ratio_empty_block_tests::an_empty_block_without_a_usable_ratio_is_still_dropped
+  FAILED attribute_flag_tests::a_flagged_attribute_selector_matches_as_chromium_does
+  FAILED computed_pseudo_tests::page::no_second_argument_reads_the_element_and_lists_no_pseudo_rows
+  FAILED computed_read_tests::object
+  FAILED computed_read_tests::sizing
+  FAILED computed_read_tests::font
+  FAILED computed_read_tests::animation
+  FAILED computed_read_tests::flex
+  FAILED computed_content_tests::computed_content_serializes_like_cssom
+  FAILED computed_read_tests::inline
+  FAILED computed_read_tests::grid
+  FAILED computed_read_tests::box_shadow
+  FAILED computed_read_tests::text
+  FAILED forced_layout_cause_tests::a_read_in_an_animation_frame_during_a_css_animation_forces_no_layout
+  FAILED float_clear_tests::floats_share_a_row_and_clear_drops_below_them
+  FAILED forced_layout_cause_tests::a_read_in_an_animation_frame_during_a_web_animation_of_a_paint_property_forces_no_layout
+  FAILED float_margin_tests::margins_collapse_through_an_empty_block
+  FAILED float_clear_tests::auto_width_floats_shrink_and_a_formatting_root_contains_them
+  FAILED float_clear_tests::float_parse_ignores_invalid_values_and_absolute_boxes_do_not_float
+  FAILED flex_shorthand_tests::the_keywords_change_the_row
+  FAILED float_percent_height_tests::float_percent_height_resolves_against_the_parent_as_in_chrome
+  FAILED forced_layout_cause_tests::a_node_moved_out_of_the_document_is_a_write
+  FAILED forced_layout_cause_tests::a_comment_write_is_not_a_layout_write
+  FAILED flex_zero_size_tests::a_specified_width_caps_the_automatic_minimum
+  FAILED grid_fixed_track_tests::a_fixed_row_does_not_grow_to_fit_a_taller_item
+  FAILED gap_shorthand_tests::gap_with_one_value_sets_both_and_a_bad_value_sets_neither
+  FAILED grid_in_flex_tests::a_grid_that_is_a_flex_item_is_as_in_chrome_3_of_6
+  FAILED grid_in_flex_tests::a_grid_that_is_a_flex_item_is_as_in_chrome_2_of_6
+  FAILED grid_fixed_track_tests::an_auto_column_still_grows_to_its_content
+  FAILED grid_in_flex_tests::a_grid_that_is_a_flex_item_is_as_in_chrome_4_of_6
+  FAILED grid_in_flex_tests::a_grid_that_is_a_flex_item_is_as_in_chrome_5_of_6
+  FAILED grid_in_flex_tests::a_grid_that_is_a_flex_item_is_as_in_chrome_6_of_6
+  FAILED grid_in_flex_tests::text_free_pages_are_as_in_chrome_on_every_os
+  FAILED grid_block_axis_align_tests::grid_items_and_rows_are_aligned_on_the_block_axis
+  FAILED grid_in_flex_tests::a_grid_that_is_a_flex_item_is_as_in_chrome_1_of_6
+  FAILED grid_relative_size_contribution_tests::a_rem_height_sizes_a_min_content_row
+  FAILED grid_relative_size_contribution_tests::a_rem_width_sizes_a_min_content_column
+  FAILED grid_relative_size_contribution_tests::an_em_min_width_floors_a_min_content_column
+  FAILED grid_template_areas_tests::a_min_content_row_is_its_items_real_height_not_the_estimate
+  FAILED grid_template_areas_tests::a_three_by_three_areas_layout_places_each_item_in_its_area
+  FAILED grid_template_areas_tests::an_unknown_area_name_is_the_first_implicit_line
+  FAILED grid_template_areas_tests::a_non_rectangular_areas_value_is_ignored
+  FAILED grid_item_child_abspos_tests::a_percentage_inset_in_a_grid_items_child_resolves_against_its_final_height
+  FAILED grid_item_min_max_tests::min_and_max_sizes_of_a_grid_item_are_as_in_chrome
+  FAILED grid_template_areas_tests::an_item_spanning_the_fr_row_grows_only_that_row
+  FAILED grid_item_lone_text_tests::a_lone_text_child_of_a_grid_item_wraps
+  FAILED page_script_tests::a_sheet_that_misses_the_budget_applies_when_it_arrives
+  FAILED page_script_tests::a_stalled_subresource_is_dropped_at_the_subresource_budget
+  FAILED page_script_tests::runaway_promise_microtask_hits_iteration_limit_and_allows_subsequent_scripts
+  FAILED page_script_tests::scripts_are_fetched_while_the_subresources_load

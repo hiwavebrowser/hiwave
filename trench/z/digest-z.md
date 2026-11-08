@@ -5359,3 +5359,23 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Campaign and A/B** are from c8eeec4b (0 moved, no movers). Since then the head has added only the test split and develop's batch-38 tree.
 - **BLOCKED (stop rule, second session; PR cap 8/8).** Decision packet: open the PR from `receipts/ch2-e29b/pr-body.md` when a slot frees, after B17b and B18b. Nothing more is owed. The worktree and the develop control worktree are both removed. Receipts are in `receipts/ch2-e29b/`.
 - **Blockers:** the PR cap. B17b, B18b, E29b, E30 and E31 are all waiting for slots. Aleph was not used (this seat has no Aleph tools).
+
+
+## 2026-11-08 01:55 Z-lane CH2.E37 (fix pushed, no PR: cap 8/8)
+- **Order:** there is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules. No receipt step was due (that is Prometheus's job). E30 and E31 are Atlas's, and every finished Z row is waiting on the cap, so I took the newest small open row, CH2.E37 (hiwave-macos#990).
+- **CH2.E37 → `atlas/z-ch2-e37-enter-modifiers` @ 655b554a** (base develop c7209173; red 7c8f1841, fix 0dfc9b07, oracle + pin 655b554a). Pushed, no force. It merges cleanly with develop 8ebc1b79.
+  - **Before:** Enter's keydown always said shift/ctrl/alt false.
+  - The key step after the submit step ignored that keydown's cancel. When the key step ran alone, it fired no keydown at all.
+  - **Enter in a RustKit `<textarea>` never typed a line break.** The engine passes the edit model a bare state, which read Enter as Submit. On develop, `a` Shift+Enter `b` → `"ab"`.
+  - The synchronous FormSubmit → TextKey path fired Enter's keydown twice.
+  - Between them, a chat box (Enter sends, Shift+Enter is a newline) could not work.
+  - **After:** `submit_focused_form_with(ctrl, shift, alt)` passes the modifiers, and so do the protocol and both app key paths.
+  - The submit step records its keydown result for the key step that follows, so a cancel holds and only one keydown fires.
+  - A multi-line edit state takes Enter as `"\n"`.
+  - **The CfT 148 oracle (`tools/parity_oracle/enter_modifiers_log.mjs`) matches all six pinned steps.**
+- **Gates:**
+  - Crates: dom 110/0. Engine lib 797, plus 3 `content_thread` wall-clock fails that pass 3/3 alone. App 111/111, after rerunning 2 wall-clock asserts.
+  - Headless suite **partial**: the 1 h limit stopped it at 1415/2113 (load 12–15). It had 59 failures, all in GPU-guard-shaped bursts plus 4 `page_script_tests` timing asserts, and **59/59 pass on one thread**.
+  - Campaign and A/B were not run, because the change is reached only by key input. The PR body says so.
+- **BLOCKED (PR cap 8/8).** Decision packet: open the PR from `receipts/ch2-e37/pr-body.md` (the gh command is in its header) when a slot frees. About 700 headless tests that the run never reached are still owed, and the batch suite covers them. Worktree `z-ch2-e37` is KEPT.
+- **Blockers:** the PR cap (8 open, #992–#994 just opened). Aleph was not used (this seat has no Aleph tools).

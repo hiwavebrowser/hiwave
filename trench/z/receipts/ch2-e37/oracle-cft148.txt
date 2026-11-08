@@ -1,0 +1,15 @@
+tools/parity_oracle/enter_modifiers_log.mjs @ 655b554a, Chrome for Testing 148.0.7778.216, 2026-11-08 00:50 ET
+chrome 148.0.7778.216
+## Shift+Enter in #t
+Shift:t:S Enter:t:S | t="\n" u=""
+## Enter in #t (cancelled)
+Enter:t: | t="\n" u=""
+## Control+Alt+Enter in #t
+Control:t:C Alt:t:CA Enter:t:CA | t="\n" u=""
+## Shift+Enter in #q
+Shift:q:S Enter:q:S submit:q= | t="\n" u=""
+## a Shift+Enter b in #u
+a:u: Shift:u:S Enter:u:S b:u: | t="\n" u="a\nb"
+## Enter Enter in #u
+Enter:u: Enter:u: | t="\n" u="a\nb\n\n"
+exit 0
