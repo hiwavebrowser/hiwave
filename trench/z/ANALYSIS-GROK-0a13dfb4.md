@@ -77,13 +77,13 @@ Six real-window runs (fixtures in `/Users/petecopeland/zg-measure/pages`; harnes
 1. **The production build arms the 15 s budget and logs why.** h19 on hiwave47 stopped at 15000 ms with late 0. test-hooks only gates the panel probe and IPC logging, not the budget (`hiwave-app/src/main.rs` 773–996; `webview_rustkit.rs:207` LIVE_SCRIPT_BUDGET_MS=15000).
 2. **The 15 s watchdog is never what stops a pure JavaScript loop.** The loop-iteration cap gets there first:
    - The load path's limit is 10,000,000 (`EngineConfig.script_loop_iteration_limit`).
-   - The timer and job path uses `loop_limit.min(100_000)` (`rustkit-engine/src/lib.rs:7374`). That fits the 0 ms timer stops.
+   - ~~The timer and job path uses `loop_limit.min(100_000)` (`rustkit-engine/src/lib.rs:7374`). That fits the 0 ms timer stops.~~ Corrected (see item 4): `min(100_000)` caps microtask jobs per drain; loops get 10M per call frame in timers too, and the 0 ms is a hard-coded log value.
    - So "watchdog interrupts a pure loop" is **unproven, because no fixture I could write reaches it**. Every pure loop dies at the cap first. The watchdog is proven only for the nested-callback shape (h19, i0a_spin).
 3. **Recovery passes on every shape, and it already passed at the pause head.**
    - With the new checks, the pause binary hiwave45th passes h19 9/9 and i0a_script 10/11 (only the resize assertion fails).
    - This independently confirms Atlas's #1002 claim that 6 of 7 batch-44 FAILs were the checks.
    - #1002's engine change is the log line for a loop-cap stop. At pause the stop was silent; now it is logged.
-4. **New risk, flagged but not yet measured against Chrome.** A timer or callback with an ordinary loop of about 100k+ iterations is killed in 0 ms. Example: a 5M-iteration `for` in a `setTimeout`. Chrome runs that code, so real sites doing heavy work in callbacks will break silently. It is also mislabelled: the log reads `elapsed_ms=0`. This is a correctness row (BACKLOG), not a milestone blocker. **UNVERIFIED** whether any site in the board hits it.
+4. ~~**New risk, flagged but not yet measured against Chrome.** A timer or callback with an ordinary loop of about 100k+ iterations is killed in 0 ms.~~ **CORRECTED 2026-11-09 09:30 ET (Atlas Null 13:44Z): this risk is false.** Measured headless vs Chrome 148, a plain 5M `for` loop in `setTimeout` completes in 207 ms, and 3M in each of 5 timers completes. My fixture was `while(true){ for(5e6) }`, an infinite loop, which is correctly stopped. The loop limit is 10M per call frame, fresh per timer callback; `min(100_000)` caps microtask jobs per drain, not loops. `elapsed_ms=0` on timer stops is a hard-coded value (`lib.rs:6005`), not a measurement. Real findings from Atlas's check: promise chains of more than 100k jobs are killed where Chrome runs them (row H19c), and top-level `var` loops are about 13x slower than function-local ones (row JS9).
 
 ### 3.2 i0a_nav judged by what committed (rule 2)
 I did not re-run i0a_nav myself. Atlas's TRIAGE repro without Cmd+T (final page commits, is visible and is the newest history entry; Chrome 148 differs only in the replace-vs-push of history) is consistent with the A47 log: `Navigation cancelled ... nav_id=1`, then the start page HTML loaded into the same view. My only disagreement is in §7, on priority.
@@ -173,7 +173,7 @@ My ranking for the finish line ("normal multi-tab session stays responsive while
    - It is the genuine i0a_nav failure, and it makes every script-heavy page late by its slowest script fetch.
    - On the milestone ("leave a loading page"), it ranks right after LAT15.
 4. **Tab-cycle memory growth (§5):** about +3 MB heap per cycle with every tab closed, and RSS rising at idle. Measure it out to 100 cycles this week, and fix it next week unless it turns out linear.
-5. **The script stop is done** for every shape I could build. Two small rows to BACKLOG: the 100k timer loop cap kills legitimate callbacks (§3.1 item 4), and the loop-cap log says `elapsed_ms=0`.
+5. **The script stop is done** for every shape I could build. Rows to BACKLOG (corrected 2026-11-09 per Atlas, see §3.1 item 4): the timer-loop risk was false; instead H19c (>100k-job promise chains killed) and JS9 (top-level `var` loops ~13x slower), plus the loop-cap log's hard-coded `elapsed_ms=0`.
 6. **b11 Settings item:** small and visible, so a good filler task.
 7. **LAT16 (chrome hover relayout, 557 × 14.5 ms in Pete's session):** absent from WEEK. Deferred is fine unless the seat hand-test shows hover cost on the milestone.
 
