@@ -143,3 +143,15 @@ Judgement call: `metrics-history` is KEPT in all three repos although not in the
 8. macos `athena/e54b-srcset` (S) vs merged #1039: same row re-cut; only the srcset_probe.mjs tool is unique.
 9. macos `atlas/z-729/733/736-merge-wip` (U) vs merged LAT15 #1006, LAT17 #1013, #786, HAR replay: old merge stacks whose pieces were re-cut; 48 unique patches on 736 not line-verified.
 10. Cross-platform: windows #155 (url_for_log, follow-up to windows #153 content-IPC guard) has no macOS twin (`content_ipc_guard` absent on macOS develop); linux #135 analytics hardening (merged) is a similar content-page lockdown. Ports, not duplicates; no Windows/Linux open PR duplicates macOS develop.
+
+## Executed 2026-11-10 ~21:15 ET
+
+Each delete re-checked live first (tip unchanged, not an open-PR head/base, >=6h old); S/U tags verified on the remote at the tip before the branch was deleted. Nothing skipped.
+
+| repo | branches at start of day / at ledger / after | deleted (A/S/U) | archive tags created |
+|---|---|---|---|
+| hiwave-macos | 73 / 63 / 16 | 47 (7/7/33) | 40 |
+| hiwave-linux | 21 / 21 / 4 | 17 (14/1/2) | 3 |
+| hiwave-windows | 21 / 21 / 4 | 17 (5/3/9) | 12 |
+
+Left: macos = master, develop, metrics-history, atlas/trench-realsite, 11 open-PR heads, feat/inc5-incremental-layout-stage2 (RECENT). linux = main, master, develop, metrics-history. windows = master, develop, metrics-history, athena/url-for-log-char-safe (#155).
