@@ -150,7 +150,7 @@ Each delete re-checked live first (tip unchanged, not an open-PR head/base, >=6h
 
 | repo | branches at start of day / at ledger / after | deleted (A/S/U) | archive tags created |
 |---|---|---|---|
-| hiwave-macos | 73 / 63 / 16 | 47 (7/7/33) | 40 |
+| hiwave-macos | 73 / 63 / 16 | 47 (7/5/35) | 40 |
 | hiwave-linux | 21 / 21 / 4 | 17 (14/1/2) | 3 |
 | hiwave-windows | 21 / 21 / 4 | 17 (5/3/9) | 12 |
 
