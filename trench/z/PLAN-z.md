@@ -1271,3 +1271,18 @@ Athena and Talos cannot run macOS gates. For every seat PR to hiwave-macos that 
 ## Approvals log
 - Week 2 plan: written by Atlas from Pete's 2026-10-09 agreements ("Agreed, good plan"; "Perfect"). Site list is Atlas's pick until Pete edits it.
 - Everything in the week 1 approvals log stays in force (script budget 60 s in the app, tree reuse on, cascade budget, handshake amendment, 25-site board).
+
+### GR5 — grid percent re-layout for fixed and auto rows (filed 11-13 by Atlas from the layout agent)
+GR5 (follows #1110). A column flex grid item whose items have percentage heights, in a grid whose own height is not definite.
+
+#1110 lays such an item out at its used height only when the grid's height is definite. Two shapes stay on the content-sized pass:
+- **Fixed-length rows** (`grid-template-rows: 300px`, no grid height): the row is final from track sizing, so the used-height pass can run there too. No second pass is needed.
+- **Flexible or `auto` rows in an auto-height grid:** do a second pass at the final stretched row height, after Phase 9.5. Clear the items' "percent resolves to auto" marks first, and read the row height after the resize.
+
+Percentage detection must cover `calc()`, `min()`, `max()` and `clamp()`.
+
+Why the second-pass variant failed on #1110 (review 5886856884): the children's percent-to-auto marks were not cleared before the second pass, and the pass read the area height from before the resize.
+
+Leave as is: a grid with `min-height: 100vh`, or one stretched to a definite size by its parent, still counts as indefinite. That is consistent with the row resize.
+
+Pins: the eight pages of `grid_item_flex_percent_cases.json` stay green. Add a fixed-row page and an auto-row page with a percentage-height pane, each measured on Chrome for Testing 148.
