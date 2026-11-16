@@ -4,12 +4,12 @@ Status as of 2026-11-16. This page covers the macOS tree, which is the
 reference platform for RustKit, the project's own engine. Where a number is
 compared with Chrome, the reference is Chrome for Testing 148 on the same Mac.
 
-Every figure below names its source. The sources are public: the
-[hiwave-macos releases](https://github.com/hiwavebrowser/hiwave-macos/releases),
-its [merged pull requests](https://github.com/hiwavebrowser/hiwave-macos/pulls?q=is%3Apr+is%3Amerged),
-and the project's working plan file,
-[`trench/z/PLAN-z.md` on the `atlas/z` branch](https://github.com/hiwavebrowser/hiwave/blob/atlas/z/trench/z/PLAN-z.md)
-of this repository (cited below as "plan", with the date of the note).
+Every figure below names its source. Two kinds are public: the
+[hiwave-macos releases](https://github.com/hiwavebrowser/hiwave-macos/releases)
+and its [merged pull requests](https://github.com/hiwavebrowser/hiwave-macos/pulls?q=is%3Apr+is%3Amerged).
+The third is the project's batch gate records: the results each batch's gate
+run wrote down before the batch merged (cited below as "gate records", with
+the date of the entry).
 
 ## Releases
 
@@ -25,6 +25,11 @@ V1.5.0 added dedicated workers with structured clone, a rasterised and
 painted 2D canvas, faster layout of deeply nested pages, and fixes that make
 several previously failing sites usable. The release notes list what changed,
 the evidence, and the known issues.
+
+Fixed on `develop` since V1.5.0 and not yet released: a crash in the
+JavaScript engine's inline caches
+([#1177](https://github.com/hiwavebrowser/hiwave-macos/pull/1177)). The fix
+ships with the next release.
 
 ## How changes land
 
@@ -48,10 +53,10 @@ Batch numbering reached 95 on 2026-11-16. Not every number landed: some
 batches were re-cut or retired. From batch 74 onward each batch is its own
 pull request; 21 batch pull requests (batch 74 to batch 95b) merged between
 2026-11-13 and 2026-11-16. Earlier batches were merged as their member pull
-requests and are recorded in the plan.
+requests and are listed in the gate records.
 
 Sources: V1.5.0 release notes ("Every PR in this release landed through a Mac
-batch gate..."); plan, notes of 11-02 23:40 and 11-16 11:35; merged pull
+batch gate..."); gate records, entries of 11-02 23:40 and 11-16 11:35; merged pull
 requests titled "batch N".
 
 ## Test counts
@@ -67,7 +72,7 @@ Passing tests recorded by the batch gate, with no failures in either column.
 | JavaScript engine crate | not recorded | 211 |
 | App | not recorded | 250 |
 
-Sources: plan, notes of 11-02 23:40 and 11-16 11:35.
+Sources: gate records, entries of 11-02 23:40 and 11-16 11:35.
 
 ## Measurements at `develop` `d4455b45` (2026-11-16)
 
@@ -83,8 +88,8 @@ Sources: plan, notes of 11-02 23:40 and 11-16 11:35.
   start of the pacing work on 2026-11-15, then 56, then 60. A 3-second probe
   now counts 179 to 181 frames, the same count as Chrome on the same Mac.
 
-Sources: plan, note of 11-16 11:35 (all five); V1.4.0 and V1.5.0 release notes
-(campaign means); plan, note of 11-09 (board at 21 of 42); plan, note of 11-15
+Sources: gate records, entry of 11-16 11:35 (all five); V1.4.0 and V1.5.0 release notes
+(campaign means); gate records, entry of 11-09 (board at 21 of 42); gate records, entry of 11-15
 10:28 (about 52 frames per second before the pacing work).
 
 ## Landed behind a flag, or planned
@@ -97,7 +102,7 @@ Sources: plan, note of 11-16 11:35 (all five); V1.4.0 and V1.5.0 release notes
   made to build it.
 - **Media playback** is not implemented.
 
-Sources: plan, notes of 11-14 11:30 and 11-16 11:35; V1.5.0 release notes
+Sources: gate records, entries of 11-14 11:30 and 11-16 11:35; V1.5.0 release notes
 ("Not in this release").
 
 ## Stress suites: where the engine is behind
@@ -116,7 +121,7 @@ Mac. RustKit is not at that level.
   states listed above.
 
 Sources: V1.5.0 release notes ("No stress suite ... produces a score yet");
-plan, notes of 11-12 09:30 (priority) and 11-16 11:35 (MotionMark subtests).
+gate records, entries of 11-12 09:30 (priority) and 11-16 11:35 (MotionMark subtests).
 
 ## Process
 
