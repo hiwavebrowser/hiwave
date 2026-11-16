@@ -1,5 +1,7 @@
 # HiWave Browser Community
 
+> **Status note, 2026-11-16.** This page was written in January 2026. Its parity percentages, phase labels and dates describe the project at that time and have not been re-measured. For current, sourced figures see [Recent progress](https://github.com/hiwavebrowser/hiwave/blob/master/docs/PROGRESS-2026-11.md). Links to the `hiwavebrowser/community` repository and its Discussions do not currently resolve; use the [issue tracker](https://github.com/hiwavebrowser/hiwave/issues) instead.
+
 Welcome to the HiWave Browser community repository! This repo enables community members to contribute to HiWave's development through testing, bug reports, feature feedback, and more.
 
 ## What is HiWave?
@@ -29,7 +31,7 @@ That last row isn't a typo.
 Starting with little more than curiosity and determination, HiWave has grown into:
 
 - A **custom rendering engine** (RustKit) written from scratch in Rust
-- **59% pixel parity** with Chrome and climbing daily
+- **59% pixel parity** with Chrome on the January 2026 test set (see the status note above for current figures)
 - Native **macOS and Windows** applications
 - A working browser that renders real websites
 - GPU-accelerated compositing

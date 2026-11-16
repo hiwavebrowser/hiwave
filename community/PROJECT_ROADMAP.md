@@ -1,5 +1,7 @@
 # HiWave Project Roadmap
 
+> **Status note, 2026-11-16.** This page was written in January 2026. Its parity percentages, phase labels and dates describe the project at that time and have not been re-measured. For current, sourced figures see [Recent progress](https://github.com/hiwavebrowser/hiwave/blob/master/docs/PROGRESS-2026-11.md). Two rows are known to be out of date: page JavaScript already runs (on a vendored copy of the Boa engine), and an Inspector with Elements and Console panels shipped in hiwave-macos V1.4.0. Links to the `hiwavebrowser/community` Discussions do not currently resolve.
+
 A technical roadmap for building a complete, independent browser — one "impossible" component at a time.
 
 ---
@@ -53,7 +55,7 @@ There's no "right" answer. The community decides.
 
 ### Goal: 99%+ Pixel Parity with Chrome
 
-**Status: 59% and climbing**
+**Status: 59% in January 2026** (not re-measured on this scale; see the status note above)
 
 The rendering engine (RustKit) is the foundation. It takes HTML, CSS, and assets and turns them into pixels on screen.
 

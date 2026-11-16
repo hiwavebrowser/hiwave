@@ -6,16 +6,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 HiWave is a privacy-first browser built from scratch in Rust, designed to help users browse less through features like The Shelf (tab decay), Workspaces, and built-in ad/tracker blocking. The project consists of:
 
-- **hiwave-windows/** - Windows platform (RustKit engine, most complete)
-- **hiwave-macos/** - macOS platform (RustKit + WebKit hybrid)
-- **hiwave-linux/** - Linux platform (GTK WebKit)
+- **hiwave-macos/** - macOS platform (RustKit engine; the reference tree, where engine work lands first)
+- **hiwave-windows/** - Windows platform (RustKit engine; synced from macOS)
+- **hiwave-linux/** - Linux platform (RustKit engine; synced from macOS)
 - **test-infrastructure/** - Performance testing harness
 - **churn-report/** - Code churn analysis tool
-- **ai-orchestrator/** - AI workflow orchestration
+
+The three platform directories and `churn-report/` are git submodules pinned to each repo's `master`. Status as of 2026-11: see `docs/PROGRESS-2026-11.md`. Generated output (`badges/`, `charts/parity-trend.svg`, `charts/perf-trend.svg`, `charts/platform-comparison.svg`, `metrics/unified.json`, `metrics/parity_results.json`, `churn-reports/`) is written by the workflows in `.github/workflows/`; do not edit it by hand.
 
 ## Build Commands
 
-### Windows (Primary Development Platform)
+### Windows
 ```powershell
 # Default build (RustKit hybrid mode)
 cargo build -p hiwave-app
@@ -32,8 +33,7 @@ cargo check -p hiwave-app
 
 ### macOS
 ```bash
-./scripts/run-rustkit.sh        # RustKit mode (default)
-./scripts/run-webkit.sh         # WebKit fallback
+./scripts/run-rustkit.sh        # RustKit mode (default; the WebKit content fallback was removed in October 2026)
 ```
 
 ### Linux
@@ -59,7 +59,7 @@ cargo clippy --workspace -- -D warnings  # Lint
 
 ### RustKit Browser Engine
 
-Custom browser engine written from scratch in Rust (~80,000 lines). Key crates in `hiwave-windows/crates/`:
+Custom browser engine written in Rust. Key crates, in each platform repo's `crates/` directory (the list below was written against hiwave-windows in January 2026; check the repo for the current set):
 
 **Core Rendering Pipeline:**
 - `rustkit-html` - HTML5 tokenizer & tree builder (replaced html5ever)
@@ -125,7 +125,7 @@ Custom browser engine written from scratch in Rust (~80,000 lines). Key crates i
 
 Each platform has its own WebView backend:
 - **Windows**: WebView2 (Edge Chromium) or 100% RustKit
-- **macOS**: WKWebView or RustKit hybrid
+- **macOS**: RustKit for all page content
 - **Linux**: GTK WebKit2
 
 RustKit engine crates are shared but platform-specific code lives in:
@@ -142,10 +142,3 @@ cargo build --release
 ```
 
 Regression detection thresholds: Total Time >5%, Individual Phases >10%, Memory >15%.
-
-## AI Orchestrator
-
-WorkOrder-based development tracking in `.ai/`:
-- `.ai/roadmap_index.json` - Shared roadmap index
-- `.ai/work_orders/` - Work order specs
-- `.ai/artifacts/` - Run artifacts (gitignored)

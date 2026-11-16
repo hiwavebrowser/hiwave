@@ -1,5 +1,7 @@
 # Parity Test Contributions
 
+> **Status note, 2026-11-16.** This page was written in January 2026. Its parity percentages, phase labels and dates describe the project at that time and have not been re-measured. For current, sourced figures see [Recent progress](https://github.com/hiwavebrowser/hiwave/blob/master/docs/PROGRESS-2026-11.md).
+
 Help HiWave achieve pixel-perfect web rendering by contributing test cases that expose rendering differences.
 
 ## Why This Matters

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="hiwave-windows/docs/logo.png" alt="HiWave" width="140" />
+  <img src="https://raw.githubusercontent.com/hiwavebrowser/hiwave-windows/master/docs/logo.png" alt="HiWave" width="140" />
 </p>
 
 <h1 align="center">HiWave</h1>
@@ -11,6 +11,7 @@
 
 <p align="center">
   <a href="#platform-status">Status</a> •
+  <a href="#recent-progress">Progress</a> •
   <a href="#what-is-hiwave">What is HiWave?</a> •
   <a href="#downloads">Downloads</a> •
   <a href="#platforms">Platforms</a> •
@@ -54,21 +55,52 @@ platform — it is not inferred from anything else, and a passing build is never
 evidence of pixel fidelity. Details in
 [How these numbers are produced](#how-these-numbers-are-produced).
 
-### macOS at V1.4.0 (2026-10-24)
+The macOS parity badge reads from a metrics feed that has not been refreshed,
+so it shows a stale figure. The measured macOS numbers are the ones below.
+
+### macOS at V1.5.0 (2026-11-14)
 
 macOS is the reference tree for RustKit; Windows and Linux are measured against it.
 
-- **Real-site board:** 28 / 60 on the top-20 live sites against pinned Chrome for Testing 148 (33 / 78 on the 26-site list), up from 27 / 60 at V1.3.0.
-- **Fixed-page campaign:** 26 / 26 cases, 1.1% average diff from Chrome.
-- **New this release:** pages run on their own content thread, so the window and address bar stay responsive while a page loads; the HiWave Inspector (Elements and Console, JavaScript error stacks, shape-only privacy); CSS `:has()`, `@supports`, `color-mix()`, `-webkit-line-clamp` and scoped shadow-DOM styles; clicks reach transformed consent dialogs.
-- **Known gaps:** JavaScript coverage is partial (heavy JS sites still render thin); `@container`, `clip-path`, `filter`, `display: contents` and CSS fill on inline SVG are in review; the browser UI is still the system WebView.
+- **Fixed-page campaign:** 26 / 26 cases, 0.405% mean pixel difference from pinned Chrome for Testing 148 (1.1% at V1.4.0).
+- **Real-window interaction checks:** 570 pass, 1 fail, 1 not run, in each of two runs.
+- **Engine test suite:** 2,517 passing, 0 failing, in the headless suite at the release head.
+- **Web Platform Tests subset:** 99 pass, 151 fail.
+- **New this release:** dedicated workers with structured clone; a rasterised and painted 2D canvas; faster layout of deeply nested pages; fixes that make reddit comment pages, duckduckgo, walmart and bing more usable.
+- **Known gaps:** JavaScript coverage is partial; same-origin iframes are behind a flag and not in this release; no WebAssembly and no media playback; no stress suite (Speedometer, MotionMark, JetStream) produced a score at this release.
 
-Full status, sources for every number, and the known-gap list: [hiwave-macos README](./hiwave-macos#readme).
+Sources and the full known-issue list: the [V1.5.0 release notes](https://github.com/hiwavebrowser/hiwave-macos/releases/tag/V1.5.0).
 
 **Per-platform engine status** (what actually renders, what is parsed-but-inert,
 known gaps): see each platform README —
-[Windows](./hiwave-windows#readme) · [macOS](./hiwave-macos#readme) ·
-[Linux](./hiwave-linux#readme).
+[Windows](https://github.com/hiwavebrowser/hiwave-windows#readme) · [macOS](https://github.com/hiwavebrowser/hiwave-macos#readme) ·
+[Linux](https://github.com/hiwavebrowser/hiwave-linux#readme).
+
+## Recent progress
+
+Status as of 2026-11-16, macOS tree. Details and a source for every number:
+[docs/PROGRESS-2026-11.md](docs/PROGRESS-2026-11.md).
+
+- **Releases:** V1.5.0 on 2026-11-14, after V1.4.0 (10-24), V1.3.0 (10-12), V1.2.0 (10-02) and V1.1.0 (09-24).
+- **Gated batches:** since 2026-11-02 every change to hiwave-macos lands in a batch. Each pull request is reviewed independently, and the batch merges only after one combined gate on a Mac: unit and integration suites, a 26-page capture campaign, a 42-state board of the browser's own interface, a 19-site A/B run against the previous build, a Web Platform Tests subset, and two passes of 572 real-window interaction checks. Batch numbering reached 95 on 2026-11-16.
+- **Tests:** the headless engine suite grew from 1,496 passing tests at batch 1 (2026-11-02) to 2,588 at `develop` `d4455b45` (2026-11-16); script bindings from 428 to 732; layout from 881 to 978.
+- **Real window:** 570 of 572 interaction checks pass. Cmd+T and Cmd+W take 157 to 164 ms.
+- **Frame pacing:** the real window went from about 52 to 60 frames per second in November. A 3-second probe counts 179 to 181 frames, the same count as Chrome on the same Mac.
+- **Browser interface:** 39 of 42 interface states match the Chrome reference, up from 21 of 42 on 2026-11-09.
+- **Behind a flag or planned:** same-origin iframes are on `develop` behind a flag, off by default. WebAssembly has an approved plan and has not shipped. A baseline JIT is at the plan stage, with no decision made.
+- **Where the engine is behind:** the current priority is the stress suites (Speedometer, MotionMark, JetStream), and RustKit is not at Chrome's level on them. MotionMark now completes end to end; one run scored 52.16 overall, and two of its eight subtests still score at the floor. At V1.5.0 no stress suite produced a score.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="charts/commit-history-dark.svg">
+  <img src="charts/commit-history.svg" alt="Weekly non-merge commits and merged pull requests on hiwave-macos, hiwave-windows and hiwave-linux from 29 December 2025 to 16 November 2026, with cumulative commits. The weeks starting 2 and 9 November have 665 and 928 commits and 171 and 219 merged pull requests." />
+</picture>
+
+The chart counts non-merge commits reachable from each platform repo's
+`develop` branch, by author date, and merged pull requests by merge date, in
+Monday-start weeks (UTC). Merge commits and this umbrella repo's automated
+commits are not counted. The last bar is an unfinished week. Data fetched
+2026-11-16: [`metrics/commit_history.json`](metrics/commit_history.json),
+drawn by [`scripts/commit_history_chart.py`](scripts/commit_history_chart.py).
 
 <details>
 <summary>Parity Trend (click to expand)</summary>
@@ -157,7 +189,7 @@ cd hiwave-linux
 xvfb-run python3 scripts/parity_swarm.py --scope all
 ```
 
-*Parity scores updated daily via [GitHub Actions](https://github.com/hiwavebrowser/hiwave/actions/workflows/parity-unified.yml)*
+*The scheduled [parity workflow](https://github.com/hiwavebrowser/hiwave/actions/workflows/parity-unified.yml) last completed on 2026-11-05; its runs since then were cancelled. Current macOS figures come from the batch gate described in [Recent progress](#recent-progress).*
 
 ---
 
@@ -205,7 +237,7 @@ While most browsers are designed to keep you scrolling endlessly, HiWave activel
 
 ### Built Different
 
-Unlike Chrome, Firefox, or Safari, **HiWave runs on RustKit** — our own browser engine written from scratch in Rust. Everything is fully built in Rust.
+Unlike Chrome, Firefox, or Safari, **HiWave runs on RustKit** — our own browser engine written in Rust. HTML, CSS, layout, painting and the web APIs are the project's own code; JavaScript runs on a vendored copy of the open-source Boa engine, also written in Rust.
 
 ⚠️ **RustKit Development Status**: RustKit is actively under development and may contain rendering bugs and visual inconsistencies. For the most stable experience, use the WebView/WebKit variants which rely on system rendering engines. RustKit variants are recommended for testing and development purposes.
 
@@ -215,8 +247,10 @@ Unlike Chrome, Firefox, or Safari, **HiWave runs on RustKit** — our own browse
 
 Pre-built binaries are available for all platforms with multiple rendering backend options:
 
-### 📦 [Latest Nightly Build](https://github.com/hiwavebrowser/hiwave/releases/tag/nightly) (Automated Daily)
-### 📦 [Latest Weekly Release](https://github.com/hiwavebrowser/hiwave/releases/latest) (Stable)
+### 📦 [Latest Weekly Build](https://github.com/hiwavebrowser/hiwave/releases/latest) (built every Monday from the pinned platform commits)
+### 📦 [Nightly Build](https://github.com/hiwavebrowser/hiwave/releases/tag/nightly) (last built 2026-07-10; the nightly workflow is failing)
+
+macOS releases with full notes are published in the [hiwave-macos repo](https://github.com/hiwavebrowser/hiwave-macos/releases).
 
 ### Build Variants
 
@@ -228,7 +262,7 @@ Each platform offers multiple build variants with different rendering backends:
 - **`hiwave-windows-native-win32`** — 100% RustKit native Win32 (experimental) 🚧 *Experimental*
 
 #### 🍎 macOS
-- **`hiwave-macos-rustkit`** — RustKit renders every page; the browser UI (tabs, address bar, sidebar) is still drawn by the system WebView ⚠️ *In Development*. The WebKit-for-content fallback was removed in October 2026: on macOS, pages always render in RustKit.
+- **`hiwave-macos-rustkit`** — RustKit renders every page ⚠️ *In Development*. For the state of the browser's own interface, see the [hiwave-macos README](https://github.com/hiwavebrowser/hiwave-macos#readme). The WebKit-for-content fallback was removed in October 2026: on macOS, pages always render in RustKit.
 
 #### 🐧 Linux
 - **`hiwave-linux-webview`** — GTK WebKit2 (uses system WebKit for all rendering) ✅ *Stable*
@@ -329,11 +363,11 @@ This repository is the umbrella project containing all HiWave components:
 
 | Platform | Repository | Status |
 |----------|------------|--------|
-| 🪟 **Windows** | [hiwave-windows](./hiwave-windows) | Alpha — RustKit engine; engine sync trails macOS (repo last pushed 2026-10-09) |
-| 🍎 **macOS** | [hiwave-macos](./hiwave-macos) | Alpha — RustKit engine; the reference platform. **V1.4.0** released 2026-10-24 |
-| 🐧 **Linux** | [hiwave-linux](./hiwave-linux) | Alpha — RustKit engine; engine sync trails macOS (repo last pushed 2026-10-15) |
+| 🪟 **Windows** | [hiwave-windows](https://github.com/hiwavebrowser/hiwave-windows) | Alpha — RustKit engine; engine sync trails macOS (`master` last updated 2026-10-02, `develop` 2026-11-11) |
+| 🍎 **macOS** | [hiwave-macos](https://github.com/hiwavebrowser/hiwave-macos) | Alpha — RustKit engine; the reference platform. **V1.5.0** released 2026-11-14 |
+| 🐧 **Linux** | [hiwave-linux](https://github.com/hiwavebrowser/hiwave-linux) | Alpha — RustKit engine; engine sync trails macOS (`master` last updated 2026-10-06, `develop` 2026-11-10) |
 
-Each platform directory contains its own README with platform-specific build instructions.
+Each platform is a git submodule pinned to that repo's `master`; each repo has its own README with platform-specific build instructions.
 
 ---
 
@@ -341,7 +375,7 @@ Each platform directory contains its own README with platform-specific build ins
 
 ### Option 1: Download Pre-built Binary (Recommended)
 
-Download the latest release for your platform from the [Downloads](#downloads) section above. Choose a stable variant (WebView2/WebKit) for daily use.
+Download the latest release for your platform from the [Downloads](#downloads) section above. On Windows and Linux, choose a WebView2/WebKit variant for daily use.
 
 ### Option 2: Build from Source
 
@@ -367,8 +401,7 @@ cargo build --release --no-default-features --features native-win32     # Native
 cd hiwave-macos
 
 # Build variants:
-cargo build --release --features rustkit                  # RustKit hybrid
-cargo build --release --no-default-features --features webview-fallback # WebKit (stable)
+cargo build --release --features rustkit                  # RustKit (the only content engine on macOS)
 ```
 
 #### Linux
@@ -406,7 +439,7 @@ See each platform's README for detailed build instructions and development setup
 2. Check the issues labeled [`good first issue`](https://github.com/hiwavebrowser/hiwave/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 3. Submit a PR!
 
-See [CONTRIBUTING.md](./hiwave-windows/CONTRIBUTING.md) for development setup and guidelines.
+See [CONTRIBUTING.md](https://github.com/hiwavebrowser/hiwave-windows/blob/master/CONTRIBUTING.md) for development setup and guidelines.
 
 ### 📖 Improve the Docs
 
@@ -449,6 +482,8 @@ hiwave/
 ├── churn-report/       # Code churn analysis tool (submodule)
 ├── churn-reports/      # Generated churn analysis reports
 ├── community/          # Ways to help and collaborate
+├── docs/               # Progress pages and design records
+├── scripts/, metrics/, badges/, charts/   # Metrics pipeline and its generated output
 └── README.md           # You are here
 ```
 
@@ -456,13 +491,13 @@ hiwave/
 
 ## License
 
-HiWave is licensed under the [Mozilla Public License 2.0](./hiwave-windows/LICENSE).
+HiWave is licensed under the [Mozilla Public License 2.0](https://github.com/hiwavebrowser/hiwave-windows/blob/master/LICENSE).
 
 - ✅ Free to use, modify, and distribute
 - ✅ Build commercial products
 - ⚠️ Changes to HiWave's files must be shared under MPL-2.0
 
-For commercial licensing options, see [COMMERCIAL-LICENSE.md](./hiwave-windows/COMMERCIAL-LICENSE.md).
+For commercial licensing options, see [COMMERCIAL-LICENSE.md](https://github.com/hiwavebrowser/hiwave-windows/blob/master/COMMERCIAL-LICENSE.md).
 
 ---
 
