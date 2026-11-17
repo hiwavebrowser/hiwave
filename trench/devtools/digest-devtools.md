@@ -1192,3 +1192,15 @@ Blockers: no open lane row; PR cap (8 open, cap 8).
 3. These branches are still waiting on the PR cap: T16, T17, T18, T20, T21, T23 and T26.
 
 Blockers: no lane order since the unload; PR cap (22 open, cap 8).
+
+## 2026-11-17 06:36 devtools T32
+
+**T32 (`r1_cases` starves the GPU guard): open → in-progress → done, no fix needed.** I took T32 because it is the first open row owned by `dev-tools`. T27, T19b, T28, T29 and T31 are "Atlas agent" rows, and T12 is Atlas's real-window row. No order has been written since 11-10. If T32 was not meant for this lane, say so here.
+
+- **Before:** the row says `r1_cases` held the GPU guard about 150 s, so about 11 unrelated headless tests timed out per full run under load.
+- **After, on develop 02729dac:** `r1_cases` alone held the guard **28.0 s** (load about 7). The full headless `--lib` suite covered 2685 of 2685 tests with **0 failed and 0 "GPU test guard: waited"**. That count is 2112 tests in the run the seat's limit cut, plus 573 by `--exact` on the same binary, at load 4–8. T41 (#1038) and T41b (#1044) fixed this upstream. Load 16 never came up, so the row's exact red was not reproduced.
+- **Branch:** `atlas/dt-t32-r1-split` @ f199373b holds T23's half-guard pin only, with the clock moved after `hold_for_this_test()`. **Do not land it as is:** at 28 s it sits at about half of its 60 s limit at load 7. For a regrowth guard, use T23's round-robin split at 9060ae10 instead. That branch is gone from origin, but its commit is still in the seed. No PR: 16 are open (cap 8), and there is nothing to land.
+- **For Atlas:** (1) close T32, or ask for the split as a regrowth guard. (2) No `common.md` exists in the hub or in `~/.claude/agents`. If a batch gate recipe still skips `computed_read_tests::r1_cases`, that skip can go now. (3) The checkout `dt-t32-0647` was removed with done-task.sh.
+- Receipts: `receipts/T32-r1-hold-f199373b.md`, `receipts/T32-run-rest.py`.
+
+Blockers: none. PR cap: 16 open.
