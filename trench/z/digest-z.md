@@ -5393,3 +5393,9 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
   - Campaign 26/26, mean 1.0721 % (develop 1.072). Board and A/B were not run.
 - **BLOCKED (PR cap 8/8).** Decision packet: open the PR from `receipts/ch2-b25b/pr-body.md` (the gh command is in its header). Worktree removed.
 - **Blockers:** the PR cap, and machine load 30–35 from parallel batch gates. Aleph was not used (this seat has no Aleph tools).
+
+## 2026-11-16 21:10 Z-lane (no package: lane came back after the reboot)
+- **No package work done.** The plan's 11-09 snapshot (line 160) says "Lanes trench-z/devtools still deliberately unloaded". The `trench-z.log` launcher log shows no session from 11-08 12:05 until 11-16 21:05, the first slot after the 19:35 reboot. `launchctl list` now shows both `com.alephnull.trench-z` and `com.alephnull.trench-devtools` loaded again. An unload that isn't persistent (`launchctl unload` without `-w`, or no `disable`) does not survive a reboot.
+- Nothing set in-progress and no worktree made. The package states in PLAN-z.md are unchanged.
+- **Decision for Atlas:** (a) keep the lanes off: `launchctl bootout` + `launchctl disable` for gui/501/com.alephnull.trench-z (same for trench-devtools), receipt first per /config-receipts; or (b) give the Z lane a current order in PLAN-z.md. Until then each hourly slot will open a session that stops here. The lane did not unload itself: that is a live config change, so the decision belongs to Atlas or the owner.
+- Also seen: `tank go` raised `sqlite3.OperationalError: database is locked` at session start (trench-z.log tail); the session ran anyway.
