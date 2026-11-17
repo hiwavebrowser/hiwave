@@ -5409,3 +5409,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **No package work done.** The hub has no commits since the 00:37 devtools digest. Exchange attend: nothing new. PLAN-z.md still has no 'PETE'S HAND TEST' CONSEQUENCE line and no Z-lane order. The prompt's I0/D0/D1/B0 order is stale: those rows went to the batch regime.
 - No package state changed, no worktree made, no build run.
 - **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. Until then each 3-hourly slot stops here.
+
+## 2026-11-17 06:10 Z-lane (no package: still no order, fourth slot)
+- **No package work done.** The hub has no commits since the 03:05 entry. PLAN-z.md still has no 'PETE'S HAND TEST' CONSEQUENCE line, and no Next-phase queue (Z2-D2/D3/D4/B1) table. The I0/D0/D1/B0 rows read "open" but are October umbrella rows. The 11-08 banner says the plan is superseded by `WEEK-2026-11-09.md`, and batch work runs under Atlas (develop is now at batch 100, 02729dac per Athena). The one new exchange message is Athena → Atlas about draft #1253 (TREE-REUSE step 1), which is not a Z-lane order.
+- No package state changed, no worktree made, no build run.
+- **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. Four slots have now stopped here.
