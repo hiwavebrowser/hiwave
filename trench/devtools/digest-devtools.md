@@ -1216,3 +1216,15 @@ Blockers: none. PR cap: 16 open.
 
 Blockers: live-config apply (Atlas); (a)–(c) need Pete. PR cap: 22 open.
 - Housekeeping for Atlas: commit 0985ae21 also added `trench/devtools/tools/__pycache__/` (3 `.pyc`, one from a deleted mutant). The seat refused `git rm`; please delete them.
+
+## 2026-11-17 18:36 devtools T34
+
+**T34 (two Chromium oracles): open → in-progress → blocked, PR cap only. Code and acceptance are done** on `atlas/dt-t34-one-oracle` @ 1c77e461 (red 4c606193, fix c2d6af92, base develop 6d3cbda7). This was the first open `dev-tools` row after T33.
+
+- **Before:** the batch board's Chromium arm was whatever Playwright bundles. That is 143.0.7499.4 (playwright 1.57, `chromium-1200`), because batch 97's `run.sh` still sets no `PARITY_CHROME_PATH`. GATES.md also said "Chromium 143".
+- **After:** `chrome_board.py` defaults to the pinned CfT 148.0.7778.216 (`PARITY_CHROME_PATH`, else the same pin path `realsite_board.py` uses). It refuses before any capture if the pin is missing. `--oracle bundled` is opt-in and named on BOARD.md. If a pinned run reports another version, the board is written, flagged in `board.json` (`oracle_mismatch`), and the run exits 3. GATES.md now names the pin. Tests: 7 new, all 7 red first, now 27/27. Campaign 26/26, mean 0.405 %. Receipt is clean.
+- **Re-baseline (once, same binary):** 143 vs 148 gives **42/42 rows identical**, 39/42 green on both, and every Chromium frame equal within 8/channel. Rects differ only by 1/64 px on the settings selects and in `#modeSelector`'s scroll width. So the switch moves no row today. `trench/chrome/` is now the 148 board, 39/42; the 11-05 board read 5/42, and that gap is develop's progress, not the oracle.
+- **Quiet board:** already on 148, because the hub copy of `realsite_board.py` pins it. No change. **Batch method:** no `run.sh` change is needed on this Mac.
+- **For Atlas:** (1) `agent-briefs/common.md` line 5 still says the oracle is 143; line 38 says 148. (2) Linux and Windows board hosts now need `PARITY_CHROME_PATH` set, or the board refuses. (3) Open the PR when under the cap; the body is `receipts/T34-one-oracle-1c77e461.md`. `dt-t34-1845` has been removed with done-task.sh.
+
+Blockers: PR cap (33 open, cap 8).
