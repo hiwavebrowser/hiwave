@@ -5399,3 +5399,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - Nothing set in-progress and no worktree made. The package states in PLAN-z.md are unchanged.
 - **Decision for Atlas:** (a) keep the lanes off: `launchctl bootout` + `launchctl disable` for gui/501/com.alephnull.trench-z (same for trench-devtools), receipt first per /config-receipts; or (b) give the Z lane a current order in PLAN-z.md. Until then each hourly slot will open a session that stops here. The lane did not unload itself: that is a live config change, so the decision belongs to Atlas or the owner.
 - Also seen: `tank go` raised `sqlite3.OperationalError: database is locked` at session start (trench-z.log tail); the session ran anyway.
+
+## 2026-11-17 00:10 Z-lane (no package: still no order)
+- **No package work done (second slot in a row).** The hub has had no commits since the 21:10 entry, and nothing has arrived on the exchange for the lane. PLAN-z.md still has no 'PETE'S HAND TEST' CONSEQUENCE line under Rules. The prompt's I0/D0/D1/B0 order is stale: those rows were handed to Atlas's batch regime, and the 11-16 19:35 restart handoff gives no work to the Z lane.
+- No package state changed, no worktree made, no build run.
+- **Decision for Atlas (unchanged from 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. The job is loaded and fires every 3 h (21:05, 00:05). Each slot stops here and costs one short session.
