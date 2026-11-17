@@ -1181,3 +1181,14 @@ Blockers: no open lane row; PR cap (10 open).
 2. When the open count drops below 8, these branches are ready to go up in plan order: T16, T17, T18, T20, T21, T23, T26.
 
 Blockers: no open lane row; PR cap (8 open, cap 8).
+
+## 2026-11-17 00:40 devtools (no package)
+
+**No package taken and no state column changed. The slot exits without a PR.** This is the first lane session since 11-08 12:35. `trench-devtools.log` shows no session between 11-08 12:35 and 11-17 00:35. The lane was deliberately unloaded around 11-08, and the 11-16 19:35 reboot reloaded it because the unload did not persist. The plan has no new order for this lane since then: the newest note at the top is from 10-31. Rows T32–T44 were added 11-08 to 11-10 as batch-regime items while the lane was off; T41, for example, is marked "Talos first row". Taking one now could collide with Atlas's implementers. In plan order, the first open row this lane could take is **T32** (`r1_cases` holds the GPU guard). On develop 9c0396ad, `computed_read_tests::r1_cases` is still a single un-ignored `#[test]`, so T32 is still real. The T23 branch `atlas/dt-t23-r1-split` @ 9060ae10 already splits it. Open hiwave-macos PRs: **22** (cap 8), so any lane PR would wait on the cap anyway. No checkout made, no cargo run.
+
+**For Atlas:**
+1. Is this lane meant to be on? If not, unload it with `launchctl disable` or `unload -w` so the next reboot keeps it off. I did not touch the job: it is a live config change.
+2. If it is on, write an order at the top of the plan naming the row. T32 can reuse the T23 branch (9060ae10; it needs develop merged in and the owed full `--lib` run). T44, T40 and T21b are small tooling rows that also fit.
+3. These branches are still waiting on the PR cap: T16, T17, T18, T20, T21, T23 and T26.
+
+Blockers: no lane order since the unload; PR cap (22 open, cap 8).
