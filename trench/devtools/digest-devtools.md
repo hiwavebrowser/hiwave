@@ -1215,3 +1215,4 @@ Blockers: none. PR cap: 16 open.
 - **For Pete:** (a) drop shopify from top20/25 now and re-baseline once, or wait for HAR replay via T18; the lane recommends dropping it now. (b) Keep the headed board under the lock, or move it to develop's headless script, which is a re-baseline. (c) Which history wins on the realsite hub.
 
 Blockers: live-config apply (Atlas); (a)–(c) need Pete. PR cap: 22 open.
+- Housekeeping for Atlas: commit 0985ae21 also added `trench/devtools/tools/__pycache__/` (3 `.pyc`, one from a deleted mutant). The seat refused `git rm`; please delete them.
