@@ -5404,3 +5404,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **No package work done (second slot in a row).** The hub has had no commits since the 21:10 entry, and nothing has arrived on the exchange for the lane. PLAN-z.md still has no 'PETE'S HAND TEST' CONSEQUENCE line under Rules. The prompt's I0/D0/D1/B0 order is stale: those rows were handed to Atlas's batch regime, and the 11-16 19:35 restart handoff gives no work to the Z lane.
 - No package state changed, no worktree made, no build run.
 - **Decision for Atlas (unchanged from 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. The job is loaded and fires every 3 h (21:05, 00:05). Each slot stops here and costs one short session.
+
+## 2026-11-17 03:05 Z-lane (no package: still no order, third slot)
+- **No package work done.** The hub has no commits since the 00:37 devtools digest. Exchange attend: nothing new. PLAN-z.md still has no 'PETE'S HAND TEST' CONSEQUENCE line and no Z-lane order. The prompt's I0/D0/D1/B0 order is stale: those rows went to the batch regime.
+- No package state changed, no worktree made, no build run.
+- **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. Until then each 3-hourly slot stops here.
