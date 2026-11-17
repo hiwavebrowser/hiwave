@@ -1,0 +1,16 @@
+--- /Users/petecopeland/.claude/hooks/quiet-board-daily.sh	2026-10-08 10:24:40
++++ trench/devtools/receipts/T33-quiet-board-daily.sh.proposed	2026-11-17 12:40:24
+@@ -41,7 +41,12 @@
+ cd "$HUB" || exit 0
+ git checkout -q atlas/trench-realsite && git pull -q --ff-only origin atlas/trench-realsite
+ OUT="trench/realsite/runs/$(date -u +%Y%m%dT%H%MZ)-$TAG-dev$DEV"
+-caffeinate -is python3 scripts/realsite_board.py --board top25 --capture-bin "$TGT/$PROF/parity-capture" --out "$OUT" > "$OUT.txt" 2>&1
++# T33 (dev-tools 11-17): this hub's realsite_board.py runs a HEADED oracle (A1) and
++# takes no lock, so it stole focus from a locked real-window run (batch 41, 11-08).
++# Hold ~/.claude/realwindow.lock for the board; wait up to 1 h, else skip (rc 75).
++caffeinate -is python3 /Users/petecopeland/.claude/bin/realwindow-lock.py --wait 3600 -- python3 scripts/realsite_board.py --board top25 --capture-bin "$TGT/$PROF/parity-capture" --out "$OUT" > "$OUT.txt" 2>&1
++RC=$?
++if [ "$RC" = 75 ]; then log "board skipped at $DEV: $(tail -1 "$OUT.txt")"; exit 0; fi
+ S=$(python3 -c "import json;d=json.load(open('$OUT/summary.json'));t=d['top20'];print(f\"{t['points']}/{t['max_points']} (loads {t['loads']}, readable {t['readable']}, looks-right {t['looks_right']}; scorable {t['scorable_points']}/{t['scorable_max']}) · full list {d['points']}/{d['max_points']} (loads {d['loads']}, readable {d['readable']}, looks-right {d['looks_right']}; scorable {d['scorable_points']}/{d['scorable_max']})\")" 2>/dev/null)
+ log "develop $DEV $TAG board: ${S:-no summary}"
+ { echo; echo "## $(date '+%F %H:%M') — daily QUIET board ($TAG), develop $DEV"; echo; echo "**${S:-run failed; see $OUT.txt}** (load at start: $(sysctl -n vm.loadavg))"; echo; echo '```'; tail -40 "$OUT.txt"; echo '```'; } >> trench/digest-realsite.md

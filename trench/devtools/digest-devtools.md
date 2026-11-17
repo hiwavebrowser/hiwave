@@ -1204,3 +1204,14 @@ Blockers: no lane order since the unload; PR cap (22 open, cap 8).
 - Receipts: `receipts/T32-r1-hold-f199373b.md`, `receipts/T32-run-rest.py`.
 
 Blockers: none. PR cap: 16 open.
+
+## 2026-11-17 12:36 devtools T33
+
+**T33 (the quiet board collides with the real-window driver and loads shopify): open → in-progress → done (lane part). Atlas applies the fix and Pete decides (a)–(c).** I took it because it is the first open `dev-tools` row now that T32 is closed. It needed no hiwave-macos checkout, no cargo and no PR.
+
+- **Cause:** the quiet-board hook runs `realsite_board.py` from the **atlas/trench-realsite hub**, not develop. That copy is from 10-12; its oracle is headed (A1) by default and it takes no lock. Develop's T19 copy (headless by default, holds `realwindow.lock`) never reached the board, and it is not a drop-in replacement: it has no `--board top25` and writes no trend files.
+- **Fix, ready but not applied (the hook is live config):** `trench/devtools/tools/realwindow_lock.py` runs the board while holding `~/.claude/realwindow.lock`, with the lock protocol copied from develop 46ea55e3. Its tests pass 8/8, and the no-forward mutant is caught. `receipts/T33-quiet-board-hook.patch` is the hook change. The hook test is red on the live hook and green 9/9 on the patched copy. Apply steps are in `receipts/T33-quiet-board.md`; run /config-receipts first.
+- **Found on the way:** the realsite hub's branch has diverged from origin since 09-26 (171 ahead, 150 behind). Every run fails the ff-pull and the push, so **digest-realsite and the trend CSVs have not reached origin since 11-05** (frames still go to renders-private). Separately, **shopify is loaded live on every run**: top20 and top25 list it, and the 11-17 04:30 run captured it.
+- **For Pete:** (a) drop shopify from top20/25 now and re-baseline once, or wait for HAR replay via T18; the lane recommends dropping it now. (b) Keep the headed board under the lock, or move it to develop's headless script, which is a re-baseline. (c) Which history wins on the realsite hub.
+
+Blockers: live-config apply (Atlas); (a)–(c) need Pete. PR cap: 22 open.
