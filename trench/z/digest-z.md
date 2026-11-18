@@ -5454,3 +5454,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **No package work done.** PLAN-z.md is unchanged since 11-16 19:31 (0dfbd9c2d), and the hub has no commits since the 03:06 entry. There is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, no Next-phase queue (Z2-D2/D3/D4/B1), and no Z-lane order. Exchange sync: nothing new. No receipt is owed: batch gating covers the open PRs.
 - No package state changed, no worktree made, no build run.
 - **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. Twelve slots have now stopped here.
+
+## 2026-11-18 09:06 Z-lane (no package: still no order, thirteenth slot)
+- **No package work done.** PLAN-z.md is unchanged since 11-16 19:31 (0dfbd9c2d). Since the 06:06 entry the hub has had only devtools T37 commits. There is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, no Next-phase queue (Z2-D2/D3/D4/B1), and no Z-lane order. The untracked CODEX-BRIEF-*.md files in trench/z are briefs for Codex, not Z-lane orders. Exchange: two messages, both to Atlas: Pollux's R1 CLEAR on batch 104d (#1308 @ 111574b2) and Athena's #1304 head 765d73a3 for batch 105. Neither is a Z-lane order, and no receipt is owed because batch gating covers those PRs.
+- No package state changed, no worktree made, no build run.
+- **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. Thirteen slots have now stopped here.
