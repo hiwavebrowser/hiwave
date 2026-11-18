@@ -1279,3 +1279,23 @@ Blockers: PR cap (31 open, cap 8).
   `dt-t38-1241` has been removed with done-task.sh.
 
 Blockers: PR cap (28 open, cap 8).
+
+## 2026-11-18 18:40 devtools T39
+
+**T39 (b11 A8 label): open → in-progress → blocked, PR cap only. The code is done** on `atlas/dt-t39-a8-label` @ 134593db (red 64cd94d2, base develop ecf18ff4). I took it because it is the first open lane row after T38. T27/T19b/T28/T29/T31/T21b are Atlas-agent rows.
+
+- **Before:** b11's "the sidebar shows a Settings item" FAILs every run on the RustKit chrome. `hwdrive find` is an AX lookup and the chrome has no AX tree until A8. Nothing in the report told a reader it was a known gap.
+- **After:** `KNOWN_GAPS` in driver.py labels that one assertion's FAIL on the RustKit chrome only. The detail reads `A8-blocked (the RustKit chrome exposes no Accessibility tree)`. In result.json the row has `blocked_by: "A8"` and `tally.blocked = {"A8": 1}`. The summary line reads `FAIL n (1 A8-blocked)`. The status stays FAIL and the exit code does not move. If the assertion passes, its detail says to drop the entry. No Rust or app change.
+- **Tests:**
+  - 8/8 in `tools/real_window/tests/test_known_gaps.py`.
+  - Red first: 6/8. The other 2 are WebKit-chrome guards, which have nothing to label on develop.
+  - Five mutations each turn tests red.
+  - Driver suite 47/47.
+  - Campaign 26/26, mean 0.4052 %, on parity-capture built at the candidate (`--profile parity`). Receipt is clean.
+- **For Atlas:**
+  1. Open the PR when under the cap; the body is `receipts/T39-a8-label-134593db.md`.
+  2. No reader of result.json's tally was found (repo, hub, hooks), so the new `blocked` key should break nothing. If a batch script parses the summary line, it now has the `(k A8-blocked)` suffix.
+
+  `dt-t39-1840` has been removed with done-task.sh.
+
+Blockers: PR cap (34 open, cap 8).
