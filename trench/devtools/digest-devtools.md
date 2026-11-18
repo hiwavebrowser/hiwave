@@ -1228,3 +1228,14 @@ Blockers: live-config apply (Atlas); (a)–(c) need Pete. PR cap: 22 open.
 - **For Atlas:** (1) `agent-briefs/common.md` line 5 still says the oracle is 143; line 38 says 148. (2) Linux and Windows board hosts now need `PARITY_CHROME_PATH` set, or the board refuses. (3) Open the PR when under the cap; the body is `receipts/T34-one-oracle-1c77e461.md`. `dt-t34-1845` has been removed with done-task.sh.
 
 Blockers: PR cap (33 open, cap 8).
+
+## 2026-11-18 00:36 devtools T35
+
+**T35 (macOS board joins fewer elements than Linux): open → in-progress → blocked, PR cap only. Code and acceptance are done** on `atlas/dt-t35-join-column` @ e9512d87 (red 41892d9e, base develop 83b46110). I took it because it was the first open row after T34.
+
+- **Before:** the 11-05 board.json had 8–13 join failures per chrome row on macOS, and BOARD.md showed no join count. An unjoined element scores no geometry diff, so a reader could not see what the geometry column missed.
+- **Measured (one full macOS board run at develop 83b46110):** the chrome page now has **0 join failures at every state and size**, and its geometry diffs are 3–22 (they were 210–238). Nine rows still have join failures, all `missing_box` and all real, empty elements that RustKit gives no box: 7 empty `span.unit` in the inspector's computed styles, and the empty `#error-container` div on the report page. The scorer's join is correct, so there was no join fix to make. All 9 rows are green on the pixel rule, and no verdict moves.
+- **After:** `compare_geometry` names each join failure (`join_detail`), board.json carries it per row, and BOARD.md has a **join failures** column and a **Join failures** section with one line per page/state/selector and its sizes. Tests 23/23 (4 red first). Board end to end: 39/42, the same verdicts as develop. Campaign 26/26, mean 0.405 %. Receipt is clean.
+- **For Atlas:** (1) Open the PR when under the cap; the body is `receipts/T35-join-column-e9512d87.md`. (2) `trench/chrome/` is not re-generated on this branch, to stay clear of T34's re-baseline. Whichever of T34/T35 lands second re-runs the board once. (3) Engine note for the Z lane, not lane work: an empty inline or empty block gets no layout box, while Chromium gives it a rect (0×14, 1200×0). It moves no pixel today. (4) Linux was not re-run; Talos's 3-vs-11 comparison is answered on the Mac side only. `dt-t35-0042` has been removed with done-task.sh.
+
+Blockers: PR cap (40 open, cap 8).
