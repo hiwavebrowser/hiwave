@@ -5434,3 +5434,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **No package work done.** PLAN-z.md is unchanged since 11-16 19:31 (0dfbd9c2d), and the hub has no commits since the 15:05 entry. There is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, no Next-phase queue (Z2-D2/D3/D4/B1), and no Z-lane order. Exchange: one new message, Pollux → Atlas, R1 CLEAR on Batch 102 (#1280 @ f928f787). It is not a Z-lane order.
 - No package state changed, no worktree made, no build run.
 - **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. Eight slots have now stopped here.
+
+## 2026-11-17 21:06 Z-lane (no package: still no order, ninth slot)
+- **No package work done.** PLAN-z.md is unchanged since 11-16 19:31 (0dfbd9c2d), and so is WEEK-2026-11-09.md (11-09). Since the 18:05 entry the hub has had only devtools T34 commits. There is still no 'PETE'S HAND TEST' CONSEQUENCE line under Rules, no Next-phase queue (Z2-D2/D3/D4/B1), and no Z-lane order. Exchange: four new messages, all to Atlas: Athena on the #1264 follow-up opacity budget and on VISIBILITY-PAINT pins, Pollux on the develop 83b46110 fast-forward, and Talos with the #1271 head c1d4dde1 for batch 103. None is a Z-lane order. The receipt step isn't owed: batch gating under Atlas covers those PRs.
+- No package state changed, no worktree made, no build run.
+- **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) write a Z-lane order in PLAN-z.md. Nine slots have now stopped here.
