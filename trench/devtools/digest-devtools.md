@@ -1256,3 +1256,26 @@ Blockers: PR cap (40 open, cap 8).
   `dt-t37-0641` has been removed with done-task.sh.
 
 Blockers: PR cap (31 open, cap 8).
+
+## 2026-11-18 12:40 devtools T38
+
+**T38 (m1_cmd_w_after_clicks tab walk): open → in-progress → blocked, PR cap only. The code is done** on `atlas/dt-t38-tab-walk` @ 3c0ec202 (red d7e845ef, base develop 1901c6c8). I took it because it is the first open lane row after T37; T27/T19b/T28/T29/T31/T21b are Atlas-agent rows.
+
+- **Cause:** in chrome.html every tab's `.tab-block` (block the site and close the tab) sits just left of its `.tab-close`. It takes clicks while transparent, because it has no `pointer-events: none`. The check swept the strip from x=232 looking for a close, so it always met a block button first, and the step was NOT RUN every run (Trace #243).
+- **After:** the check runs `M1_TABS_JS` in the chrome through the existing `HIWAVE_RUSTKIT_CHROME_EVAL` hook. That needs `HIWAVE_TEST_HOOKS=1`, which the driver already sets; the cargo feature is not needed. The script posts the `#tabs` strip box and each tab's id, box, active flag and button boxes whenever they change, with no titles or URLs. The check then clicks the visible title of a background tab (left of its buttons) and the active tab's close button, once each. It requires the IPC for that exact tab id. If there is no report, the check is NOT RUN and clicks nothing. No Rust or app change.
+- **Departure from the row:** the row asked for "AX/known geometry". The RustKit chrome has no AX tree (T39/A8), so the geometry comes from the chrome's own layout.
+- **Tests:**
+  - 14/14 in `tools/real_window/tests/test_tab_walk.py`.
+  - Red first: 12/12 failed on develop's driver, and the strip model reproduced the exact Trace #243 NOT RUN (x=360).
+  - Four mutations (button limit, strip clip, close outside the strip, no reporter env) each turn tests red.
+  - Driver suite 53/53.
+  - The reporter JS ran under node against a fake DOM, and the driver parsed its output.
+  - Campaign 26/26, mean 0.4052 %, on parity-capture built at the candidate (`--profile parity`). Receipt is clean.
+- **For Atlas:**
+  1. A real-window `--checks m1_cmd_w_after_clicks` run on a granted seat is owed. It will also be the first run of `M1_TABS_JS` in Boa.
+  2. Open the PR when under the cap; the body is `receipts/T38-tab-walk-3c0ec202.md`.
+  3. T37's branch edits `driver.py` in other hunks, so expect no conflict.
+
+  `dt-t38-1241` has been removed with done-task.sh.
+
+Blockers: PR cap (28 open, cap 8).
