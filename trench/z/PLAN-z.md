@@ -1330,3 +1330,30 @@ Why the second-pass variant failed on #1110 (review 5886856884): the children's 
 Leave as is: a grid with `min-height: 100vh`, or one stretched to a definite size by its parent, still counts as indefinite. That is consistent with the row resize.
 
 Pins: the eight pages of `grid_item_flex_percent_cases.json` stay green. Add a fixed-row page and an auto-row page with a percentage-height pane, each measured on Chrome for Testing 148.
+
+## After the benchmarking slowdown (queued 2026-11-18, Pete)
+
+These start when Pete lifts the slowdown, in this order unless he reorders them.
+
+### TRANS-F/A2 — the last two CSS transition groups
+fill and stroke on SVG (A2; design in #1292), and `@property` registered custom properties (group F: `--gradient`, `--tw-gradient-from/via/to`; Tailwind sites such as x.com). Groups A–E and G are on develop (#1285, #1286, #1288–#1291).
+
+### YT-BUNDLE — YouTube's homepage script is skipped (found by Codex, 11-18)
+- **Symptom:** YouTube's homepage comes up blank: 29 painted boxes, no text, no images.
+- **Cause:** the engine's per-script size limit of 4 MiB (`rustkit-engine` lib.rs, the size check near L9432) skips the 9.8 MB "kevlar" bundle that builds `ytd-app`. Raising the time budget to 60 s changes nothing.
+- **Confirmed in Chrome 148:** with HiWave's user agent and only that bundle blocked, `ytd-app` never registers.
+- **Why the limit exists:** lib.rs near L2272 records an earlier YouTube bundle holding the engine for more than 16 s.
+
+Steps:
+1. Run the saved bundle in a bounded harness, with parse time and execution time measured separately. Keep the bundle local and out of the repo (third-party code).
+2. Decide whether to raise or remove the size check, and whether to parse off the content thread or in slices, from those numbers.
+3. **Pass condition:** search and navigation visible on the home page, against Chrome 148 with the same user agent.
+4. Report the next compatibility error if one appears.
+
+This is latency work as much as compatibility: a 9.8 MB parse on the content thread is exactly the kind of hold the 11-18 hand-test log shows.
+
+### MEDIA-AVF — first video playback milestone (fits the 11-14 media plan: OS decoders, our own element and controls, MSE)
+1. One plain `<video src="….mp4">` playing through AVPlayer via `objc2-av-foundation`, behind the existing `rustkit-media` crate, with AVPlayerItemVideoOutput supplying frames to the compositor.
+2. Then MediaSource / SourceBuffer (MSE) for adaptive streaming.
+
+The new dependency needs a THIRD_PARTY_NOTICES entry. DRM is out of scope.
