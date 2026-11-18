@@ -23,7 +23,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/engine-RustKit_(original)-orange" alt="Engine: RustKit" />
   <img src="https://img.shields.io/badge/status-alpha-blueviolet" alt="Status: Alpha" />
-  <img src="https://img.shields.io/badge/license-MPL--2.0-blue" alt="License: MPL-2.0" />
+  <img src="https://img.shields.io/badge/license-AGPL--3.0--or--later-blue" alt="License: AGPL-3.0-or-later" />
 </p>
 
 <p align="center">
@@ -491,11 +491,15 @@ hiwave/
 
 ## License
 
-HiWave is licensed under the [Mozilla Public License 2.0](https://github.com/hiwavebrowser/hiwave-windows/blob/master/LICENSE).
+HiWave is licensed under the [GNU Affero General Public License v3.0 or later](LICENSE) (AGPL-3.0-or-later). The source code is owned by Aleph Null LLC; HiWave is a subsidiary of Aleph Null LLC. See [NOTICE](NOTICE).
 
 - ✅ Free to use, modify, and distribute
-- ✅ Build commercial products
-- ⚠️ Changes to HiWave's files must be shared under MPL-2.0
+- ⚠️ If you distribute HiWave, or a modified version, you must make the complete corresponding source available under AGPL-3.0-or-later
+- ⚠️ If you run a modified version for users over a network, you must offer them its source (AGPL section 13)
+
+**Earlier versions:** versions of HiWave published before the move to AGPL-3.0-or-later were released under the Mozilla Public License 2.0 and remain available under it.
+
+**Files under MPL-2.0:** a few files contain code contributed under MPL-2.0 by an outside contributor and stay under MPL-2.0. Each is marked `SPDX-License-Identifier: MPL-2.0`, and each platform repository lists its own in its `NOTICE`. In [hiwave-macos](https://github.com/hiwavebrowser/hiwave-macos): `crates/hiwave-app/src/main.rs`, `crates/hiwave-app/src/ipc/mod.rs`, `crates/hiwave-app/src/ipc/commands.rs`, `crates/hiwave-app/src/platform/macos.rs`, `crates/hiwave-app/src/ui/inspector.html`, `crates/hiwave-app/src/ui/inspector_inject.js`, `crates/hiwave-app/src/ui/console_inject.js`, `crates/hiwave-app/src/ui/context_menu.js`.
 
 For commercial licensing options, see [COMMERCIAL-LICENSE.md](https://github.com/hiwavebrowser/hiwave-windows/blob/master/COMMERCIAL-LICENSE.md).
 

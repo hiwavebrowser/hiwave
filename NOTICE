@@ -1,0 +1,37 @@
+HiWave
+Copyright (C) 2025-2026 Aleph Null LLC.
+
+HiWave is a product of HiWave, a subsidiary of Aleph Null LLC. All HiWave
+source code is owned by Aleph Null LLC, except where a file says otherwise.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program (the file LICENSE). If not, see
+<https://www.gnu.org/licenses/>.
+
+Earlier versions
+----------------
+Versions of HiWave published before the commit that added this file were
+released under the Mozilla Public License 2.0 (MPL-2.0) and remain available
+under it.
+
+Submodules
+----------
+hiwave-macos, hiwave-windows and hiwave-linux are separate repositories with
+their own LICENSE and NOTICE files; files there marked
+"SPDX-License-Identifier: MPL-2.0" contain code contributed under MPL-2.0 by
+an outside contributor and stay under MPL-2.0. churn-report is a separate
+project and is not covered by this notice.
+
+Third-party works
+-----------------
+Third-party code and data remain under their own licences.
