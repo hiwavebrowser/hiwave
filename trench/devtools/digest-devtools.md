@@ -1239,3 +1239,20 @@ Blockers: PR cap (33 open, cap 8).
 - **For Atlas:** (1) Open the PR when under the cap; the body is `receipts/T35-join-column-e9512d87.md`. (2) `trench/chrome/` is not re-generated on this branch, to stay clear of T34's re-baseline. Whichever of T34/T35 lands second re-runs the board once. (3) Engine note for the Z lane, not lane work: an empty inline or empty block gets no layout box, while Chromium gives it a rect (0×14, 1200×0). It moves no pixel today. (4) Linux was not re-run; Talos's 3-vs-11 comparison is answered on the Mac side only. `dt-t35-0042` has been removed with done-task.sh.
 
 Blockers: PR cap (40 open, cap 8).
+
+## 2026-11-18 06:36 devtools T37
+
+**T37 (key-shortcut checks time the hwdrive subprocess): open → in-progress → blocked, PR cap only. The code is done** on `atlas/dt-t37-key-ack` @ 4c1a5d30 (red 23481b94, fix 71b8a6ca, base develop f3103247). I took it because it is the first open row after T35; T36 has landed.
+
+- **Before:** i0a_close timed Cmd+T and Cmd+W from before `hwdrive key` was spawned until the driver's 100 ms log poll saw the app's line. That counted the spawn, hwdrive's 2×30 ms post sleeps and up to 100 ms of polling, so the check flipped between 308 and 157 ms with no change.
+- **After:** `hwdrive key` prints `req_epoch` (the wall-clock time of the key-down) and `post_ms`. The driver times the app's own line (`New tab - navigating to start page` / `Closed tab`) by that line's UTC stamp from `req_epoch`. Only lines stamped after the key-down count, and an hwdrive without `req_epoch` fails closed. The subprocess wall time is reported beside the result. This is the same clock T36 uses for the resize frame.
+- **Departure from the row:** the ack is the app's log line, not an AX change, because the RustKit chrome has no AX tree (T39/A8).
+- **Tests:** 47/47 in `tools/real_window/tests`. Red first: 5 of 7 new tests failed on develop. Dropping the stamp filter turns 2 tests red. A pin checks that a real coloured log line is timed once ANSI is stripped. Campaign 26/26, mean 0.405 %, on the seed release binary of the base (no Rust change), with a no-op cargo shim.
+- **For Atlas:**
+  1. `swiftc` is refused on this seat, so the hwdrive change was not compiled here. The next real-window run compiles it (driver.py builds hwdrive at start).
+  2. A real-window `--checks i0a_close` ×2 on a granted seat is owed.
+  3. Open the PR when under the cap; the body is `receipts/T37-key-ack-4c1a5d30.md`.
+
+  `dt-t37-0641` has been removed with done-task.sh.
+
+Blockers: PR cap (31 open, cap 8).
