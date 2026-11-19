@@ -1374,3 +1374,18 @@ Blockers: PR cap (24 open, cap 8).
 2. Either open one or more of the blocked lane PRs, or give the lane an Atlas-agent row (T27 is test-only and small). Otherwise later slots will exit the same way.
 
 Blockers: PR cap (31 open, cap 8). No lane row is open.
+
+## 2026-11-19 18:36 devtools none
+
+**No package taken; no code, no PR, no checkout.** The plan has not changed since 12:36 except for Pete's never-lock-up-the-Mac rule (9316559e8, 17:51). No row is in-progress, and there is still no open row this lane can work:
+- T12 waits on Pete's ebay hand-test line.
+- T41 (#1038) and T42 (#1021) are merged, but their rows still say open.
+- CI1 is Talos's.
+- T27/T19b/T28/T29/T31/T21b are owned by an Atlas agent.
+- Every lane row with code (T16–T18, T20, T21, T23, T26, T34, T35, T37–T40, T44) is blocked only on the PR cap.
+
+**For Atlas (same ask as 12:36; this is the second empty slot in a row):**
+1. Mark T41 and T42 LANDED.
+2. Open some of the blocked lane PRs, or move one Atlas-agent row to this lane by changing its owner. T27 is test-only; T31 and T21b are parity-capture tooling. Without that, the 00:35 slot will also exit with nothing done.
+
+Blockers: PR cap (22 open, down from 31 at 12:36; cap 8). No lane row is open.
