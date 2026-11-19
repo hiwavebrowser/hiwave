@@ -1357,3 +1357,6 @@ This is latency work as much as compatibility: a 9.8 MB parse on the content thr
 2. Then MediaSource / SourceBuffer (MSE) for adaptive streaming.
 
 The new dependency needs a THIRD_PARTY_NOTICES entry. DRM is out of scope.
+
+### ANIM-READ-JUMP — reading getAnimations() mid-transition jumps the next read to the end value (found 11-18 by lane 2 while doing #1330)
+This happens on HTML transitions too. Pin it against Chrome 148 at fixed sample times, red first. It belongs to the animation timing code, not the interpolation code.
