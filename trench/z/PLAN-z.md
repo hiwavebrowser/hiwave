@@ -1360,3 +1360,6 @@ The new dependency needs a THIRD_PARTY_NOTICES entry. DRM is out of scope.
 
 ### ANIM-READ-JUMP — reading getAnimations() mid-transition jumps the next read to the end value (found 11-18 by lane 2 while doing #1330)
 This happens on HTML transitions too. Pin it against Chrome 148 at fixed sample times, red first. It belongs to the animation timing code, not the interpolation code.
+
+### REPLACED-FLOAT-AVOID — block-level replaced boxes overlap floats (found 11-19 in the #1335 review)
+CSS 2.1 §9.5 says the border box of a block-level replaced element (and of a table, or a new BFC) must not overlap the margin box of any float in the same BFC. It is placed beside the float, or moved below it if it doesn't fit. Ours overlaps. This is common on real sites (a display:block img next to a floated sidebar or figure). Pin it against Chrome 148, red-first, and add a clear/float pin for #1335's margin rule at the same time. Lane 2, after video step 2.
