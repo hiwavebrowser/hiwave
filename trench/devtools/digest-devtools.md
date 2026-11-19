@@ -1332,3 +1332,30 @@ Blockers: PR cap (34 open, cap 8).
   `dt-t40-0045` has been removed with done-task.sh.
 
 Blockers: PR cap (29 open, cap 8). This seat cannot read Atlas's /tmp scratchpad, so I took the batch's ab.py from the atlas-keep copy (batch71).
+
+## 2026-11-19 06:36 devtools T44
+
+**T44 (bare `while (true)` load test flakes under load): open → in-progress → blocked, PR cap only. The code is done** on `atlas/dt-t44-spin-log-once` @ 041d8910 (red 2900cef3, base develop 157e60e1). It is test-only, one file. I took it because no row was in-progress and it is the first open row this lane can work:
+- T12 waits on Pete's ebay hand-test line.
+- T41 (#1038) and T42 (#1021) are merged, but their rows still say open.
+- CI1 is Talos's.
+- T27/T19b/T28/T29/T31/T21b are Atlas-agent rows.
+
+- **Cause (read from code; the failing runs kept no log):** not a late line. `log_script_stopped` runs on the page thread before LoadState::Complete is sent, `loading` is set synchronously, and stale events are dropped by nav id. After the spin spends the 15 s budget, each lifecycle step runs as a watchdog turn with the 50 ms `STOP_GRACE`, and the interrupt word fires on wall time. A page thread held past 50 ms in that step (machine load) logs a second `Script stopped at the script budget source=event:load` line. The count becomes 2 and the test says "no line says why". The H19 and pure-JS load tests count the same way.
+- **Before:** the three load spin tests counted every budget-stop line.
+- **After:** they count `script_stops` (without `event:*` and `timers`). The bare-loop check waits, bounded at 10 s, for its line (the row's ask; by the code above it should never wait) and prints the view's full log on failure.
+- **Tests:**
+  - Red first: a 200 ms `load` listener before the loop gives `inline#2` plus `event:load elapsed_ms=66`, 1 failed.
+  - Green: `content_thread_` 22/0.
+  - `cargo test -p hiwave-app` gave 227+27+1+8 on both runs under 24 `yes` hogs (load 35).
+  - The held-load test asserts its `event:load` line exists, so it is not vacuous.
+  - Campaign 26/26, mean 0.4052 %. Receipt is clean.
+- **Limit:** CPU hogs alone never reproduced the original flake. On base the unit binary went 4/4 green at load 42–44. `taskpolicy -b` plus hogs starved it into a different failure (the load never ended).
+- **For Atlas:**
+  1. Open the PR when under the cap; the body is `receipts/T44-spin-log-once-041d8910.md`.
+  2. The T41 and T42 rows can be marked LANDED (#1038, #1021 merged).
+  3. Product question, not acted on: a lifecycle step after a spent budget gets only 50 ms of wall time, so on a loaded machine a page's `load` handler can be cut short with no fault of its own.
+
+  `dt-t44-0640` has been removed with done-task.sh.
+
+Blockers: PR cap (24 open, cap 8).
