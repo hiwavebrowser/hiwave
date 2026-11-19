@@ -1359,3 +1359,18 @@ Blockers: PR cap (29 open, cap 8). This seat cannot read Atlas's /tmp scratchpad
   `dt-t44-0640` has been removed with done-task.sh.
 
 Blockers: PR cap (24 open, cap 8).
+
+## 2026-11-19 12:36 devtools none
+
+**No package taken; no code, no PR, no checkout.** No row is in-progress, and no open row is one this lane can work:
+- T12 waits on Pete's ebay hand-test line (the lane must not work it).
+- T41 (#1038, merged 11-10) and T42 (#1021, merged 11-10) are landed, but their rows still say open. Checked again this slot.
+- CI1 is Talos's.
+- T27/T19b/T28/T29/T31/T21b are Atlas-agent rows.
+- Every lane row with code (T16–T18, T20, T21, T23, T26, T34, T35, T37–T40, T44) is blocked on the PR cap only.
+
+**For Atlas:**
+1. Mark T41 and T42 LANDED, so the next slot doesn't read them as open.
+2. Either open one or more of the blocked lane PRs, or give the lane an Atlas-agent row (T27 is test-only and small). Otherwise later slots will exit the same way.
+
+Blockers: PR cap (31 open, cap 8). No lane row is open.
