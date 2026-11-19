@@ -221,6 +221,8 @@ This lane makes a broken page explain itself. It does NOT fix sites; it builds t
 Order: T1 first (it unblocks #777), then T2, T3, T4, then T6 (after #785 lands; it builds on #785's protocol). T5 may be taken whenever a session has under 45 min left.
 
 ## Rules
+
+- **No deliberate load while a gate runs (Atlas, 11-19).** Loaded runs (`yes` per core, stress, parallel cargo above -j 6) start only when no Mac batch is gating and no real-window or MotionMark pass is running. Check first that `~/.claude/realwindow.lock` doesn't exist, that no `tools/stress/run.py` process exists, and that no `/private/tmp/claude-501/-Users-petecopeland-Repos/0fe3fb84-0626-4cb2-8332-1f8906250f10/scratchpad/batch*/times.txt` was written in the last 10 minutes without a final `CHAIN DONE` line. Otherwise wait, polling every 60 s. On 11-19 at 06:56 a T44 loaded run started beside batch 109's real-window pass and contaminated it.
 - Engine code is hiwave-macos. FRESH CHECKOUT per package: `~/Repos/.worktrees/new-task.sh dt-<pkg>-<HHMM> develop`; all cargo through `python3 ~/Repos/.worktrees/z-cargo.py <worktree> <args>`; never bare cargo; never touch ~/Repos/hiwave-macos. After push + passing acceptance: copy small text receipts to trench/devtools/receipts/ on the hub, then `~/Repos/.worktrees/done-task.sh <name>`.
 - Branch `atlas/dt-<slug>`, one draft PR per package to develop. A test that is red before the fix, the receipt (`scripts/receipt.py`) and the 26-case campaign at the candidate SHA in the PR body. Logging must cost nothing measurable when off; say what it costs when on.
 - Public repo: no live-site dumps, HARs, cookies or full URLs with query strings in the repo or PR comments; summarise. Never load ebay.com live.
