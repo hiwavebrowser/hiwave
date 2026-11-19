@@ -1363,3 +1363,7 @@ This happens on HTML transitions too. Pin it against Chrome 148 at fixed sample 
 
 ### REPLACED-FLOAT-AVOID — block-level replaced boxes overlap floats (found 11-19 in the #1335 review)
 CSS 2.1 §9.5 says the border box of a block-level replaced element (and of a table, or a new BFC) must not overlap the margin box of any float in the same BFC. It is placed beside the float, or moved below it if it doesn't fit. Ours overlaps. This is common on real sites (a display:block img next to a floated sidebar or figure). Pin it against Chrome 148, red-first, and add a clear/float pin for #1335's margin rule at the same time. Lane 2, after video step 2.
+
+### MAC-CONTENT-IPC-DEAD + REPORT-BRIDGE (11-19 audit; details stay off GitHub)
+- **(a)** main.rs on hiwave-macos still carries the wry content-view IPC handler under `cfg(not(target_os = "macos"))`. It is never built on macOS, but it would serve page-triggered commands if anyone builds it for another OS. Delete the block (or port Linux's SEC3 gating into it), so the latent copy can't come back through a sync. Neutral PR title: "remove the unused non-macOS content IPC handler".
+- **(b)** report.html and new_tab.html get no `window.ipc` in the RustKit content view, so their analytics calls do nothing (the report page is probably broken). Fix with a narrow, read-only bridge for internal pages only: the Get* reads, never Reset. Pin it with a test that an http(s) page can't reach it.
