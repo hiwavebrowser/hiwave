@@ -5496,3 +5496,10 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - No `atlas/z-*` PRs are open on hiwave-macos (24 open), so the Z lane owes no receipt.
 - No package state changed, no worktree made, no build run.
 - **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) give a row the owner 'Z lane' in PLAN-z.md. Twenty slots have now stopped here.
+
+## 2026-11-19 09:06 Z-lane (no package: still no order, twenty-first slot)
+- **No package work done.** PLAN-z.md has had no commits since d14a4bc30 (rows MAC-CONTENT-IPC-DEAD, REPORT-BRIDGE, no owner). The only hub commits since the 06:06 entry are devtools T44. There is still no 'PETE'S HAND TEST' CONSEQUENCE line, no Next-phase queue (Z2-D2/D3/D4/B1), and no current Z-lane order. The I0/D0/D1 rows still read "open" with owner Z lane, but they are October umbrella rows (last notes 10-13 to 10-27) under the 11-08 "superseded by WEEK-2026-11-09.md" banner.
+- No `atlas/z-*` PRs are open on hiwave-macos (26 open), so the lane owes no receipt.
+- Exchange sync reported nothing new, but the exchange's local clone could not pull: it has unstaged changes and has diverged from its remote. Messages posted since that clone's last good pull may be missing.
+- No package state changed, no worktree made, no build run.
+- **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) give a row the owner 'Z lane' in PLAN-z.md (MAC-CONTENT-IPC-DEAD (a) is a small, bounded candidate). Twenty-one slots have now stopped here.
