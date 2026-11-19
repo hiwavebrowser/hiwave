@@ -1,0 +1,2 @@
+cnn          NO EVIDENCE (0 of 4 cross pairs: A timeout 2/2, B timeout 2/2, limit 30 s; stalled in inline#10 after 92–104 forced layouts)  failed: 4  secs A,B,A,B 30.2,30.1,30.2,30.1  script records A,B,A,B -,-,-,-  elapsed_ms None,None,None,None  build_ms 410.7/3,442.2/3,415.4/3,432.9/3  script_errors -,-,-,-  script_ms -,-,-,-
+no evidence (1 of 1 sites): cnn (A timeout 2/2, B timeout 2/2, limit 30 s; stalled in inline#10 after 92–104 forced layouts)

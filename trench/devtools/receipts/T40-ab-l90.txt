@@ -1,0 +1,2 @@
+cnn          within A 0.00%  within B 0.00%  across 0.00% 0.00% 0.00% 0.00%  failed: 0  secs A,B,A,B 73.6,71.9,69.3,83.4  script records A,B,A,B 18,18,18,18  elapsed_ms 73619,71844,69243,83424  build_ms 25937.4/12,25426.6/12,24141.6/12,30600.3/12  script_errors 1,1,1,1  script_ms 52882,52001,49671,63888
+no evidence (0 of 1 sites): none

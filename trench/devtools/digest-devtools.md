@@ -1299,3 +1299,36 @@ Blockers: PR cap (28 open, cap 8).
   `dt-t39-1840` has been removed with done-task.sh.
 
 Blockers: PR cap (34 open, cap 8).
+
+## 2026-11-19 00:40 devtools T40
+
+**T40 (cnn times out on every batch A/B): open → in-progress → blocked, PR cap only. The code is done** on `atlas/dt-t40-ab-no-evidence` @ 8ebf8d8f (red d97597d4, base develop 29bd706e). I took it because it is the first open lane row after T39; T27/T19b/T28/T29/T31/T21b are Atlas-agent rows.
+
+- **Cause: engine cost, not the site and not a hang.** At develop, parity profile:
+  - At 30 s, cnn times out 4/4 (30.1–30.2 s each).
+  - At 90 s, it captures 4/4 at 69–83 s each, 0.00 % within and across.
+  - One script holds 48.5 of the 49.2 s of script time: cnn's 3.27 MB inline module bundle (`inline#10`). Parse is not the cost (0.5 s alone). It runs **225 full-tree forced layouts in one task**, 174 of them from `innerText` after an attribute write, about 200 ms each (45.2 s). That is under the 256 count cap from #812.
+  - A Z row is proposed in the receipt, not filed (this lane edits only trench/devtools).
+- **Before:** the batch's scratch `ab.py` printed `n/a` in every diff column and `failed: 4` for cnn. A site with no evidence read like a quiet row.
+- **After:** `tools/site_ab/ab.py` is that script moved into the repo (same args and outputs; `--out` and `--timeout-ms`).
+  - A site with no complete cross pair reads `NO EVIDENCE (0 of 4 cross pairs: A timeout 2/2, B timeout 2/2, limit 30 s; stalled in inline#10 after 92–104 forced layouts)`.
+  - With some pairs missing it reads `PARTIAL k of 4`.
+  - A missing diff prints `—`.
+  - The run ends with a `no evidence (k of n sites)` footer.
+  - Full rows are unchanged.
+  - Reasons come from the capture's JSON status. The stall place comes from the info log the batch already keeps; URLs are shown as host/…/file with no query.
+- **Tests:**
+  - 10/10 with fake capture binaries.
+  - Red first: the red commit's ab.py fails 9 of 10.
+  - Six mutants each turn tests red.
+  - Live run at 30 s: wikipedia 0.00 % (control), cnn NO EVIDENCE as above.
+  - Campaign 26/26, mean 0.4052 %. No Rust change; the shim and symlink were used as in T21. Receipt is clean.
+- **For Atlas:**
+  1. Open the PR when under the cap; the body is `receipts/T40-ab-no-evidence-8ebf8d8f.md`.
+  2. Batch `run.sh`: `python3 $B/tools/site_ab/ab.py … --out $S` replaces `$S/ab.py`. The paths stay the same, so abinputs.py is unaffected.
+  3. Optional: a cnn-only `--timeout-ms 90000` pass gives real cnn evidence (about 5 min).
+  4. The Z row.
+
+  `dt-t40-0045` has been removed with done-task.sh.
+
+Blockers: PR cap (29 open, cap 8). This seat cannot read Atlas's /tmp scratchpad, so I took the batch's ab.py from the atlas-keep copy (batch71).

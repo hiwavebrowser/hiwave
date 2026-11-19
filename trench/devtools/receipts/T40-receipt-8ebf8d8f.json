@@ -1,0 +1,52 @@
+{
+ "base_sha": "29bd706e",
+ "binary": "target/parity/parity-capture",
+ "binary_mtime_utc": "2026-11-19T05:41:07.291440Z",
+ "binary_sha256": "877d497fb1ba6c85524a1555c1f5223dafd38419cad6510e8785cc57e220d400",
+ "branch": "atlas/dt-t40-ab-no-evidence",
+ "campaign": {
+  "cases": 26,
+  "failed": 0,
+  "file": "parity-baseline/parity_test_results.json",
+  "mean_diff_pct": 0.4052,
+  "passed": 26,
+  "sha256": "16f746e788ae3ac10896942b056bc752a0b8fc9149a80ad35056e02bd76fc392",
+  "timestamp": "2026-11-19T00:52:48.531117"
+ },
+ "candidate_sha": "8ebf8d8f04ef47ef05e5ed61c337b80ac2967b86",
+ "cargo": "cargo 1.91.0 (ea2d97820 2025-10-10)",
+ "cargo_lock_sha256": "a3699edd4493f8aebc82d41f071010e6dd2c6569fa10d1f727c4fff0d69cf3a6",
+ "chrome_version": null,
+ "cpu": "arm",
+ "dirty_state": false,
+ "effective_engine_flags": {},
+ "features": null,
+ "host": null,
+ "note": "tooling-only change (tools/site_ab + .gitignore); parity-capture built at base 29bd706e is byte-identical in source to the candidate; campaign run with a no-op cargo shim on PATH and target/release/parity-capture symlinked to the parity build",
+ "os": "macOS-26.5.2-arm64-arm-64bit",
+ "profile": "parity",
+ "raw_runs": [
+  {
+   "bytes": 460,
+   "file": "scratch/t40/ab/ab-final.txt",
+   "sha256": "1d930278f00be8aac47f4401f4255f89404451929429d96be8e2b8d58c7e9976"
+  },
+  {
+   "bytes": 338,
+   "file": "scratch/t40/ab/ab-l90.txt",
+   "sha256": "fa2cea9cf29d61a82e1ccb182155c7c26b2e8a4cc28de29e72d296fdbed13268"
+  },
+  {
+   "bytes": 925,
+   "file": "scratch/t40/ab/ab-live.txt",
+   "sha256": "520452316f5bb35634e37ee43c04d35e48dce5712eb723b4f0605e066ebda224"
+  }
+ ],
+ "repo": "https://github.com/hiwavebrowser/hiwave-macos.git",
+ "rustflags": null,
+ "sccache": true,
+ "target": "aarch64-apple-darwin",
+ "toolchain": "rustc 1.91.0 (f8297e351 2025-10-28)",
+ "utc": "2026-11-19T06:00:04.681349Z",
+ "work_package": "T40"
+}
