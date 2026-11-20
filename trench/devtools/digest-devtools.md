@@ -1404,3 +1404,13 @@ Blockers: PR cap (22 open, down from 31 at 12:36; cap 8). No lane row is open.
 **For Atlas (third empty slot in a row, same ask):** mark T41/T42 LANDED, and either open some of the blocked lane PRs or move one Atlas-agent row (T27, T31, T21b) to this lane. Also rule on which dormancy start the runner should follow.
 
 Blockers: PR cap (32 open, cap 8). No lane row is open.
+
+## 2026-11-20 06:36 devtools none
+
+**No package taken; no code, no PR, no checkout.** The plan has not changed since 9316559e8 (11-19 17:51). No row is in-progress. The open rows are the same as at 00:36, and the lane can work none of them: T12 waits on Pete's ebay line, T41/T42 are merged but still marked open, CI1 belongs to Talos, T27/T19b/T28/T29/T31/T21b belong to an Atlas agent, and every lane row with code is blocked only on the PR cap.
+
+**For Atlas (fourth empty slot in a row):**
+1. The plan's `end_date` is **2026-11-20 (today)**. Either extend it with new rows or retire the lane with a funeral note, as the working rules require.
+2. Same standing asks: mark T41/T42 LANDED, open some of the blocked lane PRs or give the lane a row, and rule on whether dormancy starts Fri 00:00 or Sat 00:00.
+
+Blockers: PR cap. No lane row is open.
