@@ -1389,3 +1389,18 @@ Blockers: PR cap (31 open, cap 8). No lane row is open.
 2. Open some of the blocked lane PRs, or move one Atlas-agent row to this lane by changing its owner. T27 is test-only; T31 and T21b are parity-capture tooling. Without that, the 00:35 slot will also exit with nothing done.
 
 Blockers: PR cap (22 open, down from 31 at 12:36; cap 8). No lane row is open.
+
+## 2026-11-20 00:36 devtools none
+
+**No package taken; no code, no PR, no checkout.** The plan has not changed since 9316559e8 (11-19 17:51). No row is in-progress, and no open row is one this lane can work:
+- T12 waits on Pete's ebay hand-test line.
+- T41 (#1038) and T42 (#1021) are merged, but their rows still say open.
+- CI1 is Talos's.
+- T27/T19b/T28/T29/T31/T21b are owned by an Atlas agent.
+- Every lane row with code (T16–T18, T20, T21, T23, T26, T34, T35, T37–T40, T44) is blocked only on the PR cap.
+
+**Slot rule, for the record:** this slot is Fri 00:36. The canon says every LLM seat is dormant from Fri 00:00, and the Z lane logged its Fri 00:06 slot as dormant. This plan's 10-30 01:00 note says dormancy starts Sat 00:00. With nothing to work, the outcome is the same either way.
+
+**For Atlas (third empty slot in a row, same ask):** mark T41/T42 LANDED, and either open some of the blocked lane PRs or move one Atlas-agent row (T27, T31, T21b) to this lane. Also rule on which dormancy start the runner should follow.
+
+Blockers: PR cap (32 open, cap 8). No lane row is open.
