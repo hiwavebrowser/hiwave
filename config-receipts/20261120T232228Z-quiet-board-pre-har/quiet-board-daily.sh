@@ -1,0 +1,74 @@
+#!/bin/bash
+# quiet-board-daily.sh — the real-site board on develop in a daily quiet window.
+# Why (2026-09-29): with three trench lanes building, load 12-25 made the board
+# unreadable 3 sessions running (Chrome oracle failing on 11/20 sites). This job
+# raises ~/.claude/board-quiet.lock (trench lanes skip their fires while it
+# exists), waits for in-flight sessions to drain, then scores develop.
+# Measurement only, no LLM. Result: trend.csv + a digest-realsite.md section.
+set -u
+# Stand-down window (Pete): skip this fire while ~/.claude/standdown is in force.
+if /Users/petecopeland/.claude/bin/standdown-check.sh; then echo "[$(basename "$0") $(date '+%Y-%m-%d %H:%M:%S')] stand-down window — skipping this fire" >> /Users/petecopeland/.claude/logs/standdown.log; exit 0; fi
+PATH="/usr/sbin:/sbin:/Users/petecopeland/.local/bin:/Users/petecopeland/.cargo/bin:/Users/petecopeland/anaconda3/bin:/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin"
+LOG=/Users/petecopeland/.claude/logs/quiet-board.log
+LOCK=/Users/petecopeland/.claude/board-quiet.lock
+HUB=/Users/petecopeland/Repos/.worktrees/trench-realsite
+BUILD=/Users/petecopeland/Repos/.worktrees/quiet-board
+TGT=/Users/petecopeland/Repos/.worktrees/quiet-board-target
+log() { echo "[quiet-board $(date '+%F %T')] $*" >> "$LOG"; }
+if ! mkdir "$LOCK" 2>/dev/null; then
+  if [ -n "$(find "$LOCK" -maxdepth 0 -mmin +300 2>/dev/null)" ]; then rmdir "$LOCK"; mkdir "$LOCK" || exit 0; else log "lock held, skip"; exit 0; fi
+fi
+trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+log "quiet window raised; waiting for trench sessions to drain"
+WAITED=0; TAG="quiet"
+while :; do
+  busy=$(pgrep -f "trench session" | wc -l | tr -d ' ')
+  load=$(sysctl -n vm.loadavg | awk '{print int($2)}')
+  [ "$busy" = 0 ] && [ "$load" -lt 5 ] && break
+  if [ "$WAITED" -ge 9000 ]; then TAG="contended"; log "drain timeout (busy=$busy load=$load); running anyway, tagged contended"; break; fi
+  sleep 60; WAITED=$((WAITED+60))
+done
+log "drained after ${WAITED}s (load $(sysctl -n vm.loadavg))"
+# Daily worktree sweep (2026-10-02): lanes are drained, so nothing is in use.
+/Users/petecopeland/.claude/bin/worktree-sweep.sh
+git -C "$HUB" fetch -q origin || { log "fetch failed"; exit 0; }
+if [ -d "$BUILD" ]; then git -C "$BUILD" checkout -q --detach origin/develop
+else git -C "$HUB" worktree add -q --detach "$BUILD" origin/develop; fi
+DEV=$(git -C "$BUILD" rev-parse --short HEAD)
+# Pixel builds use [profile.parity] once it is on develop (#440): same pixels, ~4x faster rebuilds.
+PROF=release; grep -q "^\[profile.parity\]" "$BUILD/Cargo.toml" && PROF=parity
+( cd "$BUILD" && CARGO_TARGET_DIR="$TGT" /Users/petecopeland/.claude/bin/cargo-serial build --profile "$PROF" -q -p parity-capture ) >> "$LOG" 2>&1 || { log "build failed at $DEV"; exit 0; }
+cd "$HUB" || exit 0
+git checkout -q atlas/trench-realsite && git pull -q --ff-only origin atlas/trench-realsite
+OUT="trench/realsite/runs/$(date -u +%Y%m%dT%H%MZ)-$TAG-dev$DEV"
+caffeinate -is python3 scripts/realsite_board.py --board top25 --capture-bin "$TGT/$PROF/parity-capture" --out "$OUT" > "$OUT.txt" 2>&1
+S=$(python3 -c "import json;d=json.load(open('$OUT/summary.json'));t=d['top20'];print(f\"{t['points']}/{t['max_points']} (loads {t['loads']}, readable {t['readable']}, looks-right {t['looks_right']}; scorable {t['scorable_points']}/{t['scorable_max']}) · full list {d['points']}/{d['max_points']} (loads {d['loads']}, readable {d['readable']}, looks-right {d['looks_right']}; scorable {d['scorable_points']}/{d['scorable_max']})\")" 2>/dev/null)
+log "develop $DEV $TAG board: ${S:-no summary}"
+{ echo; echo "## $(date '+%F %H:%M') — daily QUIET board ($TAG), develop $DEV"; echo; echo "**${S:-run failed; see $OUT.txt}** (load at start: $(sysctl -n vm.loadavg))"; echo; echo '```'; tail -40 "$OUT.txt"; echo '```'; } >> trench/digest-realsite.md
+git add trench/digest-realsite.md trench/realsite/trend.csv trench/realsite/trend-top25.csv 2>/dev/null
+git commit -qm "trench(realsite): daily $TAG board develop $DEV — ${S:-failed}" && git push -q origin atlas/trench-realsite
+# Archive the frames (2026-09-30): hiwavebrowser/hiwave-renders-private is the record.
+ARC=/Users/petecopeland/Repos/.worktrees/renders-private
+if [ -d "$ARC/.git" ] && [ -f "$OUT/summary.json" ]; then
+  git -C "$ARC" pull -q --ff-only origin main 2>/dev/null
+  python3 - "$HUB/$OUT" "$ARC/realsite/macos/$DEV" <<'PY' >> "$LOG" 2>&1
+import json, shutil, sys
+from pathlib import Path
+from PIL import Image
+src, dst = Path(sys.argv[1]), Path(sys.argv[2])
+dst.mkdir(parents=True, exist_ok=True)
+summ = json.load(open(src / "summary.json"))
+shutil.copy(src / "summary.json", dst / "summary.json")
+for sid in summ["per_site"]:
+    j = json.load(open(src / f"{sid}.json")); d = src / sid; o = dst / sid
+    o.mkdir(exist_ok=True); shutil.copy(src / f"{sid}.json", o / f"{sid}.json")
+    if (d / "rustkit.ppm").exists(): Image.open(d / "rustkit.ppm").save(o / "rustkit.png", optimize=True)
+    c = d / f"chrome-{j.get('oracle_capture') or 'a'}.png"
+    if c.exists(): shutil.copy(c, o / "chrome.png")
+    if (d / "diff.png").exists(): shutil.copy(d / "diff.png", o / "diff.png")
+print("archived", dst)
+PY
+  git -C "$ARC" add -A && git -C "$ARC" commit -qm "realsite receipts: macos $DEV ($TAG board, ${S:-no summary})" && git -C "$ARC" push -q origin main && log "archived to renders-private"
+fi
+log "done"
+exit 0
