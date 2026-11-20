@@ -1339,6 +1339,8 @@ These start when Pete lifts the slowdown, in this order unless he reorders them.
 fill and stroke on SVG (A2; design in #1292), and `@property` registered custom properties (group F: `--gradient`, `--tw-gradient-from/via/to`; Tailwind sites such as x.com). Groups A–E and G are on develop (#1285, #1286, #1288–#1291).
 
 ### YT-BUNDLE — YouTube's homepage script is skipped (found by Codex, 11-18)
+- **Measured 11-20 (lane 2):** with the cap lifted, the 10.9 MB kevlar bundle takes 12.7 s in the engine and YouTube renders its real homepage (masthead, guide, search card). 81-83% of Boa parse+compile time is boa_ast Scope::get_identifier_reference scanning ~9,000 names linearly. A name index brings it to 3.3 s (parse 5.6->1.4 s, compile 6.4->0.58 s; Chrome: parse 105 ms, compile 12 ms). PR 1 = scope name index (in progress); PR 2 = cap 4 -> 16 MiB after PR 1.
+- **Follow-ups:** BOA-PARSE-MEM (Boa peaks ~85 B per source byte, ~1.1 GB for kevlar vs Chrome's ~30 MB heap; allocation profile first); BOA-INTERRUPT (parse/compile can't be interrupted, #744); AUDIO-CTOR (YouTube timers hit 'Audio is not defined').
 - **Symptom:** YouTube's homepage comes up blank: 29 painted boxes, no text, no images.
 - **Cause:** the engine's per-script size limit of 4 MiB (`rustkit-engine` lib.rs, the size check near L9432) skips the 9.8 MB "kevlar" bundle that builds `ytd-app`. Raising the time budget to 60 s changes nothing.
 - **Confirmed in Chrome 148:** with HiWave's user agent and only that bundle blocked, `ytd-app` never registers.
