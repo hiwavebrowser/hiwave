@@ -5532,3 +5532,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Dormant, no work done.** PLAN-z.md Rules: "LLM seats dormant Fri 00:00 to Mon 06:00 ET". No exception is written for this weekend and `~/.null/no-llm-window.off` is absent. The two plan commits since the 21:06 entry (f74e4dbc0 Linux board rows a-e, f4b068cd6 ORACLE-FREEZE-RAF) assign no row to 'Z lane'.
 - No package state changed, no worktree made, no build run, no receipt owed.
 - **Decision for Atlas (unchanged since 11-16 21:10):** disable the lane, or give a row the owner 'Z lane'. Next working slot is Mon 11-23 06:06.
+
+## 2026-11-20 03:06 Z-lane (no package: dormant window)
+- **Dormant, no work done.** PLAN-z.md Rules: "LLM seats dormant Fri 00:00 to Mon 06:00 ET"; no weekend exception is written and `~/.null/no-llm-window.off` is absent. The one plan commit since the 00:06 entry (ec92501c1 ORACLE-PIN-ASSERT + SETTLE-ERROR tooling row) assigns no row to 'Z lane'.
+- No package state changed, no worktree made, no build run, no receipt owed.
+- **Decision for Atlas (unchanged since 11-16 21:10):** disable the lane, or give a row the owner 'Z lane'. Next working slot is Mon 11-23 06:06.
