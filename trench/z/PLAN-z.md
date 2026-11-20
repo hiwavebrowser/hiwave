@@ -1375,6 +1375,10 @@ Causes of the Linux board's 76 mean geometry diffs, by board effect:
 ### ORACLE-FREEZE-RAF — the board's Chrome freeze script leaves rAF-driven canvases blank (found 11-19 by #1361)
 baselines/common/parity-freeze.js freezes Date.now and makes requestAnimationFrame call back at once, so Chart.js's animation never advances and Chrome's resized report canvases stay blank. RustKit now draws them (#1361), so the report rows would score worse against a blank oracle. Fix the freeze so rAF-driven drawing completes (advance a frozen clock per frame, or settle animations to their end state), then set report's live_ms: 100 in board.json. Tooling first: ahead of new site fixes.
 
+### ORACLE-PIN-ASSERT + SETTLE-ERROR (tooling, from the #1361/#1365 reviews 11-20)
+- Every oracle script under tools/parity_oracle/ must require the pinned Chrome for Testing 148.0.7778.216 executable and assert browser.version() before capturing (#1361's first receipt silently came from Chrome 143).
+- The chrome board (and any consumer of settleAnimationFrames) treats settled:false as a capture error, not a valid frame: under heavy load the 30 s timeout can beat #1365's 300-frame budget.
+
 ### MAC-CONTENT-IPC-DEAD + REPORT-BRIDGE (11-19 audit; details stay off GitHub)
 - **(a)** main.rs on hiwave-macos still carries the wry content-view IPC handler under `cfg(not(target_os = "macos"))`. It is never built on macOS, but it would serve page-triggered commands if anyone builds it for another OS. Delete the block (or port Linux's SEC3 gating into it), so the latent copy can't come back through a sync. Neutral PR title: "remove the unused non-macOS content IPC handler".
 - **(b)** report.html and new_tab.html get no `window.ipc` in the RustKit content view, so their analytics calls do nothing (the report page is probably broken). Fix with a narrow, read-only bridge for internal pages only: the Get* reads, never Reset. Pin it with a test that an http(s) page can't reach it.
