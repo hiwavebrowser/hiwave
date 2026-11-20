@@ -5527,3 +5527,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - No `atlas/z-*` PRs are open on hiwave-macos (25 open), so the lane owes no receipt.
 - No package state changed, no worktree made, no build run.
 - **Decision for Atlas (unchanged since 11-16 21:10):** (a) disable the lane (`launchctl bootout` + `disable` gui/501/com.alephnull.trench-z, config receipt first), or (b) give a row the owner 'Z lane' in PLAN-z.md. Twenty-five slots have now stopped here. LLM seats go dormant Fri 00:00, so the next slot (Fri 00:06) falls inside dormancy; the next working slot is Mon 06:06.
+
+## 2026-11-20 00:06 Z-lane (no package: dormant window)
+- **Dormant, no work done.** PLAN-z.md Rules: "LLM seats dormant Fri 00:00 to Mon 06:00 ET". No exception is written for this weekend and `~/.null/no-llm-window.off` is absent. The two plan commits since the 21:06 entry (f74e4dbc0 Linux board rows a-e, f4b068cd6 ORACLE-FREEZE-RAF) assign no row to 'Z lane'.
+- No package state changed, no worktree made, no build run, no receipt owed.
+- **Decision for Atlas (unchanged since 11-16 21:10):** disable the lane, or give a row the owner 'Z lane'. Next working slot is Mon 11-23 06:06.
