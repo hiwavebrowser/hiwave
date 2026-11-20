@@ -1364,6 +1364,14 @@ This happens on HTML transitions too. Pin it against Chrome 148 at fixed sample 
 ### REPLACED-FLOAT-AVOID — block-level replaced boxes overlap floats (found 11-19 in the #1335 review)
 CSS 2.1 §9.5 says the border box of a block-level replaced element (and of a table, or a new BFC) must not overlap the margin box of any float in the same BFC. It is placed beside the float, or moved below it if it doesn't fit. Ours overlaps. This is common on real sites (a display:block img next to a floated sidebar or figure). Pin it against Chrome 148, red-first, and add a clear/float pin for #1335's margin rule at the same time. Lane 2, after video step 2.
 
+### LINUX-BOARD-GEOMETRY (Talos 11-19, b37be7fd; fonts ruled out: all 11 UI stacks match Chrome within 0.01 px)
+Causes of the Linux board's 76 mean geometry diffs, by board effect:
+- **(a) LNX-EMOJI-PRES:** text-presentation symbols (U+1F6E1, U+1F5D1, U+2699; Emoji_Presentation=No) take Noto Color Emoji (17.47 px) where Chrome uses Noto Sans Symbols2 / DejaVu Sans (~12.0-12.6 px). Talos.
+- **(b) LNX-FALLBACK-LINE-UNION:** Chrome grows the line box to the fallback face's metrics (17 px emoji, 24 px Symbols2); RustKit keeps 16. Most carried diffs; clears known failure test_an_emoji_label_lifts_a_styled_buttons_line. Talos, after (a).
+- **(c) REPORT-CHART-0x0:** #activityChart / #protectionChart are 0x0 in RustKit vs 1150x300 (Chart.js sizing); same as E10b on the Mac. Lane 2 candidate.
+- **(d)** Inspector disclosure triangle: rect after vs before a CSS rotate (likely a reporting convention; confirm).
+- **(e)** Settings labels ~1 px low growing per row (sub-pixel line metrics); report export buttons 33 vs 32 px.
+
 ### MAC-CONTENT-IPC-DEAD + REPORT-BRIDGE (11-19 audit; details stay off GitHub)
 - **(a)** main.rs on hiwave-macos still carries the wry content-view IPC handler under `cfg(not(target_os = "macos"))`. It is never built on macOS, but it would serve page-triggered commands if anyone builds it for another OS. Delete the block (or port Linux's SEC3 gating into it), so the latent copy can't come back through a sync. Neutral PR title: "remove the unused non-macOS content IPC handler".
 - **(b)** report.html and new_tab.html get no `window.ipc` in the RustKit content view, so their analytics calls do nothing (the report page is probably broken). Fix with a narrow, read-only bridge for internal pages only: the Get* reads, never Reset. Pin it with a test that an http(s) page can't reach it.
