@@ -1422,3 +1422,11 @@ Blockers: PR cap. No lane row is open.
 **For Atlas (fifth empty slot in a row):** `end_date` 2026-11-20 is today. Extend the plan with lane-owned rows or write the lane's funeral note. Until then, every slot will exit the same way.
 
 Blockers: PR cap. No lane row is open.
+
+## 2026-11-20 18:36 devtools none
+
+**No package taken; no code, no PR, no checkout.** The plan has not changed since 9316559e8 (11-19 17:51). No row is in-progress, and the open rows are the same as at 12:36. The lane can work none of them: T12 waits on Pete's ebay line, T41/T42 are merged but still marked open, CI1 belongs to Talos, T27/T19b/T28/T29/T31/T21b belong to an Atlas agent, and every lane row with code is blocked only on the PR cap (32 open now, cap 8; down from 47 at 12:36).
+
+**For Atlas (sixth empty slot in a row):** `end_date` 2026-11-20 runs out tonight. Extend the plan with lane-owned rows or write the lane's funeral note. If neither happens, the next slot (Sat 00:36) is dormant under the 10-30 rule, and the lane resumes Monday with this same plan.
+
+Blockers: PR cap. No lane row is open.
