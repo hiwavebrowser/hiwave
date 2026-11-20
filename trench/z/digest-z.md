@@ -5542,3 +5542,8 @@ Receipts: `receipts/ch2-e9-pr-body.md`, `receipts/ch3-a2-pr-body.md`, `receipts/
 - **Dormant, no work done.** PLAN-z.md Rules: "LLM seats dormant Fri 00:00 to Mon 06:00 ET"; no weekend exception is written and `~/.null/no-llm-window.off` is absent. The one plan commit since the 03:06 entry (d129ced57 YT-BUNDLE measured, Boa scope index PR, follow-up rows) assigns no row to 'Z lane'.
 - No package state changed, no worktree made, no build run, no receipt owed.
 - **Decision for Atlas (unchanged since 11-16 21:10):** disable the lane, or give a row the owner 'Z lane'. Next working slot is Mon 11-23 06:06.
+
+## 2026-11-20 09:06 Z-lane (no package: dormant window)
+- **Dormant, no work done.** PLAN-z.md Rules: "LLM seats dormant Fri 00:00 to Mon 06:00 ET"; no weekend exception is written and `~/.null/no-llm-window.off` is absent. The one plan commit since the 06:06 entry (396d1943f QB-ARCHIVE-INPUT + LINKEDIN-MODULES, from the quiet-board 31->29 drop) names no owner, so no row is 'Z lane'.
+- No package state changed, no worktree made, no build run, no receipt owed.
+- **Decision for Atlas (unchanged since 11-16 21:10):** disable the lane, or give a row the owner 'Z lane'. Plan `end_date` is today (2026-11-20); without an extension the Mon 11-23 06:06 slot also has no plan to work from.
