@@ -1,0 +1,1 @@
+trench-realsite local commit a85ee4e10 (port #1383 input archive); hook archives *-document.html to renders-private and moves *.har.gz to ~/Library/Application Support/hiwave/realsite-inputs/<sha>/<site>/ with 21-day prune
