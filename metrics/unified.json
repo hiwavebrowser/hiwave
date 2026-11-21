@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T18:20:00.793727",
+  "generated_at": "2026-11-21T17:06:48.720602",
   "platforms": {
     "macos": {
       "parity": 0,
@@ -12,55 +12,49 @@
         "images": 0
       },
       "tier_a_pass_rate": 0.4,
-      "git_commit": "21a6b7d",
+      "git_commit": "52bfb9b",
       "perf_grade": "?"
     },
     "windows": {
       "build": {
         "ok": true,
-        "warnings": 36
+        "warnings": 48
       },
-      "tests_passed": 1822,
+      "tests_passed": 3527,
       "tests_failed": 0,
-      "tests_ignored": 5,
-      "tests_total": 1822,
+      "tests_ignored": 38,
+      "tests_total": 3527,
       "tests_source": "cargo",
-      "git_commit": "970dea9",
-      "metrics_commit": "970dea92",
-      "measured_at": "2026-10-02T21:16:04.284661+00:00",
+      "git_commit": "0383aa7",
+      "metrics_commit": "0383aa7d",
+      "measured_at": "2026-11-21T07:17:19.400077+00:00",
       "metrics_source": "metrics-history/history.csv",
       "not_collected": {
         "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Windows runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
       },
-      "metrics_stale": true,
       "perf_grade": "?"
     },
     "linux": {
       "build": {
         "ok": true,
-        "warnings": 40
+        "warnings": 73
       },
-      "tests_passed": 2388,
-      "tests_failed": 0,
-      "tests_ignored": 8,
-      "tests_total": 2388,
+      "tests_passed": 6528,
+      "tests_failed": 33,
+      "tests_ignored": 104,
+      "tests_total": 6561,
       "tests_source": "cargo",
-      "git_commit": "5b47be7",
-      "metrics_commit": "5b47be70",
-      "measured_at": "2026-10-06T14:28:35.321118+00:00",
+      "git_commit": "ca25a61",
+      "metrics_commit": "ca25a619",
+      "measured_at": "2026-11-21T07:00:58.951936+00:00",
       "metrics_source": "metrics-history/history.csv",
       "not_collected": {
         "parity_pixel_diff": "requires a GPU adapter; not collectable on a hosted Linux runner. Deliberately omitted rather than emitting the harness's 100.0 default as if it were a measurement."
       },
-      "metrics_stale": true,
       "perf_grade": "?"
     }
   },
   "history": [
-    {
-      "date": "2026-08-23",
-      "macos": 88.14
-    },
     {
       "date": "2026-08-24",
       "macos": 88.14
@@ -415,6 +409,10 @@
     },
     {
       "date": "2026-11-20",
+      "macos": 0
+    },
+    {
+      "date": "2026-11-21",
       "macos": 0
     }
   ],
