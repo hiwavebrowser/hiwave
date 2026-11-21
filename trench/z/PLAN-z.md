@@ -1386,6 +1386,9 @@ baselines/common/parity-freeze.js freezes Date.now and makes requestAnimationFra
 - **LINKEDIN-MODULES:** on 11-20 LinkedIn served RustKit a new front end (~12 ES module scripts from static.licdn.com, 4.8 MB) and RustKit shows "Something went wrong / Try again" (readable words 43 -> 3); Chrome unchanged. No script threw. Capture the bundle (board-tool HAR) and find the gap.
 - 31->29 itself: lyft and squarespace are live content (Chrome gained text RustKit didn't get; check later whether that's an engine gap once inputs are archived); walmart undetermined (no archived input); wikipedia +1.
 
+### FLK-MEDIAHOST — the AVFoundation real-host test sometimes gets no answer (batch 117, 11-20)
+rustkit-media `media_host` (feature media-avf): create_and_load_are_answered / every_byte_comes_through_the_feed failed once with 'never; snapshots []' (the host's answer never arrived within 5 s); same binary passed 6 other runs. Gate rule: one automatic rerun. Find what holds the main-queue answer (main-thread run-loop drain in the test's own main? timer starvation under load?) and fix the test or the host. Owner: lane 2 (MEDIA-AVF author).
+
 ### MAC-CONTENT-IPC-DEAD + REPORT-BRIDGE (11-19 audit; details stay off GitHub)
 - **(a)** main.rs on hiwave-macos still carries the wry content-view IPC handler under `cfg(not(target_os = "macos"))`. It is never built on macOS, but it would serve page-triggered commands if anyone builds it for another OS. Delete the block (or port Linux's SEC3 gating into it), so the latent copy can't come back through a sync. Neutral PR title: "remove the unused non-macOS content IPC handler".
 - **(b)** report.html and new_tab.html get no `window.ipc` in the RustKit content view, so their analytics calls do nothing (the report page is probably broken). Fix with a narrow, read-only bridge for internal pages only: the Get* reads, never Reset. Pin it with a test that an http(s) page can't reach it.
