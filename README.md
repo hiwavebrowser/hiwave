@@ -64,7 +64,7 @@ All three platforms ship the same RustKit engine (hiwave-macos `develop` through
 
 | | macOS | Linux | Windows |
 |---|---|---|---|
-| Browser-interface board, rows matching Chrome 148 | 41 / 42 | 42 / 42 | 17 / 42 |
+| Browser-interface board, rows matching Chrome 148 | 41 / 42 | 38 / 42 | 17 / 42 |
 | Mean elements out of place on that board | — | 2.2 | 65 |
 | Test suite at the release head | 2,911 headless engine tests passing | 6,528 passing, 33 known failures, 0 unexpected | CI green, 162 native shell tests |
 | Release notes | [V1.6.0](https://github.com/hiwavebrowser/hiwave-macos/releases/tag/V1.6.0) | [V1.6.0 (Linux)](https://github.com/hiwavebrowser/hiwave-linux/releases/tag/V1.6.0) | [V1.6.0 (Windows)](https://github.com/hiwavebrowser/hiwave-windows/releases/tag/V1.6.0) |
@@ -80,7 +80,7 @@ New this release:
 - Animation timing runs on one 60 Hz page clock.
 - Canvas 2D gains `getImageData` and `putImageData`.
 - Floats, box shadows and `<select>` render closer to Chrome.
-- Linux text line metrics match Chrome's, which took the Linux board from 22 to 42 of 42 rows matching.
+- Linux text line metrics match Chrome's, which took the Linux board from 22 to 38 of 42 rows matching (the 4 remaining rows differ only by one error-message box Chrome draws on the report page).
 
 Known gaps:
 - youtube.com runs its bundle but stops at a startup error.
