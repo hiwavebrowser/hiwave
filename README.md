@@ -58,18 +58,35 @@ evidence of pixel fidelity. Details in
 The macOS parity badge reads from a metrics feed that has not been refreshed,
 so it shows a stale figure. The measured macOS numbers are the ones below.
 
-### macOS at V1.5.0 (2026-11-14)
+### V1.6.0 on all three platforms (2026-11-21)
 
-macOS is the reference tree for RustKit; Windows and Linux are measured against it.
+All three platforms ship the same RustKit engine (hiwave-macos `develop` through batch 117). macOS is the reference tree, where engine work lands first. Windows and Linux are synced from it and measured against Chrome for Testing 148 on their own OS.
 
-- **Fixed-page campaign:** 26 / 26 cases, 0.405% mean pixel difference from pinned Chrome for Testing 148 (1.1% at V1.4.0).
+| | macOS | Linux | Windows |
+|---|---|---|---|
+| Browser-interface board, rows matching Chrome 148 | 41 / 42 | 42 / 42 | 17 / 42 |
+| Mean elements out of place on that board | — | 2.2 | 65 |
+| Test suite at the release head | 2,911 headless engine tests passing | 6,528 passing, 33 known failures, 0 unexpected | CI green, 162 native shell tests |
+| Release notes | [V1.6.0](https://github.com/hiwavebrowser/hiwave-macos/releases/tag/V1.6.0) | [V1.6.0 (Linux)](https://github.com/hiwavebrowser/hiwave-linux/releases/tag/V1.6.0) | [V1.6.0 (Windows)](https://github.com/hiwavebrowser/hiwave-windows/releases/tag/V1.6.0) |
+
+macOS also measures:
+- **Fixed-page campaign:** 26 / 26 cases, 0.405% mean pixel difference from Chrome 148.
 - **Real-window interaction checks:** 570 pass, 1 fail, 1 not run, in each of two runs.
-- **Engine test suite:** 2,517 passing, 0 failing, in the headless suite at the release head.
-- **Web Platform Tests subset:** 99 pass, 151 fail.
-- **New this release:** dedicated workers with structured clone; a rasterised and painted 2D canvas; faster layout of deeply nested pages; fixes that make reddit comment pages, duckduckgo, walmart and bing more usable.
-- **Known gaps:** JavaScript coverage is partial; same-origin iframes are behind a flag and not in this release; no WebAssembly and no media playback; no stress suite (Speedometer, MotionMark, JetStream) produced a score at this release.
+- **test262:** 96,520 of 103,352 runs pass (93.39%).
 
-Sources and the full known-issue list: the [V1.5.0 release notes](https://github.com/hiwavebrowser/hiwave-macos/releases/tag/V1.5.0).
+New this release:
+- Large scripts run: the per-script limit is 16 MiB, so YouTube's and Netflix's main bundles execute.
+- CSS transitions cover many more properties.
+- Animation timing runs on one 60 Hz page clock.
+- Canvas 2D gains `getImageData` and `putImageData`.
+- Floats, box shadows and `<select>` render closer to Chrome.
+- Linux text line metrics match Chrome's, which took the Linux board from 22 to 42 of 42 rows matching.
+
+Known gaps:
+- youtube.com runs its bundle but stops at a startup error.
+- Windows text measurement still trails macOS and Linux.
+- JavaScript coverage is partial.
+- There is no WebAssembly and no media playback, and same-origin iframes are behind a flag.
 
 **Per-platform engine status** (what actually renders, what is parsed-but-inert,
 known gaps): see each platform README —
@@ -81,7 +98,7 @@ known gaps): see each platform README —
 Status as of 2026-11-16, macOS tree. Details and a source for every number:
 [docs/PROGRESS-2026-11.md](docs/PROGRESS-2026-11.md).
 
-- **Releases:** V1.5.0 on 2026-11-14, after V1.4.0 (10-24), V1.3.0 (10-12), V1.2.0 (10-02) and V1.1.0 (09-24).
+- **Releases:** V1.6.0 on all three platforms on 2026-11-21; on macOS, V1.5.0 on 2026-11-14, after V1.4.0 (10-24), V1.3.0 (10-12), V1.2.0 (10-02) and V1.1.0 (09-24).
 - **Gated batches:** since 2026-11-02 every change to hiwave-macos lands in a batch. Each pull request is reviewed independently, and the batch merges only after one combined gate on a Mac: unit and integration suites, a 26-page capture campaign, a 42-state board of the browser's own interface, a 19-site A/B run against the previous build, a Web Platform Tests subset, and two passes of 572 real-window interaction checks. Batch numbering reached 95 on 2026-11-16.
 - **Tests:** the headless engine suite grew from 1,496 passing tests at batch 1 (2026-11-02) to 2,588 at `develop` `d4455b45` (2026-11-16); script bindings from 428 to 732; layout from 881 to 978.
 - **Real window:** 570 of 572 interaction checks pass. Cmd+T and Cmd+W take 157 to 164 ms.
@@ -250,7 +267,7 @@ Pre-built binaries are available for all platforms with multiple rendering backe
 ### 📦 [Latest Weekly Build](https://github.com/hiwavebrowser/hiwave/releases/latest) (built every Monday from the pinned platform commits)
 ### 📦 [Nightly Build](https://github.com/hiwavebrowser/hiwave/releases/tag/nightly) (last built 2026-07-10; the nightly workflow is failing)
 
-macOS releases with full notes are published in the [hiwave-macos repo](https://github.com/hiwavebrowser/hiwave-macos/releases).
+Platform releases with full notes are published in each platform repo: [macOS](https://github.com/hiwavebrowser/hiwave-macos/releases), [Linux](https://github.com/hiwavebrowser/hiwave-linux/releases), [Windows](https://github.com/hiwavebrowser/hiwave-windows/releases).
 
 ### Build Variants
 
@@ -363,9 +380,9 @@ This repository is the umbrella project containing all HiWave components:
 
 | Platform | Repository | Status |
 |----------|------------|--------|
-| 🪟 **Windows** | [hiwave-windows](https://github.com/hiwavebrowser/hiwave-windows) | Alpha — RustKit engine; engine sync trails macOS (`master` last updated 2026-10-02, `develop` 2026-11-11) |
-| 🍎 **macOS** | [hiwave-macos](https://github.com/hiwavebrowser/hiwave-macos) | Alpha — RustKit engine; the reference platform. **V1.5.0** released 2026-11-14 |
-| 🐧 **Linux** | [hiwave-linux](https://github.com/hiwavebrowser/hiwave-linux) | Alpha — RustKit engine; engine sync trails macOS (`master` last updated 2026-10-06, `develop` 2026-11-10) |
+| 🪟 **Windows** | [hiwave-windows](https://github.com/hiwavebrowser/hiwave-windows) | Alpha — RustKit engine, synced from macOS. **V1.6.0** released 2026-11-21 |
+| 🍎 **macOS** | [hiwave-macos](https://github.com/hiwavebrowser/hiwave-macos) | Alpha — RustKit engine; the reference platform. **V1.6.0** released 2026-11-21 |
+| 🐧 **Linux** | [hiwave-linux](https://github.com/hiwavebrowser/hiwave-linux) | Alpha — RustKit engine, synced from macOS. **V1.6.0** released 2026-11-21 |
 
 Each platform is a git submodule pinned to that repo's `master`; each repo has its own README with platform-specific build instructions.
 
