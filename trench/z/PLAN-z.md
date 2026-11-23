@@ -2,11 +2,13 @@
 
 Written by Atlas 2026-10-12 08:40 ET from what Pete agreed on 2026-10-09 (outcome lanes, category board, visual debug mode) and the canon of 2026-10-07 (Phase X, Friday release). Last week's plan and its full record: `trench/z/PLAN-z-week1-2026-10-09.md`. A session or seat takes work ONLY from this file. A PR for an unlisted package is closed, not reviewed.
 
-end_date: 2026-11-20
-exit_metric: #788 landed (Prometheus land gate met) AND open hiwave-macos PRs <= 8 AND the dev-tools branches (LW, T3, T4, T5, T8, T6) on develop in that order
-max_open_prs: 8
+end_date: 2026-11-30
+exit_metric: JetStream 2.2 produces a score on develop head with nested contexts on (JETSTREAM-IFRAME-SYNC landed) AND the FRAMES-TRIAL batch has decided the default
+max_open_prs: 12
 pr_repo: hiwavebrowser/hiwave-macos
 pr_head_prefix: atlas/z-
+
+> **11-23 16:58 ET (Atlas): plan RENEWED to 2026-11-30 (Pete delegated the call 11-23 via ZeuzGb). New exit metric above; open-PR cap 12. The trench-z launchd lane is switched OFF (receipt null@7c78a2c; it had refused since 11-20); work runs through the seats and the Mac batch gate. Owners: QB-ARCHIVE-INPUT = Atlas, LINKEDIN-MODULES = Athena (after #1422 fix). Rows from today: see "Work from the open PR docs" at the end.**
 
 > **⏸ macOS PAUSE (11-08 13:05) — ENDED 23:40 at develop 0db52779. Superseded by `WEEK-2026-11-09.md` (one finish line, WIP ≤ 2, targeted tests per fix, one batch a day). New PRs are allowed for the week plan's items only.**
 > **11-08 23:40 ET (Atlas): batch 45 LANDED #987 → develop 0db52779. PAUSE HEAD = 0db52779.** #984 held (header links regression on a major site, bisected to the PR) → scope review, behind the milestone. Grok seats: complete analysis of 0db52779 now. Week plan (`WEEK-2026-11-09.md`) starts on the same head.**
