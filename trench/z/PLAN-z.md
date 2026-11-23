@@ -1402,3 +1402,40 @@ rustkit-media `media_host` (feature media-avf): create_and_load_are_answered / e
 ### MAC-CONTENT-IPC-DEAD + REPORT-BRIDGE (11-19 audit; details stay off GitHub)
 - **(a)** main.rs on hiwave-macos still carries the wry content-view IPC handler under `cfg(not(target_os = "macos"))`. It is never built on macOS, but it would serve page-triggered commands if anyone builds it for another OS. Delete the block (or port Linux's SEC3 gating into it), so the latent copy can't come back through a sync. Neutral PR title: "remove the unused non-macOS content IPC handler".
 - **(b)** report.html and new_tab.html get no `window.ipc` in the RustKit content view, so their analytics calls do nothing (the report page is probably broken). Fix with a narrow, read-only bridge for internal pages only: the Get* reads, never Reset. Pin it with a test that an http(s) page can't reach it.
+
+## Work from the open PR docs (added 2026-11-23 13:45 ET, Atlas, at Pete's request)
+
+Sources: the three docs left open after the 11-23 PR cleanup: the daily report #1426 (`reports/daily/2026-11-23.md`), the weekly report #1428 (`reports/weekly/2026-W47.md`) and the JetStream design #1434 (`docs/design/JETSTREAM-IFRAME-SYNC.md`). Rows that already exist above are named, not duplicated; their entries here only add what the docs say. Order follows the standing priority: stress suites first, then tooling, then layout rows. State: open unless marked.
+
+### Stress suites (first)
+- **JETSTREAM-IFRAME-SYNC** (Talos; design #1434, Option B approved with Atlas's six changes R1–R6, 11-23). Extends the existing JS-DOCWRITE row. A frame's `about:blank` document exists at insertion (depth 2, pre-built spare child realms built lazily at a document's first frame drain, adopted at the drain); `document.open/write/close` with a write parser that runs inline and `blob:` scripts in the frame's realm, synchronously, with no microtask checkpoint inside `write`; flag off: an inert blank document, no written script runs. Gates: red tests 1–9 from the doc; a 5 % median-of-3 page-load cost gate for the spares; flag-off 19-site A/B judged by hand. Exit: JetStream with frames on runs past its first test (59 of 64 tests, the 5 wasm ones excluded). State: in-progress (red tests next).
+- **FRAMES-TRIAL** (Atlas). A gated trial batch with `HIWAVE_NESTED_CONTEXTS` on across board, campaign, A/B and the real window; flip the default only if nothing regresses (Pete, 11-21). Depends on #1421 (landed batch 122) and #1423 (landing in batch 123). State: open, next after batch 124.
+- **STRESS-SPEED** (unassigned). Speedometer 1.2 % and MotionMark 1.8 % of Chrome 148 (truth 11-21, frames on). Start with the slowest Speedometer workloads: TodoMVC-Lit-Complex, Editor-TipTap, Svelte-Complex, Preact-Complex; profile first, one workload per PR.
+- **WASM** (existing W1+ rows). The 5 JetStream wasm tests need WebAssembly; wasmi approved 11-14.
+
+### Tooling and process
+- **PR-GENERATORS** (Atlas; needs Pete's OK to change the automations). The Cursor coverage automation opens one `coverage/auto-develop-*` PR a day and the report job one `docs/report-*` PR a day; none were ever batched, and 15 of the 29 PRs closed on 11-23 came from them. Proposal: one rolling coverage PR, reports out of PRs (noon digest / committed by a batch).
+- **PLAN-REFRESH** (Atlas). This file's `end_date` (2026-11-20) has passed and its exit metric still names #788 and an 8-PR cap; SEC1b's and JS1's status cells are stale (reports, 11-23). Write the next plan header (end date, one exit metric) and refresh those two cells.
+- **BOARD-MD-COMMIT** (Atlas). `trench/chrome/BOARD.md` on develop still reads 39/42 (11-17); the batch gate has read 42/42 since batch 121. Commit the batch-gate board to it.
+- **RS1-WEEKLY** (existing RS1 rows). Resume the weekly real-site board; no RS1 figure since batch 59.
+- **RATCHET-TIGHTEN** (Atlas, found 11-23 in #1429's pr-aggregate receipt). 21 cases are tighten-eligible on the ratchet floor; a baseline-only PR.
+- **CI-COVERAGE-PARITY** (#1020). Windows and Linux CI coverage level with macOS.
+- Existing tooling rows the reports list as still open: FLK-MEDIAHOST, SLOW-TEST-COMMIT, BOA-VENDOR-TESTS, ORACLE-PIN-ASSERT + SETTLE-ERROR. FLK-SHIELD-LOG is fixed by #1427 (batch 123); CI-CHROMIUM-TIMEOUT by #1433 (batch 124).
+- **WINDOWS-COMMIT-HEADROOM** (Pete). The Windows box's commit headroom (4.9 GB) is below the nightly's 6 GB bar; it skipped the 11-23 nightly and stopped refresh #24's gates. Needs the Codex / Claude-desktop restarts on that box.
+
+### YouTube (from both reports)
+- **YT-START-FLAKY** (existing) plus **YT-LOGO-FLAKY** (new 11-23, batches 122–123): the same binary draws youtube's logo, icons and sidebar labels in some captures and not others; the frame with them is closer to Chrome.
+- **YT-CARD** (new): the search card's fonts larger than Chrome's, sidebar icons and the mic button, card subtitle overflow (pins in #1432, the newest coverage PR); `new Function` source text (existing).
+
+### Layout rows found in today's gates
+- **INLINE-MID-LINE-2** (Athena; Chrome 148 receipt and red test written, unrun until the Windows box has memory). #1422's mid-line start for centred and right-aligned lines and lines beside floats.
+- **FLOAT-ASPECT-RATIO** (Talos; red/fix done locally on Linux, held until #1430 lands). Floats, inline-blocks and abspos boxes take their width from aspect-ratio before shrink-to-fit (Chrome 200x100 vs ours 8x100, 13 cases).
+- **WPT-LINECLAMP-006-WIDTH** and **WPT-LINECLAMP-006-CLAMP** (batch 123): in `text-wrap-balance-line-clamp-006` our boxes are 42 px wide against Chrome's 151 (a `ch` / width gap) and line-clamp draws 6 lines against Chrome's 2.
+- **ASPECT-RATIO-MATH-HEIGHT** (#1430's ignored LIMIT): a `clamp()` / `min()` height over a percentage of a definite parent gets the height wrong before the ratio applies (Chrome 200x100).
+- Existing and still open per the reports: CLIP-PATH-PATH-EVENODD, LINKEDIN-MODULES, BOA-PARSE-MEM follow-ups, BOA-INTERRUPT, LINUX-BOARD-GEOMETRY; issues #1317, #1357, #1362, #1370 and the kerning WPT regression #247.
+
+### Medium and long term (from the weekly report, no dates)
+- MEDIA-AVF step 2: MediaSource / SourceBuffer, after the first playback step, behind `media-avf`.
+- Turn on tree reuse, INC5 incremental layout and the layout memo by default once verify mode is clean.
+- Baseline JIT go/no-go per the measured plan in #1173 (Pete decides).
+- Stress-suite scores at or better than Chrome on macOS (the stated bar).
