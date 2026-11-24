@@ -1441,3 +1441,18 @@ Sources: the three docs left open after the 11-23 PR cleanup: the daily report #
 - Turn on tree reuse, INC5 incremental layout and the layout memo by default once verify mode is clean.
 - Baseline JIT go/no-go per the measured plan in #1173 (Pete decides).
 - Stress-suite scores at or better than Chrome on macOS (the stated bar).
+
+### Rows filed 11-23 evening / 11-24 night (Atlas, from the seats' findings and the batch gates)
+- **LETTER-SPACING-AT-WRAP** (Athena's receipt on #1422): a letter-spaced span is not wrapped where its spacing overflows the line (Ahem 20px, 5em box, letter-spacing:1em: Chrome 80, RustKit 60).
+- **IB-SPLIT-LINE**: an inline split by a block loses the line after the block (007b markup without columns at 320 wide: Chrome 120, RustKit 100); the split span's fragment union reports only its first fragment.
+- **BOX-SIZING-COMPUTED** (Athena): under box-sizing:border-box, getComputedStyle width/height read the content box (Chrome 200/60, ours 170/30 with padding 10, border 5).
+- **EMPTY-INLINE-ALIGN** (Talos, #1444's LIMIT): an empty inline in a centred line stays at x=0 (Chrome 100).
+- **ABSPOS-RATIO-TABLE** (Talos, #1443 nit): a table re-widthed by aspect-ratio at abspos re-anchoring keeps its cells at the flow width (8 vs Chrome 100x100).
+- **ABSPOS-COLUMN-FLEX-END** (Talos, #1443 nit): abspos height:50% column flex with justify-content:flex-end puts items at the top (Chrome y 60/80); pre-existing.
+- **FRAMES-INERT-REINSERT** (Talos, #1440 nit 6): frames off, the inert about:blank document is cached per element, so remove+reinsert returns the same object (Chrome makes a new one).
+- **INLINE-MID-LINE-2b** (Athena): mid-line start for centred and right-aligned lines (each visual line needs its own alignment shift without double-shifting).
+- **SVG-PREPASS-CACHE** (Athena, Speedometer): the inline-SVG pre-pass is redone every render (~0.86 s of Lit-Complex's 4.3 s on Windows; all six Complex-DOM workloads carry the 769-SVG filler). In progress.
+- **YT-LOGO-FLAKY** (batches 122-124): the same binary draws youtube's logo/icons in some captures and not others.
+- **AB-YAHOO-SKELETON-STRIP** (batch 124): yahoo's top strip varies with the live site; same binaries draw both.
+- **WPT-LINECLAMP-006-WIDTH / -CLAMP** (batch 123): boxes 42 px vs Chrome 151 (ch/width); line-clamp draws 6 lines vs Chrome's 2.
+- Done or in review since the 13:45 section: LOGICAL-SIZE (#1442), INLINE-SIZE-IGNORED (#1444), FLOAT-ASPECT-RATIO (#1443), STRESS-WINDOWS (#1445), WINDOW-EVENT-DISPATCH (#1446, Lit-Complex -32%), WINDOW-NAMED-INDEX (#1447), JETSTREAM-IFRAME-SYNC (#1440, leak fixed at c1976801), the replay tools (#1439), CI-CHROMIUM-TIMEOUT (#1433, landed), pr-aggregate on ubuntu (#1431, landed).
